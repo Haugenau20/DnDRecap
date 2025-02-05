@@ -1,27 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Quest } from '../../../types/quest';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
+import ReactMarkdown from 'react-markdown';
 import { 
   ChevronDown, 
   ChevronUp, 
   MapPin,
   Users,
-  Scroll
+  Scroll,
+  Calendar,
+  Target
 } from 'lucide-react';
 
 interface QuestCardProps {
-  /** The quest to display */
   quest: Quest;
 }
 
-/**
- * QuestCard displays detailed information about a single quest.
- * Display-only component for static site generation.
- */
 const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [markdownContent, setMarkdownContent] = useState<string>('');
+
+  // Load markdown content when expanded
+  useEffect(() => {
+    if (isExpanded && quest.contentFile) {
+      // Import markdown content using webpack's raw-loader
+      import(`../../../data/quests/content/${quest.contentFile}`)
+        .then(content => {
+          setMarkdownContent(content.default);
+        })
+        .catch(error => console.error('Error loading quest content:', error));
+    }
+  }, [isExpanded, quest.contentFile]);
 
   // Calculate completion percentage
   const completedObjectives = quest.objectives.filter(obj => obj.completed).length;
@@ -53,22 +64,40 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
           </div>
         </div>
 
+        {/* Quest Metadata */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {quest.location && (
+            <div className="flex items-center gap-2">
+              <MapPin size={16} className="text-gray-500" />
+              <Typography color="secondary">Location: {quest.location}</Typography>
+            </div>
+          )}
+          {quest.levelRange && (
+            <div className="flex items-center gap-2">
+              <Target size={16} className="text-gray-500" />
+              <Typography color="secondary">Level: {quest.levelRange}</Typography>
+            </div>
+          )}
+          {quest.dateAdded && (
+            <div className="flex items-center gap-2">
+              <Calendar size={16} className="text-gray-500" />
+              <Typography color="secondary">Added: {quest.dateAdded}</Typography>
+            </div>
+          )}
+        </div>
+
         {/* Progress Bar */}
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div 
             className="bg-blue-500 rounded-full h-2 transition-all duration-300"
             style={{ width: `${completionPercentage}%` }}
-            role="progressbar"
-            aria-valuenow={completionPercentage}
-            aria-valuemin={0}
-            aria-valuemax={100}
           />
         </div>
 
         {/* Expanded Content */}
         {isExpanded && (
           <div className="pt-4 space-y-6">
-            {/* Objectives */}
+            {/* Objectives Section */}
             <div>
               <Typography variant="h4" className="mb-2">
                 Objectives
@@ -93,46 +122,44 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
               </div>
             </div>
 
-            {/* Related Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Related NPCs */}
-              {quest.relatedNPCs && quest.relatedNPCs.length > 0 && (
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Users size={16} />
-                    <Typography variant="h4">
-                      Related NPCs
-                    </Typography>
-                  </div>
-                  <ul className="list-disc list-inside">
-                    {quest.relatedNPCs.map((npc, index) => (
-                      <li key={index}>
-                        <Typography>{npc}</Typography>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+            {/* Rewards Section */}
+            {quest.rewards && quest.rewards.length > 0 && (
+              <div>
+                <Typography variant="h4" className="mb-2">
+                  Rewards
+                </Typography>
+                <ul className="list-disc list-inside space-y-1">
+                  {quest.rewards.map((reward, index) => (
+                    <li key={index}>
+                      <Typography>{reward}</Typography>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-              {/* Rewards */}
-              {quest.rewards && quest.rewards.length > 0 && (
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Scroll size={16} />
-                    <Typography variant="h4">
-                      Rewards
-                    </Typography>
-                  </div>
-                  <ul className="list-disc list-inside">
-                    {quest.rewards.map((reward, index) => (
-                      <li key={index}>
-                        <Typography>{reward}</Typography>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
+            {/* Related NPCs Section */}
+            {quest.relatedNPCs && quest.relatedNPCs.length > 0 && (
+              <div>
+                <Typography variant="h4" className="mb-2">
+                  Related NPCs
+                </Typography>
+                <ul className="list-disc list-inside space-y-1">
+                  {quest.relatedNPCs.map((npc, index) => (
+                    <li key={index}>
+                      <Typography>{npc}</Typography>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Markdown Content */}
+            {markdownContent && (
+              <div className="prose max-w-none dark:prose-invert">
+                <ReactMarkdown>{markdownContent}</ReactMarkdown>
+              </div>
+            )}
           </div>
         )}
 

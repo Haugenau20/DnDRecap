@@ -10,7 +10,7 @@ export interface QuestObjective {
 export interface Quest {
   id: string;
   title: string;
-  description: string;
+  description: string; // Short summary
   status: QuestStatus;
   objectives: QuestObjective[];
   rewards?: string[];
@@ -19,5 +19,6 @@ export interface Quest {
   levelRange?: string;
   dateAdded?: string;
   dateCompleted?: string;
-  contentFile?: string;
+  contentFile: string; // Now required
+  content?: string;   // The loaded markdown content
 }
