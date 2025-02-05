@@ -11,6 +11,7 @@ import HomePage from './pages/HomePage';
 import StoryPage from './pages/StoryPage';
 import QuestsPage from './pages/QuestsPage';
 import NPCsPage from './pages/NPCsPage';
+import LocationsPage from './pages/LocationsPage';
 
 const App: React.FC = () => {
   return (
@@ -23,7 +24,7 @@ const App: React.FC = () => {
               <Route path="/story" element={<StoryPage />} />
               <Route path="/quests" element={<QuestsPage />} />
               <Route path="/npcs" element={<NPCsPage />} />
-              <Route path="/locations" element={<NPCsPage />} />
+              <Route path="/locations" element={<LocationsPage />} />
             </Routes>
           </Layout>
         </SearchProvider>

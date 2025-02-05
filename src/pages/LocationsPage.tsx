@@ -4,7 +4,7 @@ import Typography from '../components/core/Typography';
 import Card from '../components/core/Card';
 import { Construction } from 'lucide-react';
 
-const Location: React.FC = () => {
+const LocationsPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <Typography variant="h1" className="mb-6">Locations</Typography>
@@ -36,4 +36,4 @@ const Location: React.FC = () => {
   );
 };
 
-export default Location;
+export default LocationsPage;
