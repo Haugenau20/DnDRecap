@@ -1,0 +1,74 @@
+{
+    "quests": [
+      {
+        "id": "missing-merchant",
+        "title": "The Missing Merchant",
+        "description": "Investigate the disappearance of a wealthy merchant from the city",
+        "status": "active",
+        "contentFile": "missing-merchant.md",
+        "objectives": [
+          {
+            "id": "obj-1",
+            "description": "Talk to the merchant's family",
+            "completed": false
+          },
+          {
+            "id": "obj-2",
+            "description": "Visit the merchant's shop",
+            "completed": false
+          },
+          {
+            "id": "obj-3",
+            "description": "Investigate the warehouse district",
+            "completed": false
+          }
+        ],
+        "relatedNPCs": [
+          "Marcus (Merchant's Brother)",
+          "City Guard Captain"
+        ],
+        "rewards": [
+          "500 gold pieces",
+          "Merchant's gratitude"
+        ],
+        "location": "City of Waterdeep",
+        "levelRange": "3-5",
+        "dateAdded": "2024-02-01"
+      },
+      {
+        "id": "goblin-troubles",
+        "title": "Goblin Troubles",
+        "description": "Clear out a goblin infestation that's been troubling travelers",
+        "status": "completed",
+        "contentFile": "goblin-troubles.md",
+        "objectives": [
+          {
+            "id": "obj-1",
+            "description": "Find the goblin cave",
+            "completed": true
+          },
+          {
+            "id": "obj-2",
+            "description": "Defeat the goblin leader",
+            "completed": true
+          },
+          {
+            "id": "obj-3",
+            "description": "Rescue any prisoners",
+            "completed": true
+          }
+        ],
+        "relatedNPCs": [
+          "Road Master Theron",
+          "Captured Merchant"
+        ],
+        "rewards": [
+          "300 gold pieces",
+          "Magic shortsword"
+        ],
+        "location": "Trade Road",
+        "levelRange": "1-3",
+        "dateCompleted": "2024-01-15"
+      }
+    ]
+  }

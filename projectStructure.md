@@ -19,6 +19,7 @@ src/
 │   │   ├── quests/
 │   │   │   ├── QuestTracker.tsx
 │   │   │   └── QuestCard.tsx
+|   |   ├── locqations/
 │   │   └── npcs/
 │   │       ├── NPCDirectory.tsx
 │   │       └── NPCCard.tsx

@@ -84,6 +84,12 @@ interface SearchDocument {
 - **NPCFilter**: Handles NPC filtering and search
 - **NPCRelationships**: Shows connections between NPCs
 
+### 3.4 Location Module
+- **LocationDirectory**: Main component for location information management
+- **LocationCard**: Displays individual location information and notes
+- **LocationHierarchy**: Manages nested location structure
+- **LocationNotes**: Handles session notes and updates for locations
+
 ## 4. Data Flow
 
 ### 4.1 Content Loading

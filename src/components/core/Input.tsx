@@ -79,13 +79,15 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       disabled = false,
       containerClassName,
       className,
-      id,
+      id: providedId,
       ...props
     },
     ref
   ) => {
-    // Generate unique ID for input if not provided
-    const inputId = id || React.useId();
+    // Always call useId at the top level
+    const generatedId = React.useId();
+    // Use provided id or generated one
+    const inputId = providedId || generatedId;
     
     // Determine input status
     const status: InputStatus = error ? 'error' : successMessage ? 'success' : undefined;
