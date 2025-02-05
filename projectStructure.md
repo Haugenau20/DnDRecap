@@ -35,6 +35,7 @@ src/
 │   ├── HomePage.tsx
 │   ├── StoryPage.tsx
 │   ├── QuestsPage.tsx
+|   ├── LocationsPage.tsx
 │   └── NPCsPage.tsx
 ├── types/
 │   ├── story.ts
