@@ -39,10 +39,8 @@ const StoryPage: React.FC = () => {
 
   // Load chapters
   useEffect(() => {
-    const loadChapters = async () => {
+    const loadChapters = () => {
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
         setChapters(sampleChapters);
         setIsLoading(false);
       } catch (error) {
@@ -52,6 +50,7 @@ const StoryPage: React.FC = () => {
       }
     };
 
+    // Load chapters immediately
     loadChapters();
   }, []);
 
