@@ -3,6 +3,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { NavigationProvider } from './context/NavigationContext';
 import { SearchProvider } from './context/SearchContext';
+import { NPCProvider } from './context/NPCContext';
 import ErrorBoundary from './components/shared/ErrorBoundary';
 import Layout from './components/layout/Layout';
 
@@ -18,16 +19,18 @@ const App: React.FC = () => {
     <ErrorBoundary>
       <NavigationProvider>
         <SearchProvider>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/story" element={<StoryPage />} />
-              <Route path="/story/:chapterId" element={<StoryPage />} />
-              <Route path="/quests" element={<QuestsPage />} />
-              <Route path="/npcs" element={<NPCsPage />} />
-              <Route path="/locations" element={<LocationsPage />} />
-            </Routes>
-          </Layout>
+          <NPCProvider>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/story" element={<StoryPage />} />
+                <Route path="/story/:chapterId" element={<StoryPage />} />
+                <Route path="/quests" element={<QuestsPage />} />
+                <Route path="/npcs" element={<NPCsPage />} />
+                <Route path="/locations" element={<LocationsPage />} />
+              </Routes>
+            </Layout>
+          </NPCProvider>
         </SearchProvider>
       </NavigationProvider>
     </ErrorBoundary>

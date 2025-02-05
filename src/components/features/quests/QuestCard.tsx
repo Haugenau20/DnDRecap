@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+// components/features/quests/QuestCard.tsx
+import React, { useState } from 'react';
 import { Quest } from '../../../types/quest';
+import { useNPCs } from '../../../context/NPCContext';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
-import ReactMarkdown from 'react-markdown';
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -11,7 +12,8 @@ import {
   Users,
   Scroll,
   Calendar,
-  Target
+  Target,
+  AlertCircle
 } from 'lucide-react';
 
 interface QuestCardProps {
@@ -20,19 +22,7 @@ interface QuestCardProps {
 
 const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [markdownContent, setMarkdownContent] = useState<string>('');
-
-  // Load markdown content when expanded
-  useEffect(() => {
-    if (isExpanded && quest.contentFile) {
-      // Import markdown content using webpack's raw-loader
-      import(`../../../data/quests/content/${quest.contentFile}`)
-        .then(content => {
-          setMarkdownContent(content.default);
-        })
-        .catch(error => console.error('Error loading quest content:', error));
-    }
-  }, [isExpanded, quest.contentFile]);
+  const { getNPCById } = useNPCs();
 
   // Calculate completion percentage
   const completedObjectives = quest.objectives.filter(obj => obj.completed).length;
@@ -97,7 +87,19 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
         {/* Expanded Content */}
         {isExpanded && (
           <div className="pt-4 space-y-6">
-            {/* Objectives Section */}
+            {/* Background */}
+            {quest.background && (
+              <div>
+                <Typography variant="h4" className="mb-2">
+                  Background
+                </Typography>
+                <Typography color="secondary">
+                  {quest.background}
+                </Typography>
+              </div>
+            )}
+
+            {/* Objectives */}
             <div>
               <Typography variant="h4" className="mb-2">
                 Objectives
@@ -122,7 +124,127 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
               </div>
             </div>
 
-            {/* Rewards Section */}
+            {/* Initial Leads */}
+            {quest.leads && quest.leads.length > 0 && (
+              <div>
+                <Typography variant="h4" className="mb-2">
+                  Initial Leads
+                </Typography>
+                <ul className="list-disc list-inside space-y-1">
+                  {quest.leads.map((lead, index) => (
+                    <li key={index}>
+                      <Typography color="secondary">{lead}</Typography>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Key Locations */}
+            {quest.keyLocations && quest.keyLocations.length > 0 && (
+              <div>
+                <Typography variant="h4" className="mb-2">
+                  Key Locations
+                </Typography>
+                <div className="space-y-3">
+                  {quest.keyLocations.map((location, index) => (
+                    <div key={index}>
+                      <Typography variant="body" className="font-medium">
+                        {location.name}
+                      </Typography>
+                      <Typography color="secondary">
+                        {location.description}
+                      </Typography>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* NPCs */}
+            <div className="space-y-4">
+              {/* Important Quest NPCs */}
+              {quest.importantNPCs && quest.importantNPCs.length > 0 && (
+                <div>
+                  <Typography variant="h4" className="mb-2">
+                    Important NPCs
+                  </Typography>
+                  <div className="space-y-3">
+                    {quest.importantNPCs.map((npc, index) => (
+                      <div key={index}>
+                        <Typography variant="body" className="font-medium">
+                          {npc.name}
+                        </Typography>
+                        <Typography color="secondary">
+                          {npc.description}
+                        </Typography>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Related NPCs from Directory */}
+              {quest.relatedNPCIds && quest.relatedNPCIds.length > 0 && (
+                <div>
+                  <Typography variant="h4" className="mb-2">
+                    Related NPCs
+                  </Typography>
+                  <div className="space-y-2">
+                    {quest.relatedNPCIds.map((npcId) => {
+                      const npc = getNPCById(npcId);
+                      if (!npc) return null;
+                      
+                      const relationshipColor = {
+                        friendly: 'text-green-600',
+                        neutral: 'text-gray-600',
+                        hostile: 'text-red-600',
+                        unknown: 'text-gray-400'
+                      }[npc.relationship];
+
+                      return (
+                        <div key={npcId} className="flex items-center gap-2 p-2 rounded hover:bg-gray-50">
+                          <Users size={16} className={relationshipColor} />
+                          <div>
+                            <Typography variant="body-sm" className="font-medium">
+                              {npc.name}
+                              {npc.title && (
+                                <span className="text-gray-500 ml-1">
+                                  - {npc.title}
+                                </span>
+                              )}
+                            </Typography>
+                            {npc.location && (
+                              <Typography variant="body-sm" color="secondary">
+                                {npc.location}
+                              </Typography>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Complications */}
+            {quest.complications && quest.complications.length > 0 && (
+              <div>
+                <Typography variant="h4" className="mb-2">
+                  Possible Complications
+                </Typography>
+                <ul className="list-disc list-inside space-y-1">
+                  {quest.complications.map((complication, index) => (
+                    <li key={index}>
+                      <Typography color="secondary">{complication}</Typography>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Rewards */}
             {quest.rewards && quest.rewards.length > 0 && (
               <div>
                 <Typography variant="h4" className="mb-2">
@@ -135,29 +257,6 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                     </li>
                   ))}
                 </ul>
-              </div>
-            )}
-
-            {/* Related NPCs Section */}
-            {quest.relatedNPCs && quest.relatedNPCs.length > 0 && (
-              <div>
-                <Typography variant="h4" className="mb-2">
-                  Related NPCs
-                </Typography>
-                <ul className="list-disc list-inside space-y-1">
-                  {quest.relatedNPCs.map((npc, index) => (
-                    <li key={index}>
-                      <Typography>{npc}</Typography>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Markdown Content */}
-            {markdownContent && (
-              <div className="prose max-w-none dark:prose-invert">
-                <ReactMarkdown>{markdownContent}</ReactMarkdown>
               </div>
             )}
           </div>

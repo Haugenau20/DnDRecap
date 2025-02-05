@@ -26,6 +26,13 @@ src/
 │   └── shared/
 │       ├── SearchBar.tsx
 │       └── ErrorBoundary.tsx
+├── data/
+│   └── quests/
+│       ├── content/
+|       │   ├── goblin-troubles.md
+│       │   └── missing-merchant.md
+│       └── metadata/
+|           └── quests.json
 ├── context/
 │   ├── NavigationContext.tsx
 │   └── SearchContext.tsx
@@ -39,12 +46,15 @@ src/
 |   ├── LocationsPage.tsx
 │   └── NPCsPage.tsx
 ├── types/
+|   ├── locatoins.ts
+|   ├──declarations.d.ts
 │   ├── story.ts
 |   ├── search.ts
 │   ├── quest.ts
 │   └── npc.ts
 ├── utils/
 │   ├── search.ts
+|   ├── questLoader.ts
 │   └── navigation.ts
 ├── styles/
 │   └── globals.css

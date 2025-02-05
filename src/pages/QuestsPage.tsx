@@ -46,7 +46,7 @@ const QuestsPage: React.FC = () => {
           quest.title.toLowerCase().includes(search) ||
           quest.description.toLowerCase().includes(search) ||
           quest.objectives.some(obj => obj.description.toLowerCase().includes(search)) ||
-          quest.relatedNPCs?.some(npc => npc.toLowerCase().includes(search))
+          quest.relatedNPCIds?.some(npc => npc.toLowerCase().includes(search))
         );
       }
 

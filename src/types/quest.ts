@@ -7,18 +7,31 @@ export interface QuestObjective {
   completed: boolean;
 }
 
+export interface QuestLocation {
+  name: string;
+  description: string;
+}
+
+export interface QuestNPC {
+  name: string;
+  description: string;
+}
+
 export interface Quest {
   id: string;
   title: string;
-  description: string; // Short summary
+  description: string;
   status: QuestStatus;
+  background?: string;
   objectives: QuestObjective[];
+  leads?: string[];
+  keyLocations?: QuestLocation[];
+  importantNPCs?: QuestNPC[];
+  relatedNPCIds?: string[];  // References to NPCs in the NPC directory
+  complications?: string[];
   rewards?: string[];
-  relatedNPCs?: string[];
   location?: string;
   levelRange?: string;
   dateAdded?: string;
   dateCompleted?: string;
-  contentFile: string; // Now required
-  content?: string;   // The loaded markdown content
 }

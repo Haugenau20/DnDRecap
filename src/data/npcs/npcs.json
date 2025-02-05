@@ -1,0 +1,79 @@
+{
+    "npcs": [
+      {
+        "id": "alderman-thornhaven",
+        "name": "Alderman Thornhaven",
+        "title": "Merchant Prince",
+        "status": "missing",
+        "race": "Human",
+        "occupation": "Merchant",
+        "location": "Waterdeep",
+        "relationship": "neutral",
+        "description": "A wealthy merchant known for fair dealings and shrewd business acumen. Currently missing under mysterious circumstances.",
+        "appearance": "Well-dressed middle-aged man with graying hair and a neatly trimmed beard. Often seen wearing expensive but practical clothing.",
+        "personality": "Professional, fair-minded, and known for keeping his word in business dealings.",
+        "background": "Built the Thornhaven Trading Company from a small family business into one of Waterdeep's prominent merchant houses.",
+        "connections": {
+          "relatedNPCs": ["marcus-thornhaven", "guard-captain"],
+          "affiliations": ["Thornhaven Trading Company", "Merchant's Guild"],
+          "relatedQuests": ["missing-merchant"]
+        },
+        "notes": [
+          {
+            "date": "1024-02-01",
+            "text": "Last seen heading to a meeting at the Salty Dog Tavern"
+          }
+        ]
+      },
+      {
+        "id": "marcus-thornhaven",
+        "name": "Marcus Thornhaven",
+        "title": "Acting Head of Thornhaven Trading",
+        "status": "active",
+        "race": "Human",
+        "occupation": "Merchant",
+        "location": "Waterdeep",
+        "relationship": "friendly",
+        "description": "Younger brother of Alderman Thornhaven, thrust into leadership of the company following his brother's disappearance.",
+        "appearance": "Younger version of his brother, but with more worried lines on his face lately. Dresses in fine merchant's clothes.",
+        "personality": "Anxious but competent. Deeply worried about his brother while trying to maintain the family business.",
+        "background": "Always worked in his brother's shadow but is proving himself capable in crisis.",
+        "connections": {
+          "relatedNPCs": ["alderman-thornhaven", "guard-captain"],
+          "affiliations": ["Thornhaven Trading Company"],
+          "relatedQuests": ["missing-merchant"]
+        },
+        "notes": [
+          {
+            "date": "1024-02-02",
+            "text": "Offered reward for information about his brother"
+          }
+        ]
+      },
+      {
+        "id": "guard-captain",
+        "name": "Captain Alicia Strongheart",
+        "title": "Captain of the City Watch",
+        "status": "active",
+        "race": "Human",
+        "occupation": "City Watch Captain",
+        "location": "Waterdeep",
+        "relationship": "friendly",
+        "description": "Veteran captain of the City Watch, responsible for maintaining order in the Trade Ward.",
+        "appearance": "Tall woman in her forties wearing the polished armor of the City Watch. Carries herself with military precision.",
+        "personality": "Professional and direct. Takes her duties seriously but knows when to look the other way for the greater good.",
+        "background": "Rose through the ranks of the City Watch through dedication and competence.",
+        "connections": {
+          "relatedNPCs": ["alderman-thornhaven", "marcus-thornhaven"],
+          "affiliations": ["City Watch"],
+          "relatedQuests": ["missing-merchant"]
+        },
+        "notes": [
+          {
+            "date": "1024-02-03",
+            "text": "Leading investigation into Thornhaven disappearance"
+          }
+        ]
+      }
+    ]
+  }

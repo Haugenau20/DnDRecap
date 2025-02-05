@@ -181,13 +181,13 @@ const QuestTracker: React.FC<QuestTrackerProps> = ({
                   </ul>
 
                   {/* Related NPCs */}
-                  {quest.relatedNPCs && quest.relatedNPCs.length > 0 && (
+                  {quest.relatedNPCIds && quest.relatedNPCIds.length > 0 && (
                     <>
                       <Typography variant="h4" className="mb-2">
                         Related NPCs
                       </Typography>
                       <ul className="mb-4">
-                        {quest.relatedNPCs.map(npc => (
+                        {quest.relatedNPCIds.map(npc => (
                           <li key={npc}>{npc}</li>
                         ))}
                       </ul>
