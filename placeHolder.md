@@ -9,4 +9,8 @@ styles/globals.css
 context/SearchContext.tsx
 context/NavigationContext.tsx
 features/*
-hooks/useNavigation
+hooks/useNavigation.ts
+pages/Locations.tsx
+pages/NPCsPage.tsx
+pages/QuestsPage.tsx
+pages/StoryPage.tsx
