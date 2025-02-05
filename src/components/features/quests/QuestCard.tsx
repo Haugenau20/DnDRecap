@@ -132,8 +132,8 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                 </Typography>
                 <ul className="list-disc list-inside space-y-1">
                   {quest.leads.map((lead, index) => (
-                    <li key={index} className="inline-block">
-                        <Typography color="secondary">{lead}</Typography>
+                    <li key={index}>
+                      <Typography color="secondary">{lead}</Typography>
                     </li>
                   ))}
                 </ul>
