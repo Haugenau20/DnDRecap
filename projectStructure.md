@@ -38,6 +38,7 @@ src/
 │   └── NPCsPage.tsx
 ├── types/
 │   ├── story.ts
+|   ├── search.ts
 │   ├── quest.ts
 │   └── npc.ts
 ├── utils/
