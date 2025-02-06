@@ -234,9 +234,9 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                 <Typography variant="h4" className="mb-2">
                   Possible Complications
                 </Typography>
-                <ul className="list-disc list-inside space-y-1">
+                <ul className="list-disc pl-5 space-y-1">
                   {quest.complications.map((complication, index) => (
-                    <li key={index}>
+                    <li key={index} className="pl-1">
                       <Typography color="secondary">{complication}</Typography>
                     </li>
                   ))}
@@ -250,9 +250,9 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                 <Typography variant="h4" className="mb-2">
                   Rewards
                 </Typography>
-                <ul className="list-disc list-inside space-y-1">
+                <ul className="list-disc pl-5 space-y-1">
                   {quest.rewards.map((reward, index) => (
-                    <li key={index}>
+                    <li key={index} className="pl-1">
                       <Typography>{reward}</Typography>
                     </li>
                   ))}
