@@ -61,11 +61,6 @@ const HomePage: React.FC = () => {
         <Typography variant="body-lg" color="secondary" className="mb-8">
           Your digital guide through epic adventures
         </Typography>
-        
-        {/* Prominent Search Bar */}
-        <div className="max-w-2xl mx-auto">
-          <SearchBar />
-        </div>
       </section>
 
       {/* Quick Access Section */}

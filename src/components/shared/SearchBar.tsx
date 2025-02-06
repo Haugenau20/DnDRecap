@@ -171,7 +171,7 @@ export const SearchBar: React.FC = () => {
           ref={inputRef}
           type="search"
           placeholder="Search stories, quests, NPCs..."
-          className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
           value={query}
           onChange={handleInputChange}
           onFocus={() => setIsFocused(true)}
