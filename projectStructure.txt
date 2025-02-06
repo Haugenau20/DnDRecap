@@ -12,6 +12,10 @@ DnDRecap
 │   │   │   └── location.ts
 │   │   ├── styles
 │   │   │   └── globals.css
+│   │   ├── services
+│   │   │   ├── search
+│   │   │   │   └── SearchService.ts
+│   │   │   └── index.ts
 │   │   ├── pages
 │   │   │   ├── StoryPage.tsx
 │   │   │   ├── QuestsPage.tsx
@@ -45,7 +49,8 @@ DnDRecap
 │   │   │   │   ├── story
 │   │   │   │   │   ├── TableOfContents.tsx
 │   │   │   │   │   ├── StoryViewer.tsx
-│   │   │   │   │   └── ChapterNavigation.tsx
+│   │   │   │   │   ├── ChapterNavigation.tsx
+│   │   │   │   │   └── BookViewer.tsx
 │   │   │   │   ├── quests
 │   │   │   │   │   ├── QuestTracker.tsx
 │   │   │   │   │   └── QuestCard.tsx
@@ -67,7 +72,7 @@ DnDRecap
 │   │   └── workflows
 │   │       └── npm-publish-github-packages.yml
 │   ├── tsconfig.json
-│   ├── tree.txt
+│   ├── todo.txt
 │   ├── tailwind.config.js
 │   ├── requirements.md
 │   ├── projectStructure.txt

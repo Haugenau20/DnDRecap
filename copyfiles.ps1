@@ -17,7 +17,8 @@ $excludePatterns = @(
     "^.*\\node_modules\\.*",   # Exclude node_modules folder
     "^.*\\build\\.*",          # Exclude build folder
     "^.*\\package-lock.json$", # Exclude package-lock.json file
-    "^.*\\copyfiles.ps1$"      # This file
+    "^.*\\copyfiles.ps1$",     # This file
+    "^.*\\dirTree.ps1$"
 )
 
 # Get all files recursively, excluding specified patterns

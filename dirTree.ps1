@@ -10,13 +10,13 @@ $verticalChar = [char]0x2502                                  # │
 $spaceChar = " "
 
 # Clear/create the output file
-"" | Set-Content "tree.txt" -Encoding UTF8
+"" | Set-Content "projectStructure.txt" -Encoding UTF8
 
 function Write-TreeLine {
     param(
         [string]$Line
     )
-    $Line | Add-Content "tree.txt" -Encoding UTF8
+    $Line | Add-Content "projectStructure.txt" -Encoding UTF8
 }
 
 function Get-DirectoryTree {
@@ -91,4 +91,4 @@ function Get-DirectoryTree {
 
 # Start the tree generation
 Get-DirectoryTree -Path $Path
-Write-Host "Directory tree has been saved to tree.txt"
+Write-Host "Directory tree has been saved to projectStructure.txt"
