@@ -5,26 +5,11 @@ import NPCCard from './NPCCard';
 import Card from '../../core/Card';
 import Typography from '../../core/Typography';
 import Input from '../../core/Input';
-import Button from '../../core/Button';
-import {
-  Search,
-  Users,
-  Filter,
-  Heart,
-  AlertCircle,
-  Skull,
-  HelpCircle,
-  MapPin,
-  Crown,
-  SwordIcon,
-  Shield
-} from 'lucide-react';
+import { Search, Users, MapPin } from 'lucide-react';
 
 const NPCDirectory: React.FC = () => {
-  const { npcs, isLoading, updateNPCRelationship } = useNPCs();
+  const { npcs, isLoading } = useNPCs();
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [relationshipFilter, setRelationshipFilter] = useState<string>('all');
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [highlightedNpcId, setHighlightedNpcId] = useState<string | null>(null);
 
@@ -60,27 +45,21 @@ const NPCDirectory: React.FC = () => {
     return Array.from(uniqueLocations);
   }, [npcs]);
 
-  // Filter NPCs based on search and filters
+  // Filter NPCs based on search and location
   const filteredNPCs = useMemo(() => {
     return npcs.filter(npc => {
       // Search filter
       const searchMatch = searchQuery === '' || 
         npc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        npc.description.toLowerCase().includes(searchQuery.toLowerCase());
-
-      // Status filter
-      const statusMatch = statusFilter === 'all' || npc.status === statusFilter;
-
-      // Relationship filter
-      const relationshipMatch = relationshipFilter === 'all' || 
-        npc.relationship === relationshipFilter;
+        npc.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (npc.title && npc.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
       // Location filter
       const locationMatch = locationFilter === 'all' || npc.location === locationFilter;
 
-      return searchMatch && statusMatch && relationshipMatch && locationMatch;
+      return searchMatch && locationMatch;
     });
-  }, [npcs, searchQuery, statusFilter, relationshipFilter, locationFilter]);
+  }, [npcs, searchQuery, locationFilter]);
 
   // Group NPCs by location for display
   const groupedNPCs = useMemo(() => {
@@ -121,53 +100,21 @@ const NPCDirectory: React.FC = () => {
               />
             </div>
 
-            {/* Filters */}
-            <div className="flex flex-wrap gap-4">
-              <div className="flex items-center gap-2">
-                <Filter size={20} className="text-gray-500" />
-                <select
-                  className="rounded border p-2"
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                >
-                  <option value="all">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="deceased">Deceased</option>
-                  <option value="missing">Missing</option>
-                  <option value="unknown">Unknown</option>
-                </select>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Heart size={20} className="text-gray-500" />
-                <select
-                  className="rounded border p-2"
-                  value={relationshipFilter}
-                  onChange={(e) => setRelationshipFilter(e.target.value)}
-                >
-                  <option value="all">All Relationships</option>
-                  <option value="friendly">Friendly</option>
-                  <option value="neutral">Neutral</option>
-                  <option value="hostile">Hostile</option>
-                  <option value="unknown">Unknown</option>
-                </select>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <MapPin size={20} className="text-gray-500" />
-                <select
-                  className="rounded border p-2"
-                  value={locationFilter}
-                  onChange={(e) => setLocationFilter(e.target.value)}
-                >
-                  <option value="all">All Locations</option>
-                  {locations.map(location => (
-                    <option key={location} value={location}>
-                      {location}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            {/* Location Filter */}
+            <div className="flex items-center gap-2">
+              <MapPin size={20} className="text-gray-500" />
+              <select
+                className="rounded border p-2"
+                value={locationFilter}
+                onChange={(e) => setLocationFilter(e.target.value)}
+              >
+                <option value="all">All Locations</option>
+                {locations.map(location => (
+                  <option key={location} value={location}>
+                    {location}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </Card.Content>
@@ -190,14 +137,7 @@ const NPCDirectory: React.FC = () => {
                   highlightedNpcId === npc.id ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg' : ''
                 }`}
               >
-                <NPCCard 
-                  npc={npc}
-                  onUpdateRelationship={(id, relationship) => {
-                    if (updateNPCRelationship) {
-                      updateNPCRelationship(id, relationship);
-                    }
-                  }}
-                />
+                <NPCCard npc={npc} />
               </div>
             ))}
           </div>
