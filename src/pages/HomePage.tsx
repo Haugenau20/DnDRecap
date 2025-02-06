@@ -107,7 +107,7 @@ const HomePage: React.FC = () => {
           <Card>
             <Card.Content>
               <Typography color="secondary">
-                Campaign session logs and recent updates will appear here
+                TODO: Make this be the latest chapter entry
               </Typography>
             </Card.Content>
           </Card>
