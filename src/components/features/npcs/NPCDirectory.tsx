@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useNPCs } from '../../../context/NPCContext';
 import NPCCard from './NPCCard';
-import { NPC, NPCRelationship } from '../../../types/npc';
 import Card from '../../core/Card';
 import Typography from '../../core/Typography';
 import Input from '../../core/Input';
@@ -20,28 +20,39 @@ import {
   Shield
 } from 'lucide-react';
 
-// Status icon mapping
-const statusIcons: Record<string, React.ReactNode> = {
-  active: <Shield className="text-green-500" size={16} />,
-  deceased: <Skull className="text-gray-500" size={16} />,
-  missing: <AlertCircle className="text-yellow-500" size={16} />,
-  unknown: <HelpCircle className="text-gray-400" size={16} />
-};
-
-// Relationship icon mapping
-const relationshipIcons: Record<NPCRelationship, React.ReactNode> = {
-  friendly: <Heart className="text-green-500" size={16} />,
-  neutral: <Shield className="text-gray-500" size={16} />,
-  hostile: <SwordIcon className="text-red-500" size={16} />,
-  unknown: <HelpCircle className="text-gray-400" size={16} />
-};
-
 const NPCDirectory: React.FC = () => {
   const { npcs, isLoading, updateNPCRelationship } = useNPCs();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [relationshipFilter, setRelationshipFilter] = useState<string>('all');
   const [locationFilter, setLocationFilter] = useState<string>('all');
+  const [highlightedNpcId, setHighlightedNpcId] = useState<string | null>(null);
+
+  // Get URL search params for highlighted NPC
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const highlightId = searchParams.get('highlight');
+
+  // Handle highlighted NPC from URL
+  useEffect(() => {
+    if (highlightId) {
+      setHighlightedNpcId(highlightId);
+      // Find the NPC and set relevant filters
+      const highlightedNpc = npcs.find(npc => npc.id === highlightId);
+      if (highlightedNpc) {
+        if (highlightedNpc.location) {
+          setLocationFilter(highlightedNpc.location);
+        }
+        // Scroll to the highlighted NPC card
+        setTimeout(() => {
+          const element = document.getElementById(`npc-${highlightId}`);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 100);
+      }
+    }
+  }, [highlightId, npcs]);
 
   // Get unique locations for filter dropdown
   const locations = useMemo(() => {
@@ -80,7 +91,7 @@ const NPCDirectory: React.FC = () => {
       }
       acc[location].push(npc);
       return acc;
-    }, {} as Record<string, NPC[]>);
+    }, {} as Record<string, typeof npcs>);
   }, [filteredNPCs]);
 
   if (isLoading) {
@@ -172,16 +183,22 @@ const NPCDirectory: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {locationNPCs.map(npc => (
-              <NPCCard 
+              <div
                 key={npc.id}
-                npc={npc}
-                onUpdateRelationship={(id, relationship) => {
-                  // Handle relationship update
-                  if (updateNPCRelationship) {
-                    updateNPCRelationship(id, relationship);
-                  }
-                }}
-              />
+                id={`npc-${npc.id}`}
+                className={`transition-all duration-300 ${
+                  highlightedNpcId === npc.id ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg' : ''
+                }`}
+              >
+                <NPCCard 
+                  npc={npc}
+                  onUpdateRelationship={(id, relationship) => {
+                    if (updateNPCRelationship) {
+                      updateNPCRelationship(id, relationship);
+                    }
+                  }}
+                />
+              </div>
             ))}
           </div>
         </div>

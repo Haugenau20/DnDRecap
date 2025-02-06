@@ -1,5 +1,5 @@
-// components/features/quests/QuestCard.tsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Quest } from '../../../types/quest';
 import { useNPCs } from '../../../context/NPCContext';
 import Typography from '../../core/Typography';
@@ -13,14 +13,26 @@ import {
   Scroll,
   Calendar,
   Target,
-  AlertCircle
+  AlertCircle,
+  Heart,
+  Shield,
+  SwordIcon,
+  HelpCircle
 } from 'lucide-react';
 
 interface QuestCardProps {
   quest: Quest;
 }
 
+const relationshipIcons = {
+  friendly: <Heart className="text-green-500" />,
+  neutral: <Shield className="text-gray-400" />,
+  hostile: <SwordIcon className="text-red-500" />,
+  unknown: <HelpCircle className="text-gray-400" />
+};
+
 const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
+  const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   const { getNPCById } = useNPCs();
 
@@ -31,7 +43,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   );
 
   return (
-    <Card className="w-full">
+    <Card>
       <Card.Content className="space-y-4">
         {/* Quest Header */}
         <div className="flex items-start justify-between">
@@ -195,32 +207,34 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                       const npc = getNPCById(npcId);
                       if (!npc) return null;
                       
-                      const relationshipColor = {
-                        friendly: 'text-green-600',
-                        neutral: 'text-gray-600',
-                        hostile: 'text-red-600',
-                        unknown: 'text-gray-400'
-                      }[npc.relationship];
-
                       return (
-                        <div key={npcId} className="flex items-center gap-2 p-2 rounded hover:bg-gray-50">
-                          <Users size={16} className={relationshipColor} />
-                          <div>
-                            <Typography variant="body-sm" className="font-medium">
-                              {npc.name}
-                              {npc.title && (
-                                <span className="text-gray-500 ml-1">
-                                  - {npc.title}
-                                </span>
-                              )}
-                            </Typography>
-                            {npc.location && (
-                              <Typography variant="body-sm" color="secondary">
-                                {npc.location}
+                        <Button
+                          key={npcId}
+                          variant="outline"
+                          size="sm"
+                          onClick={() => navigate(`/npcs?highlight=${npcId}`)}
+                          className="w-full text-left flex items-center justify-between"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Users size={16} className="text-gray-400" />
+                            <div>
+                              <Typography variant="body-sm" className="font-medium">
+                                {npc.name}
+                                {npc.title && (
+                                  <span className="text-gray-500 ml-1">
+                                    - {npc.title}
+                                  </span>
+                                )}
                               </Typography>
-                            )}
+                              {npc.location && (
+                                <Typography variant="body-sm" color="secondary">
+                                  {npc.location}
+                                </Typography>
+                              )}
+                            </div>
                           </div>
-                        </div>
+                          {relationshipIcons[npc.relationship]}
+                        </Button>
                       );
                     })}
                   </div>
