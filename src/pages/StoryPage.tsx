@@ -71,11 +71,9 @@ const StoryPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Table of Contents */}
           <Card className="lg:col-span-1 h-fit">
-            <Card.Header>
-              <Typography variant="h3">
-                Chapters
-              </Typography>
-            </Card.Header>
+            <Card.Header
+              title="Chapters"
+            />
             <Card.Content>
               <nav className="space-y-2">
                 {sampleChapters.map(chapter => (
