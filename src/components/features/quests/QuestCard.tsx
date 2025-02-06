@@ -210,14 +210,14 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                           onClick={() => navigate(`/npcs?highlight=${npcId}`)}
                           className="w-full text-left"
                         >
-                          <div className="flex items-start gap-2">
+                          <div className="flex items-center gap-2">
                             <Users 
                               size={16} 
                               className={
                                 npc.relationship === 'friendly' ? 'text-green-500' :
                                 npc.relationship === 'hostile' ? 'text-red-500' :
-                                npc.relationship === 'neutral' ? 'text-gray-500' :
-                                'text-blue-500'
+                                npc.relationship === 'neutral' ? 'text-gray-400' :
+                                'text-gray-300'
                               } 
                             />
                             <div>

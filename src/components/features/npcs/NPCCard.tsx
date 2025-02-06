@@ -33,7 +33,7 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
       case 'neutral':
         return 'text-gray-500';
       default:
-        return 'text-blue-400';
+        return 'text-blue-500';
     }
   };
 
