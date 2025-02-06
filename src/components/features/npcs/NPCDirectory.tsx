@@ -5,11 +5,13 @@ import NPCCard from './NPCCard';
 import Card from '../../core/Card';
 import Typography from '../../core/Typography';
 import Input from '../../core/Input';
-import { Search, Users, MapPin } from 'lucide-react';
+import { Search, Users, MapPin, Heart } from 'lucide-react';
 
 const NPCDirectory: React.FC = () => {
   const { npcs, isLoading } = useNPCs();
   const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [relationshipFilter, setRelationshipFilter] = useState<string>('all');
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [highlightedNpcId, setHighlightedNpcId] = useState<string | null>(null);
 
@@ -45,7 +47,7 @@ const NPCDirectory: React.FC = () => {
     return Array.from(uniqueLocations);
   }, [npcs]);
 
-  // Filter NPCs based on search and location
+  // Filter NPCs based on search and filters
   const filteredNPCs = useMemo(() => {
     return npcs.filter(npc => {
       // Search filter
@@ -54,12 +56,19 @@ const NPCDirectory: React.FC = () => {
         npc.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (npc.title && npc.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
+      // Status filter
+      const statusMatch = statusFilter === 'all' || npc.status === statusFilter;
+
+      // Relationship filter
+      const relationshipMatch = relationshipFilter === 'all' || 
+        npc.relationship === relationshipFilter;
+
       // Location filter
       const locationMatch = locationFilter === 'all' || npc.location === locationFilter;
 
-      return searchMatch && locationMatch;
+      return searchMatch && statusMatch && relationshipMatch && locationMatch;
     });
-  }, [npcs, searchQuery, locationFilter]);
+  }, [npcs, searchQuery, statusFilter, relationshipFilter, locationFilter]);
 
   // Group NPCs by location for display
   const groupedNPCs = useMemo(() => {
@@ -98,6 +107,38 @@ const NPCDirectory: React.FC = () => {
                 startIcon={<Search className="text-gray-400" />}
                 fullWidth
               />
+            </div>
+
+            {/* Status Filter */}
+            <div className="flex items-center gap-2">
+              <Users size={20} className="text-gray-500" />
+              <select
+                className="rounded border p-2"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option value="all">All Status</option>
+                <option value="active">Active</option>
+                <option value="deceased">Deceased</option>
+                <option value="missing">Missing</option>
+                <option value="unknown">Unknown</option>
+              </select>
+            </div>
+
+            {/* Relationship Filter */}
+            <div className="flex items-center gap-2">
+              <Heart size={20} className="text-gray-500" />
+              <select
+                className="rounded border p-2"
+                value={relationshipFilter}
+                onChange={(e) => setRelationshipFilter(e.target.value)}
+              >
+                <option value="all">All Relationships</option>
+                <option value="friendly">Friendly</option>
+                <option value="neutral">Neutral</option>
+                <option value="hostile">Hostile</option>
+                <option value="unknown">Unknown</option>
+              </select>
             </div>
 
             {/* Location Filter */}
