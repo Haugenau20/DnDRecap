@@ -2,6 +2,7 @@
 import React from 'react';
 import Typography from '../components/core/Typography';
 import NPCDirectory from '../components/features/npcs/NPCDirectory';
+import NPCLegend from '../components/features/npcs/NPCLegend';
 
 const NPCsPage: React.FC = () => {
   return (
@@ -15,6 +16,12 @@ const NPCsPage: React.FC = () => {
         </Typography>
       </div>
 
+      {/* Legend Section */}
+      <div className="mb-8">
+        <NPCLegend />
+      </div>
+
+      {/* Directory Section */}
       <NPCDirectory />
     </div>
   );
