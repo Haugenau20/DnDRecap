@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { useSearch } from '../../context/SearchContext';
+import { useNavigate } from 'react-router-dom';
+import { useSearch } from '../../hooks/useSearch';
 import { SearchResult, SearchResultType } from '../../types/search';
 import Typography from '../core/Typography';
 import { 
@@ -32,29 +33,64 @@ const resultTypeLabels: Record<SearchResultType, string> = {
  * Search bar component with real-time search functionality and results dropdown
  */
 export const SearchBar: React.FC = () => {
-  const { query, setQuery, results, isSearching, handleSearch, clearSearch } = useSearch();
+  const navigate = useNavigate();
+  const { 
+    query, 
+    results, 
+    isSearching, 
+    onSearch, 
+    onClearSearch 
+  } = useSearch();
+  
   const [isFocused, setIsFocused] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
 
   /**
+   * Navigate to appropriate page based on result type
+   */
+  const navigateToResult = useCallback((result: SearchResult) => {
+    switch (result.type) {
+      case 'story':
+        navigate(`/story/${result.id}`);
+        break;
+      case 'quest':
+        navigate(`/quests?highlight=${result.id}`);
+        break;
+      case 'npc':
+        navigate(`/npcs?highlight=${result.id}`);
+        break;
+      case 'location':
+        navigate(`/locations?highlight=${result.id}`);
+        break;
+    }
+  }, [navigate]);
+
+  /**
    * Handle input changes and trigger search
    */
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuery = e.target.value;
-    setQuery(newQuery);
-    handleSearch(newQuery);
+    onSearch(e.target.value);
     setSelectedIndex(-1);
-  }, [setQuery, handleSearch]);
+  }, [onSearch]);
 
   /**
    * Clear search and reset state
    */
   const handleClear = useCallback(() => {
-    clearSearch();
+    onClearSearch();
     setSelectedIndex(-1);
-    inputRef.current?.focus();
-  }, [clearSearch]);
+    setIsFocused(false);
+    inputRef.current?.blur();
+  }, [onClearSearch]);
+
+  /**
+   * Handle result selection
+   */
+  const handleResultClick = useCallback((result: SearchResult) => {
+    navigateToResult(result);
+    handleClear();
+  }, [navigateToResult, handleClear]);
 
   /**
    * Handle keyboard navigation
@@ -78,23 +114,12 @@ export const SearchBar: React.FC = () => {
         break;
       case 'Enter':
         if (selectedIndex >= 0 && selectedIndex < results.length) {
-          // Handle result selection
-          const selectedResult = results[selectedIndex];
-          handleResultClick(selectedResult);
+          e.preventDefault();
+          handleResultClick(results[selectedIndex]);
         }
         break;
     }
-  }, [results, selectedIndex, handleClear]);
-
-  /**
-   * Handle result selection
-   */
-  const handleResultClick = useCallback((result: SearchResult) => {
-    // Handle navigation based on result type
-    // You would implement this based on your routing needs
-    console.log('Selected result:', result);
-    handleClear();
-  }, [handleClear]);
+  }, [results, selectedIndex, handleClear, handleResultClick]);
 
   /**
    * Render an individual search result
