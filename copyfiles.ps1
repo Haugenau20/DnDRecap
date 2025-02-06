@@ -18,7 +18,8 @@ $excludePatterns = @(
     "^.*\\build\\.*",          # Exclude build folder
     "^.*\\package-lock.json$", # Exclude package-lock.json file
     "^.*\\copyfiles.ps1$",     # This file
-    "^.*\\dirTree.ps1$"
+    "^.*\\dirTree.ps1$",
+    "^.*.png"
 )
 
 # Get all files recursively, excluding specified patterns

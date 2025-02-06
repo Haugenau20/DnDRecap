@@ -66,6 +66,8 @@ DnDRecap
 │   │   ├── index.tsx
 │   │   └── App.tsx
 │   ├── public
+│   │   ├── images
+│   │   │   └── paper-texture.png
 │   │   ├── manifest.json
 │   │   └── index.html
 │   ├── .github
