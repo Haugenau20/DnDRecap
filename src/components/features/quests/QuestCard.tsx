@@ -24,12 +24,7 @@ interface QuestCardProps {
   quest: Quest;
 }
 
-const relationshipIcons = {
-  friendly: <Heart className="text-green-500" />,
-  neutral: <Shield className="text-gray-400" />,
-  hostile: <SwordIcon className="text-red-500" />,
-  unknown: <HelpCircle className="text-gray-400" />
-};
+
 
 const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   const navigate = useNavigate();
@@ -213,10 +208,18 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                           variant="outline"
                           size="sm"
                           onClick={() => navigate(`/npcs?highlight=${npcId}`)}
-                          className="w-full text-left flex items-center justify-between"
+                          className="w-full text-left"
                         >
                           <div className="flex items-center gap-2">
-                            <Users size={16} className="text-gray-400" />
+                            <Users 
+                              size={16} 
+                              className={
+                                npc.relationship === 'friendly' ? 'text-green-500' :
+                                npc.relationship === 'hostile' ? 'text-red-500' :
+                                npc.relationship === 'neutral' ? 'text-yellow-500' :
+                                'text-gray-400'
+                              } 
+                            />
                             <div>
                               <Typography variant="body-sm" className="font-medium">
                                 {npc.name}
@@ -233,7 +236,6 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                               )}
                             </div>
                           </div>
-                          {relationshipIcons[npc.relationship]}
                         </Button>
                       );
                     })}
