@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useNPCs } from '../../../context/NPCContext';
+import NPCCard from './NPCCard';
 import { NPC, NPCRelationship } from '../../../types/npc';
 import Card from '../../core/Card';
 import Typography from '../../core/Typography';
@@ -36,7 +37,7 @@ const relationshipIcons: Record<NPCRelationship, React.ReactNode> = {
 };
 
 const NPCDirectory: React.FC = () => {
-  const { npcs, isLoading } = useNPCs();
+  const { npcs, isLoading, updateNPCRelationship } = useNPCs();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [relationshipFilter, setRelationshipFilter] = useState<string>('all');
@@ -171,52 +172,16 @@ const NPCDirectory: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {locationNPCs.map(npc => (
-              <Card key={npc.id} hoverable>
-                <Card.Content className="space-y-4">
-                  {/* NPC Header */}
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <Typography variant="h4">
-                          {npc.name}
-                        </Typography>
-                        {statusIcons[npc.status]}
-                        {relationshipIcons[npc.relationship]}
-                      </div>
-                      {npc.title && (
-                        <Typography color="secondary" className="mt-1">
-                          {npc.title}
-                        </Typography>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* NPC Details */}
-                  <div className="space-y-2">
-                    {npc.occupation && (
-                      <div className="flex items-center gap-2">
-                        <Crown size={16} className="text-gray-400" />
-                        <Typography variant="body-sm">
-                          {npc.occupation}
-                        </Typography>
-                      </div>
-                    )}
-                    <Typography color="secondary" className="line-clamp-2">
-                      {npc.description}
-                    </Typography>
-                  </div>
-
-                  {/* View Details Button */}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                    startIcon={<Users size={16} />}
-                  >
-                    View Details
-                  </Button>
-                </Card.Content>
-              </Card>
+              <NPCCard 
+                key={npc.id}
+                npc={npc}
+                onUpdateRelationship={(id, relationship) => {
+                  // Handle relationship update
+                  if (updateNPCRelationship) {
+                    updateNPCRelationship(id, relationship);
+                  }
+                }}
+              />
             ))}
           </div>
         </div>
