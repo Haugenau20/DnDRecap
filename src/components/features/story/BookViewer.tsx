@@ -62,7 +62,7 @@ const BookViewer = ({ content, title, onPageChange, className }: BookViewerProps
         </div>
 
         {/* Book Content */}
-        <div className="relative min-h-[600px] p-8 bg-[url('../../../../public/images/paper-texture.png')] bg-repeat">
+        <div className="relative min-h-[600px] p-8 bg-[url('/images/paper-texture.png')] bg-repeat">
           {/* Page Content */}
           <div className="max-w-2xl mx-auto">
             <Typography className="leading-relaxed font-serif">
