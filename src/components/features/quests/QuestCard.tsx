@@ -130,9 +130,9 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                 <Typography variant="h4" className="mb-2">
                   Initial Leads
                 </Typography>
-                <ul className="list-disc list-inside space-y-1">
+                <ul className="list-disc pl-5 space-y-1">
                   {quest.leads.map((lead, index) => (
-                    <li key={index}>
+                    <li key={index} className="pl-1">
                       <Typography color="secondary">{lead}</Typography>
                     </li>
                   ))}
