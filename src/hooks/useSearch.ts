@@ -3,35 +3,93 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSearch as useSearchContext } from '../context/SearchContext';
 
 /**
- * Custom hook for handling debounced search functionality
- * @param debounceMs - Debounce delay in milliseconds
- * @returns Object containing debounced search handlers
+ * Options for configuring search behavior
  */
-export const useSearch = (debounceMs = 300) => {
-  const { query, setQuery, handleSearch, clearSearch } = useSearchContext();
+interface UseSearchOptions {
+  /** Debounce delay in milliseconds */
+  debounceMs?: number;
+  /** Minimum query length to trigger search */
+  minQueryLength?: number;
+}
+
+/**
+ * Default options for search configuration
+ */
+const DEFAULT_OPTIONS = {
+  debounceMs: 300,
+  minQueryLength: 2
+} as const;
+
+/**
+ * Custom hook for handling debounced search functionality
+ * Builds on top of the SearchContext to provide additional features
+ * 
+ * @param options - Configuration options for search behavior
+ * @returns Object containing search handlers and state
+ */
+export const useSearch = (userOptions: UseSearchOptions = {}) => {
+  // Merge default options with user options
+  const options = {
+    ...DEFAULT_OPTIONS,
+    ...userOptions
+  };
+
+  // Get base search functionality from context
+  const { 
+    query, 
+    setQuery, 
+    handleSearch, 
+    clearSearch,
+    results,
+    isSearching 
+  } = useSearchContext();
+
+  // State for debounced query
   const [debouncedQuery, setDebouncedQuery] = useState(query);
 
-  // Debounce the search query
+  // Handle debounced query updates
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedQuery(query), debounceMs);
+    const timer = setTimeout(() => setDebouncedQuery(query), options.debounceMs);
     return () => clearTimeout(timer);
-  }, [query, debounceMs]);
+  }, [query, options.debounceMs]);
 
   // Perform search when debounced query changes
   useEffect(() => {
-    if (debouncedQuery.trim()) {
+    if (debouncedQuery && debouncedQuery.length >= options.minQueryLength) {
       handleSearch(debouncedQuery);
     }
-  }, [debouncedQuery, handleSearch]);
+  }, [debouncedQuery, handleSearch, options.minQueryLength]);
 
+  /**
+   * Update search query
+   */
   const onSearch = useCallback((searchQuery: string) => {
     setQuery(searchQuery);
   }, [setQuery]);
 
+  /**
+   * Clear search and reset state
+   */
+  const onClearSearch = useCallback(() => {
+    clearSearch();
+    setDebouncedQuery('');
+  }, [clearSearch]);
+
   return {
+    // Search state
+    query,
+    debouncedQuery,
+    results,
+    isSearching,
+
+    // Search handlers
     onSearch,
-    clearSearch,
-    debouncedQuery
+    onClearSearch,
+    
+    // Original context methods (for advanced use cases)
+    setQuery,
+    handleSearch,
+    clearSearch
   };
 };
 

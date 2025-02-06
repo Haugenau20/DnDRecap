@@ -1,0 +1,81 @@
+﻿
+DnDRecap
+│   ├── src
+│   │   ├── utils
+│   │   │   ├── search.ts
+│   │   │   └── navigation.ts
+│   │   ├── types
+│   │   │   ├── story.ts
+│   │   │   ├── search.ts
+│   │   │   ├── quest.ts
+│   │   │   ├── npc.ts
+│   │   │   └── location.ts
+│   │   ├── styles
+│   │   │   └── globals.css
+│   │   ├── pages
+│   │   │   ├── StoryPage.tsx
+│   │   │   ├── QuestsPage.tsx
+│   │   │   ├── NPCsPage.tsx
+│   │   │   ├── LocationsPage.tsx
+│   │   │   └── HomePage.tsx
+│   │   ├── hooks
+│   │   │   ├── useSearch.ts
+│   │   │   └── useNavigation.ts
+│   │   ├── data
+│   │   │   ├── quests
+│   │   │   │   └── metadata
+│   │   │   │       └── quests.json
+│   │   │   └── npcs
+│   │   │       └── npcs.json
+│   │   ├── context
+│   │   │   ├── SearchContext.tsx
+│   │   │   ├── NPCContext.tsx
+│   │   │   └── NavigationContext.tsx
+│   │   ├── components
+│   │   │   ├── shared
+│   │   │   │   ├── SearchBar.tsx
+│   │   │   │   └── ErrorBoundary.tsx
+│   │   │   ├── layout
+│   │   │   │   ├── Sidebar.tsx
+│   │   │   │   ├── Navigation.tsx
+│   │   │   │   ├── Layout.tsx
+│   │   │   │   ├── Header.tsx
+│   │   │   │   └── Footer.tsx
+│   │   │   ├── features
+│   │   │   │   ├── story
+│   │   │   │   │   ├── TableOfContents.tsx
+│   │   │   │   │   ├── StoryViewer.tsx
+│   │   │   │   │   └── ChapterNavigation.tsx
+│   │   │   │   ├── quests
+│   │   │   │   │   ├── QuestTracker.tsx
+│   │   │   │   │   └── QuestCard.tsx
+│   │   │   │   ├── npcs
+│   │   │   │   │   ├── NPCDirectory.tsx
+│   │   │   │   │   └── NPCCard.tsx
+│   │   │   │   └── locations
+│   │   │   └── core
+│   │   │       ├── Typography.tsx
+│   │   │       ├── Input.tsx
+│   │   │       ├── Card.tsx
+│   │   │       └── Button.tsx
+│   │   ├── index.tsx
+│   │   └── App.tsx
+│   ├── public
+│   │   ├── manifest.json
+│   │   └── index.html
+│   ├── .github
+│   │   └── workflows
+│   │       └── npm-publish-github-packages.yml
+│   ├── tsconfig.json
+│   ├── tree.txt
+│   ├── tailwind.config.js
+│   ├── requirements.md
+│   ├── projectStructure.txt
+│   ├── postcss.config.js
+│   ├── placeHolder.md
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── highLevelDesign.md
+│   ├── dirTree.ps1
+│   ├── copyfiles.ps1
+│   └── .gitignore
