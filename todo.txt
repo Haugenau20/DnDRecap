@@ -1,17 +1,11 @@
-on the story/chapter-x page, have button to go to next/previous chapter instead of having it in the table of contents tab.
-On the homepage under "Recent Activity" have the latest chapter/recap entry be displayed.
 Remove black borders around Related NPC, Key Locations, Related Quests, etc. buttons
 
 Fix Navigation First:
 
-
-Add next/previous chapter buttons
-Implement keyboard shortcuts
 Improve the breadcrumb navigation
 
 
 Improve Core User Experience:
-
 
 Add proper loading states
 Implement error handling
@@ -20,7 +14,6 @@ Improve accessibility
 
 
 Complete Homepage Features:
-
 
 Implement Recent Activity section
 Add quick access to last read chapter
