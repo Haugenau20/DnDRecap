@@ -19,8 +19,7 @@ import {
   Landmark,
   Mountain,
   Home,
-  MapPinOff,
-  UserCircle2
+  MapPinOff
 } from 'lucide-react';
 
 interface LocationCardProps {
@@ -50,6 +49,14 @@ const LocationCard: React.FC<LocationCardProps> = ({
 }) => {
   const [isContentExpanded, setIsContentExpanded] = useState(false);
   const navigate = useNavigate();
+  const { getNPCById } = useNPCs();
+
+  // Fetch NPC data at component level
+  const connectedNPCs = location.connectedNPCs 
+    ? location.connectedNPCs
+        .map(id => getNPCById(id))
+        .filter(npc => npc !== undefined)
+    : [];
 
   // Get status icon
   const getStatusIcon = () => {
@@ -104,11 +111,11 @@ const LocationCard: React.FC<LocationCardProps> = ({
 
         {/* Basic Info */}
         <div className="flex flex-wrap gap-4">
-          {location.connectedNPCs && location.connectedNPCs.length > 0 && (
+          {connectedNPCs.length > 0 && (
             <div className="flex items-center gap-2">
               <Users size={16} className="text-gray-400" />
               <Typography variant="body-sm" color="secondary">
-                {location.connectedNPCs.length} NPCs
+                {connectedNPCs.length} NPCs
               </Typography>
             </div>
           )}
@@ -153,54 +160,49 @@ const LocationCard: React.FC<LocationCardProps> = ({
             )}
 
             {/* Connected NPCs */}
-            {location.connectedNPCs && location.connectedNPCs.length > 0 && (
+            {connectedNPCs.length > 0 && (
               <div>
                 <Typography variant="body" className="font-medium mb-2">
                   Connected NPCs
                 </Typography>
                 <div className="space-y-2">
-                  {location.connectedNPCs.map((npcId) => {
-                    const npc = useNPCs().getNPCById(npcId);
-                    if (!npc) return null;
-                    
-                    return (
-                      <Button
-                        key={npcId}
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleNPCClick(npcId)}
-                        className="w-full"
-                        centered={false}
-                      >
-                        <div className="flex items-start gap-2 text-left">
-                          <Users 
-                            size={16} 
-                            className={`mt-1 ${
-                              npc.relationship === 'friendly' ? 'text-green-500' :
-                              npc.relationship === 'hostile' ? 'text-red-500' :
-                              npc.relationship === 'neutral' ? 'text-gray-400' :
-                              'text-gray-300'
-                            }`}
-                          />
-                          <div className="flex-1">
-                            <Typography variant="body-sm" className="font-medium">
-                              {npc.name}
-                              {npc.title && (
-                                <span className="text-gray-500 ml-1">
-                                  - {npc.title}
-                                </span>
-                              )}
-                            </Typography>
-                            {npc.location && (
-                              <Typography variant="body-sm" color="secondary">
-                                {npc.location}
-                              </Typography>
+                  {connectedNPCs.map((npc) => (
+                    <Button
+                      key={npc.id}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleNPCClick(npc.id)}
+                      className="w-full"
+                      centered={false}
+                    >
+                      <div className="flex items-start gap-2 text-left">
+                        <Users 
+                          size={16} 
+                          className={`mt-1 ${
+                            npc.relationship === 'friendly' ? 'text-green-500' :
+                            npc.relationship === 'hostile' ? 'text-red-500' :
+                            npc.relationship === 'neutral' ? 'text-gray-400' :
+                            'text-blue-500'
+                          }`}
+                        />
+                        <div className="flex-1">
+                          <Typography variant="body-sm" className="font-medium">
+                            {npc.name}
+                            {npc.title && (
+                              <span className="text-gray-500 ml-1">
+                                - {npc.title}
+                              </span>
                             )}
-                          </div>
+                          </Typography>
+                          {npc.location && (
+                            <Typography variant="body-sm" color="secondary">
+                              {npc.location}
+                            </Typography>
+                          )}
                         </div>
-                      </Button>
-                    );
-                  })}
+                      </div>
+                    </Button>
+                  ))}
                 </div>
               </div>
             )}

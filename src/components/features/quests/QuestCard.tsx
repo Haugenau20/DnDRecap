@@ -218,7 +218,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                                   npc.relationship === 'friendly' ? 'text-green-500' :
                                   npc.relationship === 'hostile' ? 'text-red-500' :
                                   npc.relationship === 'neutral' ? 'text-gray-400' :
-                                  'text-gray-300'
+                                  'text-blue-500'
                                 }`}
                               />
                               <div className="flex-1">
