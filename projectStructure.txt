@@ -29,12 +29,15 @@ DnDRecap
 │   │   │   ├── quests
 │   │   │   │   └── metadata
 │   │   │   │       └── quests.json
-│   │   │   └── npcs
-│   │   │       └── npcs.json
+│   │   │   ├── npcs
+│   │   │   │   └── npcs.json
+│   │   │   └── locations
+│   │   │       └── locations.json
 │   │   ├── context
 │   │   │   ├── SearchContext.tsx
 │   │   │   ├── NPCContext.tsx
-│   │   │   └── NavigationContext.tsx
+│   │   │   ├── NavigationContext.tsx
+│   │   │   └── LocationContext.tsx
 │   │   ├── components
 │   │   │   ├── shared
 │   │   │   │   ├── SearchBar.tsx
@@ -59,6 +62,8 @@ DnDRecap
 │   │   │   │   │   ├── NPCDirectory.tsx
 │   │   │   │   │   └── NPCCard.tsx
 │   │   │   │   └── locations
+│   │   │   │       ├── LocationDirectory.tsx
+│   │   │   │       └── LocationCard.tsx
 │   │   │   └── core
 │   │   │       ├── Typography.tsx
 │   │   │       ├── Input.tsx

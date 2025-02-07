@@ -1,18 +1,11 @@
-import React, { useState, useMemo } from 'react';
-import { Location, LocationType } from '../../../types/location';
-import Typography from '../../core/Typography';
-import Card from '../../core/Card';
-import Input from '../../core/Input';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Location } from '../../../types/location';
 import LocationCard from './LocationCard';
-import { 
-  Search, 
-  Filter,
-  MapPin,
-  Building,
-  Mountain,
-  Home,
-  Landmark
-} from 'lucide-react';
+import Card from '../../core/Card';
+import Typography from '../../core/Typography';
+import Input from '../../core/Input';
+import { Search, Filter, MapPin, Building } from 'lucide-react';
 
 interface LocationDirectoryProps {
   locations: Location[];
@@ -23,36 +16,45 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
   locations,
   isLoading = false 
 }) => {
-  // State for filters and search
   const [searchQuery, setSearchQuery] = useState('');
-  const [typeFilter, setTypeFilter] = useState<LocationType | 'all'>('all');
-  const [statusFilter, setStatusFilter] = useState<Location['status'] | 'all'>('all');
-  const [expandedLocations, setExpandedLocations] = useState<Set<string>>(new Set());
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [highlightedLocationId, setHighlightedLocationId] = useState<string | null>(null);
 
-  // Toggle expansion state
-  const toggleExpansion = (locationId: string) => {
-    setExpandedLocations(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(locationId)) {
-        newSet.delete(locationId);
-      } else {
-        newSet.add(locationId);
-      }
-      return newSet;
-    });
-  };
+  // Get URL search params for highlighted location
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const highlightId = searchParams.get('highlight');
 
-  // Group locations by parent to create hierarchy
-  const locationHierarchy = useMemo(() => {
-    return locations.reduce((acc, location) => {
-      const parentId = location.parentId || 'root';
-      if (!acc[parentId]) {
-        acc[parentId] = [];
+  // Handle highlighted location from URL
+  useEffect(() => {
+    if (highlightId) {
+      const decodedHighlightId = decodeURIComponent(highlightId);
+      
+      // First try to find by ID, then by name
+      const highlightedLocation = locations.find(loc => 
+        loc.id === decodedHighlightId || 
+        loc.name.toLowerCase() === decodedHighlightId.toLowerCase()
+      );
+
+      if (highlightedLocation) {
+        setHighlightedLocationId(highlightedLocation.id);
+        
+        // Set relevant filters
+        if (highlightedLocation.type) {
+          setTypeFilter(highlightedLocation.type);
+        }
+        
+        // Scroll to the highlighted location
+        setTimeout(() => {
+          const element = document.getElementById(`location-${highlightedLocation.id}`);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 100);
       }
-      acc[parentId].push(location);
-      return acc;
-    }, {} as Record<string, Location[]>);
-  }, [locations]);
+    }
+  }, [highlightId, locations]);
 
   // Filter locations based on search and filters
   const filteredLocations = useMemo(() => {
@@ -71,6 +73,34 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
       return searchMatch && typeMatch && statusMatch;
     });
   }, [locations, searchQuery, typeFilter, statusFilter]);
+
+  // Group locations by parent to create hierarchy
+  const locationHierarchy = useMemo(() => {
+    return locations.reduce((acc, location) => {
+      const parentId = location.parentId || 'root';
+      if (!acc[parentId]) {
+        acc[parentId] = [];
+      }
+      acc[parentId].push(location);
+      return acc;
+    }, {} as Record<string, Location[]>);
+  }, [locations]);
+
+  // State for expanded locations
+  const [expandedLocations, setExpandedLocations] = useState<Set<string>>(new Set());
+
+  // Toggle expansion state
+  const toggleExpansion = (locationId: string) => {
+    setExpandedLocations(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(locationId)) {
+        newSet.delete(locationId);
+      } else {
+        newSet.add(locationId);
+      }
+      return newSet;
+    });
+  };
 
   // Recursive function to render location hierarchy
   const renderLocationHierarchy = (parentId: string = 'root', level: number = 0) => {
@@ -112,14 +142,21 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
                 </>
               )}
               <div style={{ marginLeft: level > 0 ? `${level * 2}rem` : '0' }}>
-                <LocationCard 
-                  location={location}
-                  hasChildren={hasChildren}
-                  isExpanded={isExpanded}
-                  onToggleExpand={() => toggleExpansion(location.id)}
-                />
+                <div
+                  id={`location-${location.id}`}
+                  className={`transition-all duration-300 ${
+                    highlightedLocationId === location.id ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg' : ''
+                  }`}
+                >
+                  <LocationCard 
+                    location={location}
+                    hasChildren={hasChildren}
+                    isExpanded={isExpanded}
+                    onToggleExpand={() => toggleExpansion(location.id)}
+                  />
+                </div>
               </div>
-              {/* Render children with extra top margin if expanded */}
+              {/* Render children if expanded */}
               {isExpanded && (
                 <div className="mt-6">
                   {renderLocationHierarchy(location.id, level + 1)}
@@ -165,7 +202,7 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
               <select
                 className="rounded border p-2"
                 value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value as LocationType | 'all')}
+                onChange={(e) => setTypeFilter(e.target.value)}
               >
                 <option value="all">All Types</option>
                 <option value="region">Regions</option>
@@ -185,7 +222,7 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
               <select
                 className="rounded border p-2"
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as Location['status'] | 'all')}
+                onChange={(e) => setStatusFilter(e.target.value)}
               >
                 <option value="all">All Status</option>
                 <option value="undiscovered">Undiscovered</option>

@@ -37,6 +37,11 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
     }
   };
 
+  // Function to handle location click
+  const handleLocationClick = (location: string) => {
+    navigate(`/locations?highlight=${encodeURIComponent(location)}`);
+  };
+
   return (
     <Card>
       <Card.Content className="space-y-4">
@@ -89,12 +94,17 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
                 </div>
               )}
               {npc.location && (
-                <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleLocationClick(npc.location!)}
+                  className="flex items-center gap-2 w-full justify-start"
+                >
                   <MapPin size={16} className="text-gray-400" />
                   <Typography variant="body-sm">
                     {npc.location}
                   </Typography>
-                </div>
+                </Button>
               )}
             </div>
           )}
@@ -105,7 +115,7 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
           </Typography>
         </div>
 
-        {/* Expanded Content */}
+        {/* Rest of the component remains the same */}
         {isExpanded && (
           <div className="space-y-4 pt-4 border-t border-gray-100">
             {/* Additional Details */}
@@ -143,69 +153,6 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
                 )}
               </div>
             )}
-
-            {/* Connections */}
-            <div className="space-y-3">
-              {/* Related NPCs */}
-              {npc.connections.relatedNPCs.length > 0 && (
-                <div>
-                  <Typography variant="body-sm" className="font-medium mb-2">
-                    Related NPCs
-                  </Typography>
-                  <div className="flex flex-wrap gap-2">
-                    {npc.connections.relatedNPCs.map((relatedNPC) => (
-                      <div
-                        key={relatedNPC}
-                        className="px-2 py-1 bg-gray-100 rounded-full text-sm"
-                      >
-                        {relatedNPC}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Affiliations */}
-              {npc.connections.affiliations.length > 0 && (
-                <div>
-                  <Typography variant="body-sm" className="font-medium mb-2">
-                    Affiliations
-                  </Typography>
-                  <div className="flex flex-wrap gap-2">
-                    {npc.connections.affiliations.map((affiliation) => (
-                      <div
-                        key={affiliation}
-                        className="px-2 py-1 bg-gray-100 rounded-full text-sm"
-                      >
-                        {affiliation}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Related Quests */}
-              {npc.connections.relatedQuests.length > 0 && (
-                <div>
-                  <Typography variant="body-sm" className="font-medium mb-2">
-                    Related Quests
-                  </Typography>
-                  <div className="flex flex-wrap gap-2">
-                    {npc.connections.relatedQuests.map((questId) => (
-                      <Button
-                        key={questId}
-                        variant="outline"
-                        size="sm"
-                        onClick={() => navigate(`/quests?highlight=${questId}`)}
-                        startIcon={<Scroll size={14} />}
-                      >
-                        {questId}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
 
             {/* Notes */}
             {npc.notes.length > 0 && (
