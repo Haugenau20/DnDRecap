@@ -1,9 +1,10 @@
 // pages/StoryPage.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import BookViewer from '../components/features/story/BookViewer';
 import Typography from '../components/core/Typography';
 import Card from '../components/core/Card';
+import Breadcrumb from '../components/layout/Breadcrumb';
 import { useStory } from '../context/StoryContext';
 import { Bookmark, Book } from 'lucide-react';
 
@@ -23,6 +24,24 @@ const StoryPage: React.FC = () => {
     chapterId ? getChapterById(chapterId) : undefined
   );
 
+  // Calculate next and previous chapters
+  const { nextChapter, previousChapter } = useMemo(() => {
+    if (!currentChapter) return { nextChapter: undefined, previousChapter: undefined };
+    
+    const currentIndex = chapters.findIndex(c => c.id === currentChapter.id);
+    return {
+      nextChapter: currentIndex < chapters.length - 1 ? chapters[currentIndex + 1] : undefined,
+      previousChapter: currentIndex > 0 ? chapters[currentIndex - 1] : undefined
+    };
+  }, [currentChapter, chapters]);
+
+  // Breadcrumb items
+  const breadcrumbItems = useMemo(() => [
+    { label: 'Home', href: '/' },
+    { label: 'Story', href: '/story' },
+    { label: currentChapter?.title || 'Loading...' }
+  ], [currentChapter?.title]);
+
   // Set initial chapter based on URL parameter or last read chapter
   useEffect(() => {
     if (chapterId) {
@@ -32,7 +51,6 @@ const StoryPage: React.FC = () => {
         updateCurrentChapter(chapter.id);
       }
     } else if (storyProgress.currentChapter) {
-      // If no chapter specified, load the last read chapter
       const chapter = getChapterById(storyProgress.currentChapter);
       if (chapter) {
         navigate(`/story/${chapter.id}`);
@@ -54,6 +72,18 @@ const StoryPage: React.FC = () => {
     navigate(`/story/${chapterId}`);
   };
 
+  const handleNextChapter = () => {
+    if (nextChapter) {
+      handleChapterSelect(nextChapter.id);
+    }
+  };
+
+  const handlePreviousChapter = () => {
+    if (previousChapter) {
+      handleChapterSelect(previousChapter.id);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="p-4">
@@ -65,6 +95,9 @@ const StoryPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-7xl mx-auto">
+        {/* Breadcrumb Navigation */}
+        <Breadcrumb items={breadcrumbItems} className="mb-4" />
+
         {/* Chapter Selection */}
         <div className="mb-8 flex justify-between items-center">
           <Typography variant="h1">Campaign Story</Typography>
@@ -125,6 +158,10 @@ const StoryPage: React.FC = () => {
               content={currentChapter?.content || ''}
               title={currentChapter?.title || ''}
               onPageChange={handlePageChange}
+              onNextChapter={handleNextChapter}
+              onPreviousChapter={handlePreviousChapter}
+              hasNextChapter={!!nextChapter}
+              hasPreviousChapter={!!previousChapter}
             />
           </div>
         </div>

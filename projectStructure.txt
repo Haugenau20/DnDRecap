@@ -27,6 +27,8 @@ DnDRecap
 │   │   │   ├── useQuests.ts
 │   │   │   └── useNavigation.ts
 │   │   ├── data
+│   │   │   ├── story
+│   │   │   │   └── story.json
 │   │   │   ├── quests
 │   │   │   │   └── metadata
 │   │   │   │       └── quests.json
@@ -35,6 +37,7 @@ DnDRecap
 │   │   │   └── locations
 │   │   │       └── locations.json
 │   │   ├── context
+│   │   │   ├── StoryContext.tsx
 │   │   │   ├── SearchContext.tsx
 │   │   │   ├── NPCContext.tsx
 │   │   │   ├── NavigationContext.tsx
