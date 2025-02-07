@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Location, LocationType } from '../../../types/location';
+import { useNPCs } from '../../../context/NPCContext';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
@@ -158,18 +159,48 @@ const LocationCard: React.FC<LocationCardProps> = ({
                   Connected NPCs
                 </Typography>
                 <div className="space-y-2">
-                  {location.connectedNPCs.map((npcId) => (
-                    <Button
-                      key={npcId}
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleNPCClick(npcId)}
-                      className="w-full"
-                      startIcon={<UserCircle2 className="text-gray-400" />}
-                    >
-                      {npcId}
-                    </Button>
-                  ))}
+                  {location.connectedNPCs.map((npcId) => {
+                    const npc = useNPCs().getNPCById(npcId);
+                    if (!npc) return null;
+                    
+                    return (
+                      <Button
+                        key={npcId}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleNPCClick(npcId)}
+                        className="w-full"
+                        centered={false}
+                      >
+                        <div className="flex items-start gap-2 text-left">
+                          <Users 
+                            size={16} 
+                            className={`mt-1 ${
+                              npc.relationship === 'friendly' ? 'text-green-500' :
+                              npc.relationship === 'hostile' ? 'text-red-500' :
+                              npc.relationship === 'neutral' ? 'text-gray-400' :
+                              'text-gray-300'
+                            }`}
+                          />
+                          <div className="flex-1">
+                            <Typography variant="body-sm" className="font-medium">
+                              {npc.name}
+                              {npc.title && (
+                                <span className="text-gray-500 ml-1">
+                                  - {npc.title}
+                                </span>
+                              )}
+                            </Typography>
+                            {npc.location && (
+                              <Typography variant="body-sm" color="secondary">
+                                {npc.location}
+                              </Typography>
+                            )}
+                          </div>
+                        </div>
+                      </Button>
+                    );
+                  })}
                 </div>
               </div>
             )}
