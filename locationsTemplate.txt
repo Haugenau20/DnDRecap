@@ -1,0 +1,24 @@
+{
+        "id": "",
+        "name": "",
+        "type": "",
+        "status": "",
+        "description": "",
+        "parentId": "",
+        "features": [
+          ""
+        ],
+        "connectedNPCs": [""],
+        "relatedQuests": [""],
+        "notes": [
+          {
+            "id": "note-1",
+            "content": "",
+            "date": "yyyy-mm-dd",
+            "sessionNumber": ,
+            "tags": [""]
+          }
+        ],
+        "tags": [""],
+        "lastVisited": "yyyy-mm-dd"
+      },

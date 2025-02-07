@@ -1,95 +1,27 @@
 {
     "locations": [
       {
-        "id": "sword-coast",
-        "name": "Sword Coast",
-        "type": "region",
-        "status": "discovered",
-        "description": "A dangerous but vital coastal region stretching along the Sea of Swords.",
-        "features": [
-          "Treacherous coastline",
-          "Trade routes",
-          "Various settlements"
-        ],
-        "tags": ["region", "coastal", "dangerous"]
-      },
-      {
-        "id": "waterdeep",
-        "name": "Waterdeep",
+        "id": "pandalin",
+        "name": "Phandalin",
         "type": "city",
-        "status": "visited",
-        "description": "The City of Splendors, a bustling metropolis known for its commerce and intrigue.",
-        "parentId": "sword-coast",
+        "status": "discovered",
+        "description": "en stille og rolig lille by og hovedsædet for de lokale helte",
         "features": [
-          "Yawning Portal Inn",
-          "Castle Waterdeep",
-          "Dock Ward",
-          "Trade Ward"
+          "Hjemsted til de lokale helte"
         ],
-        "connectedNPCs": ["alderman-thornhaven", "guard-captain"],
-        "relatedQuests": ["missing-merchant"],
+        "connectedNPCs": ["harpen-vester", "halia-thornton", "søster-garale", "droop", "gundren-rockseeker", "nundren-rockseeker", "sildar-hallwinter", "larno-glasstav-albrak"],
+        "relatedQuests": ["find-purple-goblins"],
         "notes": [
           {
             "id": "note-1",
-            "content": "First arrived through the main gates",
-            "date": "2024-02-01",
-            "sessionNumber": 1,
-            "tags": ["arrival"]
+            "content": "Det her er en note",
+            "date": "yyyy-mm-dd",
+            "sessionNumber": 100,
+            "tags": [""]
           }
         ],
-        "tags": ["major-city", "trade-hub", "sword-coast"],
-        "lastVisited": "2024-02-01"
-      },
-      {
-        "id": "yawning-portal",
-        "name": "Yawning Portal Inn",
-        "type": "building",
-        "status": "visited",
-        "description": "Famous tavern built over the entrance to Undermountain.",
-        "parentId": "waterdeep",
-        "features": [
-          "Massive well leading to Undermountain",
-          "Common room",
-          "Private rooms"
-        ],
-        "connectedNPCs": ["guard-captain"],
-        "relatedQuests": ["missing-merchant"],
-        "tags": ["tavern", "dungeon-entrance", "lodging"],
-        "lastVisited": "2024-02-01"
-      },
-      {
-        "id": "dock-ward",
-        "name": "Dock Ward",
-        "type": "poi",
-        "status": "visited",
-        "description": "The bustling harbor district of Waterdeep, filled with ships, warehouses, and sailor's taverns.",
-        "parentId": "waterdeep",
-        "features": [
-          "Harbor",
-          "Merchant warehouses",
-          "Taverns",
-          "Fish market"
-        ],
-        "connectedNPCs": ["alderman-thornhaven"],
-        "relatedQuests": ["missing-merchant"],
-        "tags": ["harbor", "commerce", "waterfront"],
-        "lastVisited": "2024-02-01"
-      },
-      {
-        "id": "undermountain",
-        "name": "Undermountain",
-        "type": "dungeon",
-        "status": "discovered",
-        "description": "A massive dungeon complex beneath Waterdeep, created by the mad wizard Halaster.",
-        "parentId": "waterdeep",
-        "features": [
-          "Multiple levels",
-          "Ancient magic",
-          "Dangerous monsters",
-          "Hidden treasures"
-        ],
-        "tags": ["dungeon", "magic", "dangerous"],
-        "lastVisited": null
+        "tags": ["city", ""],
+        "lastVisited": "yyyy-mm-dd"
       }
     ]
   }
