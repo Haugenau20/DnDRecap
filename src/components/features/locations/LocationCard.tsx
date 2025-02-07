@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Location, LocationType } from '../../../types/location';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
@@ -17,7 +18,8 @@ import {
   Landmark,
   Mountain,
   Home,
-  MapPinOff
+  MapPinOff,
+  UserCircle2
 } from 'lucide-react';
 
 interface LocationCardProps {
@@ -25,7 +27,6 @@ interface LocationCardProps {
   hasChildren?: boolean;
   isExpanded?: boolean;
   onToggleExpand?: () => void;
-  onLocationSelect?: (locationId: string) => void;
 }
 
 // Map location types to icons
@@ -44,10 +45,10 @@ const LocationCard: React.FC<LocationCardProps> = ({
   location, 
   hasChildren,
   isExpanded,
-  onToggleExpand,
-  onLocationSelect 
+  onToggleExpand 
 }) => {
   const [isContentExpanded, setIsContentExpanded] = useState(false);
+  const navigate = useNavigate();
 
   // Get status icon
   const getStatusIcon = () => {
@@ -61,6 +62,11 @@ const LocationCard: React.FC<LocationCardProps> = ({
       default:
         return <MapPinOff className="text-gray-400" />;
     }
+  };
+
+  // Handle NPC click
+  const handleNPCClick = (npcId: string) => {
+    navigate(`/npcs?highlight=${encodeURIComponent(npcId)}`);
   };
 
   return (
@@ -142,6 +148,29 @@ const LocationCard: React.FC<LocationCardProps> = ({
                     </li>
                   ))}
                 </ul>
+              </div>
+            )}
+
+            {/* Connected NPCs */}
+            {location.connectedNPCs && location.connectedNPCs.length > 0 && (
+              <div>
+                <Typography variant="body" className="font-medium mb-2">
+                  Connected NPCs
+                </Typography>
+                <div className="space-y-2">
+                  {location.connectedNPCs.map((npcId) => (
+                    <Button
+                      key={npcId}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleNPCClick(npcId)}
+                      className="w-full"
+                      startIcon={<UserCircle2 className="text-gray-400" />}
+                    >
+                      {npcId}
+                    </Button>
+                  ))}
+                </div>
               </div>
             )}
 
