@@ -46,6 +46,53 @@
         ],
         "tags": ["mine"],
         "lastVisited": "yyyy-mm-dd"
+      },
+      {
+        "id": "talhundereth",
+        "name": "Talhundereth",
+        "type": "dungeon",
+        "status": "discovered",
+        "description": "Talhundereth er en ruin af et tempel til Dumathoin. Under templet er der en krypt. Meget langt under templet er underdark.",
+        "features": [
+          "Dumathion Tempel"
+        ],
+        "connectedNPCs": [""],
+        "relatedQuests": [""],
+        "notes": [
+          {
+            "id": "note-1",
+            "content": "",
+            "date": "yyyy-mm-dd",
+            "sessionNumber": 102,
+            "tags": [""]
+          }
+        ],
+        "tags": [""],
+        "lastVisited": "yyyy-mm-dd"
+      },
+      {
+        "id": "crypt-of-talhund",
+        "name": "Crypt of Talhund",
+        "type": "dungeon",
+        "status": "discovered",
+        "description": "Crypt of Talhund er et hvilested for Dumathoins trofaste.",
+        "parentId": "talhundereth",
+        "features": [
+          ""
+        ],
+        "connectedNPCs": ["rivibidel"],
+        "relatedQuests": [""],
+        "notes": [
+          {
+            "id": "note-1",
+            "content": "Stor Hydra - Død",
+            "date": "2024-10-15",
+            "sessionNumber": 20,
+            "tags": ["Hydra"]
+          }
+        ],
+        "tags": ["krypt"],
+        "lastVisited": "yyyy-mm-dd"
       }
     ]
   }

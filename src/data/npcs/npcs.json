@@ -51,27 +51,27 @@
         ]
       },
       {
-        "id": "guard-captain",
-        "name": "Captain Alicia Strongheart",
-        "title": "Captain of the City Watch",
+        "id": "rivibidel",
+        "name": "Rivibidel",
+        "title": "??",
         "status": "active",
-        "race": "Human",
-        "occupation": "City Watch Captain",
-        "location": "Waterdeep",
-        "relationship": "friendly",
-        "description": "Veteran captain of the City Watch, responsible for maintaining order in the Trade Ward.",
-        "appearance": "Tall woman in her forties wearing the polished armor of the City Watch. Carries herself with military precision.",
-        "personality": "Professional and direct. Takes her duties seriously but knows when to look the other way for the greater good.",
-        "background": "Rose through the ranks of the City Watch through dedication and competence.",
+        "race": "??",
+        "occupation": "??",
+        "location": "crypt-of-talhund",
+        "relationship": "neutral",
+        "description": "??",
+        "appearance": "??",
+        "personality": "??",
+        "background": "??",
         "connections": {
-          "relatedNPCs": ["alderman-thornhaven", "marcus-thornhaven"],
-          "affiliations": ["City Watch"],
-          "relatedQuests": ["missing-merchant"]
+          "relatedNPCs": [],
+          "affiliations": [],
+          "relatedQuests": []
         },
         "notes": [
           {
-            "date": "1024-02-03",
-            "text": "Leading investigation into Thornhaven disappearance"
+            "date": "2024-11-22",
+            "text": "Hakkede en stump af den grønne smaragd"
           }
         ]
       }
