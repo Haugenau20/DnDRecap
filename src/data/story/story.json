@@ -1,0 +1,38 @@
+{
+    "chapters": [
+      {
+        "id": "chapter-1",
+        "title": "Chapter 1: The Beginning",
+        "content": "It was a dark and stormy night in the realm of Faerûn... The party had just gathered at the local tavern, each drawn by rumors of adventure and the promise of gold. Little did they know that their simple meeting would lead to an epic journey across the realms.",
+        "order": 1,
+        "lastModified": "2024-02-01T12:00:00Z",
+        "summary": "The party meets for the first time at a local tavern."
+      },
+      {
+        "id": "chapter-2",
+        "title": "Chapter 2: The First Quest",
+        "content": "The party gathered at the Yawning Portal Inn, their hearts heavy with anticipation. The mysterious stranger who had contacted them sat in a dark corner, a hood drawn over their features. As they approached, the figure looked up, revealing themselves to be a messenger from the Merchant's Guild, bearing news of a prominent merchant's disappearance.",
+        "order": 2,
+        "lastModified": "2024-02-05T15:30:00Z",
+        "summary": "The party receives their first quest at the Yawning Portal Inn."
+      }
+    ],
+    "storyProgress": {
+      "currentChapter": "chapter-1",
+      "lastRead": "2024-02-07T10:00:00Z",
+      "chapterProgress": {
+        "chapter-1": {
+          "chapterId": "chapter-1",
+          "lastPosition": 1,
+          "isComplete": true,
+          "lastRead": "2024-02-07T10:00:00Z"
+        },
+        "chapter-2": {
+          "chapterId": "chapter-2",
+          "lastPosition": 0,
+          "isComplete": false,
+          "lastRead": "2024-02-07T10:00:00Z"
+        }
+      }
+    }
+  }
