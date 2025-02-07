@@ -5,6 +5,7 @@ import { useNPCs } from '../../../context/NPCContext';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
+import { useLocations } from '../../../context/LocationContext';
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -30,12 +31,20 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   const { getNPCById } = useNPCs();
+  const { locations } = useLocations();
 
   // Calculate completion percentage
   const completedObjectives = quest.objectives.filter(obj => obj.completed).length;
   const completionPercentage = Math.round(
     (completedObjectives / quest.objectives.length) * 100
   );
+
+  // Add a helper function to check if a location exists:
+  const locationExists = (locationName: string): boolean => {
+    return locations.some(loc => 
+      loc.name.toLowerCase() === locationName.toLowerCase()
+    );
+  };
 
   return (
     <Card>
@@ -66,7 +75,27 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
           {quest.location && (
             <div className="flex items-center gap-2">
               <MapPin size={16} className="text-gray-500" />
-              <Typography color="secondary">Location: {quest.location}</Typography>
+              {locationExists(quest.location) ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    // Type guard to ensure location is defined
+                    if (quest.location) {
+                      navigate(`/locations?highlight=${encodeURIComponent(quest.location)}`);
+                    }
+                  }}
+                  className="p-0 hover:underline"
+                >
+                  <Typography color="secondary">
+                    Location: {quest.location}
+                  </Typography>
+                </Button>
+              ) : (
+                <Typography color="secondary">
+                  Location: {quest.location}
+                </Typography>
+              )}
             </div>
           )}
           {quest.levelRange && (

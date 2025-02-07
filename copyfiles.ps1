@@ -11,6 +11,7 @@ if (-not (Test-Path -Path $DestinationPath)) {
     New-Item -ItemType Directory -Path $DestinationPath | Out-Null
     Write-Host "Created destination directory: $DestinationPath"
 } else {
+    Write-Host "Deleting files at: $DestinationPath"
     Remove-Item $DestinationPath\* -Force -Recurse
 }
 
