@@ -3,7 +3,7 @@ import Typography from '../components/core/Typography';
 import Card from '../components/core/Card';
 import LocationDirectory from '../components/features/locations/LocationDirectory';
 import { useLocations } from '../context/LocationContext';
-import { MapPin, Eye, EyeOff } from 'lucide-react';
+import { Map, MapPin, Eye, EyeOff } from 'lucide-react';
 
 const LocationsPage: React.FC = () => {
   const { locations, isLoading } = useLocations();
@@ -32,7 +32,7 @@ const LocationsPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <MapPin className="w-8 h-8 text-blue-500 mr-4" />
+            <Map className="w-8 h-8 text-green-500 mr-4" />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.total}
