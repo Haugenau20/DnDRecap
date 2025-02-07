@@ -27,6 +27,20 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<LocationType | 'all'>('all');
   const [statusFilter, setStatusFilter] = useState<Location['status'] | 'all'>('all');
+  const [expandedLocations, setExpandedLocations] = useState<Set<string>>(new Set());
+
+  // Toggle expansion state
+  const toggleExpansion = (locationId: string) => {
+    setExpandedLocations(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(locationId)) {
+        newSet.delete(locationId);
+      } else {
+        newSet.add(locationId);
+      }
+      return newSet;
+    });
+  };
 
   // Group locations by parent to create hierarchy
   const locationHierarchy = useMemo(() => {
@@ -67,38 +81,53 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
     }
 
     return (
-      <div className="space-y-4">
-        {childLocations.map(location => (
-          <div key={location.id} className="relative">
-            {/* Connection lines for hierarchy */}
-            {level > 0 && (
-              <>
-                <div 
-                  className="absolute border-l-2 border-gray-200" 
-                  style={{ 
-                    left: `${level}rem`,
-                    top: '0',
-                    bottom: '0',
-                    marginLeft: '-1px'
-                  }}
+      <div className="space-y-6">
+        {childLocations.map(location => {
+          const hasChildren = locationHierarchy[location.id]?.length > 0;
+          const isExpanded = expandedLocations.has(location.id);
+
+          return (
+            <div key={location.id} className="relative">
+              {/* Connection lines for hierarchy */}
+              {level > 0 && (
+                <>
+                  <div 
+                    className="absolute border-l-2 border-gray-200" 
+                    style={{ 
+                      left: `${level}rem`,
+                      top: '0',
+                      bottom: '0',
+                      marginLeft: '-1px'
+                    }}
+                  />
+                  <div 
+                    className="absolute border-t-2 border-gray-200"
+                    style={{ 
+                      left: `${level}rem`,
+                      width: '1rem',
+                      top: '1.5rem',
+                      marginLeft: '-1px'
+                    }}
+                  />
+                </>
+              )}
+              <div style={{ marginLeft: level > 0 ? `${level * 2}rem` : '0' }}>
+                <LocationCard 
+                  location={location}
+                  hasChildren={hasChildren}
+                  isExpanded={isExpanded}
+                  onToggleExpand={() => toggleExpansion(location.id)}
                 />
-                <div 
-                  className="absolute border-t-2 border-gray-200"
-                  style={{ 
-                    left: `${level}rem`,
-                    width: '1rem',
-                    top: '1.5rem',
-                    marginLeft: '-1px'
-                  }}
-                />
-              </>
-            )}
-            <div style={{ marginLeft: level > 0 ? `${level * 2}rem` : '0' }}>
-              <LocationCard location={location} />
+              </div>
+              {/* Render children with extra top margin if expanded */}
+              {isExpanded && (
+                <div className="mt-6">
+                  {renderLocationHierarchy(location.id, level + 1)}
+                </div>
+              )}
             </div>
-            {renderLocationHierarchy(location.id, level + 1)}
-          </div>
-        ))}
+          );
+        })}
       </div>
     );
   };

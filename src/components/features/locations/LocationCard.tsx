@@ -22,6 +22,9 @@ import {
 
 interface LocationCardProps {
   location: Location;
+  hasChildren?: boolean;
+  isExpanded?: boolean;
+  onToggleExpand?: () => void;
   onLocationSelect?: (locationId: string) => void;
 }
 
@@ -37,8 +40,14 @@ const typeIcons: Record<LocationType, React.ReactNode> = {
   poi: <MapPin className="text-yellow-500" />
 };
 
-const LocationCard: React.FC<LocationCardProps> = ({ location, onLocationSelect }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const LocationCard: React.FC<LocationCardProps> = ({ 
+  location, 
+  hasChildren,
+  isExpanded,
+  onToggleExpand,
+  onLocationSelect 
+}) => {
+  const [isContentExpanded, setIsContentExpanded] = useState(false);
 
   // Get status icon
   const getStatusIcon = () => {
@@ -115,7 +124,7 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, onLocationSelect 
         </div>
 
         {/* Expanded Content */}
-        {isExpanded && (
+        {isContentExpanded && (
           <div className="pt-4 space-y-4 border-t border-gray-100">
             {/* Notable Features */}
             {location.features && location.features.length > 0 && (
@@ -195,16 +204,32 @@ const LocationCard: React.FC<LocationCardProps> = ({ location, onLocationSelect 
           </div>
         )}
 
-        {/* Expand/Collapse Button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full"
-          startIcon={isExpanded ? <ChevronUp /> : <ChevronDown />}
-        >
-          {isExpanded ? 'Show Less' : 'Show More'}
-        </Button>
+        {/* Expand/Collapse Buttons */}
+        <div className="flex gap-2">
+          {/* Location content expand/collapse */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsContentExpanded(!isContentExpanded)}
+            className="w-full"
+            startIcon={isContentExpanded ? <ChevronUp /> : <ChevronDown />}
+          >
+            {isContentExpanded ? 'Show Less' : 'Show More'}
+          </Button>
+
+          {/* Children expand/collapse */}
+          {hasChildren && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onToggleExpand}
+              className="flex-shrink-0"
+              startIcon={isExpanded ? <ChevronUp /> : <ChevronDown />}
+            >
+              {isExpanded ? 'Hide Children' : 'Show Children'}
+            </Button>
+          )}
+        </div>
       </Card.Content>
     </Card>
   );
