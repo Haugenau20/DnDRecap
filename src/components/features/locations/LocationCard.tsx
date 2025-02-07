@@ -128,44 +128,11 @@ const LocationCard: React.FC<LocationCardProps> = ({
             </div>
           )}
           {location.relatedQuests && location.relatedQuests.length > 0 && (
-            <div>
-              <Typography variant="body" className="font-medium mb-2">
-                Related Quests
+            <div className="flex items-center gap-2">
+              <Scroll size={16} className="text-gray-400" />
+              <Typography variant="body-sm" color="secondary">
+                {location.relatedQuests.length} Quests
               </Typography>
-              <div className="space-y-2">
-                {location.relatedQuests.map((questId) => {
-                  const quest = getQuestById(questId);
-                  return quest ? (
-                    <Button
-                      key={questId}
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleQuestClick(questId)}
-                      className="w-full"
-                      centered={false}
-                    >
-                      <div className="flex items-start gap-2 text-left">
-                        <Scroll 
-                          size={16} 
-                          className={`mt-1 ${
-                            quest.status === 'completed' ? 'text-green-500' :
-                            quest.status === 'failed' ? 'text-red-500' :
-                            'text-blue-500'
-                          }`}
-                        />
-                        <div className="flex-1">
-                          <Typography variant="body-sm" className="font-medium">
-                            {quest.title}
-                          </Typography>
-                          <Typography variant="body-sm" color="secondary">
-                            Status: {quest.status.charAt(0).toUpperCase() + quest.status.slice(1)}
-                          </Typography>
-                        </div>
-                      </div>
-                    </Button>
-                  ) : null;
-                })}
-              </div>
             </div>
           )}
           {location.lastVisited && (
@@ -177,6 +144,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
             </div>
           )}
         </div>
+
 
         {/* Expanded Content */}
         {isContentExpanded && (
@@ -197,6 +165,49 @@ const LocationCard: React.FC<LocationCardProps> = ({
                     </li>
                   ))}
                 </ul>
+              </div>
+            )}
+
+            {/* Related Quests */}
+            {location.relatedQuests && location.relatedQuests.length > 0 && (
+              <div>
+                <Typography variant="body" className="font-medium mb-2">
+                  Related Quests
+                </Typography>
+                <div className="space-y-2">
+                  {location.relatedQuests.map((questId) => {
+                    const quest = getQuestById(questId);
+                    return quest ? (
+                      <Button
+                        key={questId}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleQuestClick(questId)}
+                        className="w-full"
+                        centered={false}
+                      >
+                        <div className="flex items-start gap-2 text-left">
+                          <Scroll 
+                            size={16} 
+                            className={`mt-1 ${
+                              quest.status === 'completed' ? 'text-green-500' :
+                              quest.status === 'failed' ? 'text-red-500' :
+                              'text-blue-500'
+                            }`}
+                          />
+                          <div className="flex-1">
+                            <Typography variant="body-sm" className="font-medium">
+                              {quest.title}
+                            </Typography>
+                            <Typography variant="body-sm" color="secondary">
+                              Status: {quest.status.charAt(0).toUpperCase() + quest.status.slice(1)}
+                            </Typography>
+                          </div>
+                        </div>
+                      </Button>
+                    ) : null;
+                  })}
+                </div>
               </div>
             )}
 
