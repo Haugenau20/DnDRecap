@@ -209,6 +209,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                             size="sm"
                             onClick={() => navigate(`/npcs?highlight=${npcId}`)}
                             className="w-full"
+                            centered={false}
                           >
                             <div className="flex items-start gap-2 text-left">
                               <Users 

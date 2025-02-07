@@ -89,7 +89,7 @@ export const Button: React.FC<ButtonProps> = ({
       
       // Content alignment
       'inline-flex items-center',
-      centered ? 'justify-center' : 'justify-start',
+      centered && 'justify-center',
       
       // Loading state styles
       isLoading && 'cursor-wait',
