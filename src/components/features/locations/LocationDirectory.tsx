@@ -73,11 +73,27 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
             {/* Connection lines for hierarchy */}
             {level > 0 && (
               <>
-                <div className="absolute left-4 top-0 bottom-0 border-l-2 border-gray-200 -ml-4" />
-                <div className="absolute left-4 top-6 w-4 border-t-2 border-gray-200 -ml-4" />
+                <div 
+                  className="absolute border-l-2 border-gray-200" 
+                  style={{ 
+                    left: `${level}rem`,
+                    top: '0',
+                    bottom: '0',
+                    marginLeft: '-1px'
+                  }}
+                />
+                <div 
+                  className="absolute border-t-2 border-gray-200"
+                  style={{ 
+                    left: `${level}rem`,
+                    width: '1rem',
+                    top: '1.5rem',
+                    marginLeft: '-1px'
+                  }}
+                />
               </>
             )}
-            <div className={`${level > 0 ? 'ml-8' : ''}`}>
+            <div style={{ marginLeft: level > 0 ? `${level * 2}rem` : '0' }}>
               <LocationCard location={location} />
             </div>
             {renderLocationHierarchy(location.id, level + 1)}
