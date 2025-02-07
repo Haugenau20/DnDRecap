@@ -55,7 +55,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
   const connectedNPCs = location.connectedNPCs 
     ? location.connectedNPCs
         .map(id => getNPCById(id))
-        .filter(npc => npc !== undefined)
+        .filter((npc): npc is NonNullable<ReturnType<typeof getNPCById>> => npc !== undefined)
     : [];
 
   // Get status icon
