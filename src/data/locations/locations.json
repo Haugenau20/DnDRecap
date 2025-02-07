@@ -5,12 +5,12 @@
         "name": "Phandalin",
         "type": "city",
         "status": "discovered",
-        "description": "en stille og rolig lille by og hovedsædet for de lokale helte",
+        "description": "En stille og rolig lille by og hovedsædet for de lokale helte",
         "features": [
           "Hjemsted til de lokale helte"
         ],
         "connectedNPCs": ["harpen-vester", "halia-thornton", "søster-garale", "droop", "gundren-rockseeker", "nundren-rockseeker", "sildar-hallwinter", "larno-glasstav-albrak"],
-        "relatedQuests": ["find-purple-goblins"],
+        "relatedQuests": ["udryd-lilla-goblins"],
         "notes": [
           {
             "id": "note-1",

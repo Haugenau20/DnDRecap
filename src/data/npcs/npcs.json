@@ -1,52 +1,52 @@
 {
     "npcs": [
       {
-        "id": "alderman-thornhaven",
-        "name": "Alderman Thornhaven",
-        "title": "Merchant Prince",
-        "status": "missing",
-        "race": "Human",
-        "occupation": "Merchant",
-        "location": "Waterdeep",
-        "relationship": "neutral",
-        "description": "A wealthy merchant known for fair dealings and shrewd business acumen. Currently missing under mysterious circumstances.",
-        "appearance": "Well-dressed middle-aged man with graying hair and a neatly trimmed beard. Often seen wearing expensive but practical clothing.",
-        "personality": "Professional, fair-minded, and known for keeping his word in business dealings.",
-        "background": "Built the Thornhaven Trading Company from a small family business into one of Waterdeep's prominent merchant houses.",
+        "id": "gundren-rockseeker",
+        "name": "Gundren Rockseeker",
+        "title": "Miner",
+        "status": "active",
+        "race": "Dwarf",
+        "occupation": "Miner",
+        "location": "Wave Echo Cave",
+        "relationship": "friendly",
+        "description": "Dwarf",
+        "appearance": "Dwarf",
+        "personality": "Dwarf",
+        "background": "Dwarf",
         "connections": {
-          "relatedNPCs": ["marcus-thornhaven", "guard-captain"],
-          "affiliations": ["Thornhaven Trading Company", "Merchant's Guild"],
-          "relatedQuests": ["missing-merchant"]
+          "relatedNPCs": ["nundren-rockseeker", ""],
+          "affiliations": ["Miners Guild"],
+          "relatedQuests": [""]
         },
         "notes": [
           {
             "date": "1024-02-01",
-            "text": "Last seen heading to a meeting at the Salty Dog Tavern"
+            "text": "Last seen at Wave Echo Cave"
           }
         ]
       },
       {
-        "id": "marcus-thornhaven",
-        "name": "Marcus Thornhaven",
-        "title": "Acting Head of Thornhaven Trading",
+        "id": "nundren-rockseeker",
+        "name": "Nundren Rockseeker",
+        "title": "Miner",
         "status": "active",
-        "race": "Human",
-        "occupation": "Merchant",
-        "location": "Waterdeep",
+        "race": "Dwarf",
+        "occupation": "Miner",
+        "location": "Wave Echo Cave",
         "relationship": "friendly",
-        "description": "Younger brother of Alderman Thornhaven, thrust into leadership of the company following his brother's disappearance.",
-        "appearance": "Younger version of his brother, but with more worried lines on his face lately. Dresses in fine merchant's clothes.",
-        "personality": "Anxious but competent. Deeply worried about his brother while trying to maintain the family business.",
-        "background": "Always worked in his brother's shadow but is proving himself capable in crisis.",
+        "description": "Dwarf",
+        "appearance": "Dwarf",
+        "personality": "Dwarf",
+        "background": "Dwarf",
         "connections": {
-          "relatedNPCs": ["alderman-thornhaven", "guard-captain"],
-          "affiliations": ["Thornhaven Trading Company"],
-          "relatedQuests": ["missing-merchant"]
+          "relatedNPCs": ["gundren-rockseeker", ""],
+          "affiliations": ["Miners Guild"],
+          "relatedQuests": [""]
         },
         "notes": [
           {
-            "date": "1024-02-02",
-            "text": "Offered reward for information about his brother"
+            "date": "1024-02-01",
+            "text": "Last seen at Wave Echo Cave"
           }
         ]
       },
