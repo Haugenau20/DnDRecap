@@ -40,7 +40,6 @@ export class SearchService {
 
   /**
    * Initialize the search index with documents
-   * @param documents - Documents to index by type
    */
   public initializeIndex(documents: Record<SearchResultType, SearchDocument[]>): void {
     Object.entries(documents).forEach(([type, docs]) => {
@@ -50,8 +49,6 @@ export class SearchService {
 
   /**
    * Perform a search across all indexed documents
-   * @param query - Search query string
-   * @returns Array of search results
    */
   public search(query: string): SearchResult[] {
     if (!query || query.length < (this.options.minQueryLength || 2)) {
@@ -69,7 +66,6 @@ export class SearchService {
 
   /**
    * Add a new document to the search index
-   * @param document - Document to add
    */
   public addDocument(document: SearchDocument): void {
     const documents = this.searchIndex.get(document.type) || [];
@@ -79,8 +75,6 @@ export class SearchService {
 
   /**
    * Remove a document from the search index
-   * @param type - Document type
-   * @param id - Document ID
    */
   public removeDocument(type: SearchResultType, id: string): void {
     const documents = this.searchIndex.get(type);
@@ -101,9 +95,6 @@ export class SearchService {
 
   /**
    * Search through a set of documents
-   * @param documents - Documents to search
-   * @param query - Search query
-   * @returns Array of search results
    */
   private searchDocuments(documents: SearchDocument[], query: string): SearchResult[] {
     return documents
@@ -113,13 +104,16 @@ export class SearchService {
 
   /**
    * Check if a document matches the search query
-   * @param document - Document to check
-   * @param query - Search query
-   * @returns Boolean indicating if document matches
    */
   private matchDocument(document: SearchDocument, query: string): boolean {
     const searchText = this.prepareText(document.content);
     const searchQuery = this.prepareText(query);
+    const titleText = this.prepareText(document.metadata.title as string);
+
+    // Give higher priority to title matches
+    if (titleText.includes(searchQuery)) {
+      return true;
+    }
 
     if (this.options.fuzzyMatch) {
       return this.fuzzyMatch(searchText, searchQuery);
@@ -129,10 +123,37 @@ export class SearchService {
   }
 
   /**
+   * Calculate relevance score for search results
+   */
+  private calculateRelevance(document: SearchDocument, query: string): number {
+    const normalizedQuery = this.prepareText(query);
+    const titleText = this.prepareText(document.metadata.title as string);
+    const contentText = this.prepareText(document.content);
+    
+    let score = 0;
+    
+    // Title matches are weighted heavily
+    if (titleText.includes(normalizedQuery)) {
+      score += 100;
+    }
+    
+    // Exact content matches
+    if (contentText.includes(normalizedQuery)) {
+      score += 50;
+    }
+    
+    // Partial matches
+    const words = normalizedQuery.split(' ');
+    words.forEach(word => {
+      if (titleText.includes(word)) score += 10;
+      if (contentText.includes(word)) score += 5;
+    });
+    
+    return score;
+  }
+
+  /**
    * Create a formatted search result from a matching document
-   * @param document - Matching document
-   * @param query - Search query
-   * @returns Formatted search result
    */
   private createSearchResult(document: SearchDocument, query: string): SearchResult {
     return {
@@ -146,9 +167,6 @@ export class SearchService {
 
   /**
    * Extract matching text segments with surrounding context
-   * @param text - Text to extract from
-   * @param query - Search query
-   * @returns Array of text segments containing matches
    */
   private extractMatches(text: string, query: string): string[] {
     const contextLength = this.options.contextLength || 50;
@@ -171,9 +189,6 @@ export class SearchService {
 
   /**
    * Perform fuzzy matching between text and query
-   * @param text - Text to search in
-   * @param query - Search query
-   * @returns Boolean indicating if text matches query
    */
   private fuzzyMatch(text: string, query: string): boolean {
     const words = query.split(' ');
@@ -186,8 +201,6 @@ export class SearchService {
 
   /**
    * Prepare text for searching by normalizing
-   * @param text - Text to prepare
-   * @returns Normalized text
    */
   private prepareText(text: string): string {
     return text.toLowerCase().trim();
@@ -195,16 +208,30 @@ export class SearchService {
 
   /**
    * Process and sort search results
-   * @param results - Raw search results
-   * @returns Processed and sorted results
    */
   private processResults(results: SearchResult[]): SearchResult[] {
     const maxResults = this.options.maxResultsPerType || 10;
     
-    // Group by type and limit results per type
-    const groupedResults = _.groupBy(results, 'type');
+    // Calculate relevance scores for all results
+    const scoredResults = results.map(result => ({
+      ...result,
+      relevance: this.calculateRelevance({ 
+        id: result.id, 
+        type: result.type, 
+        content: result.content, 
+        metadata: { title: result.title } 
+      }, result.matches[0] || '')
+    }));
+    
+    // Group by type
+    const groupedResults = _.groupBy(scoredResults, 'type');
+    
+    // Sort each group by relevance and limit results
     return _.flatMap(groupedResults, typeResults => 
-      typeResults.slice(0, maxResults)
+      typeResults
+        .sort((a, b) => b.relevance - a.relevance)
+        .slice(0, maxResults)
+        .map(({ relevance, ...result }) => result)
     );
   }
 }

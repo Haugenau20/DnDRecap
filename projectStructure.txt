@@ -24,6 +24,7 @@ DnDRecap
 │   │   │   └── HomePage.tsx
 │   │   ├── hooks
 │   │   │   ├── useSearch.ts
+│   │   │   ├── useQuests.ts
 │   │   │   └── useNavigation.ts
 │   │   ├── data
 │   │   │   ├── quests
