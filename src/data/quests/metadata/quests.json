@@ -40,6 +40,10 @@
           {
             "name": "Warehouse District",
             "description": "Several warehouses owned by Thornhaven Trading Company are located here. One of them might hold clues to the merchant's whereabouts."
+          },
+          {
+            "name": "Yawning Portal Inn",
+            "description": "Famous tavern where information can be gathered."
           }
         ],
         "importantNPCs": [

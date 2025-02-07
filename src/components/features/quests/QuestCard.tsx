@@ -183,16 +183,60 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                   Key Locations
                 </Typography>
                 <div className="space-y-3">
-                  {quest.keyLocations.map((location, index) => (
-                    <div key={index}>
-                      <Typography variant="body" className="font-medium">
-                        {location.name}
-                      </Typography>
-                      <Typography color="secondary">
-                        {location.description}
-                      </Typography>
-                    </div>
-                  ))}
+                  {quest.keyLocations.map((location, index) => {
+                    const isClickable = locationExists(location.name);
+                    
+                    // If location exists in our data, make it a clickable button
+                    if (isClickable) {
+                      return (
+                        <Button
+                          key={index}
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            if (location.name) {
+                              navigate(`/locations?highlight=${encodeURIComponent(location.name)}`);
+                            }
+                          }}
+                          className="w-full"
+                          centered={false}
+                        >
+                          <div className="flex items-start gap-2 text-left">
+                            <MapPin 
+                              size={16} 
+                              className="mt-1 text-blue-500" // Blue to indicate clickable
+                            />
+                            <div className="flex-1">
+                              <Typography variant="body-sm" className="font-medium">
+                                {location.name}
+                              </Typography>
+                              <Typography variant="body-sm" color="secondary">
+                                {location.description}
+                              </Typography>
+                            </div>
+                          </div>
+                        </Button>
+                      );
+                    }
+                    
+                    // If location doesn't exist in our data, render as non-clickable
+                    return (
+                      <div key={index} className="flex items-start gap-2 p-2">
+                        <MapPin 
+                          size={16} 
+                          className="mt-1 text-gray-400" // Gray to indicate non-clickable
+                        />
+                        <div className="flex-1">
+                          <Typography variant="body-sm" className="font-medium">
+                            {location.name}
+                          </Typography>
+                          <Typography variant="body-sm" color="secondary">
+                            {location.description}
+                          </Typography>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
