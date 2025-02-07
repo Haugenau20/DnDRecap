@@ -3,13 +3,13 @@
       {
         "id": "phandalin",
         "name": "Phandalin",
-        "type": "city",
+        "type": "town",
         "status": "discovered",
         "description": "En stille og rolig lille by og hovedsædet for de lokale helte",
         "features": [
           "Hjemsted til de lokale helte"
         ],
-        "connectedNPCs": ["harpen-vester", "halia-thornton", "søster-garale", "droop", "gundren-rockseeker", "nundren-rockseeker", "sildar-hallwinter", "larno-glasstav-albrak"],
+        "connectedNPCs": ["harpen-vester", "halia-thornton", "søster-garale", "droop", "sildar-hallwinter", "larno-glasstav-albrak"],
         "relatedQuests": ["udryd-lilla-goblins"],
         "notes": [
           {
