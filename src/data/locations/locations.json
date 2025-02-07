@@ -1,7 +1,7 @@
 {
     "locations": [
       {
-        "id": "pandalin",
+        "id": "phandalin",
         "name": "Phandalin",
         "type": "city",
         "status": "discovered",
@@ -22,6 +22,31 @@
         ],
         "tags": ["city", ""],
         "lastVisited": "yyyy-mm-dd"
+      },
+      {
+        "id": "wave-echo-cave",
+        "name": "Wave Echo Cave",
+        "type": "poi",
+        "status": "discovered",
+        "description": "Det er en mine",
+        "parentId": "phandalin",
+        "features": [
+          "Mine som bliver kørt af Gundren Rockseeker"
+        ],
+        "connectedNPCs": ["gundren-rockseeker"],
+        "relatedQuests": [""],
+        "notes": [
+          {
+            "id": "note-1",
+            "content": "minedrift",
+            "date": "yyyy-mm-dd",
+            "sessionNumber": 101,
+            "tags": [""]
+          }
+        ],
+        "tags": ["mine"],
+        "lastVisited": "yyyy-mm-dd"
       }
     ]
   }
+ 
