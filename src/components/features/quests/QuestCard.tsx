@@ -204,39 +204,39 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                       
                       return (
                         <Button
-                          key={npcId}
-                          variant="outline"
-                          size="sm"
-                          onClick={() => navigate(`/npcs?highlight=${npcId}`)}
-                          className="w-full text-left"
-                        >
-                          <div className="flex items-center gap-2">
-                            <Users 
-                              size={16} 
-                              className={
-                                npc.relationship === 'friendly' ? 'text-green-500' :
-                                npc.relationship === 'hostile' ? 'text-red-500' :
-                                npc.relationship === 'neutral' ? 'text-gray-400' :
-                                'text-gray-300'
-                              } 
-                            />
-                            <div>
-                              <Typography variant="body-sm" className="font-medium">
-                                {npc.name}
-                                {npc.title && (
-                                  <span className="text-gray-500 ml-1">
-                                    - {npc.title}
-                                  </span>
-                                )}
-                              </Typography>
-                              {npc.location && (
-                                <Typography variant="body-sm" color="secondary">
-                                  {npc.location}
+                            key={npcId}
+                            variant="outline"
+                            size="sm"
+                            onClick={() => navigate(`/npcs?highlight=${npcId}`)}
+                            className="w-full"
+                          >
+                            <div className="flex items-start gap-2 text-left">
+                              <Users 
+                                size={16} 
+                                className={`mt-1 ${
+                                  npc.relationship === 'friendly' ? 'text-green-500' :
+                                  npc.relationship === 'hostile' ? 'text-red-500' :
+                                  npc.relationship === 'neutral' ? 'text-gray-400' :
+                                  'text-gray-300'
+                                }`}
+                              />
+                              <div className="flex-1">
+                                <Typography variant="body-sm" className="font-medium">
+                                  {npc.name}
+                                  {npc.title && (
+                                    <span className="text-gray-500 ml-1">
+                                      - {npc.title}
+                                    </span>
+                                  )}
                                 </Typography>
-                              )}
+                                {npc.location && (
+                                  <Typography variant="body-sm" color="secondary">
+                                    {npc.location}
+                                  </Typography>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </Button>
+                          </Button>
                       );
                     })}
                   </div>

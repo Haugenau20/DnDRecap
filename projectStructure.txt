@@ -55,6 +55,7 @@ DnDRecap
 │   │   │   │   │   ├── QuestTracker.tsx
 │   │   │   │   │   └── QuestCard.tsx
 │   │   │   │   ├── npcs
+│   │   │   │   │   ├── NPCLegend.tsx
 │   │   │   │   │   ├── NPCDirectory.tsx
 │   │   │   │   │   └── NPCCard.tsx
 │   │   │   │   └── locations
