@@ -33,7 +33,7 @@
         "features": [
           "Mine som bliver kørt af Gundren Rockseeker"
         ],
-        "connectedNPCs": ["gundren-rockseeker"],
+        "connectedNPCs": ["gundren-rockseeker", "nundren-rockseeker"],
         "relatedQuests": [""],
         "notes": [
           {
