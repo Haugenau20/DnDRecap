@@ -77,6 +77,11 @@ const LocationCard: React.FC<LocationCardProps> = ({
     navigate(`/npcs?highlight=${encodeURIComponent(npcId)}`);
   };
 
+  // Inside the LocationCard component, add:
+  const handleQuestClick = (questId: string) => {
+    navigate(`/quests?highlight=${encodeURIComponent(questId)}`);
+  };
+
   return (
     <Card>
       <Card.Content className="space-y-4">
@@ -120,11 +125,32 @@ const LocationCard: React.FC<LocationCardProps> = ({
             </div>
           )}
           {location.relatedQuests && location.relatedQuests.length > 0 && (
-            <div className="flex items-center gap-2">
-              <Scroll size={16} className="text-gray-400" />
-              <Typography variant="body-sm" color="secondary">
-                {location.relatedQuests.length} Quests
+            <div>
+              <Typography variant="body" className="font-medium mb-2">
+                Related Quests
               </Typography>
+              <div className="space-y-2">
+                {location.relatedQuests.map((questId) => (
+                  <Button
+                    key={questId}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleQuestClick(questId)}
+                    className="w-full"
+                    centered={false}
+                  >
+                    <div className="flex items-start gap-2 text-left">
+                      <Scroll 
+                        size={16} 
+                        className="mt-1 text-blue-500"
+                      />
+                      <Typography variant="body-sm">
+                        {questId}
+                      </Typography>
+                    </div>
+                  </Button>
+                ))}
+              </div>
             </div>
           )}
           {location.lastVisited && (

@@ -1,2 +1,3 @@
 on the story/chapter-x page, have button to go to next/previous chapter instead of having it in the table of contents tab.
 On the homepage under "Recent Activity" have the latest chapter/recap entry be displayed.
+Remove black borders around Related NPC, Key Locations, Related Quests, etc. buttons
