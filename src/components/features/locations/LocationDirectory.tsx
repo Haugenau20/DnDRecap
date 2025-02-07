@@ -26,6 +26,19 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
   const searchParams = new URLSearchParams(location.search);
   const highlightId = searchParams.get('highlight');
 
+  // Function to get all parent location IDs for a given location
+  const getParentLocationIds = (locationId: string): string[] => {
+    const parentIds: string[] = [];
+    let currentLocation = locations.find(loc => loc.id === locationId);
+    
+    while (currentLocation?.parentId) {
+      parentIds.push(currentLocation.parentId);
+      currentLocation = locations.find(loc => loc.id === currentLocation?.parentId);
+    }
+    
+    return parentIds;
+  };
+
   // Handle highlighted location from URL
   useEffect(() => {
     if (highlightId) {
@@ -44,6 +57,10 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
         if (highlightedLocation.type) {
           setTypeFilter(highlightedLocation.type);
         }
+
+        // Get and expand all parent locations
+        const parentIds = getParentLocationIds(highlightedLocation.id);
+        setExpandedLocations(new Set(parentIds));
         
         // Scroll to the highlighted location
         setTimeout(() => {
@@ -94,7 +111,13 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
     setExpandedLocations(prev => {
       const newSet = new Set(prev);
       if (newSet.has(locationId)) {
+        // When collapsing, also remove any child locations
+        const childLocations = Object.entries(locationHierarchy)
+          .filter(([_, locs]) => locs.some(loc => loc.parentId === locationId))
+          .map(([childId]) => childId);
+        
         newSet.delete(locationId);
+        childLocations.forEach(childId => newSet.delete(childId));
       } else {
         newSet.add(locationId);
       }
