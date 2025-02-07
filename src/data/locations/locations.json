@@ -1,0 +1,95 @@
+{
+    "locations": [
+      {
+        "id": "sword-coast",
+        "name": "Sword Coast",
+        "type": "region",
+        "status": "discovered",
+        "description": "A dangerous but vital coastal region stretching along the Sea of Swords.",
+        "features": [
+          "Treacherous coastline",
+          "Trade routes",
+          "Various settlements"
+        ],
+        "tags": ["region", "coastal", "dangerous"]
+      },
+      {
+        "id": "waterdeep",
+        "name": "Waterdeep",
+        "type": "city",
+        "status": "visited",
+        "description": "The City of Splendors, a bustling metropolis known for its commerce and intrigue.",
+        "parentId": "sword-coast",
+        "features": [
+          "Yawning Portal Inn",
+          "Castle Waterdeep",
+          "Dock Ward",
+          "Trade Ward"
+        ],
+        "connectedNPCs": ["alderman-thornhaven", "guard-captain"],
+        "relatedQuests": ["missing-merchant"],
+        "notes": [
+          {
+            "id": "note-1",
+            "content": "First arrived through the main gates",
+            "date": "2024-02-01",
+            "sessionNumber": 1,
+            "tags": ["arrival"]
+          }
+        ],
+        "tags": ["major-city", "trade-hub", "sword-coast"],
+        "lastVisited": "2024-02-01"
+      },
+      {
+        "id": "yawning-portal",
+        "name": "Yawning Portal Inn",
+        "type": "building",
+        "status": "visited",
+        "description": "Famous tavern built over the entrance to Undermountain.",
+        "parentId": "waterdeep",
+        "features": [
+          "Massive well leading to Undermountain",
+          "Common room",
+          "Private rooms"
+        ],
+        "connectedNPCs": ["guard-captain"],
+        "relatedQuests": ["missing-merchant"],
+        "tags": ["tavern", "dungeon-entrance", "lodging"],
+        "lastVisited": "2024-02-01"
+      },
+      {
+        "id": "dock-ward",
+        "name": "Dock Ward",
+        "type": "poi",
+        "status": "visited",
+        "description": "The bustling harbor district of Waterdeep, filled with ships, warehouses, and sailor's taverns.",
+        "parentId": "waterdeep",
+        "features": [
+          "Harbor",
+          "Merchant warehouses",
+          "Taverns",
+          "Fish market"
+        ],
+        "connectedNPCs": ["alderman-thornhaven"],
+        "relatedQuests": ["missing-merchant"],
+        "tags": ["harbor", "commerce", "waterfront"],
+        "lastVisited": "2024-02-01"
+      },
+      {
+        "id": "undermountain",
+        "name": "Undermountain",
+        "type": "dungeon",
+        "status": "discovered",
+        "description": "A massive dungeon complex beneath Waterdeep, created by the mad wizard Halaster.",
+        "parentId": "waterdeep",
+        "features": [
+          "Multiple levels",
+          "Ancient magic",
+          "Dangerous monsters",
+          "Hidden treasures"
+        ],
+        "tags": ["dungeon", "magic", "dangerous"],
+        "lastVisited": null
+      }
+    ]
+  }

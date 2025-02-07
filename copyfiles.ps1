@@ -10,6 +10,8 @@ param(
 if (-not (Test-Path -Path $DestinationPath)) {
     New-Item -ItemType Directory -Path $DestinationPath | Out-Null
     Write-Host "Created destination directory: $DestinationPath"
+} else {
+    Remove-Item $DestinationPath\* -Force -Recurse
 }
 
 # Predefined exclusion patterns
