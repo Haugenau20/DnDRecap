@@ -226,7 +226,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
               className="flex-shrink-0"
               startIcon={isExpanded ? <ChevronUp /> : <ChevronDown />}
             >
-              {isExpanded ? 'Hide Children' : 'Show Children'}
+              {isExpanded ? 'Hide Places Within' : 'Show Places Within'}
             </Button>
           )}
         </div>
