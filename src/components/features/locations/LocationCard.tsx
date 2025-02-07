@@ -5,6 +5,8 @@ import { useNPCs } from '../../../context/NPCContext';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
+import { useQuests } from '../../../hooks/useQuests';
+import { Quest } from '../../../types/quest';
 import { 
   MapPin, 
   ChevronDown, 
@@ -50,6 +52,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
   const [isContentExpanded, setIsContentExpanded] = useState(false);
   const navigate = useNavigate();
   const { getNPCById } = useNPCs();
+  const { getQuestById } = useQuests();
 
   // Fetch NPC data at component level
   const connectedNPCs = location.connectedNPCs 
@@ -130,26 +133,38 @@ const LocationCard: React.FC<LocationCardProps> = ({
                 Related Quests
               </Typography>
               <div className="space-y-2">
-                {location.relatedQuests.map((questId) => (
-                  <Button
-                    key={questId}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleQuestClick(questId)}
-                    className="w-full"
-                    centered={false}
-                  >
-                    <div className="flex items-start gap-2 text-left">
-                      <Scroll 
-                        size={16} 
-                        className="mt-1 text-blue-500"
-                      />
-                      <Typography variant="body-sm">
-                        {questId}
-                      </Typography>
-                    </div>
-                  </Button>
-                ))}
+                {location.relatedQuests.map((questId) => {
+                  const quest = getQuestById(questId);
+                  return quest ? (
+                    <Button
+                      key={questId}
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleQuestClick(questId)}
+                      className="w-full"
+                      centered={false}
+                    >
+                      <div className="flex items-start gap-2 text-left">
+                        <Scroll 
+                          size={16} 
+                          className={`mt-1 ${
+                            quest.status === 'completed' ? 'text-green-500' :
+                            quest.status === 'failed' ? 'text-red-500' :
+                            'text-blue-500'
+                          }`}
+                        />
+                        <div className="flex-1">
+                          <Typography variant="body-sm" className="font-medium">
+                            {quest.title}
+                          </Typography>
+                          <Typography variant="body-sm" color="secondary">
+                            Status: {quest.status.charAt(0).toUpperCase() + quest.status.slice(1)}
+                          </Typography>
+                        </div>
+                      </div>
+                    </Button>
+                  ) : null;
+                })}
               </div>
             </div>
           )}
