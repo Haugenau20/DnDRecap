@@ -214,7 +214,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
             className="w-full"
             startIcon={isContentExpanded ? <ChevronUp /> : <ChevronDown />}
           >
-            {isContentExpanded ? 'Show Less' : 'Show More'}
+            {isContentExpanded ? 'Less Details' : 'More Details'}
           </Button>
 
           {/* Children expand/collapse */}
