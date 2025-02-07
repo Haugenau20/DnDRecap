@@ -3,7 +3,7 @@ import Typography from '../components/core/Typography';
 import Card from '../components/core/Card';
 import LocationDirectory from '../components/features/locations/LocationDirectory';
 import { useLocations } from '../context/LocationContext';
-import { MapPin, Mountain, Building, Landmark } from 'lucide-react';
+import { MapPin, Eye, EyeOff } from 'lucide-react';
 
 const LocationsPage: React.FC = () => {
   const { locations, isLoading } = useLocations();
@@ -46,7 +46,7 @@ const LocationsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <Building className="w-8 h-8 text-green-500 mr-4" />
+            <MapPin className="w-8 h-8 text-blue-500 mr-4" />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.visited}
@@ -60,7 +60,7 @@ const LocationsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <Mountain className="w-8 h-8 text-purple-500 mr-4" />
+            <Eye className="w-8 h-8 text-green-500 mr-4" />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.discovered}
@@ -74,7 +74,7 @@ const LocationsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <Landmark className="w-8 h-8 text-gray-500 mr-4" />
+            <EyeOff className="w-8 h-8 text-gray-400 mr-4" />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.undiscovered}
