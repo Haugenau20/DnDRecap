@@ -7,7 +7,7 @@ import Button from '../../core/Button';
 import { MapPin, ChevronRight } from 'lucide-react';
 
 // Helper function to truncate text
-const truncateText = (text: string, maxLength: number = 20): string => {
+const truncateText = (text: string, maxLength: number = 22): string => {
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength) + '...';
 };
