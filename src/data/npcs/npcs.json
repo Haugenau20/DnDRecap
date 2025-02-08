@@ -51,7 +51,7 @@
       {
         "id": "rivibiddel",
         "name": "Rivibiddel",
-        "title": "??",
+        "title": "",
         "status": "active",
         "race": "Gnome",
         "occupation": "Historiker",
@@ -59,8 +59,8 @@
         "relationship": "neutral",
         "description": "En lille historiker med en forkærlighed for Dumathoin",
         "appearance": "Ældre gnome som går med stok, sidetaske og bærer en brun fedora på hovedet.",
-        "personality": "??",
-        "background": "??",
+        "personality": "",
+        "background": "",
         "connections": {
           "relatedNPCs": [],
           "affiliations": ["Dumathoin"],
@@ -217,6 +217,30 @@
         "notes": [
           {
             "text": "Død ved slush ice"
+          }
+        ]
+      },
+      {
+        "id": "nezznar",
+        "name": "Nezznar",
+        "title": "Den Sorte Spejder",
+        "status": "active",
+        "race": "Drow",
+        "occupation": "Leder af Larno, Cragmaw, mm.",
+        "location": "Neverwinther",
+        "relationship": "hostile",
+        "description": "Den sande leder af Rødkapperne og Cragmaw.",
+        "appearance": "",
+        "personality": "Ond troldmand som ønskede kontrol over de magiske smede i Wave Echo Cave",
+        "background": "",
+        "connections": {
+          "relatedNPCs": ["larno-glasstav-albrek"],
+          "affiliations": ["Rødkapperne"],
+          "relatedQuests": []
+        },
+        "notes": [
+          {
+            "text": "Blev hentet af Herrens Alliance efter han blev besejret i Wave Echo Cave."
           }
         ]
       }

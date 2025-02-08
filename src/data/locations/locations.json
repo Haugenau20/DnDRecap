@@ -9,18 +9,46 @@
         "features": [
           "Hjemsted til de lokale helte"
         ],
-        "connectedNPCs": ["harbin-wester", "halia-thornton", "søster-garaele", "droop", "sildar-hallwinter", "larno-glasstav-albrek", "droop"],
+        "connectedNPCs": ["harbin-wester", "halia-thornton", "søster-garaele", "sildar-hallwinter", "larno-glasstav-albrek"],
         "relatedQuests": ["udryd-lilla-goblins"],
         "notes": [
           {
             "id": "note-1",
             "content": "Det her er en note",
             "date": "yyyy-mm-dd",
-            "sessionNumber": 100,
+            "sessionNumber": 999,
             "tags": [""]
           }
         ],
-        "tags": ["town", "redkapper"],
+        "tags": ["town", "rødkapper"],
+        "lastVisited": "yyyy-mm-dd"
+      },
+      {
+        "id": "tresendar-manor",
+        "name": "Tresendar Manor",
+        "type": "building",
+        "status": "discovered",
+        "description": "Hjemsted til de lokale helte. Kælderen er indrettet som deres opholdssted. Renovering og genoprettelse af hovedhuset er endnu ikke påbegyndt.",
+        "parentId": "phandalin",
+        "features": [
+          "Sovekamre til Beboere og Vagter",
+          "Opbevaringsrum Under Gulvet",
+          "Stor Rummelig Stue",
+          "Hemmelig Indgang fra Skoven",
+          "Træningsfaciliteter"
+        ],
+        "connectedNPCs": ["droop"],
+        "relatedQuests": [""],
+        "notes": [
+          {
+            "id": "note-1",
+            "content": "",
+            "date": "yyyy-mm-dd",
+            "sessionNumber": 999,
+            "tags": [""]
+          }
+        ],
+        "tags": [""],
         "lastVisited": "yyyy-mm-dd"
       },
       {
