@@ -22,22 +22,6 @@ const QuestsPage: React.FC = () => {
   const searchParams = new URLSearchParams(location.search);
   const highlightedQuestId = searchParams.get('highlight');
 
-  // Scroll to highlighted quest when the URL changes
-  useEffect(() => {
-    if (highlightedQuestId) {
-      const element = document.getElementById(`quest-${highlightedQuestId}`);
-      if (element) {
-        // Add a small delay to ensure DOM is ready
-        setTimeout(() => {
-          element.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center'
-          });
-        }, 100);
-      }
-    }
-  }, [highlightedQuestId]);
-
   // State for filters
   const [statusFilter, setStatusFilter] = useState<QuestStatus | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -71,6 +55,22 @@ const QuestsPage: React.FC = () => {
       return true;
     });
   }, [statusFilter, searchQuery]);
+
+  // Scroll to highlighted quest when the URL changes
+  useEffect(() => {
+    if (highlightedQuestId) {
+      const element = document.getElementById(`quest-${highlightedQuestId}`);
+      if (element) {
+        // Add a small delay to ensure DOM is ready
+        setTimeout(() => {
+          element.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center'
+          });
+        }, 100);
+      }
+    }
+  }, [highlightedQuestId]);
 
   return (
     <div className="flex-1 max-w-7xl mx-auto px-4 py-8">
@@ -161,24 +161,17 @@ const QuestsPage: React.FC = () => {
 
       {/* Quest List */}
       <div className="space-y-6">
-        {filteredQuests.map(quest => {
-          const location = useLocation();
-          const searchParams = new URLSearchParams(location.search);
-          const highlightedQuestId = searchParams.get('highlight');
-          const isHighlighted = highlightedQuestId === quest.id;
-
-          return (
-            <div
-              key={quest.id}
-              id={`quest-${quest.id}`}
-              className={`transition-all duration-300 ${
-                isHighlighted ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg' : ''
-              }`}
-            >
-              <QuestCard quest={quest} />
-            </div>
-          );
-        })}
+        {filteredQuests.map(quest => (
+          <div
+            key={quest.id}
+            id={`quest-${quest.id}`}
+            className={`transition-all duration-300 ${
+              highlightedQuestId === quest.id ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg' : ''
+            }`}
+          >
+            <QuestCard quest={quest} />
+          </div>
+        ))}
         
         {filteredQuests.length === 0 && (
           <Card>
