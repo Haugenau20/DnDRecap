@@ -60,7 +60,6 @@ const BookViewer = ({
   // Keyboard navigation
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      // Only handle keyboard events if the user isn't typing in an input
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
         return;
       }
@@ -68,7 +67,7 @@ const BookViewer = ({
       switch (e.key) {
         case 'ArrowRight':
         case 'ArrowDown':
-        case ' ': // Spacebar
+        case ' ':
           e.preventDefault();
           handlePageChange(currentPage + 1);
           break;
@@ -154,37 +153,40 @@ const BookViewer = ({
           </Button>
         </div>
 
-        {/* Book Content */}
-        <div className="relative min-h-[600px] p-8 bg-amber-50">
-          <div className="max-w-2xl mx-auto">
+        {/* Book Content Area with Fixed Height and Padding for Navigation */}
+        <div className="relative min-h-[600px] bg-amber-50">
+          {/* Content Container with Bottom Padding */}
+          <div className="max-w-2xl mx-auto p-8 pb-20">
             <Typography className="leading-relaxed font-serif whitespace-pre-line">
               {pages[currentPage - 1]}
             </Typography>
           </div>
 
-          {/* Page Navigation */}
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center gap-4">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1 && !hasPreviousChapter}
-              className="p-2 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-              aria-label="Previous page"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            
-            <Typography variant="body-sm" color="secondary">
-              Page {currentPage} of {totalPages}
-            </Typography>
-            
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages && !hasNextChapter}
-              className="p-2 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-              aria-label="Next page"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
+          {/* Fixed Navigation Bar */}
+          <div className="absolute bottom-0 left-0 right-0 bg-amber-50 border-t border-amber-100">
+            <div className="flex justify-center items-center gap-4 p-4">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1 && !hasPreviousChapter}
+                className="p-2 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Previous page"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              
+              <Typography variant="body-sm" color="secondary">
+                Page {currentPage} of {totalPages}
+              </Typography>
+              
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages && !hasNextChapter}
+                className="p-2 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Next page"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
           </div>
         </div>
 
