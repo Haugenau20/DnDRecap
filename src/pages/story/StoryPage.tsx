@@ -8,7 +8,7 @@ import { useStory } from '../../context/StoryContext';
 import { Bookmark, Menu } from 'lucide-react';
 import Button from '../../components/core/Button';
 
-const StoryPage: React.FC = () => {
+const StoryPage = () => {
   const navigate = useNavigate();
   const { chapterId } = useParams();
   const { 
@@ -82,7 +82,7 @@ const StoryPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto">
         {/* Sliding Chapters Navigation */}
         <SlidingChapters
