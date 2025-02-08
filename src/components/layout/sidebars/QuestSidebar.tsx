@@ -52,7 +52,7 @@ const QuestSidebar = () => {
                       <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
                       <Typography 
                         variant="body-sm" 
-                        className="truncate max-w-[120px]"
+                        className="truncate max-w-[140px]"
                         title={quest.title} // Shows full title on hover
                       >
                         {quest.title}
