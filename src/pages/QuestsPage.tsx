@@ -16,9 +16,6 @@ interface QuestData {
 }
 const questData = rawQuestData as QuestData;
 
-/**
- * QuestsPage displays all campaign quests with filtering and search capabilities
- */
 const QuestsPage: React.FC = () => {
   // State for filters
   const [statusFilter, setStatusFilter] = useState<QuestStatus | 'all'>('all');
@@ -55,7 +52,7 @@ const QuestsPage: React.FC = () => {
   }, [statusFilter, searchQuery]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="flex-1 max-w-7xl mx-auto px-4 py-8">
       {/* Page Header */}
       <div className="mb-8">
         <Typography variant="h1" className="mb-2">

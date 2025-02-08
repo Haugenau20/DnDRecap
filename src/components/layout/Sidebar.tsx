@@ -2,6 +2,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import StorySidebar from './sidebars/StorySidebar';
+import QuestSidebar from './sidebars/QuestSidebar';
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
@@ -13,12 +14,16 @@ const Sidebar: React.FC = () => {
       return <StorySidebar />;
     }
     
+    if (pathname.startsWith('/quests')) {
+      return <QuestSidebar />;
+    }
+    
     // Add other sidebar contents as they are implemented
     return null;
   };
 
   // Only show sidebar on routes that have sidebar content
-  const shouldShowSidebar = pathname.startsWith('/story'); // Add other routes as they are implemented
+  const shouldShowSidebar = pathname.startsWith('/story') || pathname.startsWith('/quests'); // Add other routes as needed
 
   if (!shouldShowSidebar) {
     return null;
