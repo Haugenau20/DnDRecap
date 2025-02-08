@@ -1,5 +1,6 @@
 // pages/QuestsPage.tsx
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Typography from '../components/core/Typography';
 import Card from '../components/core/Card';
 import Input from '../components/core/Input';
@@ -17,6 +18,26 @@ interface QuestData {
 const questData = rawQuestData as QuestData;
 
 const QuestsPage: React.FC = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const highlightedQuestId = searchParams.get('highlight');
+
+  // Scroll to highlighted quest when the URL changes
+  useEffect(() => {
+    if (highlightedQuestId) {
+      const element = document.getElementById(`quest-${highlightedQuestId}`);
+      if (element) {
+        // Add a small delay to ensure DOM is ready
+        setTimeout(() => {
+          element.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center'
+          });
+        }, 100);
+      }
+    }
+  }, [highlightedQuestId]);
+
   // State for filters
   const [statusFilter, setStatusFilter] = useState<QuestStatus | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -140,9 +161,24 @@ const QuestsPage: React.FC = () => {
 
       {/* Quest List */}
       <div className="space-y-6">
-        {filteredQuests.map(quest => (
-          <QuestCard key={quest.id} quest={quest} />
-        ))}
+        {filteredQuests.map(quest => {
+          const location = useLocation();
+          const searchParams = new URLSearchParams(location.search);
+          const highlightedQuestId = searchParams.get('highlight');
+          const isHighlighted = highlightedQuestId === quest.id;
+
+          return (
+            <div
+              key={quest.id}
+              id={`quest-${quest.id}`}
+              className={`transition-all duration-300 ${
+                isHighlighted ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg' : ''
+              }`}
+            >
+              <QuestCard quest={quest} />
+            </div>
+          );
+        })}
         
         {filteredQuests.length === 0 && (
           <Card>
