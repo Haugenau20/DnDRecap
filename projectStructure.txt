@@ -63,6 +63,7 @@ DnDRecap
 │   │   │   │   │   ├── TableOfContents.tsx
 │   │   │   │   │   ├── StoryViewer.tsx
 │   │   │   │   │   ├── SlidingChapters.tsx
+│   │   │   │   │   ├── LatestChapter.tsx
 │   │   │   │   │   ├── ChapterNavigation.tsx
 │   │   │   │   │   └── BookViewer.tsx
 │   │   │   │   ├── quests

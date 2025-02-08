@@ -1,11 +1,13 @@
-Remove black borders around Related NPC, Key Locations, Related Quests, etc. buttons
 When filtering locations all location shows even tough only one fits the filter. Only the ones that fit the filter should be shown.
 Remove StoryProgress feature.
+
+Usage of the sidebar
 
 Fix Navigation First:
 
 Improve the breadcrumb navigation
-
+Issues with the current navigation implementation:
+ - src/component/layout/Navigation.tsx currently have content meant for src/context/NavigationContext.tsx
 
 Improve Core User Experience:
 

@@ -1,29 +1,32 @@
 // components/layout/Sidebar.tsx
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import StorySidebar from './sidebars/StorySidebar';
 
-/**
- * Sidebar component that provides contextual navigation based on current route.
- */
 const Sidebar: React.FC = () => {
   const location = useLocation();
+  const pathname = location.pathname;
 
-  const renderContent = () => {
-    switch (location.pathname) {
-      case '/story':
-        return <div>Story Navigation</div>;
-      case '/quests':
-        return <div>Quest Filters</div>;
-      case '/npcs':
-        return <div>NPC Filters</div>;
-      default:
-        return null;
+  // Determine which sidebar content to show based on the current route
+  const renderSidebarContent = () => {
+    if (pathname.startsWith('/story')) {
+      return <StorySidebar />;
     }
+    
+    // Add other sidebar contents as they are implemented
+    return null;
   };
 
+  // Only show sidebar on routes that have sidebar content
+  const shouldShowSidebar = pathname.startsWith('/story'); // Add other routes as they are implemented
+
+  if (!shouldShowSidebar) {
+    return null;
+  }
+
   return (
-    <aside className="w-64 bg-gray-200 p-4 hidden md:block">
-      {renderContent()}
+    <aside className="w-64 bg-white border-r border-gray-200 h-screen sticky top-0 overflow-y-auto hidden md:block">
+      {renderSidebarContent()}
     </aside>
   );
 };
