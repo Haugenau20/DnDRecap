@@ -157,7 +157,7 @@ const BookViewer = ({
         {/* Book Content */}
         <div className="relative min-h-[600px] p-8 bg-amber-50">
           <div className="max-w-2xl mx-auto">
-            <Typography className="leading-relaxed font-serif">
+            <Typography className="leading-relaxed font-serif whitespace-pre-line">
               {pages[currentPage - 1]}
             </Typography>
           </div>

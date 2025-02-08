@@ -51,7 +51,8 @@ DnDRecap
 │   │   │   │   ├── Navigation.tsx
 │   │   │   │   ├── Layout.tsx
 │   │   │   │   ├── Header.tsx
-│   │   │   │   └── Footer.tsx
+│   │   │   │   ├── Footer.tsx
+│   │   │   │   └── Breadcrumb.tsx
 │   │   │   ├── features
 │   │   │   │   ├── story
 │   │   │   │   │   ├── TableOfContents.tsx
@@ -87,12 +88,16 @@ DnDRecap
 │   ├── todo.txt
 │   ├── tailwind.config.js
 │   ├── requirements.md
+│   ├── recaps.txt
 │   ├── projectStructure.txt
 │   ├── postcss.config.js
 │   ├── placeHolder.md
 │   ├── package-lock.json
 │   ├── package.json
+│   ├── npcTemplate.txt
+│   ├── locationsTemplate.txt
 │   ├── highLevelDesign.md
+│   ├── eventyretFraPhandelver.txt
 │   ├── dirTree.ps1
 │   ├── copyfiles.ps1
 │   └── .gitignore
