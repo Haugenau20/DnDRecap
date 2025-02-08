@@ -5,9 +5,14 @@
         "name": "Phandalin",
         "type": "town",
         "status": "discovered",
-        "description": "En stille og rolig lille by og hovedsædet for de lokale helte",
+        "description": "En stille og rolig lille by og hjemsted til de lokale helte.",
         "features": [
-          "Hjemsted til de lokale helte"
+          "Tresendar Manor",
+          "Barthrens Provisions",
+          "Lionshield Coster",
+          "Shrine of Luck",
+          "Stonehill Inn",
+          "Sleeping Giant"
         ],
         "connectedNPCs": ["harbin-wester", "halia-thornton", "søster-garaele", "sildar-hallwinter", "larno-glasstav-albrek"],
         "relatedQuests": ["udryd-lilla-goblins"],
@@ -56,7 +61,7 @@
         "name": "Wave Echo Cave",
         "type": "poi",
         "status": "discovered",
-        "description": "Det er en mine",
+        "description": "For mange hundrede år siden var her en magisk smedje som blev brugt til at lave magiske genstande og enchante ting. Den blev destrueret af orker og onde troldmænd som ville overtage den. Alle blev dræbt i slaget, og siden blev minen glemt.",
         "features": [
           "Mine som bliver kørt af Gundren Rockseeker"
         ],

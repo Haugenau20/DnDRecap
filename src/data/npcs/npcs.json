@@ -206,7 +206,7 @@
         "location": "Phandalin",
         "relationship": "hostile",
         "description": "Tog til Phandalin som del af Herrens Alliance for at oprette en lokal politenhed og oprette fred og orden. I stedet gik han i ledtog med Nezznar og blev leder af Rødkapperne",
-        "appearance": "Kort mørkt hår, plejer at bære kåbe.",
+        "appearance": "Kort mørkt hår, kort skæg, plejer at bære kåbe.",
         "personality": "Høflig fremtoning",
         "background": "Magiker af Herrens Alliance",
         "connections": {
@@ -240,7 +240,7 @@
         },
         "notes": [
           {
-            "text": "Blev hentet af Herrens Alliance efter han blev besejret i Wave Echo Cave."
+            "text": "Blev hentet af Herrens Alliance og bragt til Neverwinther efter han blev besejret i Wave Echo Cave."
           }
         ]
       }
