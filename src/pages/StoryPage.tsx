@@ -98,9 +98,6 @@ const StoryPage: React.FC = () => {
 
         {/* Page Header */}
         <div className="mb-8 flex justify-between items-center">
-          <Typography variant="h1">
-            {currentChapter ? `${currentChapter.order}. ${currentChapter.title}` : 'Campaign Story'}
-          </Typography>
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
