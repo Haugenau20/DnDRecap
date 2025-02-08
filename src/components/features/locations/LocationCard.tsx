@@ -221,7 +221,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
                   {connectedNPCs.map((npc) => (
                     <Button
                       key={npc.id}
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
                       onClick={() => handleNPCClick(npc.id)}
                       className="w-full"
