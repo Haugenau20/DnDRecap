@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Book, ScrollText, Bookmark, Clock, ListRestart } from 'lucide-react';
+import { useNavigation } from '../../../hooks/useNavigation';
 import Typography from '../../core/Typography';
 import { useStory } from '../../../context/StoryContext';
 
 const StorySidebar = () => {
-  const navigate = useNavigate();
+  const { navigateToPage } = useNavigation();
   const { chapters, storyProgress } = useStory();
   
   // Calculate reading progress based on chapters that have been accessed
@@ -43,23 +43,23 @@ const StorySidebar = () => {
   // Navigation handlers
   const handleContinueReading = () => {
     if (storyProgress.currentChapter) {
-      navigate(`/story/chronicles/${storyProgress.currentChapter}`);
+      navigateToPage(`/story/chronicles/${storyProgress.currentChapter}`);
     } else {
       // If no current chapter, start with the first unread chapter
       const firstUnreadChapter = chapters.find(chapter => 
         !storyProgress.chapterProgress[chapter.id]
       );
       if (firstUnreadChapter) {
-        navigate(`/story/chronicles/${firstUnreadChapter.id}`);
+        navigateToPage(`/story/chronicles/${firstUnreadChapter.id}`);
       } else {
         // If all chapters are read, go to the first chapter
-        navigate(`/story/chronicles/${chapters[0].id}`);
+        navigateToPage(`/story/chronicles/${chapters[0].id}`);
       }
     }
   };
 
   const handleChapterClick = (chapterId: string) => {
-    navigate(`/story/chronicles/${chapterId}`);
+    navigateToPage(`/story/chronicles/${chapterId}`);
   };
 
   const handleBookmarksClick = () => {

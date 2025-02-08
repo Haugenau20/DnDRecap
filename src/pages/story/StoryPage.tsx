@@ -1,17 +1,18 @@
 // pages/story/StoryPage.tsx
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import BookViewer from '../../components/features/story/BookViewer';
 import Typography from '../../components/core/Typography';
 import Breadcrumb from '../../components/layout/Breadcrumb';
 import SlidingChapters from '../../components/features/story/SlidingChapters';
 import { useStory } from '../../context/StoryContext';
+import { useNavigation } from '../../hooks/useNavigation';
 import { Book, Menu } from 'lucide-react';
 import Button from '../../components/core/Button';
 
 const StoryPage: React.FC = () => {
-  const navigate = useNavigate();
   const { chapterId } = useParams();
+  const { navigateToPage } = useNavigation();
   const { 
     chapters, 
     storyProgress, 
@@ -56,10 +57,10 @@ const StoryPage: React.FC = () => {
     } else if (storyProgress.currentChapter) {
       const chapter = getChapterById(storyProgress.currentChapter);
       if (chapter) {
-        navigate(`/story/chronicles/${chapter.id}`);
+        navigateToPage(`/story/chronicles/${chapter.id}`);
       }
     }
-  }, [chapterId, getChapterById, storyProgress.currentChapter, navigate, updateCurrentChapter]);
+  }, [chapterId, getChapterById, storyProgress.currentChapter, navigateToPage, updateCurrentChapter]);
 
   const handlePageChange = (page: number) => {
     if (currentChapter) {
@@ -72,7 +73,7 @@ const StoryPage: React.FC = () => {
   };
 
   const handleChapterSelect = (selectedChapterId: string) => {
-    navigate(`/story/chronicles/${selectedChapterId}`);
+    navigateToPage(`/story/chronicles/${selectedChapterId}`);
   };
 
   if (isLoading) {
@@ -120,7 +121,7 @@ const StoryPage: React.FC = () => {
 
           <Button
             variant="ghost"
-            onClick={() => navigate('/story')}
+            onClick={() => navigateToPage('/story')}
             startIcon={<Book />}
           >
             Back to Selection
