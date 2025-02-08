@@ -233,5 +233,17 @@
         "summary": "Udforskning af Underdark og kamp mod stalagmitter"
       }
   
-  ]
+  ],
+  "storyProgress": {
+    "currentChapter": "chapter-1",
+    "lastRead": "2024-03-15T12:00:00Z",
+    "chapterProgress": {
+        "chapter-1": {
+            "chapterId": "chapter-1",
+            "lastPosition": 1,
+            "isComplete": false,
+            "lastRead": "2024-02-01T12:00:00Z"
+        }
+    }
+  }
 }
