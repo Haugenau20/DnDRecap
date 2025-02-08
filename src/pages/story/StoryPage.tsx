@@ -1,3 +1,4 @@
+// pages/story/StoryPage.tsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import BookViewer from '../../components/features/story/BookViewer';
@@ -5,10 +6,10 @@ import Typography from '../../components/core/Typography';
 import Breadcrumb from '../../components/layout/Breadcrumb';
 import SlidingChapters from '../../components/features/story/SlidingChapters';
 import { useStory } from '../../context/StoryContext';
-import { Bookmark, Menu } from 'lucide-react';
+import { Book, Menu } from 'lucide-react';
 import Button from '../../components/core/Button';
 
-const StoryPage = () => {
+const StoryPage: React.FC = () => {
   const navigate = useNavigate();
   const { chapterId } = useParams();
   const { 
@@ -40,7 +41,8 @@ const StoryPage = () => {
   const breadcrumbItems = useMemo(() => [
     { label: 'Home', href: '/' },
     { label: 'Story', href: '/story' },
-    { label: currentChapter ? `${currentChapter.order}. ${currentChapter.title}` : 'Loading...' }
+    { label: 'Session Chronicles', href: '/story/chronicles' },
+    { label: currentChapter ? `${currentChapter.order}. ${currentChapter.title}` : 'Select Chapter' }
   ], [currentChapter]);
 
   // Set initial chapter based on URL parameter or last read chapter
@@ -54,7 +56,7 @@ const StoryPage = () => {
     } else if (storyProgress.currentChapter) {
       const chapter = getChapterById(storyProgress.currentChapter);
       if (chapter) {
-        navigate(`/story/${chapter.id}`);
+        navigate(`/story/chronicles/${chapter.id}`);
       }
     }
   }, [chapterId, getChapterById, storyProgress.currentChapter, navigate, updateCurrentChapter]);
@@ -69,8 +71,8 @@ const StoryPage = () => {
     }
   };
 
-  const handleChapterSelect = (chapterId: string) => {
-    navigate(`/story/${chapterId}`);
+  const handleChapterSelect = (selectedChapterId: string) => {
+    navigate(`/story/chronicles/${selectedChapterId}`);
   };
 
   if (isLoading) {
@@ -82,7 +84,7 @@ const StoryPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-7xl mx-auto">
         {/* Sliding Chapters Navigation */}
         <SlidingChapters
@@ -109,12 +111,20 @@ const StoryPage = () => {
               Chapters
             </Button>
             <div className="flex items-center gap-2">
-              <Bookmark className="text-blue-600" />
+              <Book className="text-blue-600" />
               <Typography color="secondary">
                 Reading Chapter {currentChapter?.order || 0} of {chapters.length}
               </Typography>
             </div>
           </div>
+
+          <Button
+            variant="outline"
+            onClick={() => navigate('/story')}
+            startIcon={<Book />}
+          >
+            Back to Selection
+          </Button>
         </div>
 
         {/* Book Viewer */}

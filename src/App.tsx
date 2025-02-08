@@ -11,12 +11,13 @@ import Layout from './components/layout/Layout';
 
 // Import pages
 import HomePage from './pages/HomePage';
+import StorySelection from './pages/story';
 import StoryPage from './pages/story/StoryPage';
+import SagaPage from './pages/story/SagaPage';
 import QuestsPage from './pages/QuestsPage';
 import NPCsPage from './pages/NPCsPage';
 import LocationsPage from './pages/LocationsPage';
-import StorySelection from './pages/story/index';
-import SagaPage from './pages/story/SagaPage';
+
 
 const App: React.FC = () => {
   return (
