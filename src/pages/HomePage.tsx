@@ -36,19 +36,19 @@ const HomePage: React.FC = () => {
   // Quick access section items
   const quickAccessItems: QuickAccessItem[] = [
     {
-      title: 'Campaign Story',
+      title: 'Story',
       description: 'Follow your epic journey chapter by chapter',
       icon: <Book className="w-6 h-6" />,
       path: '/story'
     },
     {
-      title: 'Active Quests',
+      title: 'Quests',
       description: 'Track your ongoing adventures and rewards',
       icon: <Scroll className="w-6 h-6" />,
       path: '/quests'
     },
     {
-      title: 'NPC Directory',
+      title: 'NPCs',
       description: 'Keep track of friends, foes, and everyone in between',
       icon: <Users className="w-6 h-6" />,
       path: '/npcs'

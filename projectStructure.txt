@@ -52,6 +52,8 @@ DnDRecap
 │   │   │   │   ├── SearchBar.tsx
 │   │   │   │   └── ErrorBoundary.tsx
 │   │   │   ├── layout
+│   │   │   │   ├── sidebars
+│   │   │   │   │   └── StorySidebar.tsx
 │   │   │   │   ├── Sidebar.tsx
 │   │   │   │   ├── Navigation.tsx
 │   │   │   │   ├── Layout.tsx

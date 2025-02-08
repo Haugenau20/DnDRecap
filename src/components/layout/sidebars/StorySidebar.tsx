@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Book, ScrollText, Bookmark, Clock, ListRestart } from 'lucide-react';
+import { Book, ScrollText, Clock, ListRestart } from 'lucide-react';
 import { useNavigation } from '../../../hooks/useNavigation';
 import Typography from '../../core/Typography';
 import { useStory } from '../../../context/StoryContext';
@@ -66,11 +66,6 @@ const StorySidebar = () => {
     navigateToPage(`/story/chronicles/${chapterId}`);
   };
 
-  const handleBookmarksClick = () => {
-    // This could be implemented later when bookmark functionality is added
-    console.log('Bookmarks feature coming soon');
-  };
-
   return (
     <div className="space-y-6 p-4">
       {/* Reading Progress */}
@@ -132,13 +127,6 @@ const StorySidebar = () => {
           >
             <ScrollText className="w-4 h-4" />
             <Typography variant="body-sm">Continue Reading</Typography>
-          </button>
-          <button 
-            onClick={handleBookmarksClick}
-            className="w-full flex items-center gap-2 p-2 rounded hover:bg-gray-100 transition-colors"
-          >
-            <Bookmark className="w-4 h-4" />
-            <Typography variant="body-sm">Bookmarks</Typography>
           </button>
         </div>
       </div>
