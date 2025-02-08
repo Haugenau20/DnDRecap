@@ -1,172 +1,142 @@
 {
-    "quests": [
-      {
-        "id": "find-gundren",
-        "title": "Find Gundren Rockseeker og Sildar Hallwinter",
-        "description": "Undersøg og find Gundren Rockseeker og Sildar Hallwinter",
-        "status": "completed",
-        "background": "Gundren Rockseeker og Sildar Hallwinter var på vej mod byen Phandalin, da de blev overfaldet og er sidenhen ikke blevet set.",
-        "objectives": [
-          {
-            "id": "obj-1",
-            "description": "Tal med lokale i Phandalin",
-            "completed": true
-          },
-          {
-            "id": "obj-2",
-            "description": "Udforsk Cragmaw Hideout",
-            "completed": true
-          },
-          {
-            "id": "obj-3",
-            "description": "Befri Sildar Hallwinter",
-            "completed": true
-          },
-          {
-            "id": "obj-4",
-            "description": "Find Cragmaw Castle",
-            "completed": true
-          },
-          {
-            "id": "obj-5",
-            "description": "Befri Gundren Rockseeker",
-            "completed": true
-          }
-        ],
-        "leads": [
-          "De forsvandt på Triboar Trail nordvest for Phandalin.",
-          "Sildar fortalte at Gundren og kortet med stor sandsylighed befinder sig i Cragmaw Castle.",
-          "Droop har sagt at Cragmaw Castle ligger et par kilometer inde i Neverwinter Forest umiddelbart nord for Phandalin"
-        ],
-        "keyLocations": [
-          {
-            "name": "Triboar Trail",
-            "description": "Vejen som går vest/øst fra The High Road og til Conyberry."
-          },
-          {
-            "name": "Cragmaw Hideout",
-            "description": "En naturlig grotte som er under kontrol af en Bugbear og hans goblin håndlangere."
-          },
-          {
-            "name": "Cragmaw Castle",
-            "description": "Faldefærdigt slot som bliver brugt af Den Sorte Edderkop og dens håndlangere som opholdssted."
-          }
-        ],
-        "importantNPCs": [],
-        "relatedNPCIds": ["gundren-rockseeker", "sildar-hallwinter"],
-        "complications": [
-          "Det er ikke sikkert at Gundren og Sildar stadig er i live.",
-          "Gundren har et vigtigt kort på sig, som ikke må falde i hænderne på fjenden"
-        ],
-        "rewards": [
-          "penge?",
-          "information?"
-        ],
-        "location": "Phandalin",
-        "levelRange": "1-2",
-        "dateAdded": ""
-      },
-      {
-        "id": "missing-merchant",
-        "title": "The Missing Merchant",
-        "description": "Investigate the disappearance of a wealthy merchant from the city",
-        "status": "active",
-        "background": "A prominent merchant, Alderman Thornhaven, has disappeared from the bustling city of Waterdeep. His family last saw him three days ago when he left for a routine business meeting at the docks. His brother Marcus has been frantically searching for him and has finally turned to adventurers for help.",
-        "objectives": [
-          {
-            "id": "obj-1",
-            "description": "Talk to the merchant's family",
-            "completed": false
-          },
-          {
-            "id": "obj-2",
-            "description": "Investigate the Salty Dog Tavern",
-            "completed": false
-          },
-          {
-            "id": "obj-3",
-            "description": "Search the Warehouse District",
-            "completed": false
-          }
-        ],
-        "leads": [
-          "The merchant was last seen heading towards the docks district",
-          "His ledger shows a meeting scheduled with \"V.S.\" at the Salty Dog Tavern",
-          "A suspicious payment of 1000 gold pieces was made the day before his disappearance"
-        ],
-        "keyLocations": [
-          {
-            "name": "The Salty Dog Tavern",
-            "description": "A rough establishment near the docks, frequented by sailors and dock workers. The bartender might remember something about the merchant's meeting."
-          },
-          {
-            "name": "Thornhaven Trading Company",
-            "description": "The merchant's business headquarters. The staff might have noticed something unusual in the days leading up to his disappearance."
-          },
-          {
-            "name": "Warehouse District",
-            "description": "Several warehouses owned by Thornhaven Trading Company are located here. One of them might hold clues to the merchant's whereabouts."
-          },
-          {
-            "name": "Yawning Portal Inn",
-            "description": "Famous tavern where information can be gathered."
-          }
-        ],
-        "importantNPCs": [
-          {
-            "name": "Marcus Thornhaven",
-            "description": "The merchant's brother and acting head of the trading company. He's worried sick about his brother and willing to pay handsomely for his safe return."
-          },
-          {
-            "name": "City Guard Captain",
-            "description": "Has been investigating the disappearance but has made little progress. Willing to share what information the guard has gathered."
-          }
-        ],
-        "relatedNPCIds": ["marcus-thornhaven", "guard-captain", "alderman-thornhaven"],
-        "complications": [
-          "The Thieves' Guild might be involved",
-          "A rival trading company could be behind the disappearance",
-          "The merchant might have uncovered something he wasn't supposed to see"
-        ],
-        "rewards": [
-          "500 gold pieces",
-          "Potential business opportunities with Thornhaven Trading Company",
-          "Gratitude of the merchant's family",
-          "Possible favor from the City Guard"
-        ],
-        "location": "Waterdeep",
-        "levelRange": "3-5",
-        "dateAdded": "2024-02-01"
-      },
-      {
-        "id": "goblin-troubles",
-        "title": "Goblin Troubles",
-        "description": "Clear out a goblin infestation that's been troubling travelers",
-        "status": "completed",
-        "objectives": [
-          {
-            "id": "obj-1",
-            "description": "Find the goblin cave",
-            "completed": true
-          },
-          {
-            "id": "obj-2",
-            "description": "Defeat the goblin leader",
-            "completed": true
-          },
-          {
-            "id": "obj-3",
-            "description": "Rescue any prisoners",
-            "completed": true
-          }
-        ],
-        "rewards": [
-          "300 gold pieces",
-          "Magic shortsword"
-        ],
-        "location": "Trade Road",
-        "levelRange": "1-3",
-        "dateCompleted": "2024-01-15"
-      }
-    ]
-  }
+  "quests": [
+    {
+      "id": "find-gundren",
+      "title": "Find Gundren Rockseeker og Sildar Hallwinter",
+      "description": "Undersøg og find Gundren Rockseeker og Sildar Hallwinter",
+      "status": "completed",
+      "background": "Gundren Rockseeker og Sildar Hallwinter var på vej mod byen Phandalin ad Triboar Trail, da de blev overfaldet og er sidenhen ikke blevet set.",
+      "objectives": [
+        {
+          "id": "obj-1",
+          "description": "Tal med lokale i Phandalin",
+          "completed": true
+        },
+        {
+          "id": "obj-2",
+          "description": "Udforsk Cragmaw Hideout",
+          "completed": true
+        },
+        {
+          "id": "obj-3",
+          "description": "Befri Sildar Hallwinter",
+          "completed": true
+        },
+        {
+          "id": "obj-4",
+          "description": "Find Cragmaw Castle",
+          "completed": true
+        },
+        {
+          "id": "obj-5",
+          "description": "Befri Gundren Rockseeker",
+          "completed": true
+        }
+      ],
+      "leads": [
+        "De forsvandt på Triboar Trail nordvest for Phandalin.",
+        "Sildar fortalte at Gundren og kortet med stor sandsylighed befinder sig i Cragmaw Castle.",
+        "Droop har sagt at Cragmaw Castle ligger et par kilometer inde i Neverwinter Forest umiddelbart nord for Phandalin"
+      ],
+      "keyLocations": [
+        {
+          "name": "Triboar Trail",
+          "description": "Vejen som går vest/øst fra The High Road til Conyberry."
+        },
+        {
+          "name": "Cragmaw Hideout",
+          "description": "En naturlig grotte som er under kontrol af en Bugbear og hans goblin håndlangere."
+        },
+        {
+          "name": "Cragmaw Castle",
+          "description": "Faldefærdigt slot som bliver brugt af Den Sorte Edderkop og dens håndlangere som opholdssted."
+        }
+      ],
+      "importantNPCs": [],
+      "relatedNPCIds": ["gundren-rockseeker", "sildar-hallwinter"],
+      "complications": [
+        "Det er ikke sikkert at Gundren og Sildar stadig er i live.",
+        "Gundren har et vigtigt kort på sig, som ikke må falde i hænderne på fjenden"
+      ],
+      "rewards": [
+        "penge?",
+        "information?"
+      ],
+      "location": "Phandalin",
+      "levelRange": "1-2",
+      "dateAdded": ""
+    },
+    {
+      "id": "missing-merchant",
+      "title": "The Missing Merchant",
+      "description": "Investigate the disappearance of a wealthy merchant from the city",
+      "status": "active",
+      "background": "A prominent merchant, Alderman Thornhaven, has disappeared from the bustling city of Waterdeep. His family last saw him three days ago when he left for a routine business meeting at the docks. His brother Marcus has been frantically searching for him and has finally turned to adventurers for help.",
+      "objectives": [
+        {
+          "id": "obj-1",
+          "description": "Talk to the merchant's family",
+          "completed": false
+        },
+        {
+          "id": "obj-2",
+          "description": "Investigate the Salty Dog Tavern",
+          "completed": false
+        },
+        {
+          "id": "obj-3",
+          "description": "Search the Warehouse District",
+          "completed": false
+        }
+      ],
+      "leads": [
+        "The merchant was last seen heading towards the docks district",
+        "His ledger shows a meeting scheduled with \"V.S.\" at the Salty Dog Tavern",
+        "A suspicious payment of 1000 gold pieces was made the day before his disappearance"
+      ],
+      "keyLocations": [
+        {
+          "name": "The Salty Dog Tavern",
+          "description": "A rough establishment near the docks, frequented by sailors and dock workers. The bartender might remember something about the merchant's meeting."
+        },
+        {
+          "name": "Thornhaven Trading Company",
+          "description": "The merchant's business headquarters. The staff might have noticed something unusual in the days leading up to his disappearance."
+        },
+        {
+          "name": "Warehouse District",
+          "description": "Several warehouses owned by Thornhaven Trading Company are located here. One of them might hold clues to the merchant's whereabouts."
+        },
+        {
+          "name": "Yawning Portal Inn",
+          "description": "Famous tavern where information can be gathered."
+        }
+      ],
+      "importantNPCs": [
+        {
+          "name": "Marcus Thornhaven",
+          "description": "The merchant's brother and acting head of the trading company. He's worried sick about his brother and willing to pay handsomely for his safe return."
+        },
+        {
+          "name": "City Guard Captain",
+          "description": "Has been investigating the disappearance but has made little progress. Willing to share what information the guard has gathered."
+        }
+      ],
+      "relatedNPCIds": ["marcus-thornhaven", "guard-captain", "alderman-thornhaven"],
+      "complications": [
+        "The Thieves' Guild might be involved",
+        "A rival trading company could be behind the disappearance",
+        "The merchant might have uncovered something he wasn't supposed to see"
+      ],
+      "rewards": [
+        "500 gold pieces",
+        "Potential business opportunities with Thornhaven Trading Company",
+        "Gratitude of the merchant's family",
+        "Possible favor from the City Guard"
+      ],
+      "location": "Waterdeep",
+      "levelRange": "3-5",
+      "dateAdded": "2024-02-01"
+    }
+  ]
+}
