@@ -14,14 +14,13 @@
         "personality": "Dværg",
         "background": "Dværg",
         "connections": {
-          "relatedNPCs": ["nundren-rockseeker", ""],
-          "affiliations": ["Miners Guild"],
+          "relatedNPCs": ["nundren-rockseeker"],
+          "affiliations": ["Miners Exchange"],
           "relatedQuests": [""]
         },
         "notes": [
           {
-            "date": "1024-02-01",
-            "text": "Last seen at Wave Echo Cave"
+            "text": "Sidst set i Wave Echo Cave"
           }
         ]
       },
@@ -39,14 +38,13 @@
         "personality": "Dværg",
         "background": "Dværg",
         "connections": {
-          "relatedNPCs": ["gundren-rockseeker", ""],
-          "affiliations": ["Miners Guild"],
+          "relatedNPCs": ["gundren-rockseeker"],
+          "affiliations": ["Miners Exchange"],
           "relatedQuests": [""]
         },
         "notes": [
           {
-            "date": "1024-02-01",
-            "text": "Last seen at Wave Echo Cave"
+            "text": "Døde i Wave Echo Cave mens den var under kontrol af Den Sorte Spejder"
           }
         ]
       },
@@ -65,13 +63,15 @@
         "background": "??",
         "connections": {
           "relatedNPCs": [],
-          "affiliations": [],
+          "affiliations": ["Dumathoin"],
           "relatedQuests": []
         },
         "notes": [
           {
-            "date": "2024-11-22",
-            "text": "Hakkede en stump af den grønne smaragd"
+            "text": "Hakkede en stump af den grønne smaragd."
+          },
+          {
+            "text": "Forlod Crypt of Talhund."
           }
         ]
       },
@@ -90,12 +90,133 @@
         "background": "Slave til Rødkapperne",
         "connections": {
           "relatedNPCs": [],
-          "affiliations": [],
+          "affiliations": ["Tresendar Manor"],
           "relatedQuests": ["udryd-lilla-goblins"]
         },
         "notes": [
           {
             "text": "Kæmpede mod boggarts, dræbte en, og sendte bud efter heltene"
+          }
+        ]
+      },
+      {
+        "id": "harbin-wester",
+        "name": "Harbin Wester",
+        "title": "Bymester af Phandalin",
+        "status": "active",
+        "race": "Human",
+        "occupation": "Bymester",
+        "location": "Phandalin",
+        "relationship": "friendly",
+        "description": "Bureaukrat som holder styr på politikken i Phandalin",
+        "appearance": "Velklædt med en lille topmave",
+        "personality": "",
+        "background": "",
+        "connections": {
+          "relatedNPCs": [],
+          "affiliations": [],
+          "relatedQuests": []
+        },
+        "notes": [
+          {
+            "date": "yyyy-mm-dd",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "id": "halia-thornton",
+        "name": "Halia Thornton",
+        "title": "Guildmaster, Phandalin Miners Exchange",
+        "status": "active",
+        "race": "Human",
+        "occupation": "Guildmaster",
+        "location": "Phandalin",
+        "relationship": "friendly",
+        "description": "",
+        "appearance": "",
+        "personality": "",
+        "background": "",
+        "connections": {
+          "relatedNPCs": ["gundren-rockseeker", "nundren-rockseeker"],
+          "affiliations": ["Miners Exchange"],
+          "relatedQuests": []
+        },
+        "notes": [
+        ]
+      },
+      {
+        "id": "søster-garaele",
+        "name": "Søster Garaele",
+        "title": "Nonne",
+        "status": "active",
+        "race": "Human",
+        "occupation": "Nonne",
+        "location": "Phandalin",
+        "relationship": "friendly",
+        "description": "Ser efter det lokale Shrine of Luck og hjælper dem i Phandalin som har brug for en spirituel hjælpende hånd.",
+        "appearance": "",
+        "personality": "Stor næstekærlighed og hjælper gerne folk i nød",
+        "background": "",
+        "connections": {
+          "relatedNPCs": [],
+          "affiliations": [],
+          "relatedQuests": []
+        },
+        "notes": [
+          {
+            "text": "Laver Healing Potions"
+          },
+          {
+            "text": "Laver Greater Healing Potions"
+          }
+        ]
+      },
+      {
+        "id": "sildar-hallwinter",
+        "name": "Sildar Hallwinter",
+        "title": "Soldat i Herrens Alliance",
+        "status": "active",
+        "race": "Human",
+        "occupation": "Soldat",
+        "location": "Phandalin",
+        "relationship": "friendly",
+        "description": "",
+        "appearance": "",
+        "personality": "",
+        "background": "",
+        "connections": {
+          "relatedNPCs": [],
+          "affiliations": ["Herrens Alliance"],
+          "relatedQuests": ["find-larno"]
+        },
+        "notes": [
+          {
+            "text": ""
+          }
+        ]
+      },
+      {
+        "id": "larno-glasstav-albrek",
+        "name": "Larno \"Glasstav\" Albrek",
+        "title": "Leder af Rødkapperne",
+        "status": "deceased",
+        "race": "Human",
+        "occupation": "Magiker",
+        "location": "Phandalin",
+        "relationship": "hostile",
+        "description": "Tog til Phandalin som del af Herrens Alliance for at oprette en lokal politenhed og oprette fred og orden. I stedet gik han i ledtog med Nezznar og blev leder af Rødkapperne",
+        "appearance": "Kort mørkt hår, plejer at bære kåbe.",
+        "personality": "Høflig fremtoning",
+        "background": "Magiker af Herrens Alliance",
+        "connections": {
+          "relatedNPCs": ["nezznar"],
+          "affiliations": ["Herrens Alliance", "Rødkapperne"],
+          "relatedQuests": ["find-larno"]
+        },
+        "notes": [
+          {
+            "text": "Død ved slush ice"
           }
         ]
       }
