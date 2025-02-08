@@ -75,10 +75,6 @@ const SagaPage: React.FC = () => {
         {/* Page Header */}
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Book className="text-purple-600" />
-              <Typography variant="h2">{data.title}</Typography>
-            </div>
             <Typography variant="body-sm" color="secondary" className="hidden md:block">
               Last updated: {new Date(data.lastUpdated).toLocaleDateString()}
             </Typography>
