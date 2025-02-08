@@ -6,12 +6,6 @@ import Card from '../../core/Card';
 import Button from '../../core/Button';
 import { MapPin, ChevronRight } from 'lucide-react';
 
-// Helper function to truncate text
-const truncateText = (text: string, maxLength: number = 30): string => {
-  if (text.length <= maxLength) return text;
-  return text.substring(0, maxLength) + '...';
-};
-
 const QuestSidebar = () => {
   const navigate = useNavigate();
   const { quests } = useQuests();
@@ -59,7 +53,7 @@ const QuestSidebar = () => {
                       <Typography 
                         variant="body-sm" 
                         className="truncate max-w-[120px]"
-                        title={truncateText(quest.title)} // Shows full title on hover
+                        title={quest.title} // Shows full title on hover
                       >
                         {quest.title}
                       </Typography>
