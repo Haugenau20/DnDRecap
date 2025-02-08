@@ -172,7 +172,7 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
                     return quest ? (
                       <Button
                         key={questId}
-                        variant="outline"
+                        variant="ghost"
                         size="sm"
                         onClick={() => handleQuestClick(questId)}
                         className="w-full"

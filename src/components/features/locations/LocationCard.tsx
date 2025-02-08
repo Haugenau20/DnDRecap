@@ -180,7 +180,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
                     return quest ? (
                       <Button
                         key={questId}
-                        variant="outline"
+                        variant="ghost"
                         size="sm"
                         onClick={() => handleQuestClick(questId)}
                         className="w-full"

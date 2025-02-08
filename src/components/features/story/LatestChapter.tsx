@@ -61,7 +61,7 @@ const LatestChapter: React.FC<LatestChapterProps> = ({ chapter }) => {
 
         {/* Continue Reading Button */}
         <Button
-          variant="outline"
+          variant="ghost"
           onClick={handleContinueReading}
           endIcon={<ChevronRight />}
           className="w-full"

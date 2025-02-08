@@ -191,7 +191,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                       return (
                         <Button
                           key={index}
-                          variant="outline"
+                          variant="ghost"
                           size="sm"
                           onClick={() => {
                             if (location.name) {
@@ -278,7 +278,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                       return (
                         <Button
                             key={npcId}
-                            variant="outline"
+                            variant="ghost"
                             size="sm"
                             onClick={() => navigate(`/npcs?highlight=${npcId}`)}
                             className="w-full"

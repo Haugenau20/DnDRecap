@@ -119,7 +119,7 @@ const StoryPage: React.FC = () => {
           </div>
 
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={() => navigate('/story')}
             startIcon={<Book />}
           >
