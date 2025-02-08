@@ -5,7 +5,8 @@ import Typography from '../components/core/Typography';
 import Breadcrumb from '../components/layout/Breadcrumb';
 import SlidingChapters from '../components/features/story/SlidingChapters';
 import { useStory } from '../context/StoryContext';
-import { Bookmark } from 'lucide-react';
+import { Bookmark, Menu } from 'lucide-react';
+import Button from '../components/core/Button';
 
 const StoryPage: React.FC = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const StoryPage: React.FC = () => {
   const [currentChapter, setCurrentChapter] = useState(
     chapterId ? getChapterById(chapterId) : undefined
   );
+  const [isChaptersOpen, setChaptersOpen] = useState(false);
 
   // Calculate next and previous chapters
   const { nextChapter, previousChapter } = useMemo(() => {
@@ -87,6 +89,8 @@ const StoryPage: React.FC = () => {
           chapters={chapters}
           currentChapterId={currentChapter?.id}
           onChapterSelect={handleChapterSelect}
+          isOpen={isChaptersOpen}
+          onClose={() => setChaptersOpen(false)}
         />
 
         {/* Breadcrumb Navigation */}
@@ -98,10 +102,21 @@ const StoryPage: React.FC = () => {
             {currentChapter ? `${currentChapter.order}. ${currentChapter.title}` : 'Campaign Story'}
           </Typography>
           <div className="flex items-center gap-4">
-            <Bookmark className="text-blue-600" />
-            <Typography color="secondary">
-              Reading Chapter {currentChapter?.order} of {chapters.length}
-            </Typography>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setChaptersOpen(true)}
+              startIcon={<Menu />}
+              className="mr-2"
+            >
+              Chapters
+            </Button>
+            <div className="flex items-center gap-2">
+              <Bookmark className="text-blue-600" />
+              <Typography color="secondary">
+                Reading Chapter {currentChapter?.order} of {chapters.length}
+              </Typography>
+            </div>
           </div>
         </div>
 

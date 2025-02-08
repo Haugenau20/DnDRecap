@@ -2,44 +2,38 @@ import React, { useState } from 'react';
 import { Chapter } from '../../../types/story';
 import Typography from '../../core/Typography';
 import Button from '../../core/Button';
-import { Book, Menu, X } from 'lucide-react';
+import { Book, X } from 'lucide-react';
 
 interface SlidingChaptersProps {
   chapters: Chapter[];
   currentChapterId?: string;
   onChapterSelect: (chapterId: string) => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 const SlidingChapters: React.FC<SlidingChaptersProps> = ({
   chapters,
   currentChapterId,
   onChapterSelect,
+  isOpen,
+  onClose,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleChapterClick = (chapterId: string) => {
     onChapterSelect(chapterId);
-    setIsOpen(false);
+    onClose();
   };
 
   return (
     <>
-      {/* Toggle Button */}
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => setIsOpen(true)}
-        className="fixed top-4 left-4 z-30 bg-white"
-        startIcon={<Menu />}
-      >
-        Chapters
-      </Button>
+      {/* Toggle Button moved to parent component */}
 
       {/* Overlay */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
-          onClick={() => setIsOpen(false)}
+          onClick={onClose}
         />
       )}
 
@@ -59,7 +53,7 @@ const SlidingChapters: React.FC<SlidingChaptersProps> = ({
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setIsOpen(false)}
+              onClick={onClose}
               className="p-1"
             >
               <X className="w-5 h-5" />
