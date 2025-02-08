@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BookOpen, ChevronLeft, ChevronRight, ArrowLeftCircle, ArrowRightCircle } from 'lucide-react';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
@@ -29,64 +29,21 @@ const BookViewer = ({
   const [totalPages, setTotalPages] = useState(1);
   const [pages, setPages] = useState<string[]>([]);
   const [showShortcutHint, setShowShortcutHint] = useState(true);
-  
-  // Refs for content measuring
-  const containerRef = useRef<HTMLDivElement>(null);
-  const measureRef = useRef<HTMLDivElement>(null);
 
-  // Function to split text into lines that fit within the container
-  const splitContentIntoPages = useCallback(() => {
-    if (!containerRef.current || !measureRef.current || !content) return;
-
-    const containerHeight = containerRef.current.clientHeight;
-    const lines = content.split('\n');
-    const pages: string[] = [];
-    let currentPage: string[] = [];
-    let currentHeight = 0;
-
-    // Helper function to measure text height
-    const measureTextHeight = (text: string): number => {
-      measureRef.current!.textContent = text;
-      return measureRef.current!.offsetHeight;
-    };
-
-    for (let line of lines) {
-      const lineHeight = measureTextHeight(line);
-      
-      // If adding this line would exceed page height, start a new page
-      if (currentHeight + lineHeight > containerHeight - 40) { // 40px buffer
-        pages.push(currentPage.join('\n'));
-        currentPage = [line];
-        currentHeight = lineHeight;
-      } else {
-        currentPage.push(line);
-        currentHeight += lineHeight;
-      }
+  // Split content into pages
+  useEffect(() => {
+    const wordsPerPage = 250;
+    const words = content.split(' ');
+    const pageArray = [];
+    
+    for (let i = 0; i < words.length; i += wordsPerPage) {
+      pageArray.push(words.slice(i, i + wordsPerPage).join(' '));
     }
-
-    // Add the last page if it has content
-    if (currentPage.length > 0) {
-      pages.push(currentPage.join('\n'));
-    }
-
-    setPages(pages);
-    setTotalPages(pages.length);
+    
+    setPages(pageArray);
+    setTotalPages(pageArray.length);
+    setCurrentPage(1); // Reset to first page when content changes
   }, [content]);
-
-  // Handle window resize
-  useEffect(() => {
-    const handleResize = () => {
-      splitContentIntoPages();
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [splitContentIntoPages]);
-
-  // Initial content split and on content change
-  useEffect(() => {
-    splitContentIntoPages();
-  }, [content, splitContentIntoPages]);
 
   // Handle page navigation
   const handlePageChange = useCallback((newPage: number) => {
@@ -198,25 +155,15 @@ const BookViewer = ({
 
         {/* Book Content Area */}
         <div className="relative bg-amber-50">
-          {/* Hidden measurement div */}
-          <div 
-            ref={measureRef}
-            className="absolute opacity-0 pointer-events-none leading-relaxed font-serif whitespace-pre-line max-w-2xl mx-auto p-8"
-            aria-hidden="true"
-          />
-          
           {/* Content Container */}
-          <div 
-            ref={containerRef}
-            className="h-[800px] md:h-[600px] lg:h-[800px] max-w-2xl mx-auto p-8"
-          >
+          <div className="max-w-2xl mx-auto p-8 pb-20">
             <Typography className="leading-relaxed font-serif whitespace-pre-line">
-              {pages[currentPage - 1] || ''}
+              {pages[currentPage - 1]}
             </Typography>
           </div>
 
           {/* Navigation Bar */}
-          <div className="border-t border-amber-100 bg-amber-50">
+          <div className="absolute bottom-0 left-0 right-0 bg-amber-50 border-t border-amber-100">
             <div className="flex justify-center items-center gap-4 p-4">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
