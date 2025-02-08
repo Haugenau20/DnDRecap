@@ -1,38 +1,110 @@
 // pages/story/SagaPage.tsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import BookViewer from '../../components/features/story/BookViewer';
 import Typography from '../../components/core/Typography';
-import Card from '../../components/core/Card';
+import Breadcrumb from '../../components/layout/Breadcrumb';
 import Button from '../../components/core/Button';
-import { useStory } from '../../context/StoryContext';
-import { Book } from 'lucide-react';
+import Card from '../../components/core/Card';
+import { Book, Loader2 } from 'lucide-react';
+import { SagaData } from '../../types/saga';
 
-const SagaPage = () => {
-  const { chapters } = useStory();
+// Import the saga data
+import sagaData from '../../data/story/saga.json';
+
+const SagaPage: React.FC = () => {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState<SagaData | null>(null);
+
+  // Load saga data
+  useEffect(() => {
+    try {
+      const typedData = sagaData as SagaData;
+      setData(typedData);
+    } catch (error) {
+      console.error('Error loading saga data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Breadcrumb items
+  const breadcrumbItems = [
+    { label: 'Home', href: '/' },
+    { label: 'Story', href: '/story' },
+    { label: 'Campaign Saga', href: '/story/saga' }
+  ];
+
+  const handlePageChange = (page: number) => {
+    // Implement page progress tracking if needed
+    console.log('Page changed:', page);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="p-8">
+          <div className="flex items-center gap-4">
+            <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+            <Typography>Loading saga...</Typography>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="p-8">
+          <Typography color="error">
+            Error loading saga content. Please try again later.
+          </Typography>
+        </Card>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <Typography variant="h1">Campaign Saga</Typography>
-        <Button
-          variant="outline"
-          onClick={() => window.history.back()}
-          startIcon={<Book />}
-        >
-          Back to Selection
-        </Button>
-      </div>
+    <div className="min-h-screen bg-gray-50 p-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Breadcrumb Navigation */}
+        <Breadcrumb items={breadcrumbItems} className="mb-4" />
 
-      <Card>
-        <Card.Content>
-          <Typography color="secondary" className="mb-4">
-            Here you'll find your campaign's story woven into a seamless narrative.
-          </Typography>
-          {/* Content will be added here */}
-          <Typography variant="body" className="italic text-center">
-            The saga is yet to be written...
-          </Typography>
-        </Card.Content>
-      </Card>
+        {/* Page Header */}
+        <div className="mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Book className="text-purple-600" />
+              <Typography variant="h2">{data.title}</Typography>
+            </div>
+            <Typography variant="body-sm" color="secondary" className="hidden md:block">
+              Last updated: {new Date(data.lastUpdated).toLocaleDateString()}
+            </Typography>
+          </div>
+
+          <Button
+            variant="outline"
+            onClick={() => navigate('/story')}
+            startIcon={<Book />}
+          >
+            Back to Selection
+          </Button>
+        </div>
+
+        {/* Book Viewer */}
+        <div className="max-w-4xl mx-auto">
+          <BookViewer
+            content={data.content}
+            title={data.title}
+            onPageChange={handlePageChange}
+            // Disable chapter navigation since it's one continuous story
+            hasNextChapter={false}
+            hasPreviousChapter={false}
+          />
+        </div>
+      </div>
     </div>
   );
 };
