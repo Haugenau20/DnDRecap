@@ -36,7 +36,7 @@
         "leads": [
           "De forsvandt på Triboar Trail nordvest for Phandalin.",
           "Sildar fortalte at Gundren og kortet med stor sandsylighed befinder sig i Cragmaw Castle.",
-          "Droop har sagt at Cragmaw Castle ligger et par kilomet inde i Neverwinter Forest umiddelbart nord for Phandalin"
+          "Droop har sagt at Cragmaw Castle ligger et par kilometer inde i Neverwinter Forest umiddelbart nord for Phandalin"
         ],
         "keyLocations": [
           {
@@ -55,14 +55,14 @@
         "importantNPCs": [],
         "relatedNPCIds": ["gundren-rockseeker", "sildar-hallwinter"],
         "complications": [
-          "Det er ikke sikkert at Gundren og Sildar er i live længere.",
+          "Det er ikke sikkert at Gundren og Sildar stadig er i live.",
           "Gundren har et vigtigt kort på sig, som ikke må falde i hænderne på fjenden"
         ],
         "rewards": [
           "penge?",
           "information?"
         ],
-        "location": "phandalin",
+        "location": "Phandalin",
         "levelRange": "1-2",
         "dateAdded": ""
       },
