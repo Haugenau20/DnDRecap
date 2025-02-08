@@ -108,13 +108,6 @@ const HomePage: React.FC = () => {
           <Typography variant="h2">
             Recent Activity
           </Typography>
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => navigate('/story/chronicles')}
-          >
-            View All Chapters
-          </Button>
         </div>
 
         <div className="space-y-4">
