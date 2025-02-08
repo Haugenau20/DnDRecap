@@ -3,7 +3,7 @@
       {
         "id": "gundren-rockseeker",
         "name": "Gundren Rockseeker",
-        "title": "Miner",
+        "title": "Minearbejder",
         "status": "active",
         "race": "Dwarf",
         "occupation": "Minearbejder",
@@ -31,7 +31,7 @@
         "title": "Minearbejder",
         "status": "deceased",
         "race": "Dwarf",
-        "occupation": "Miner",
+        "occupation": "Minearbejder",
         "location": "Wave Echo Cave",
         "relationship": "friendly",
         "description": "Dwarf",

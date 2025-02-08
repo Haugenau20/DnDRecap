@@ -1,85 +1,166 @@
 {
   "chapters": [
-      {
-          "id": "chapter-1",
-          "title": "Goblins, Banditter, og den første Quest",
-          "content": "Dharmus, Ohnzr og Ghauthak dræbte alle goblinerne uden at tale med dem, valgte ikke at forsøge at redde gundren og sildar. PC tpg til byen og afleverede varerne til Barthel's provisioner og fik deres betaling og overtalte ham til at give dem rabat fremover pga. en nedlagt minotaur. Gauthak og Dharmus dræbte 3 rødmærkede banditter, men lod Thor tage æren for deres nederlag. Redbrands ved godt hvem der gjorde det. Borgmesteren har fået ligene fjernet og vil undgå yderligere problemer med banden. Han ved ikke hvem der har dræbt banditterne. PC har talt med Halia Thornton og accepteret at fjerne lederen (og så mange banditter som muligt -.-) og skaffe alt papir materiale, breve og lign.",
-          "order": 1,
-          "lastModified": "2024-02-01T12:00:00Z",
-          "summary": "Gruppens første konfrontationer med gobliner og banditter"
+    {
+      "id": "chapter-1",
+      "title": "Goblins, Banditter, og den første Quest",
+      "content": "Dharmus, Ohnzr og Ghauthak dræbte alle goblinerne uden at tale med dem, valgte ikke at forsøge at redde gundren og sildar.\n\nPC tpg til byen og afleverede varerne til Barthel's provisioner og fik deres betaling og overtalte ham til at give dem rabat fremover pga. en nedlagt minotaur.\n\nGauthak og Dharmus dræbte 3 rødmærkede banditter, men lod Thor tage æren for deres nederlag. Redbrands ved godt hvem der gjorde det.\n\nBorgmesteren har fået ligene fjernet og vil undgå yderligere problemer med banden. Han ved ikke hvem der har dræbt banditterne.\n\nPC har talt med Halia Thornton og accepteret at fjerne lederen (og så mange banditter som muligt -.-) og skaffe alt papir materiale, breve og lign.",
+      "order": 1,
+      "lastModified": "2024-02-01T12:00:00Z",
+      "summary": "Gruppens første konfrontationer med gobliner og banditter"
+    },
+    {
+      "id": "chapter-2", 
+      "title": "Redningsmission: Gundren og Sildar",
+      "content": "Dharmus, Ohnzr og Ghauthak begav sig ud for at redde Gundren og Sildar. På vejen mødte de en bekendt, halvork paladinen Rugath, som besluttede sig for at hjælpe dem.\n\nDe undveg 1 af 2 fælder og fandt frem til hulen hvor goblinerne holdte til. De væltede forbi nogle vilde ulve og undveg en bølge fra floden, men den sendte dem op ad en skråning ind til goblinernes opholdssted.\n\nDe kæmpede med de mange fjender og forsøgte kortvarigt at forhandle, men ikke alle er enige i at forhandling er vejen frem. De udrydde alle goblinerne og reddede Sildar Hallwinter.\n\nHan fortale dem om Cragmaw castle og at Gundren og kortet formentlig er der, men han vidste ikke hvor det var. Han begav sig så helt alene og forslået med en rusten goblin klinge, ud i den vilde natur for at finde tilbage til byen.\n\nDen heltemodige gruppe fortsatte længere ind for at udrydde truslen en gang for alle. De havde dog ikke heldet med sig og blev opdaget og måtte gå op imod hele den resterende flok af gobliner og deres leder Klarg på én gang. Det gik ikke helt som håbet og heltene måtte stikke af for at kæmpe en anden dag.",
+      "order": 2,
+      "lastModified": "2024-02-05T15:30:00Z",
+      "summary": "Redningsmission for Gundren og Sildar"
+    },
+    {
+      "id": "chapter-3",
+      "title": "Rødkappernes Skjulested og Skjulte Sandheder",
+      "content": "De myrdede alt de mødte i hulen undtagen Droop, Nothic, 2 banditter og Glassstaff.\n\n\"De lokale helte\" tog et velfortjent hvil og begyndte så dagen med at lede efter deres nyfundne ven og nu også arbejdsgiver Sildar hallwinter. Rugath stødte ind i ham efter en knap så vellykket prutten om prisen og de mødtes senere på den lokale kro.\n\nHan tilbyder gruppen en dusør for at uskadeliggøre lederen af Cragmaw stammen i Cragmaw slottet. De talte så med nogle lokale for at opsnuse yderligere informationer. De fik nys om at der er:\n- Udøde ved noget kaldet \"den gamle ugle brønd\"\n- En Druide som undersøger ruinerne af en gammel by \"tordentræ\"\n- Orker i nærheden af Wyvern klippen\n\nDe forhørte den uheldige indehaver af den sovende kæmpe kro som var offer for et mordforsøg, hvilket heldigvis blev afværget af \"heltene\".\n\nDe fandt frem til en hemmelig indgang til rødkappernes tilholdssted. De forhandlede med delt succes og fejlagtigt med en mystisk monstrøs beboer som formåede at berøve Ohnzr hans magiske ring, til trods for generøs donation af frisk kød.\n\nGruppen udryddede rum efter rum med slyngler og reddede nogle lokale som var taget til fange, røvede nogle grave og snusede sig frem til lederens opholdssted. Han var dog blevet advaret af sin rotte familiar som gav ham mulighed for at stikke af og heltene nåede ikke at indhente ham, men de fandt et brev der beviser at han arbejder med \"den sorte edderkop\" og at glasstav faktisk er Larno Albrekt.\n\nDe reddede også en ynkelig goblin ved navn Droop som har lovet sin hjælp hvis de skulle mødes igen.",
+      "order": 3,
+      "lastModified": "2024-02-10T12:00:00Z",
+      "summary": "Udforskning af rødkappernes tilholdssted"
+    },
+    {
+      "id": "chapter-4",
+      "title": "Konfrontation med Larno Albrek og Wyvern-Orkerne",
+      "content": "De lokale helte, som kommer langvejs fra, hvilede efter en hård kamp mod de mange banditter og fik en behagelig nats søvn. Med undtagelse af Dharmus som oplevede et meget livagtigt mareridt hvor han fik noget nyt læsestof.\n\nMed ny energi og Dharmus på slæb talte de med den lokale smed en noget kortfattet dværg og handlede til deres forstående rejse. De drog ud lang triboar ruten og vandrede i timevis uden nogen besværligheder andet end udmattelse, hvorefter de slog lejr for natten.\n\nDe fik en brat opvågning af deres undslupne mål Larno albrek, en troldmand næsten ligeså højrøvet som en anden troldmand. Han havde fået forstærkninger i form af nogle kampsultne hobgobliner. Heldigvis er Thor og Helm med de hellige kriegeres hvert eneste bevægelse og de knap så troende slap også med livet i behold. Det samme kan ikke siges om Larno som ved et tragisk uheld fik splintret sit frosne hoved af en meget angrende tiefling.\n\nDe forhandlede succesfuldt med den gyselige Agatha i hendes private del af skoven. De mødte en usædvanlig troldmand med ligbleg hud og en tatovering i panden med gyselige forbindelser. De fik afværget en konfrontation med ham og hans utallige omvandrende lig. (Dharmus udtrykte interesse i at få information af ham.)\n\nHan gav dem opgaven at fjerne ork truslen i bjergene, hvilket heldigvis var på bordet allerede. Heltene fortsatte deres rejse mod den omtalte wyvern klippe og slog lejr for natten.\n\nDenne gang fik de tidligt besøg af de eftersøgte orker som bed over mere end deres stødtænder kunne tygge og de blev hurtigt udryddet. Efter et fejlslaget forsøg på afhøring forsatte de deres hvilen blandt de mange døde orker og den hovedeløse fange.",
+      "order": 4,
+      "lastModified": "2024-02-15T12:00:00Z",
+      "summary": "Konfrontation med Larno Albrek og orkerne"
+    },
+    {
+      "id": "chapter-5",
+      "title": "Afhøring i Orkernes Hule",
+      "content": "Gruppen kæmpede sig vej igennem orkernes hule med rimelig god udfordring. Gauthak blev slået bevidstløs af orkernes leder Bughor axe-biter, som til slut blev halshugget af Rugath efter intens afhøring om hvorvidt orken kendte til nogle orkgrupper som var i ledtog med kæmper.\n\nHan fik at vide at der er nogen som arbejder med kæmper og med mennesker, men kunne ikke fortælle hvem de var eller hvor de befinder sig.",
+      "order": 5,
+      "lastModified": "2024-02-20T12:00:00Z",
+      "summary": "Udforskning af orkernes hule"
+    },
+    {
+      "id": "chapter-6",
+      "title": "Thay-Troldmanden og Ghoul-Kampen",
+      "content": "Dharmus taler med Thay mage om besættelse og viser ham sit mærke. Harmun vil have en betaling af Dharmus og vil gøre et ritual klar til at identificere hvad der plager den mørke tiefling.\n\nRugath har et pergament fra ork lederen Brughor axe biter. De kæmper med nogle ghouls på vej tilbage til Phandolin og besejrer dem (4 ghouls). De ankommer i phandalin.",
+      "order": 6,
+      "lastModified": "2024-02-25T12:00:00Z",
+      "summary": "Dialog med Thay-troldmand og kamp mod ghouls"
+    },
+    {
+      "id": "chapter-7",
+      "title": "Hævn ved Cragmaw-Slottet",
+      "content": "Hævn over gobliner i hideout og angreb på Cragmaw castle. De har taget en doppelganger til fange som arbejder for \"The black spider\".",
+      "order": 7,
+      "lastModified": "2024-03-01T12:00:00Z",
+      "summary": "Angreb på Cragmaw Castle"
+    },
+    {
+      "id": "chapter-8",
+      "title": "Genoplivning og Rejsen til Wave Echo-Hulen",
+      "content": "Forhører Doppelganger som overbeviser gruppen om at der er en magisk skat i slottet og de vælger at undersøge det. Efterlader Gundren med monstret som skrumper sig fri af rebet og dræber gundren.\n\nDe slipper en vild owlbear fri og undgår at kæmpe med den og finder deres ven død. De undersøger så lokalet som bæstet var i og finder en scroll of revivify som de bruger på gundren.\n\nDerefter tager de tilbage til byen og hviler hvorefter de hastigt bevæger sig mod wave echo cave. De finder stedet med kortet og Gundrens hjælp. Død dværgebror. Angrebet af stirges som de nedkæmper. Hvorefter de løber ind i en gruppe ghouls som de også meget behendigt udrydder.",
+      "order": 8,
+      "lastModified": "2024-03-05T12:00:00Z",
+      "summary": "Gundren dræbes og genoplives"
+    },
+    {
+      "id": "chapter-9",
+      "title": "Mysterier i Wave Echo-Hulen",
+      "content": "Efter at gruppen har besejret ghouls, der angreb dem, forsøger de klodset at snige sig videre med fuld belysning og bliver set af et flyvende kranium af ukendt magi.\n\nDe leder videre efter en dværg og spørger en 'vogter' i form af et flyvende øje der ikke virker til at være helt ved fulde fem. Så finder de en meget vred wraith, de overtaler til at må inspicere hans hus i bytte for nogle magiske sko og finder et skjult kort, der nævner et soltempel.\n\nDe vælger at komme tilbage senere og dræber i stedet nogle bugbear vagter de har snyt til at to det var en goblin der kom med mad til dem. Gruppen fejler herefter igen i at snige sig ind på modstanderen men dræber behændigt bugbear vagterne og nogle store edderkopper.\n\nTil sidst lykkedes det gruppen at få den sorte edderkop til at overgive sig efter en svær kamp med brug af list, eliksirer, magi og mere hp end de have håbet. Men både gundren og hans anden bror er i live!",
+      "order": 9,
+      "lastModified": "2024-03-10T12:00:00Z",
+      "summary": "Udforskning af Wave Echo Cave"
+    },
+    {
+      "id": "chapter-10",
+      "title": "Den Endelige Konfrontation",
+      "content": "Dharmus besættes af sin følgesvend og forsøger at dræbe deres fange, men Ohnzr stiller sig imellem og tager slaget. Dharmus opdages af en scout fra Order of the gilded eye som undslipper Dharmus' forfølgelse.\n\nGruppen holder vagt ved Nezznar indtil han hentes af en gruppe riddere fra Lords alliance som vil tage ham med til Neverwinter. De får besked om at de må få den gamle adelvilla på bakken og genopbygge den.\n\nDe drager derefter tilbage til grotten for at rydde de sidste farer så den kan blive driftbar igen. De udrydder en gruppe skeletter som Dharmus vælger at destruere med Shatter hvilket næsten slår Rugath ihjel (20 dmg). Han er forståeligt meget utilfreds.\n\nRugath beskadiger sin hammer i forsøg på at åbne en dværg lavet strongbox og de splintrer et koben.",
+      "order": 10,
+      "lastModified": "2024-03-15T12:00:00Z",
+      "summary": "Endelig konfrontation og oprydning"
+    },
+    {
+        "id": "chapter-11",
+        "title": "Flint og Magiske Genstande",
+        "content": "Sidste gang fandt vi os selv i minens afkroge på jagt efter flere våbenslugende smiles. Uden held begiver vi os tilbage mod en magiske forge og til vores overraskelse møder vi en dværg ved navn Flint. Han er i familie med de Gudrin og ønsker at hjælpe os og vi tage med gælde imod da vi ved at vores fjender nok skal teste vores styrke og tro!\n\nVi stormer ind mod bæstet der vogter kilden og til alles overraskelse vokser Flint fra en lille dværg til en kampe dværg! Dog ender det lidt antiklimatisk da han på trods af sin størrelse og kæmpe økse ikke kan ramme en skid. Men vi finder et par magiske items der nok skal komme os til gode.\n\nEfterfølge forsøger vi os med en Wraith der viser sig en større udfordring for mine følgesvende. De prøver alle i deres bedste overbevisning at skade den onde ånd men forgæves - heldigvis har de mig der med Helms hellige kraft der mere eller mindre udradere den. Den vogtede over en sjov pibe og lidt andet der nok blive nyttigt.\n\nFør vi begiver os ud af minen ser vi nærmere på et rum flydt med svampe og her får Gauthak en smagsprøve og de viser sig at være giftige. Vi går mod udgangen men ikke uden den stædige kiste og en undrende kommentar fra en af dværgene om Flints fortid? - jeg er overbevist om han skjuler noget.\n\nEfter en nat i byen med handel, snak og tobak vælger vi at tage kampen op med det enøjede bæst af en Nothic der forsat opholder sig under vores nye nedslidte masion. Vi sejre men ikke uden overraskelsen fra en kæmpe edderkop vi sendte bort. Her finder vi igen Onzhrs ring og jeg får æren af at bære på det legendariske sværd Talon.",
+        "order": 11,
+        "lastModified": "2024-03-20T12:00:00Z",
+        "summary": "Møde med Flint og fund af magiske genstande"
       },
       {
-          "id": "chapter-2",
-          "title": "Redningsmission: Gundren og Sildar",
-          "content": "Dharmus, Ohnzr og Ghauthak begav sig ud for at redde Gundren og Sildar. På vejen mødte de en bekendt, halvork paladinen Rugath, som besluttede sig for at hjælpe dem. De undveg 1 af 2 fælder og fandt frem til hulen hvor goblinerne holdte til. De væltede forbi nogle vilde ulve og undveg en bølge fra floden, men den sendte dem op ad en skråning ind til goblinernes opholdssted. De kæmpede med de mange fjender og forsøgte kortvarigt at forhandle, men ikke alle er enige i at forhandling er vejen frem. De udrydde alle goblinerne og reddede Sildar Hallwinter. Han fortale dem om Cragmaw castle og at Gundren og kortet formentlig er der, men han vidste ikke hvor det var. Han begav sig så helt alene og forslået med en rusten goblin klinge, ud i den vilde natur for at finde tilbage til byen. Den heltemodige gruppe fortsatte længere ind for at udrydde truslen en gang for alle. De havde dog ikke heldet med sig og blev opdaget og måtte gå op imod hele den resterende flok af gobliner og deres leder Klarg på én gang. Det gik ikke helt som håbet og heltene måtte stikke af for at kæmpe en anden dag.",
-          "order": 2,
-          "lastModified": "2024-02-05T15:30:00Z",
-          "summary": "Redningsmission for Gundren og Sildar"
+        "id": "chapter-12",
+        "title": "Mysteriet om de Stjålne Obsidiansten",
+        "content": "Phandalin er blevet hærget af ukendte væsner og nogle ting er blevet stjålet. Vi spurgte omkring i byen om de hændelser der var sket imens vi var væk. Vi fandt ud af at Miner's Exchange, Shrine og Luck, Stone Giant Inn og Alder Leaf Farm var blev vandaliseret. Der var en sammenhæng i at alle steder havde fået stjålet en Obsidian sten af en art.\n\nVed brønden bag Bartons Provisions opdagede vi at der fandtes et monster i brønden efter at Onzhr's familiar blev knust af den. Ups. Onzr brugte Featherfall til at få os ned i brønden sikkert. Vi kæmpede bravt mod monsteret og der var åndsvagt mange Crits, så kampen gik ret glat.\n\nDerefter åbnede vi den sammenfaldne del af grotten for at forfølge de Gobliner vi havde hørt flygtede ned i brønden. Vi gik i et helt døgn før vi fandt udgangen næsten 20 mil øst for Phandalin. Vi var udmattede og slog lejr.\n\nDagen efter drog vi tilbage mod Phandalin og stødte ind i nogle gobliner. Vi jagtede dem og Gauthak og Flint formåede at tackle en som vi kunne udspørge. Han blev overtalt til at lede os til deres lejr som vi fandt efter ca. en dags rejse mod øst.\n\nVi fandt en mørk obsidian dør til en underjordisk Duergar mine hvor goblinerne holder til. De har nogle planer med obsidian og Psykiske evne de har fået af en ukendt guddommelig figur.",
+        "order": 12,
+        "lastModified": "2024-03-25T12:00:00Z",
+        "summary": "Efterforskning af de stjålne obsidiansten"
       },
       {
-          "id": "chapter-3",
-          "title": "Rødkappernes Skjulested og Skjulte Sandheder",
-          "content": "De myrdede alt de mødte i hulen undtagen Droop, Nothic, 2 banditter og Glassstaff. \"De lokale helte\" tog et velfortjent hvil og begyndte så dagen med at lede efter deres nyfundne ven og nu også arbejdsgiver Sildar hallwinter. Rugath stødte ind i ham efter en knap så vellykket prutten om prisen og de mødtes senere på den lokale kro. Han tilbyder gruppen en dusør for at uskadeliggøre lederen af Cragmaw stammen i Cragmaw slottet. De talte så med nogle lokale for at opsnuse yderligere informationer. De fik nys om at der er udøde ved noget kaldet \"den gamle ugle brønd\", en Druide som undersøger ruinerne af en gammel by \"tordentræ\", Orker i nærheden af Wyvern klippen. De forhørte den uheldige indehaver af den sovende kæmpe kro som var offer for et mordforsøg, hvilket heldigvis blev afværget af \"heltene\". De fandt frem til en hemmelig indgang til rødkappernes tilholdssted. De forhandlede med delt succes og fejlagtigt med en mystisk monstrøs beboer som formåede at berøve Ohnzr hans magiske ring, til trods for generøs donation af frisk kød. Gruppen udryddede rum efter rum med slyngler og reddede nogle lokale som var taget til fange, røvede nogle grave og snusede sig frem til lederens opholdssted. Han var dog blevet advaret af sin rotte familiar som gav ham mulighed for at stikke af og heltene nåede ikke at indhente ham, men de fandt et brev der beviser at han arbejder med \"den sorte edderkop\" og at glasstav faktisk er Larno Albrekt. De reddede også en ynkelig goblin ved navn Droop som har lovet sin hjælp hvis de skulle mødes igen.",
-          "order": 3,
-          "lastModified": "2024-02-10T12:00:00Z",
-          "summary": "Udforskning af rødkappernes tilholdssted"
+        "id": "chapter-13",
+        "title": "Den Underjordiske Duergar Mine",
+        "content": "Vi starter foran den formodede duergar mine, som er markeret af to store obsidian døre (dobbeltdør).\n\nVi brugte lang tid for at finde en anden vej ind I minen end hoveddøren, og fandt frem til fra vores goblin vejleder at der er en skorsten på bjerget som de tilsyneladende bruger som indgang/udgang. Flint og Rugath fuldstændig slagter den hjælpsomme vejleder, og vi benytter os af hovedindgangen.\n\nDa vi kommer ind møder vi adskillige gobliner med varierende krafter. De har alle en mængde psykiske/psionic over sig, og skader bare voldsomt meget, også når de dør. De dræber endda et par af sine egne ved dette.\n\nEfter at have nedkæmpet disse, møder vi en kæmpe grevling, som ikke ser ud til at vil andet end at raide goblin køkkenet, og have en venlig udveksling med Dharmus. Selvom Dharmus dog er meget tæt på at gå fuld necromancy på den, holder han sig selv tilbag, og klapper den venligt.\n\nVi har fundet et kort inde I minen, som er et kort over det lokale område omkring phandalin. I siden af kortet står disse navne:\n- Djippit crossing\n- Crypt of talhund\n- Talhundereth\n\nDer er fundet en vase tingest som der er fornemmet noget necromancy undead ting omkring den, og indeni er der en stemme som hvisker.\n\nFlint begiver sig ind I en lille tunnel for at se hvor den leder hen. Han finder ud af at den fører ud af minen. På vejen tilbage sidder han fast, og får brug for hjælp af Rugath til at komme ud igen.\n\nDværgeruner hvor der originalt har været 4 men nu er der kun 2 som kan aflæses. På dem står der:\n- Storm\n- Death\n\nVi finder goblinners sovekammer, hvor der er tre gobliner som egentlig kun vil have os til at forlade området. Dette fører naturligvis til at Rugath, Flint og Dharmus fuldstændig decimerer de tre goblins derinde. Særligt Flint, da den ene allernådigst overgiver sig selv.\n\nInde I sovekammeret er der en magisk elevator, som bliver charged med en krystal, som kun Onzhr kan charge. Flint og Rugath er de første som kører ned, men mellem de to er der ikke hjerneceller nok til at returnere elevatoren til resten af holdet. Efter lidt betænkningstid kører den på magisk vis op ad sig selv igen.\n\nBag den barrikaderede dør finder vi nogle ashwithers som er igang med at hamre løs på ingenting. De ser store stærke og onde ud, og Onzhr indleder kampen med en stor fed firebal (31dmg) lige midt I de tre. Det bliver hurtigt fuldt op ad adskillige slag, og vi vinder hurtigt kampen, kun med en lille skramme til Gauthak.\n\nNede I den blå lavasø går der en stenbro ud. For enden af stenbroen er der en stor pyramide.\n\nNede af elevatoren er der tre stier:\n- Flint starter med at gå ad vejen I midten, hvor han finder en muteret Otyugh I en sø af slam. Den spiser af slamet I ét væk.\n- Dharmus sniger sig ad vejen der går op, og finder hurtigt nogle skeletter af duergar dværge som har fået deres hjerner suget ud af mindflayers. Det er tilsyneladende sket for længe siden. Holdet følger efter, og Dharmus fortsætter med at snige sig I forvejen. Dette sker indtil han støder ind I en flammende kæmpe boremaskine, med et bor på størrelse med en varevogn. Dharmus gør sig usynlig, men til ingen nytte, boremaskinen følger efter ham stadig! Den kan høre og lugte ham, som han pisser I bukserne. Han kommer tilbage til resten af holdet, og vi skynder os at smutte tilbage til elevatoren. Maskinen stopper med at følge efter.\n- Da Dharmus nu er usynlig, spejder han forud på vejen nedad. Her finder han at der er en stor spiral af krystaler (??) og en elemental (er der 2-3?)",
+        "order": 13,
+        "lastModified": "2024-03-30T12:00:00Z",
+        "summary": "Udforskning af den underjordiske Duergar mine"
       },
       {
-          "id": "chapter-4",
-          "title": "Konfrontation med Larno Albrek og Wyvern-Orkerne",
-          "content": "De lokale helte, som kommer langvejs fra, hvilede efter en hård kamp mod de mange banditter og fik en behagelig nats søvn. Med undtagelse af Dharmus som oplevede et meget livagtigt mareridt hvor han fik noget nyt læsestof. Med ny energi og Dharmus på slæb talte de med den lokale smed en noget kortfattet dværg og handlede til deres forstående rejse. De drog ud lang triboar ruten og vandrede i timevis uden nogen besværligheder andet end udmattelse, hvorefter de slog lejr for natten og fik en brat opvågning af deres undslupne mål Larno albrek, en troldmand næsten ligeså højrøvet som en anden troldmand. Han havde fået forstærkninger i form af nogle kampsultne hobgobliner. Heldigvis er Thor og Helm med de hellige kriegeres hvert eneste bevægelse og de knap så troende slap også med livet i behold. Det samme kan ikke siges om Larno som ved et tragisk uheld fik splintret sit frosne hoved af en meget angrende tiefling. De forhandlede succesfuldt med den gyselige Agatha i hendes private del af skoven. De mødte en usædvanlig troldmand med ligbleg hud og en tatovering i panden med gyselige forbindelser. De fik afværget en konfrontation med ham og hans utallige omvandrende lig. (Dharmus udtrykte interesse i at få information af ham.) Han gav dem opgaven at fjerne ork truslen i bjergene, hvilket heldigvis var på bordet allerede. Heltene fortsatte deres rejse mod den omtalte wyvern klippe og slog lejr for natten. Denne gang fik de tidligt besøg af de eftersøgte orker som bed over mere end deres stødtænder kunne tygge og de blev hurtigt udryddet. Efter et fejlslaget forsøg på afhøring forsatte de deres hvilen blandt de mange døde orker og den hovedeløse fange.",
-          "order": 4,
-          "lastModified": "2024-02-15T12:00:00Z",
-          "summary": "Konfrontation med Larno Albrek og orkerne"
+        "id": "chapter-14",
+        "title": "Kampen ved Krystalgrotten",
+        "content": "Foran krystal grotten. Vi opdager, at Darmus er forsvundet ved stemmen fra en hviskende dæmon. I søgen efter Darmus, og svar på ondskaben der hærger landet, begiver vi os længere ind i hulen.\n\nGauthak forsøger sig på at snige forbi det store makien-monstrum, men forgæves - den accelererer mod os og hærger området foran obsidian pyramiden. Vi kommer op med planen - om at udløse kraften i de magiske eksplosive krystaller som monstermakinen var nær.\n\nOnzhr formår at antænde de største krystaller i grotten - som udløser en enorm eksplosion der uskadeligere monstermaskinen og dræber alle andre monstre i nærheden. Rugath tænker at Onzhr kvikhed er mere værd end først anskuet.\n\nVi begiver os mod obsidian pyramiden der viser sig at være låst. Den skal åbnes med tankens kraft - men da igen i gruppen ud over Darmus kan udføre dette, så presser Flint og Gauthak døren op, som hurtigt lukker sig efter os.\n\nVi tager en elevator ned i undergrunden hvor vi møder en goblin med en krystal i hovedet - Ruxithid - hun er tydeligt forhekset af krystallen, og udgiver sig for at være tolk for guderne - men hun narre igen, da alle ved at Helm er den eneste sande gud, og han aldrig ville gøre landet ondt. Mine trofaste følgesvende trækker stav og sværd før kampen går i gang - og retfærdigheden er bragt.\n\nVi finder et kort og et bar fanger før vi finder en vej ud fra dette gudsforladte sted!!",
+        "order": 14,
+        "lastModified": "2024-04-05T12:00:00Z",
+        "summary": "Kamp i krystalgrotten og mødet med Ruxithid"
       },
       {
-          "id": "chapter-5",
-          "title": "Afhøring i Orkernes Hule",
-          "content": "Gruppen kæmpede sig vej igennem orkernes hule med rimelig god udfordring. Gauthak blev slået bevidstløs af orkernes leder Bughor axe-biter, som til slut blev halshugget af Rugath efter intens afhøring om hvorvidt orken kendte til nogle orkgrupper som var i ledtog med kæmper. Han fik at vide at der er nogen som arbejder med kæmper og med mennesker, men kunne ikke fortælle hvem de var eller hvor de befinder sig.",
-          "order": 5,
-          "lastModified": "2024-02-20T12:00:00Z",
-          "summary": "Udforskning af orkernes hule"
+        "id": "chapter-15",
+        "title": "Flugten fra Minen",
+        "content": "Vi tager elevatoren op med dem vi har reddet. Hejser dem op med et reb før borremaskinen får fat i os.\n\nVi tager tilbage dertil hvor vi fant et hul i væggen før som vi håber kunne være en udgang og flytter kasserne så vi kan komme forbi hvor overgangnen er styrtet sammen. Onhzr undersøger noget i det døde uhyre imens de andre møder Darmus der tumler ud af det hul vi håbede kunne være en udgang.\n\nHan fortæller kort at det ikke er en udgang men en række tunneler med en sværm af kæmpe store rotter og døde gobliner. Han kan ikke huske hvad der er sket før han vågnede op derinde og får en kort forklaring på hvor vi er.\n\nVi grabbler/misty step til at komme op af krateret hvor elevatoren skulle have været. vi lokker grevlingen med og bevæger os tilbage imod phandalin efter at have studeret det kort vi fant. dumathoin er guden for begravede hemmelighedder og har et stort tempel i Talhund nær starmetalhills makeret på kortet med tre kryser!!!\n\nVi fortæller lidt til Darmus om hvad der er sket på vej tilbage til phandalin og vi følger dem vi redder hjem (de virker trætte og blege). Flint bygger en hytte til vores nye kældedyr med hjælp fra en lokal bonde.\n\nVi får vores første indtjening fra vores dverge ven (Gundren). vi undersøger vores nye magiske items og snakker med søster garliane. Før vi tvivlsomt følger med darmus ud i skoven for at gå i et baghold.",
+        "order": 15,
+        "lastModified": "2024-04-10T12:00:00Z",
+        "summary": "Flugt fra minen og tilbage til Phandalin"
       },
       {
-          "id": "chapter-6",
-          "title": "Thay-Troldmanden og Ghoul-Kampen",
-          "content": "Dharmus taler med Thay mage om besættelse og viser ham sit mærke. Harmun vil have en betaling af Dharmus og vil gøre et ritual klar til at identificere hvad der plager den mørke tiefling. Rugath har et pergament fra ork lederen Brughor axe biter. De kæmper med nogle ghouls på vej tilbage til Phandolin og besejrer dem ( 4 ghouls). De ankommer i phandalin.",
-          "order": 6,
-          "lastModified": "2024-02-25T12:00:00Z",
-          "summary": "Dialog med Thay-troldmand og kamp mod ghouls"
+        "id": "chapter-16",
+        "title": "Bagholdsangrebet og Order of the Gilded Eye",
+        "content": "BAGHOLDSANGREB! Efter et fejlet forsøg på at fratale Broder Holdan i hans mission på at pågribe Dharmus og slæbe ham tilbage til Nemas, begyndte kampen.\n\nPile susede ud af nærliggende buske imod Dharmus og han lavede rullefald til siden og undgik et par af pilene, men blev hårdt skadet. Den brave gruppe hoppede straks ind i kampen, Onzhr med en kæmpe Fireball, der ristede en bueskytte med det samme og skadede mange af fjenderne.\n\nGauthak kom sent til kampen og gjorde Thors storhed synlig for alle ved at kalde lyn ned mod de forfærdelige paladins! Flint pustede sig op og kløvede en mand midt over! Rugath støttede Dharmus og valgte at kæmpe mod paladins, der hylder samme gud som ham selv. Hvordan ser fremtiden ud for ham i hans Orden.\n\nBroder Holdan og hans cronies kæmpede bravt, men Onzhr brugte en Slow spell, der vendte kampen til heltenes fordel. Holdan blev hårdt skadet, og Dharmus så sin chance for at smage den søde retfærdige hævn og med unaturlig fart løb hen til ham og med sine lange sorte fingre træk hjertet ud og knuste det i hånd. (Hvilket gav ham livskræft).\n\nDerefter var kampen så godt som vundet, men ingen måtte undslippe. En af bueskytterne forsøgte at løbe ind i skoven for at overleve og rapportere til HQ. MEN! Rugath, efter at have været paralyseret rejste sig fra jorden, trak en Javelin frem og startede et tilløb, der bringe olympiske atleter til skam og et godt timet Misty Step for at komme i rækkevidde og tyrede den ind i gennem skoven over trækronerne og ramte den flygtende bueskytte med et dødbringende præcist missil. Helms velsignelse er stadig på hans side!\n\nDen eneste overlevende fra Order of the Gilded Eye, var en cleric, der var paralyseret af Onzhr. Vi forsøgte at få noget brugbar information ud af ham, men han var modvillig. Dharmus forsøgte at myrde ham, men Onzhr reddede ham ved at stille sig ind foran og taget et lillebitte Eldrich Blast for sin indsats.\n\nDerefter afhørte vi ham noget mere og forsøgte at beslutte hvad vi skulle gøre med ham. Rugath og Dharmus ville dræbe ham, Onzhr var imod, Gauthak og Flint var lidt ligeglade. Det endte med at Dharmus skar halsen over på ham. Vi tog deres værdier, for god ordens skyld.",
+        "order": 16,
+        "lastModified": "2024-04-15T12:00:00Z",
+        "summary": "Konfrontation med Order of the Gilded Eye"
       },
       {
-          "id": "chapter-7",
-          "title": "Hævn ved Cragmaw-Slottet",
-          "content": "Hævn over gobliner i hideout og angreb på Cragmaw castle. De har taget en doppelganger til fange som arbejder for \"The black spider\".",
-          "order": 7,
-          "lastModified": "2024-03-01T12:00:00Z",
-          "summary": "Angreb på Cragmaw Castle"
+        "id": "chapter-17",
+        "title": "Pyramidevæsner og Dragens Angreb",
+        "content": "Gauthack, Onzhr og Flint Vi tager tilbage til byen for et rest og skal til at finde ud af mere om goblin stederne. Vi møder Gwen på vejen, en dværgkvinde der studerer nærområdet, specielt ruiner, miner og templer. Hun fortæller om et område vi er specielt interesseret i, talhundereth. Det skulle være til Dumathoin gud for miner, hemmeligheder og ædelstene. Der skulle være en stor skat deri.\n\nVi går med hende tilbage. Flint hviler og Gauthak sælger våben. Vi snakker med Gwen igen og får hende til at lede efter det specifikke talhundereth er på kort. Vi bliver bedt om at find en dreng, pip, der ikke er kommet tilbage.\n\nVi går til gården mod sydøst og får der at vide af hans legekammerat Corp at han er gået mod syd efter noget. Vi går mod syd og finder let sporet efter drengen. Vi finder ham og sender ham tilbage imod hans vilje, det tager et strengt blik fra Onzhr og lidt magi. Han fortalte at han fulgte efter pyramide væsner med bordben.\n\nVi leder i en ruin og finder dem hoppende i hullet. Vi overnatter siden det er ved at være mørkt og at vi gerne vil observerer dem og om der kommer flere. Om natten bliver vores kuppel angrebet af en drage. Den slår halen igennem kuplen og flint økser dens hale så flyver den heldigvis væk igen.\n\nVi skyder efter pyramiderne efter gauthak prøver med en venlig fremgangsmetode som ikke virker. Gauthak hopper derefter ned til dem og bliver angrebet hårdt hvor Onzhrs skjold kommer til i undsætning i sidste øjeblik inden han bliver slået ud. De bliver slået ihjel og der bliver ikke fundet meget værdi i ruinen.\n\nEn bog om Marthom grimm – Paladin Dværg, bliver fundet. Vi tager tilbage til byen igen og får noget morgenmad, vi får udpeget talhundereth på kortet af Gwen og hører om hun vil studerer videre for at se om hun kan finde ud af mere.\n\nVi får at vide at der er nogle minere der ikke er kommet tilbage, og får et sted udpeget. Efter en dags vandring kommer vi til bjergkæden og finder hurtigt indgangen. Ved indgangen hører vi mærkelige stemmer der siger \"sssh vær stille\" og \"hvem er det vi kan høre\" igen og igen.\n\nVi går ind i grotten og finder et stort krat monster som vi får has på. Gauthak er igen udfordret hvor han bliver \"spist\" af monsteret lige inden vi får bugt med den. Vi tager tilbage og får gevinst for at få minerne tilbage.",
+        "order": 17,
+        "lastModified": "2024-04-20T12:00:00Z",
+        "summary": "Mødet med Gwen og jagten på pyramidevæsnerne"
       },
       {
-          "id": "chapter-8",
-          "title": "Genoplivning og Rejsen til Wave Echo-Hulen",
-          "content": "Forhører Doppelganger som overbeviser gruppen om at der er en magisk skat i slottet og de vælger at undersøge det. Efterlader Gundren med monstret som skrumper sig fri af rebet og dræber gundren. De slipper en vild owlbear fri og undgår at kæmpe med den og finder deres ven død. De undersøger så lokalet som bæstet var i og finder en scroll of revivify som de bruger på gundren. Derefter tager de tilbage til byen og hviler hvorefter de hastigt bevæger sig mod wave echo cave. De finder stedet med kortet og Gundrens hjælp. Død dværgebror. Angrebet af stirges som de nedkæmper. Hvorefter de løber ind i en gruppe ghouls som de også meget behendigt udrydder.",
-          "order": 8,
-          "lastModified": "2024-03-05T12:00:00Z",
-          "summary": "Gundren dræbes og genoplives"
+        "id": "chapter-18",
+        "title": "Rejsen mod Talhundereth",
+        "content": "Vi talte om de tidligere begivenheder, som f.eks. Hegnet omkring Bessie, en sidequest som Onzhr, Gauthak og Flint var på hvor de reddede nogle minearbejdere og om hvad planen er.\n\nDharmus vil gerne tale med den røde troldmand fra Thei omkring hans mystiske kræfter og lære mere om hvilke væsner der kan stå bag besættelse og har interesse i necromancy.\n\nVores helte bevægede sig imod Talhundereth and Crypt for at følge ledetrådene fra kortet fundet i goblinernes hule. På vejen mødte de Arnold den mægtige, der virkede som en fej kryster af en kriger, men ikke som en dårlig person, selvom han omtalte sig selv i tredje person.\n\nVi talte med ham og hans tre venner, gav dem mad og de viste os vej til krypten hvor de skyndte sig at flygte fra den kommende fare. I hulen mødte vi nogle undead monstre og et muteret væsen, der blev fornærmet da Onzhr beskrev et lille trekantet gummivæsen som \"afskyeligt\".\n\nVi bekæmpede nogle magiske rustninger, nogle støvmider, et spølgelse og en ulækker mand med et lille væsen fra den anden værden. Vi fandt en økse med et magisk håndtag.",
+        "order": 18,
+        "lastModified": "2024-04-25T12:00:00Z",
+        "summary": "Rejsen til Talhundereth og de første kampe"
       },
       {
-          "id": "chapter-9",
-          "title": "Mysterier i Wave Echo-Hulen",
-          "content": "Efter at gruppen har besejret ghouls, der angreb dem, forsøger de klodset at snige sig videre med fuld belysning og bliver set af et flyvende kranium af ukendt magi. De leder videre efter en dværg og spørger en ''vogter'' i form af et flyvende øje der ikke virker til at være helt ved fulde fem. Så finder de en meget vred wraith, de overtaler til at må inspicere hans hus i bytte for nogle magiske sko og finder et skjult kort, der nævner et soltempel. De vælger at komme tilbage senere og dræber i stedet nogle bugbear vagter de har snyt til at to det var en goblin der kom med mad til dem. Gruppen fejler herefter igen i at snige sig ind på modstanderen men dræber behændigt bugbear vagterne og nogle store edderkopper. Til sidst lykkedes det gruppen at få den sorte edderkop til at overgive sig efter en svær kamp med brug af list, eliksirer, magi og mere hp end de have håbet. Men både gundren og hans anden bror er i live!",
-          "order": 9,
-          "lastModified": "2024-03-10T12:00:00Z",
-          "summary": "Udforskning af Wave Echo Cave"
+        "id": "chapter-19",
+        "title": "Kampen i Talhundereth",
+        "content": "Vi lavede et short rest. Ligesom vi var færdige hører Flint puslen ude for døren og ser lys i sprækken af døren. Vi gør klar og springer ud af døren. Hahaaaa Gauthak kalder ud og Flint svarer, han stikker hovedet ud af døren ved siden af rummet vi gik ind i og vi beretter kort om vores eventyr og snakker om arnold og hans forfærdede ridere.\n\nVi hører stemmer for enden af trappen og går straks derned. Vi ser en dværg dræbe en skabning. Dværgen går til siden. De er begge to gennemsigte. Vi går ind i rummet for at se hvad det handler om, det virker ikke til dværgen ænser os. Da vi alle er kommet ind i rummet bliver vi angrebet af et tentakkel monster. Den har vilde psykic angreb og grable tentakler.\n\nDen bliver gjort bugt med efter nogle problemer. Vi fortsætter ind igennem næste dør hvor der er et underligt køkken. Ovnen virker med brandene sten som ikke kan rokkes. Ved siden af finder Flint nogle spændende genstande i en rygsæk. Onzhr finder noget der tyder på et hemmeligt rum, og da Flint kommer over og trykker på væggen går en dør op.\n\nDer står en drow bagved som er meget overrasket. De er på vagt og trækker våben og snakker undercommon som Onzhr heldigvis forstår. Efter en lang snak frem og tilbage får Onzhr fundet ud af at vi har noget til fælles. De vil finde deres far som er blevet taget af culten og vi vil gerne kæmpe os længere ind så vi slår os sammen.\n\nVi hviler til at være klar til hvad der lyder som en stor kamp, og efter følger vi drowsne ind hvor de tænker de holder til. Vi går ind og hører nogle stemmer og Onzhr sætter gang i festen med en fireball.\n\nDer er mange fjender, pyramider, drow, og mærkelige skabninger. Kampen er vild og flere af vores nye allierede falder til pyramider og andre skader. De begynder at flyve hvor Onzhr får Flint til at flyve til modvirkning. Alle hjælpes ad med at få bekæmpet modstanderne og drowenes far bliver skånet som de ønskede det, med en god del held.\n\nDer bliver undersøgt det hele og planlagt at holde hvil i biblioteket, men her kommer to golems til live og ny kamp foretages. Alle er trætte, sårede, og har ikke mange resourcer tilbage. Det lykkes lige at få dem kæmpet ned med mange slag og effektiv magi.",
+        "order": 19,
+        "lastModified": "2024-04-30T12:00:00Z",
+        "summary": "Udforskning af Talhundereth og alliance med drow"
       },
       {
-          "id": "chapter-10",
-          "title": "Den Endelige Konfrontation",
-          "content": "Dharmus besættes af sin følgesvend og forsøger at dræbe deres fange, men Ohnzr stiller sig imellem og tager slaget. Dharmus opdages af en scout fra Order of the gilded eye som undslipper Dharmus' forfølgelse. Gruppen holder vagt ved Nezznar indtil han hentes af en gruppe riddere fra Lords alliance som vil tage ham med til Neverwinter. De får besked om at de må få den gamle adelvilla på bakken og genopbygge den. De drager derefter tilbage til grotten for at rydde de sidste farer så den kan blive driftbar igen. De udrydder en gruppe skeletter som Dharmus vælger at destruere med Shatter hvilket næsten slår Rugath ihjel (20 dmg). Han er forståeligt meget utilfreds. Rugath beskadiger sin hammer i forsøg på at åbne en dværg lavet strongbox og de splintrer et koben.",
-          "order": 10,
-          "lastModified": "2024-03-15T12:00:00Z",
-          "summary": "Endelig konfrontation og oprydning"
+        "id": "chapter-20",
+        "title": "Skaberen af Pyramidemonstrene",
+        "content": "Efter et hvil og en urolig nat fra fjender der forsøgte at åbner døren og Onzhr og Flints diskusion, så begiver vi os længere ind i Temple of thalhundred, hvor vi finder en skaber af de små pyramideformede monstre.\n\nDen er frastødende og mægtig men efter en hårdkamp med lidt friendlig fire, får vi besejret monsteret. I vores søgen på svar vælter Gauthak den store dværge statue men vi bliver ikke klogere, så vi må undersøge bogen vi fandt hvor vi finder nøglen til at åbne dørene til crypterne.\n\nJeg mærker hurtigt hvordan de døde hærsker her og med stor magt - og med højt mod kaster vi os ud i en kamp med de døde vagter der viser sig at være en større udfordring end forventet.",
+        "order": 20,
+        "lastModified": "2024-05-05T12:00:00Z",
+        "summary": "Konfrontation med pyramidemonstrenes skaber"
       }
+  
   ],
   "storyProgress": {
     "currentChapter": "chapter-1",
