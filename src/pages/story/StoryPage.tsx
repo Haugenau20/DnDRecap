@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import BookViewer from '../components/features/story/BookViewer';
-import Typography from '../components/core/Typography';
-import Breadcrumb from '../components/layout/Breadcrumb';
-import SlidingChapters from '../components/features/story/SlidingChapters';
-import { useStory } from '../context/StoryContext';
+import BookViewer from '../../components/features/story/BookViewer';
+import Typography from '../../components/core/Typography';
+import Breadcrumb from '../../components/layout/Breadcrumb';
+import SlidingChapters from '../../components/features/story/SlidingChapters';
+import { useStory } from '../../context/StoryContext';
 import { Bookmark, Menu } from 'lucide-react';
-import Button from '../components/core/Button';
+import Button from '../../components/core/Button';
 
 const StoryPage: React.FC = () => {
   const navigate = useNavigate();

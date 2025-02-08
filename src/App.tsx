@@ -11,10 +11,12 @@ import Layout from './components/layout/Layout';
 
 // Import pages
 import HomePage from './pages/HomePage';
-import StoryPage from './pages/StoryPage';
+import StoryPage from './pages/story/StoryPage';
 import QuestsPage from './pages/QuestsPage';
 import NPCsPage from './pages/NPCsPage';
 import LocationsPage from './pages/LocationsPage';
+import StorySelection from './pages/story/index';
+import SagaPage from './pages/story/SagaPage';
 
 const App: React.FC = () => {
   return (
@@ -27,8 +29,10 @@ const App: React.FC = () => {
               <Layout>
                 <Routes>
                   <Route path="/" element={<HomePage />} />
-                  <Route path="/story" element={<StoryPage />} />
-                  <Route path="/story/:chapterId" element={<StoryPage />} />
+                  <Route path="/story" element={<StorySelection />} />
+                  <Route path="/story/chronicles" element={<StoryPage />} />
+                  <Route path="/story/chronicles/:chapterId" element={<StoryPage />} />
+                  <Route path="/story/saga" element={<SagaPage />} />
                   <Route path="/quests" element={<QuestsPage />} />
                   <Route path="/npcs" element={<NPCsPage />} />
                   <Route path="/locations" element={<LocationsPage />} />
