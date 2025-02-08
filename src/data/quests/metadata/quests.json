@@ -1,6 +1,72 @@
 {
     "quests": [
       {
+        "id": "find-gundren",
+        "title": "Find Gundren Rockseeker og Sildar Hallwinter",
+        "description": "Undersøg og find Gundren Rockseeker og Sildar Hallwinter",
+        "status": "completed",
+        "background": "Gundren Rockseeker og Sildar Hallwinter var på vej mod byen Phandalin, da de blev overfaldet og er sidenhen ikke blevet set.",
+        "objectives": [
+          {
+            "id": "obj-1",
+            "description": "Tal med lokale i Phandalin",
+            "completed": true
+          },
+          {
+            "id": "obj-2",
+            "description": "Udforsk Cragmaw Hideout",
+            "completed": true
+          },
+          {
+            "id": "obj-3",
+            "description": "Befri Sildar Hallwinter",
+            "completed": true
+          },
+          {
+            "id": "obj-4",
+            "description": "Find Cragmaw Castle",
+            "completed": true
+          },
+          {
+            "id": "obj-5",
+            "description": "Befri Gundren Rockseeker",
+            "completed": true
+          }
+        ],
+        "leads": [
+          "De forsvandt på Triboar Trail nordvest for Phandalin.",
+          "Sildar fortalte at Gundren og kortet med stor sandsylighed befinder sig i Cragmaw Castle.",
+          "Droop har sagt at Cragmaw Castle ligger et par kilomet inde i Neverwinter Forest umiddelbart nord for Phandalin"
+        ],
+        "keyLocations": [
+          {
+            "name": "Triboar Trail",
+            "description": "Vejen som går vest/øst fra The High Road og til Conyberry."
+          },
+          {
+            "name": "Cragmaw Hideout",
+            "description": "En naturlig grotte som er under kontrol af en Bugbear og hans goblin håndlangere."
+          },
+          {
+            "name": "Cragmaw Castle",
+            "description": "Faldefærdigt slot som bliver brugt af Den Sorte Edderkop og dens håndlangere som opholdssted."
+          }
+        ],
+        "importantNPCs": [],
+        "relatedNPCIds": ["gundren-rockseeker", "sildar-hallwinter"],
+        "complications": [
+          "Det er ikke sikkert at Gundren og Sildar er i live længere.",
+          "Gundren har et vigtigt kort på sig, som ikke må falde i hænderne på fjenden"
+        ],
+        "rewards": [
+          "penge?",
+          "information?"
+        ],
+        "location": "phandalin",
+        "levelRange": "1-2",
+        "dateAdded": ""
+      },
+      {
         "id": "missing-merchant",
         "title": "The Missing Merchant",
         "description": "Investigate the disappearance of a wealthy merchant from the city",
