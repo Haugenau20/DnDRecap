@@ -1,11 +1,15 @@
 // pages/HomePage.tsx
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Typography from '../components/core/Typography';
 import Card from '../components/core/Card';
 import Button from '../components/core/Button';
 import { SearchBar } from '../components/shared/SearchBar';
+import LatestChapter from '../components/features/story/LatestChapter';
 import { Book, Scroll, Users, MapPin } from 'lucide-react';
+
+// Import story data
+import storyData from '../data/story/story.json';
 
 /**
  * Interface for quick access section items
@@ -22,6 +26,12 @@ interface QuickAccessItem {
  */
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
+
+  // Get the latest chapter from the story data
+  const latestChapter = useMemo(() => {
+    const chapters = storyData.chapters;
+    return chapters.length > 0 ? chapters[chapters.length - 1] : null;
+  }, []);
 
   // Quick access section items
   const quickAccessItems: QuickAccessItem[] = [
@@ -98,19 +108,31 @@ const HomePage: React.FC = () => {
           <Typography variant="h2">
             Recent Activity
           </Typography>
-          <Button variant="outline" size="sm">
-            View All
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => navigate('/story/chronicles')}
+          >
+            View All Chapters
           </Button>
         </div>
+
         <div className="space-y-4">
-          {/* Placeholder for recent activity items */}
-          <Card>
-            <Card.Content>
-              <Typography color="secondary">
-                TODO: Make this be the latest chapter entry
-              </Typography>
-            </Card.Content>
-          </Card>
+          {latestChapter ? (
+            <LatestChapter chapter={latestChapter} />
+          ) : (
+            <Card>
+              <Card.Content className="text-center py-8">
+                <Book className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+                <Typography variant="h3" className="mb-2">
+                  No Chapters Available
+                </Typography>
+                <Typography color="secondary">
+                  Start your adventure by adding your first chapter.
+                </Typography>
+              </Card.Content>
+            </Card>
+          )}
         </div>
       </section>
     </div>

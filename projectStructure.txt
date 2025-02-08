@@ -7,6 +7,7 @@ DnDRecap
 │   │   ├── types
 │   │   │   ├── story.ts
 │   │   │   ├── search.ts
+│   │   │   ├── saga.ts
 │   │   │   ├── quest.ts
 │   │   │   ├── npc.ts
 │   │   │   └── location.ts
@@ -17,7 +18,10 @@ DnDRecap
 │   │   │   │   └── SearchService.ts
 │   │   │   └── index.ts
 │   │   ├── pages
-│   │   │   ├── StoryPage.tsx
+│   │   │   ├── story
+│   │   │   │   ├── StoryPage.tsx
+│   │   │   │   ├── SagaPage.tsx
+│   │   │   │   └── index.tsx
 │   │   │   ├── QuestsPage.tsx
 │   │   │   ├── NPCsPage.tsx
 │   │   │   ├── LocationsPage.tsx
@@ -28,7 +32,8 @@ DnDRecap
 │   │   │   └── useNavigation.ts
 │   │   ├── data
 │   │   │   ├── story
-│   │   │   │   └── story.json
+│   │   │   │   ├── story.json
+│   │   │   │   └── saga.json
 │   │   │   ├── quests
 │   │   │   │   └── metadata
 │   │   │   │       └── quests.json
@@ -88,8 +93,10 @@ DnDRecap
 │   ├── tsconfig.json
 │   ├── todo.txt
 │   ├── tailwind.config.js
+│   ├── saga.txt
 │   ├── requirements.md
 │   ├── recaps.txt
+│   ├── questsTemplate.txt
 │   ├── projectStructure.txt
 │   ├── postcss.config.js
 │   ├── placeHolder.md

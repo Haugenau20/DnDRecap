@@ -22,7 +22,9 @@ $excludePatterns = @(
     "^.*\\package-lock.json$", # Exclude package-lock.json file
     "^.*\\copyfiles.ps1$",     # This file
     "^.*\\dirTree.ps1$",
-    "^.*.png"
+    "^.*.png",
+    "^.*\\recaps.txt",
+    "^.*\\*Template.txt"
 )
 
 # Get all files recursively, excluding specified patterns
