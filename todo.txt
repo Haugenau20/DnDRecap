@@ -1,6 +1,6 @@
 Remove black borders around Related NPC, Key Locations, Related Quests, etc. buttons
 When filtering locations all location shows even tough only one fits the filter. Only the ones that fit the filter should be shown.
-Move the chapter overview on the story page to a tab that appears when a chapter button is pressed.
+Remove StoryProgress feature.
 
 Fix Navigation First:
 

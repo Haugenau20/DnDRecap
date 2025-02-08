@@ -32,12 +32,25 @@ const BookViewer = ({
 
   // Split content into pages
   useEffect(() => {
-    const wordsPerPage = 250;
-    const words = content.split(' ');
+    const characterLimit = 2000; // Adjust this number to control content per page
+    let currentPage = '';
     const pageArray = [];
     
-    for (let i = 0; i < words.length; i += wordsPerPage) {
-      pageArray.push(words.slice(i, i + wordsPerPage).join(' '));
+    const words = content.split(' ');
+    
+    for (let i = 0; i < words.length; i++) {
+      const potentialPage = currentPage + (currentPage ? ' ' : '') + words[i];
+      
+      if (potentialPage.length > characterLimit) {
+        pageArray.push(currentPage);
+        currentPage = words[i];
+      } else {
+        currentPage = potentialPage;
+      }
+    }
+    
+    if (currentPage) {
+      pageArray.push(currentPage);
     }
     
     setPages(pageArray);
@@ -153,13 +166,15 @@ const BookViewer = ({
           </Button>
         </div>
 
-        {/* Book Content Area with Fixed Height and Padding for Navigation */}
-        <div className="relative min-h-[600px] bg-amber-50">
-          {/* Content Container with Bottom Padding */}
-          <div className="max-w-2xl mx-auto p-8 pb-20">
-            <Typography className="leading-relaxed font-serif whitespace-pre-line">
-              {pages[currentPage - 1]}
-            </Typography>
+        {/* Book Content Area with Fixed Height */}
+        <div className="relative bg-amber-50">
+          {/* Content Container with Fixed Height */}
+          <div className="h-[800px] max-w-2xl mx-auto p-8 overflow-hidden">
+            <div className="h-full overflow-hidden">
+              <Typography className="leading-relaxed font-serif whitespace-pre-line">
+                {pages[currentPage - 1]}
+              </Typography>
+            </div>
           </div>
 
           {/* Fixed Navigation Bar */}

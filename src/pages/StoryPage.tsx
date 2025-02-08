@@ -114,7 +114,7 @@ const StoryPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <Bookmark className="text-blue-600" />
               <Typography color="secondary">
-                Reading Chapter {currentChapter?.order} of {chapters.length}
+                Reading Chapter {currentChapter?.order || 0} of {chapters.length}
               </Typography>
             </div>
           </div>
