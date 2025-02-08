@@ -62,12 +62,13 @@ const StoryPage: React.FC = () => {
     }
   }, [chapterId, getChapterById, storyProgress.currentChapter, navigateToPage, updateCurrentChapter]);
 
+  // For tracking reading progress
   const handlePageChange = (page: number) => {
     if (currentChapter) {
       updateChapterProgress(currentChapter.id, {
         lastPosition: page,
         lastRead: new Date(),
-        isComplete: false
+        isComplete: page === 1 // Mark as complete if single page
       });
     }
   };

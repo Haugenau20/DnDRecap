@@ -19,6 +19,11 @@ interface NavigationState {
       page: number;
     };
   };
+  /** Chapter progress tracking */
+  chapterProgress: Record<string, {
+    completed: boolean;
+    lastRead: string;
+  }>;
   /** Breadcrumb trail */
   breadcrumbs: string[];
 }
@@ -63,6 +68,7 @@ const defaultState: NavigationState = {
       page: 1
     }
   },
+  chapterProgress: {},
   breadcrumbs: []
 };
 
@@ -126,7 +132,7 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   /**
    * Update reading progress
    */
-  const updateReadingProgress = useCallback((chapter: string, page: number) => {
+  const updateReadingProgress = useCallback((chapter: string, page: number, isComplete: boolean = false) => {
     setState(prev => ({
       ...prev,
       readingProgress: {
@@ -135,6 +141,13 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         lastPosition: {
           chapter: prev.readingProgress.currentChapter,
           page: prev.readingProgress.currentPage
+        }
+      },
+      chapterProgress: {
+        ...prev.chapterProgress,
+        [chapter]: {
+          completed: isComplete,
+          lastRead: new Date().toISOString()
         }
       }
     }));

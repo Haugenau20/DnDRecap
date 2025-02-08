@@ -8,12 +8,16 @@ const StorySidebar = () => {
   const { navigateToPage } = useNavigation();
   const { chapters, storyProgress } = useStory();
   
-  // Calculate reading progress based on chapters that have been accessed
+  // Calculate reading progress
   const readingProgress = useMemo(() => {
     const readChapters = chapters.filter(chapter => {
-      // Consider a chapter as read if it exists in the progress or if it's the current chapter
-      return chapter.id === storyProgress.currentChapter || 
-             storyProgress.chapterProgress[chapter.id] !== undefined;
+      // Consider a chapter as read if:
+      // 1. It has progress tracking
+      // 2. It's the current chapter
+      // 3. It has a lastRead date
+      const progress = storyProgress.chapterProgress[chapter.id];
+      return (progress !== undefined) || 
+             (chapter.id === storyProgress.currentChapter);
     });
 
     return {

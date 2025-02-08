@@ -8,7 +8,7 @@ import Button from '../../core/Button';
 interface BookViewerProps {
   content: string;
   title: string;
-  onPageChange?: (page: number) => void;
+  onPageChange?: (page: number, isComplete?: boolean) => void;
   onNextChapter?: () => void;
   onPreviousChapter?: () => void;
   hasNextChapter?: boolean;
@@ -51,7 +51,15 @@ const BookViewer = ({
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
       onPageChange?.(newPage);
+      
+      // Mark as complete if we're on the last page
+      const isComplete = newPage === totalPages;
+      if (isComplete) {
+        onPageChange?.(newPage, true);
+      }
     } else if (newPage > totalPages && hasNextChapter) {
+      // Mark current chapter as complete before moving to next
+      onPageChange?.(totalPages, true);
       onNextChapter?.();
     } else if (newPage < 1 && hasPreviousChapter) {
       onPreviousChapter?.();
