@@ -5,14 +5,14 @@
         "name": "Gundren Rockseeker",
         "title": "Minearbejder",
         "status": "active",
-        "race": "Dwarf",
+        "race": "Dværg",
         "occupation": "Minearbejder",
         "location": "Wave Echo Cave",
         "relationship": "friendly",
-        "description": "Dwarf",
-        "appearance": "Dwarf",
-        "personality": "Dwarf",
-        "background": "Dwarf",
+        "description": "Dværg",
+        "appearance": "Dværg",
+        "personality": "Dværg",
+        "background": "Dværg",
         "connections": {
           "relatedNPCs": ["nundren-rockseeker", ""],
           "affiliations": ["Miners Guild"],
@@ -30,14 +30,14 @@
         "name": "Nundren Rockseeker",
         "title": "Minearbejder",
         "status": "deceased",
-        "race": "Dwarf",
+        "race": "Dværg",
         "occupation": "Minearbejder",
         "location": "Wave Echo Cave",
         "relationship": "friendly",
-        "description": "Dwarf",
-        "appearance": "Dwarf",
-        "personality": "Dwarf",
-        "background": "Dwarf",
+        "description": "Dværg",
+        "appearance": "Dværg",
+        "personality": "Dværg",
+        "background": "Dværg",
         "connections": {
           "relatedNPCs": ["gundren-rockseeker", ""],
           "affiliations": ["Miners Guild"],
@@ -51,16 +51,16 @@
         ]
       },
       {
-        "id": "rivibidel",
-        "name": "Rivibidel",
+        "id": "rivibiddel",
+        "name": "Rivibiddel",
         "title": "??",
         "status": "active",
-        "race": "??",
-        "occupation": "??",
+        "race": "Gnome",
+        "occupation": "Historiker",
         "location": "Crypt of Talhund",
         "relationship": "neutral",
-        "description": "??",
-        "appearance": "??",
+        "description": "En lille historiker med en forkærlighed for Dumathoin",
+        "appearance": "Ældre gnome som går med stok, sidetaske og bærer en brun fedora på hovedet.",
         "personality": "??",
         "background": "??",
         "connections": {
@@ -72,6 +72,30 @@
           {
             "date": "2024-11-22",
             "text": "Hakkede en stump af den grønne smaragd"
+          }
+        ]
+      },
+      {
+        "id": "droop",
+        "name": "Droop",
+        "title": "Husholder af Tresendar Manor",
+        "status": "active",
+        "race": "Goblin",
+        "occupation": "Husholder",
+        "location": "Tresendar Manor",
+        "relationship": "friendly",
+        "description": "Droop er en lille konfliktsky goblin med lavt selvværd",
+        "appearance": "Lille grøn goblin",
+        "personality": "Konfliktsky",
+        "background": "Slave til Rødkapperne",
+        "connections": {
+          "relatedNPCs": [],
+          "affiliations": [],
+          "relatedQuests": ["udryd-lilla-goblins"]
+        },
+        "notes": [
+          {
+            "text": "Kæmpede mod boggarts, dræbte en, og sendte bud efter heltene"
           }
         ]
       }

@@ -9,7 +9,7 @@
         "features": [
           "Hjemsted til de lokale helte"
         ],
-        "connectedNPCs": ["harpen-vester", "halia-thornton", "søster-garale", "droop", "sildar-hallwinter", "larno-glasstav-albrak"],
+        "connectedNPCs": ["harbin-wester", "halia-thornton", "søster-garaele", "droop", "sildar-hallwinter", "larno-glasstav-albrek", "droop"],
         "relatedQuests": ["udryd-lilla-goblins"],
         "notes": [
           {
@@ -20,7 +20,7 @@
             "tags": [""]
           }
         ],
-        "tags": ["city", ""],
+        "tags": ["town", "redkapper"],
         "lastVisited": "yyyy-mm-dd"
       },
       {
@@ -29,7 +29,6 @@
         "type": "poi",
         "status": "discovered",
         "description": "Det er en mine",
-        "parentId": "phandalin",
         "features": [
           "Mine som bliver kørt af Gundren Rockseeker"
         ],
@@ -80,7 +79,7 @@
         "features": [
           ""
         ],
-        "connectedNPCs": ["rivibidel"],
+        "connectedNPCs": ["rivibiddel"],
         "relatedQuests": [""],
         "notes": [
           {

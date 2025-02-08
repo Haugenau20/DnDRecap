@@ -57,6 +57,7 @@ DnDRecap
 │   │   │   │   ├── story
 │   │   │   │   │   ├── TableOfContents.tsx
 │   │   │   │   │   ├── StoryViewer.tsx
+│   │   │   │   │   ├── SlidingChapters.tsx
 │   │   │   │   │   ├── ChapterNavigation.tsx
 │   │   │   │   │   └── BookViewer.tsx
 │   │   │   │   ├── quests
@@ -97,7 +98,6 @@ DnDRecap
 │   ├── npcTemplate.txt
 │   ├── locationsTemplate.txt
 │   ├── highLevelDesign.md
-│   ├── eventyretFraPhandelver.txt
 │   ├── dirTree.ps1
 │   ├── copyfiles.ps1
 │   └── .gitignore
