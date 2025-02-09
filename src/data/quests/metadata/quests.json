@@ -67,65 +67,66 @@
       "dateAdded": ""
     },
     {
-      "id": "",
-      "title": "",
-      "description": "",
-      "status": "",
-      "background": "",
+      "id": "lokaliser-boggarts",
+      "title": "Lokaliser Boggarts",
+      "description": "Find ud af hvor, og hvor mange, Boggarts der er",
+      "status": "active",
+      "background": "Byvagten Elric Stonehelm er anklaget for at have skudt sin kollega og ven Garen Thorn. Elric påstår at han skød efter et \"lilla goblin væsen\" som omdirigerede hans pil, så dan ramte Garen. Efter at have fanget Elric og bragt ham til vagtkaptajnen Theldas Virodurim, har kaptajnen bedt heltene om at finde disse væsener, finde ud af hvor mange der er, og hvor de kommer fra.",
       "objectives": [
         {
           "id": "obj-1",
-          "description": "",
+          "description": "Find ud af hvor Boggartsne er.",
           "completed": false
         },
         {
           "id": "obj-2",
-          "description": "",
+          "description": "Find ud af hvor mange af dem der er.",
           "completed": false
         },
         {
           "id": "obj-3",
-          "description": "",
+          "description": "Find ud af hvor de kommer fra.",
           "completed": false
         }
       ],
       "leads": [
-        "",
+        "Onzhr havde remedier til at lokke dem frem, disse er dog for nyligt blevet stjålet fra vores hjem i Tresendar Manor.",
         "",
         ""
       ],
       "keyLocations": [
         {
-          "name": "",
-          "description": ""
+          "name": "Neverwinter",
+          "description": "på en patruljerute 2 timer nord for Neverwinter blev en Boggart første gang set af Elric Stonehelm."
         },
         {
-          "name": "",
-          "description": ""
+          "name": "Tresendar Manor",
+          "description": "Boggarts brudte ind i heltenes hjem og stjal et vigtigt remedie til at lokke dem frem."
         }
       ],
       "importantNPCs": [
         {
-          "name": "",
-          "description": ""
+          "name": "Theldas Virodurim",
+          "description": "Vagtkaptajn i Neverwinter, og er manden som har givet denne opgave til heltene."
         },
         {
-          "name": "",
-          "description": ""
+          "name": "Elric Stonehelm",
+          "description": "Han var den første mand til at se og opleve Boggartsens magi på en patruljerute nord for Neverwinter"
+        },
+        {
+          "name": "Droop",
+          "description": "Droop var hjemme i Tresendar Manor da Boggartsne brød ind. Han dræbte en og sendte besked efter heltene."
         }
       ],
-      "relatedNPCIds": ["", ""],
+      "relatedNPCIds": ["droop", "Theldas Virodurim", "Elric Stonehelm"],
       "complications": [
-        "",
-        "",
-        ""
+        "Det remedie som Onzhr havde til at lokke dem frem er nu blevet stjålet."
       ],
       "rewards": [
-        "",
-        ""
+        "Ukendt"
       ],
-      "location": "",
-      "levelRange": "-",
+      "location": "Ukendt",
+      "levelRange": "",
       "dateAdded": "yyyy-mm-dd"
     },
     {

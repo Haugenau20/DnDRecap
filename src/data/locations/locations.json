@@ -15,7 +15,7 @@
           "Sleeping Giant"
         ],
         "connectedNPCs": ["harbin-wester", "halia-thornton", "søster-garaele", "sildar-hallwinter", "larno-glasstav-albrek"],
-        "relatedQuests": ["udryd-lilla-goblins"],
+        "relatedQuests": ["lokaliser-boggarts"],
         "notes": [
           {
             "id": "note-1",
