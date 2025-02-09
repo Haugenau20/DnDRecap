@@ -67,6 +67,68 @@
       "dateAdded": ""
     },
     {
+      "id": "",
+      "title": "",
+      "description": "",
+      "status": "",
+      "background": "",
+      "objectives": [
+        {
+          "id": "obj-1",
+          "description": "",
+          "completed": false
+        },
+        {
+          "id": "obj-2",
+          "description": "",
+          "completed": false
+        },
+        {
+          "id": "obj-3",
+          "description": "",
+          "completed": false
+        }
+      ],
+      "leads": [
+        "",
+        "",
+        ""
+      ],
+      "keyLocations": [
+        {
+          "name": "",
+          "description": ""
+        },
+        {
+          "name": "",
+          "description": ""
+        }
+      ],
+      "importantNPCs": [
+        {
+          "name": "",
+          "description": ""
+        },
+        {
+          "name": "",
+          "description": ""
+        }
+      ],
+      "relatedNPCIds": ["", ""],
+      "complications": [
+        "",
+        "",
+        ""
+      ],
+      "rewards": [
+        "",
+        ""
+      ],
+      "location": "",
+      "levelRange": "-",
+      "dateAdded": "yyyy-mm-dd"
+    },
+    {
       "id": "missing-merchant",
       "title": "The Missing Merchant",
       "description": "Investigate the disappearance of a wealthy merchant from the city",
