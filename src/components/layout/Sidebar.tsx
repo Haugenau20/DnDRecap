@@ -1,14 +1,19 @@
-// components/layout/Sidebar.tsx
+// src/components/layout/Sidebar.tsx
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import StorySidebar from './sidebars/StorySidebar';
 import QuestSidebar from './sidebars/QuestSidebar';
+import buildConfig from '../../config/buildConfig';
 
 const Sidebar: React.FC = () => {
+  // If sidebar feature is disabled, don't render anything
+  if (!buildConfig.features.enableSidebar) {
+    return null;
+  }
+
   const location = useLocation();
   const pathname = location.pathname;
 
-  // Determine which sidebar content to show based on the current route
   const renderSidebarContent = () => {
     if (pathname.startsWith('/story')) {
       return <StorySidebar />;
@@ -18,12 +23,10 @@ const Sidebar: React.FC = () => {
       return <QuestSidebar />;
     }
     
-    // Add other sidebar contents as they are implemented
     return null;
   };
 
-  // Only show sidebar on routes that have sidebar content
-  const shouldShowSidebar = null;//pathname.startsWith('/story') || pathname.startsWith('/quests'); // Add other routes as needed
+  const shouldShowSidebar = pathname.startsWith('/story') || pathname.startsWith('/quests');
 
   if (!shouldShowSidebar) {
     return null;
