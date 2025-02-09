@@ -128,19 +128,24 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
               )}
             </div>
           )}
-
-          {/* Description */}
-          <Typography color="secondary" className="text-sm">
-            {npc.description}
-          </Typography>
         </div>
 
         {/* Expanded Content */}
         {isExpanded && (
           <div className="space-y-4 pt-4 border-t border-gray-100">
             {/* Additional Details */}
-            {(npc.appearance || npc.personality || npc.background) && (
+            {(npc.description || npc.appearance || npc.personality || npc.background) && (
               <div className="space-y-3">
+                {npc.description && (
+                  <div>
+                  <Typography variant="body-sm" className="font-medium">
+                    Description
+                  </Typography>
+                  <Typography variant="body-sm" color="secondary">
+                    {npc.description}
+                  </Typography>
+                  </div>
+                )}
                 {npc.appearance && (
                   <div>
                     <Typography variant="body-sm" className="font-medium">
