@@ -6,14 +6,13 @@ import Card from '../../core/Card';
 import Button from '../../core/Button';
 import { useQuests } from '../../../hooks/useQuests';
 import { 
-  User, 
-  MapPin, 
-  Crown, 
-  Scroll,
+  ChevronDown, 
+  ChevronUp, 
+  MapPin,
   Users,
-  ChevronDown,
-  ChevronUp,
-  CalendarDays
+  Scroll,
+  Calendar,
+  Heart
 } from 'lucide-react';
 
 interface NPCCardProps {
@@ -25,6 +24,22 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
   const navigate = useNavigate();
   const { getQuestById } = useQuests();
 
+  // Function to get status color
+  const getStatusColor = (status: string): string => {
+    switch (status) {
+      case 'active':
+        return 'text-green-500';
+      case 'deceased':
+        return 'text-red-500';
+      case 'missing':
+        return 'text-yellow-500';
+      case 'unknown':
+        return 'text-blue-500';
+      default:
+        return 'text-gray-500';
+    }
+  };
+
   // Function to get relationship color
   const getRelationshipColor = (relationship: string): string => {
     switch (relationship) {
@@ -34,8 +49,10 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
         return 'text-red-500';
       case 'neutral':
         return 'text-gray-500';
-      default:
+      case 'unknown':
         return 'text-blue-500';
+      default:
+        return 'text-gray-500';
     }
   };
 
@@ -52,32 +69,15 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
     <Card>
       <Card.Content className="space-y-4">
         {/* NPC Header */}
-        <div className="relative">
-          <User className={`mt-1 ${getRelationshipColor(npc.relationship)} ${npc.status === 'deceased' ? 'opacity-50' : ''}`} size={24} />
-          {npc.status === 'deceased' && (
-            <svg
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-500"
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <line x1="8" y1="8" x2="24" y2="24" />
-              <line x1="24" y1="8" x2="8" y2="24" />
-            </svg>
-          )}
-          <div className="flex-1">
-            <Typography variant="h4">
-              {npc.name}
+        <div className="flex-1">
+          <Typography variant="h4">
+            {npc.name}
+          </Typography>
+          {npc.title && (
+            <Typography color="secondary" className="mt-1">
+              {npc.title}
             </Typography>
-            {npc.title && (
-              <Typography color="secondary" className="mt-1">
-                {npc.title}
-              </Typography>
-            )}
-          </div>
+          )}
         </div>
 
         {/* Basic Info */}
@@ -88,7 +88,7 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
               <Typography variant="body-sm" className="font-medium">
                 Status:
               </Typography>
-              <Typography variant="body-sm" color="secondary">
+              <Typography variant="body-sm" className={`font-medium ${getStatusColor(npc.status)}`}>
                 {npc.status.charAt(0).toUpperCase() + npc.status.slice(1)}
               </Typography>
             </div>
@@ -96,7 +96,7 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
               <Typography variant="body-sm" className="font-medium">
                 Relationship:
               </Typography>
-              <Typography variant="body-sm" color="secondary">
+              <Typography variant="body-sm" className={`font-medium ${getRelationshipColor(npc.relationship)}`}>
                 {npc.relationship.charAt(0).toUpperCase() + npc.relationship.slice(1)}
               </Typography>
             </div>
@@ -107,7 +107,7 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
             <div className="space-y-2">
               {npc.occupation && (
                 <div className="flex items-center gap-2">
-                  <Crown size={16} className="text-gray-400" />
+                  <Heart size={16} className="text-gray-400" />
                   <Typography variant="body-sm">
                     {npc.occupation}
                   </Typography>
@@ -135,7 +135,7 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
           </Typography>
         </div>
 
-        {/* Rest of the component remains the same */}
+        {/* Expanded Content */}
         {isExpanded && (
           <div className="space-y-4 pt-4 border-t border-gray-100">
             {/* Additional Details */}
@@ -174,7 +174,7 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
               </div>
             )}
 
-            {/* Related Quests*/}
+            {/* Related Quests */}
             {npc.connections.relatedQuests.length > 0 && (
               <div>
                 <Typography variant="h4" className="mb-2">
@@ -229,7 +229,7 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
                     className="p-3 bg-gray-50 rounded-lg space-y-1"
                   >
                     <div className="flex items-center gap-2">
-                      <CalendarDays size={14} className="text-gray-400" />
+                      <Calendar size={14} className="text-gray-400" />
                       <Typography variant="body-sm" color="secondary">
                         {note.date}
                       </Typography>
