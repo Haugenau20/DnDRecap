@@ -96,10 +96,19 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
       const searchMatch = searchQuery === '' || 
         location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         location.description.toLowerCase().includes(searchQuery.toLowerCase());
+        
+        let typeMatch:boolean = true;
+        if (typeFilter !== 'all' && location.type !== typeFilter)
+        {
+          typeMatch = false;
+        }
 
+        let statusMatch:boolean = true;
+        if (statusFilter !== 'all' && location.status !== statusFilter)
+        {
+          statusMatch = false;
+        }
       // const typeMatch = typeFilter === 'all' || location.type === typeFilter;
-      const typeMatch = false;
-      const statusMatch = false;
 
       // const statusMatch = statusFilter === 'all' || location.status === statusFilter;
 
