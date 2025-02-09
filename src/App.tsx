@@ -1,6 +1,6 @@
 // App.tsx
 import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import { NavigationProvider } from './context/NavigationContext';
 import { SearchProvider } from './context/SearchContext';
 import { NPCProvider } from './context/NPCContext';

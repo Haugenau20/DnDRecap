@@ -166,6 +166,14 @@ export const SearchBar: React.FC = () => {
   return (
     <div className="relative w-full max-w-2xl">
       {/* Search Input */}
+      <div 
+      role="combobox"
+      aria-expanded={isFocused && results.length > 0}
+      aria-haspopup="listbox"
+      aria-controls="search-results"
+      className="relative w-full max-w-2xl"
+    >
+      {/* Input container */}
       <div className="relative">
         <input
           ref={inputRef}
@@ -177,8 +185,6 @@ export const SearchBar: React.FC = () => {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 200)}
           onKeyDown={handleKeyDown}
-          aria-expanded={isFocused && results.length > 0}
-          aria-controls="search-results"
           aria-activedescendant={selectedIndex >= 0 ? `result-${selectedIndex}` : undefined}
         />
         
@@ -206,11 +212,11 @@ export const SearchBar: React.FC = () => {
 
       {/* Search Results Dropdown */}
       {isFocused && (query || isSearching) && (
-        <div
-          id="search-results"
-          className="absolute z-50 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-96 overflow-y-auto"
-          role="listbox"
-        >
+      <div
+        id="search-results"
+        className="absolute z-50 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-96 overflow-y-auto"
+        role="listbox"
+      >
           {results.length > 0 ? (
             <div className="py-2 divide-y divide-gray-100">
               {results.map((result, index) => renderSearchResult(result, index))}
@@ -224,6 +230,7 @@ export const SearchBar: React.FC = () => {
           )}
         </div>
       )}
+    </div>
     </div>
   );
 };

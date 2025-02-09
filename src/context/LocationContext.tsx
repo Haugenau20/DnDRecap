@@ -45,6 +45,18 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }, []);
 
+  const getParentLocationWithCheck = useCallback((
+    locations: Location[], 
+    currentParentId: string, 
+    requiredParentIds: Set<string>
+  ) => {
+    const location = locations.find(loc => loc.id === currentParentId);
+    if (location?.parentId) {
+      requiredParentIds.add(location.parentId);
+      getParentLocationWithCheck(locations, location.parentId, requiredParentIds);
+    }
+  }, []);
+
   // Get location by ID
   const getLocationById = (id: string) => {
     return state.locations.find(location => location.id === id);
@@ -58,19 +70,16 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     // Get set of all necessary parent IDs
     const requiredParentIds = new Set<string>();
     matchingLocations.forEach(location => {
-      let currentParentId = location.parentId;
-      while (currentParentId) {
-        requiredParentIds.add(currentParentId);
-        const parentLocation = state.locations.find(loc => loc.id === currentParentId);
-        currentParentId = parentLocation?.parentId;
+      if (location.parentId) {
+        getParentLocationWithCheck(state.locations, location.parentId, requiredParentIds);
       }
     });
-
+  
     // Return matching locations plus their parent locations
     return state.locations.filter(location => 
       location.type === type || requiredParentIds.has(location.id)
     );
-  }, [state.locations]);
+  }, [state.locations, getParentLocationWithCheck]);
 
   // Get locations by status
   const getLocationsByStatus = (status: Location['status']) => {
