@@ -3,20 +3,20 @@
       {
         "id": "gundren-rockseeker",
         "name": "Gundren Rockseeker",
-        "title": "Minearbejder",
+        "title": "Minearbejder i Wave Echo Cave",
         "status": "alive",
         "race": "Dværg",
         "occupation": "Minearbejder",
         "location": "Wave Echo Cave",
         "relationship": "friendly",
-        "description": "Dværg",
-        "appearance": "Dværg",
-        "personality": "Dværg",
-        "background": "Dværg",
+        "description": "",
+        "appearance": "",
+        "personality": "",
+        "background": "",
         "connections": {
           "relatedNPCs": ["nundren-rockseeker"],
           "affiliations": ["Miners Exchange"],
-          "relatedQuests": [""]
+          "relatedQuests": ["find-gundren"]
         },
         "notes": [
           {
@@ -27,16 +27,16 @@
       {
         "id": "nundren-rockseeker",
         "name": "Nundren Rockseeker",
-        "title": "Minearbejder",
+        "title": "Minearbejder i Wave Echo Cave",
         "status": "deceased",
         "race": "Dværg",
         "occupation": "Minearbejder",
         "location": "Wave Echo Cave",
         "relationship": "friendly",
-        "description": "Dværg",
-        "appearance": "Dværg",
-        "personality": "Dværg",
-        "background": "Dværg",
+        "description": "",
+        "appearance": "",
+        "personality": "",
+        "background": "",
         "connections": {
           "relatedNPCs": ["gundren-rockseeker"],
           "affiliations": ["Miners Exchange"],
@@ -188,7 +188,7 @@
         "connections": {
           "relatedNPCs": [],
           "affiliations": ["Herrens Alliance"],
-          "relatedQuests": ["find-larno"]
+          "relatedQuests": ["find-larno", "find-gundren"]
         },
         "notes": [
           {
@@ -247,7 +247,7 @@
       {
         "id": "elric-stonehelm",
         "name": "Elric Stonehelm",
-        "title": "Byvagt",
+        "title": "Byvagt i Neverwinter",
         "status": "alive",
         "race": "Human",
         "occupation": "Suspenderet",
@@ -271,10 +271,10 @@
       {
         "id": "theldas-virodurim",
         "name": "Theldas Virodurim",
-        "title": "Vagtkaptajn",
+        "title": "Vagtkaptajn i Neverwinter",
         "status": "alive",
         "race": "Human",
-        "occupation": "Vagtkaptajn i Neverwinter",
+        "occupation": "Vagtkaptajn",
         "location": "Neverwinter",
         "relationship": "neutral",
         "description": "",
@@ -295,7 +295,7 @@
       {
         "id": "garen-thorn",
         "name": "Garen Thorn",
-        "title": "Byvagt",
+        "title": "Byvagt i Neverwinter",
         "status": "deceased",
         "race": "Human",
         "occupation": "",
