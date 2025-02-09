@@ -23,7 +23,7 @@ const Sidebar: React.FC = () => {
   };
 
   // Only show sidebar on routes that have sidebar content
-  const shouldShowSidebar = pathname.startsWith('/story') || pathname.startsWith('/quests'); // Add other routes as needed
+  const shouldShowSidebar = null;//pathname.startsWith('/story') || pathname.startsWith('/quests'); // Add other routes as needed
 
   if (!shouldShowSidebar) {
     return null;
