@@ -1,13 +1,11 @@
 When filtering locations all location shows even tough only one fits the filter. Only the ones that fit the filter should be shown.
 Remove StoryProgress feature.
 
-Usage of the sidebar
+on the location card, instead of showing "Poi" show "Point of Interest". Still keep type as "poi" 
 
 Fix Navigation First:
 
-Improve the breadcrumb navigation
-Issues with the current navigation implementation:
- - src/component/layout/Navigation.tsx currently have content meant for src/context/NavigationContext.tsx
+Improve the breadcrumb navigation on all pages
 
 Improve Core User Experience:
 
