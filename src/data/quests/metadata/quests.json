@@ -69,9 +69,9 @@
     {
       "id": "lokaliser-boggarts",
       "title": "Lokaliser Boggarts",
-      "description": "Find ud af hvor, og hvor mange, Boggarts der er",
+      "description": "Find ud af hvor og hvor mange Boggarts der er",
       "status": "active",
-      "background": "Byvagten Elric Stonehelm er anklaget for at have skudt sin kollega og ven Garen Thorn. Elric påstår at han skød efter et \"lilla goblin væsen\" som omdirigerede hans pil, så dan ramte Garen. Efter at have fanget Elric og bragt ham til vagtkaptajnen Theldas Virodurim, har kaptajnen bedt heltene om at finde disse væsener, finde ud af hvor mange der er, og hvor de kommer fra.",
+      "background": "Byvagten Elric Stonehelm er anklaget for at have skudt sin kollega og ven Garen Thorn. Elric påstår at han skød efter et \"lilla goblin væsen\" som omdirigerede hans pil, så den ramte Garen. Efter at have fanget Elric og bragt ham til vagtkaptajnen Theldas Virodurim, har kaptajnen bedt heltene om at finde disse væsener, finde ud af hvor mange der er, og hvor de kommer fra.",
       "objectives": [
         {
           "id": "obj-1",
@@ -90,9 +90,7 @@
         }
       ],
       "leads": [
-        "Onzhr havde remedier til at lokke dem frem, disse er dog for nyligt blevet stjålet fra vores hjem i Tresendar Manor.",
-        "",
-        ""
+        "Onzhr havde remedier til at lokke dem frem, disse er dog for nyligt blevet stjålet fra vores hjem i Tresendar Manor."
       ],
       "keyLocations": [
         {
@@ -118,7 +116,7 @@
           "description": "Droop var hjemme i Tresendar Manor da Boggartsne brød ind. Han dræbte en og sendte besked efter heltene."
         }
       ],
-      "relatedNPCIds": ["droop", "Theldas Virodurim", "Elric Stonehelm"],
+      "relatedNPCIds": ["droop", "theldas-virodurim", "elric-stonehelm"],
       "complications": [
         "Det remedie som Onzhr havde til at lokke dem frem er nu blevet stjålet."
       ],
@@ -127,7 +125,7 @@
       ],
       "location": "Ukendt",
       "levelRange": "",
-      "dateAdded": "yyyy-mm-dd"
+      "dateAdded": ""
     },
     {
       "id": "missing-merchant",
