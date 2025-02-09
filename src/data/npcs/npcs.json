@@ -227,7 +227,7 @@
         "status": "active",
         "race": "Drow",
         "occupation": "Leder af Larno, Cragmaw, mm.",
-        "location": "Neverwinther",
+        "location": "Neverwinter",
         "relationship": "hostile",
         "description": "Den sande leder af Rødkapperne og Cragmaw.",
         "appearance": "",
@@ -240,9 +240,77 @@
         },
         "notes": [
           {
-            "text": "Blev hentet af Herrens Alliance og bragt til Neverwinther efter han blev besejret i Wave Echo Cave."
+            "text": "Blev hentet af Herrens Alliance og bragt til Neverwinter efter han blev besejret i Wave Echo Cave."
           }
         ]
+      },
+      {
+        "id": "elric-stonehelm",
+        "name": "Elric Stonehelm",
+        "title": "Byvagt",
+        "status": "active",
+        "race": "Human",
+        "occupation": "Suspenderet",
+        "location": "Neverwinter",
+        "relationship": "neutral",
+        "description": "Byvagt i Neverwinter og i øjeblikket anklaget for mord på sin kollage Garen Thorn",
+        "appearance": "",
+        "personality": "",
+        "background": "Gode venner med Garen Thorn",
+        "connections": {
+          "relatedNPCs": ["theldas-virodurim", "garen-thorn"],
+          "affiliations": ["Neverwinter Byvagt"],
+          "relatedQuests": ["lokaliser-boggarts"]
+        },
+        "notes": [
+          {
+            "text": "Påstår at en boggart omdirigerede hans armbrøst pil, så den ramte og dræbte Garen Thorn"
+          }
+        ]
+      },
+      {
+        "id": "theldas-virodurim",
+        "name": "Theldas Virodurim",
+        "title": "Vagtkaptajn",
+        "status": "active",
+        "race": "Human",
+        "occupation": "Vagtkaptajn i Neverwinter",
+        "location": "Neverwinter",
+        "relationship": "neutral",
+        "description": "",
+        "appearance": "",
+        "personality": "",
+        "background": "",
+        "connections": {
+          "relatedNPCs": ["elric-stonehelm", "garen-thorn"],
+          "affiliations": ["Neverwinter Byvagt"],
+          "relatedQuests": ["lokaliser-boggarts"]
+        },
+        "notes": [
+          {
+            "text": "Har bedt heltene om at lokalisere Boggarts, finde ud af hvor mange der er, og hvor de kommer fra."
+          }
+        ]
+      },
+      {
+        "id": "garen-thorn",
+        "name": "Garen Thorn",
+        "title": "Byvagt",
+        "status": "deceased",
+        "race": "Human",
+        "occupation": "",
+        "location": "Neverwinter",
+        "relationship": "neutral",
+        "description": "Garen Thorn blev dræbt af Elric Stonehelms armbrøst pil",
+        "appearance": "",
+        "personality": "",
+        "background": "Gode kammerater med Elric Stonehelm",
+        "connections": {
+          "relatedNPCs": ["elric-stonehelm", "theldas-virodurim"],
+          "affiliations": ["Neverwinter Byvagt"],
+          "relatedQuests": ["lokaliser-boggarts"]
+        },
+        "notes": []
       }
     ]
   }
