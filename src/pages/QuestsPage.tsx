@@ -40,7 +40,7 @@ const QuestsPage: React.FC = () => {
     failed: questData.quests.filter(q => q.status === 'failed').length,
   };
 
-  // Filter quests based on status and search query
+  // Filter quests based on status, location and search query
   const filteredQuests = useMemo(() => {
     return questData.quests.filter(quest => {
       // Status filter
@@ -48,9 +48,9 @@ const QuestsPage: React.FC = () => {
         return false;
       }
 
-      // Location filter
+      // Location filter - must match exactly
       if (locationFilter !== 'all') {
-        if (!quest.location || quest.location !== locationFilter) {
+        if (quest.location?.toLowerCase() !== locationFilter.toLowerCase()) {
           return false;
         }
       }
@@ -68,7 +68,7 @@ const QuestsPage: React.FC = () => {
 
       return true;
     });
-  }, [statusFilter, searchQuery]);
+  }, [statusFilter, locationFilter, searchQuery]);
 
   // Scroll to highlighted quest when the URL changes
   useEffect(() => {
