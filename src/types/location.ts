@@ -1,5 +1,3 @@
-// types/location.ts
-
 /**
  * Types of locations that can exist in the game world
  */
@@ -52,17 +50,34 @@ export interface Location {
 }
 
 /**
- * Represents a note or update about a location
+ * Note for a location
  */
 export interface LocationNote {
-  /** Unique identifier for the note */
   id: string;
-  /** The note content */
   content: string;
-  /** Session date or when the note was added */
   date: string;
-  /** Optional session number */
   sessionNumber?: number;
-  /** Optional tags for categorizing notes */
   tags?: string[];
+}
+
+/**
+ * Context state for locations
+ */
+export interface LocationContextState {
+  locations: Location[];
+  isLoading: boolean;
+  error: string | null;
+}
+
+/**
+ * Context value including state and methods
+ */
+export interface LocationContextValue extends LocationContextState {
+  getLocationById: (id: string) => Location | undefined;
+  getLocationsByType: (type: LocationType) => Location[];
+  getLocationsByStatus: (status: LocationStatus) => Location[];
+  getChildLocations: (parentId: string) => Location[];
+  getParentLocation: (locationId: string) => Location | undefined;
+  updateLocationNote: (locationId: string, note: LocationNote) => void;
+  updateLocationStatus: (locationId: string, status: LocationStatus) => void;
 }

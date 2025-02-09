@@ -6,7 +6,6 @@ import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
 import { useQuests } from '../../../hooks/useQuests';
-import { Quest } from '../../../types/quest';
 import { 
   MapPin, 
   ChevronDown, 
@@ -30,6 +29,11 @@ interface LocationCardProps {
   isExpanded?: boolean;
   onToggleExpand?: () => void;
 }
+
+const formatLocationType = (type: LocationType): string => {
+  if (type === 'poi') return 'Point of Interest';
+  return type.charAt(0).toUpperCase() + type.slice(1);
+};
 
 // Map location types to icons
 const typeIcons: Record<LocationType, React.ReactNode> = {
@@ -99,7 +103,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
             </Typography>
             <div className="flex items-center gap-2 mt-1">
               <Typography variant="body-sm" color="secondary">
-                {location.type.charAt(0).toUpperCase() + location.type.slice(1)}
+                {formatLocationType(location.type)}
               </Typography>
               <span className="text-gray-300">•</span>
               <div className="flex items-center gap-1">

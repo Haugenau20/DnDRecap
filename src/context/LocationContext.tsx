@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { Location, LocationType, LocationNote } from '../types/location';
 
 // Import location data
@@ -50,10 +50,36 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return state.locations.find(location => location.id === id);
   };
 
-  // Get locations by type
-  const getLocationsByType = (type: LocationType) => {
-    return state.locations.filter(location => location.type === type);
-  };
+  // Get locations by type - including necessary parent locations
+  const getLocationsByType = useCallback((type: LocationType) => {
+    // First find all locations of the specified type
+    const matchingLocations = state.locations.filter(loc => loc.type === type);
+    
+    // Get set of all necessary parent IDs
+    const requiredParentIds = new Set<string>();
+    matchingLocations.forEach(location => {
+      let currentParentId = location.parentId;
+      while (currentParentId) {
+        requiredParentIds.add(currentParentId);
+        const parentLocation = state.locations.find(loc => loc.id === currentParentId);
+        currentParentId = parentLocation?.parentId;
+      }
+    });
+
+    // Return matching locations plus their parent locations
+    return state.locations.filter(location => 
+      location.type === type || requiredParentIds.has(location.id)
+    );
+  }, [state.locations]);
+
+  // Get parent location
+  const getParentLocation = useCallback((locationId: string) => {
+    const location = state.locations.find(loc => loc.id === locationId);
+    if (location?.parentId) {
+      return state.locations.find(loc => loc.id === location.parentId);
+    }
+    return undefined;
+  }, [state.locations]);
 
   // Get locations by status
   const getLocationsByStatus = (status: Location['status']) => {
