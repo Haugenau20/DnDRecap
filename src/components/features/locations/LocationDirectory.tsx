@@ -97,23 +97,13 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
         location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         location.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-      if (typeFilter !== 'all') {
-        if (location.type?.toLowerCase() !== typeFilter.toLowerCase()) {
-          return false;
-        }
-      }
+      // const typeMatch = typeFilter === 'all' || location.type === typeFilter;
+      const typeMatch = false;
+      const statusMatch = false;
 
-      if (statusFilter !== 'all') {
-        if (location.status?.toLowerCase() !== statusFilter.toLowerCase()) {
-          return false;
-        }
-      }
+      // const statusMatch = statusFilter === 'all' || location.status === statusFilter;
 
-      // const typeMatch = typeFilter === 'all' || location.type.toLowerCase() === typeFilter.toLowerCase();
-
-      // const statusMatch = statusFilter === 'all' || location.status.toLowerCase() === statusFilter.toLowerCase();
-
-      if (searchMatch && typeFilter && statusFilter) {
+      if (searchMatch && typeMatch && statusMatch) {
         validLocationIds.add(location.id);
         // Add all parent locations to valid IDs to maintain hierarchy
         getParentIds(location).forEach(id => validLocationIds.add(id));
