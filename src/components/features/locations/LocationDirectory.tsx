@@ -75,20 +75,41 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
 
   // Filter locations based on search and filters
   const filteredLocations = useMemo(() => {
-    return locations.filter(location => {
-      // Search filter
+    // First, create a set of valid location IDs based on filters
+    const validLocationIds = new Set<string>();
+    
+    // Helper function to get all parent IDs for a location
+    const getParentIds = (location: Location): string[] => {
+      const parentIds: string[] = [];
+      let currentLocation = location;
+      while (currentLocation.parentId) {
+        parentIds.push(currentLocation.parentId);
+        const parent = locations.find(loc => loc.id === currentLocation.parentId);
+        if (!parent) break;
+        currentLocation = parent;
+      }
+      return parentIds;
+    };
+
+    // First pass: Find all locations that match the filters
+    locations.forEach(location => {
       const searchMatch = searchQuery === '' || 
         location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         location.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-      // Type filter
       const typeMatch = typeFilter === 'all' || location.type === typeFilter;
 
-      // Status filter
       const statusMatch = statusFilter === 'all' || location.status === statusFilter;
 
-      return searchMatch && typeMatch && statusMatch;
+      if (searchMatch && typeMatch && statusMatch) {
+        validLocationIds.add(location.id);
+        // Add all parent locations to valid IDs to maintain hierarchy
+        getParentIds(location).forEach(id => validLocationIds.add(id));
+      }
     });
+
+    // Second pass: Filter locations based on the valid IDs
+    return locations.filter(location => validLocationIds.has(location.id));
   }, [locations, searchQuery, typeFilter, statusFilter]);
 
   // Group locations by parent to create hierarchy

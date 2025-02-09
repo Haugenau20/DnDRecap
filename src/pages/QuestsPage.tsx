@@ -49,8 +49,10 @@ const QuestsPage: React.FC = () => {
       }
 
       // Location filter
-      if (locationFilter !== 'all' && quest.location !== locationFilter) {
-        return false;
+      if (locationFilter !== 'all') {
+        if (!quest.location || quest.location !== locationFilter) {
+          return false;
+        }
       }
 
       // Search filter
