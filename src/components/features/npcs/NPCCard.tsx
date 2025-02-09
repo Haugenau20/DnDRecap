@@ -9,7 +9,6 @@ import {
   ChevronDown, 
   ChevronUp, 
   MapPin,
-  Users,
   Scroll,
   Calendar,
   Heart

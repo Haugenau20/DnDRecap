@@ -3,8 +3,6 @@ import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Typography from '../components/core/Typography';
 import Card from '../components/core/Card';
-import Button from '../components/core/Button';
-import { SearchBar } from '../components/shared/SearchBar';
 import LatestChapter from '../components/features/story/LatestChapter';
 import { Book, Scroll, Users, MapPin } from 'lucide-react';
 

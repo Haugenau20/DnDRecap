@@ -15,7 +15,6 @@ interface LayoutProps {
  * Provides consistent layout structure and navigation.
  */
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { currentPath } = useNavigation();
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">

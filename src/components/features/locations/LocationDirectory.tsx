@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Location, LocationType } from '../../../types/location';
+import { Location } from '../../../types/location';
 import LocationCard from './LocationCard';
 import Card from '../../core/Card';
 import Typography from '../../core/Typography';
 import Input from '../../core/Input';
-import { Search, Filter, MapPin, Building } from 'lucide-react';
+import { Search, MapPin, Building } from 'lucide-react';
 
 interface LocationDirectoryProps {
   locations: Location[];

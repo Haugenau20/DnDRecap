@@ -72,15 +72,6 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     );
   }, [state.locations]);
 
-  // Get parent location
-  const getParentLocation = useCallback((locationId: string) => {
-    const location = state.locations.find(loc => loc.id === locationId);
-    if (location?.parentId) {
-      return state.locations.find(loc => loc.id === location.parentId);
-    }
-    return undefined;
-  }, [state.locations]);
-
   // Get locations by status
   const getLocationsByStatus = (status: Location['status']) => {
     return state.locations.filter(location => location.status === status);

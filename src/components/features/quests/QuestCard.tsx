@@ -11,14 +11,8 @@ import {
   ChevronUp, 
   MapPin,
   Users,
-  Scroll,
   Calendar,
   Target,
-  AlertCircle,
-  Heart,
-  Shield,
-  SwordIcon,
-  HelpCircle
 } from 'lucide-react';
 
 interface QuestCardProps {

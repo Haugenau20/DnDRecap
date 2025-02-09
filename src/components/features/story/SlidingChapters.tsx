@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Chapter } from '../../../types/story';
 import Typography from '../../core/Typography';
 import Button from '../../core/Button';
