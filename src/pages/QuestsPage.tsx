@@ -6,7 +6,7 @@ import Card from '../components/core/Card';
 import Input from '../components/core/Input';
 import { Quest, QuestStatus } from '../types/quest';
 import QuestCard from '../components/features/quests/QuestCard';
-import { Scroll, CheckCircle2, XCircle, Filter, Search } from 'lucide-react';
+import { Scroll, CheckCircle2, XCircle, Filter, Search, MapPin } from 'lucide-react';
 
 // Import and type the quest data
 import rawQuestData from '../data/quests/metadata/quests.json';
@@ -24,7 +24,14 @@ const QuestsPage: React.FC = () => {
 
   // State for filters
   const [statusFilter, setStatusFilter] = useState<QuestStatus | 'all'>('all');
+  const [locationFilter, setLocationFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Get unique locations for filter dropdown
+  const locations = useMemo(() => {
+    const uniqueLocations = new Set(questData.quests.map(q => q.location).filter(Boolean));
+    return Array.from(uniqueLocations).sort();
+  }, []);
 
   // Calculate stats
   const stats = {
@@ -38,6 +45,11 @@ const QuestsPage: React.FC = () => {
     return questData.quests.filter(quest => {
       // Status filter
       if (statusFilter !== 'all' && quest.status !== statusFilter) {
+        return false;
+      }
+
+      // Location filter
+      if (locationFilter !== 'all' && quest.location !== locationFilter) {
         return false;
       }
 
@@ -142,19 +154,40 @@ const QuestsPage: React.FC = () => {
             />
           </div>
           
-          <div className="flex items-center gap-2">
-            <Filter size={20} className="text-gray-500" />
-            <Typography variant="body-sm">Status:</Typography>
-            <select
-              className="rounded border p-1"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as QuestStatus | 'all')}
-            >
-              <option value="all">All Quests</option>
-              <option value="active">Active</option>
-              <option value="completed">Completed</option>
-              <option value="failed">Failed</option>
-            </select>
+          <div className="flex items-center gap-4">
+            {/* Status Filter */}
+            <div className="flex items-center gap-2">
+              <Filter size={20} className="text-gray-500" />
+              <Typography variant="body-sm">Status:</Typography>
+              <select
+                className="rounded border p-1"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value as QuestStatus | 'all')}
+              >
+                <option value="all">All Quests</option>
+                <option value="active">Active</option>
+                <option value="completed">Completed</option>
+                <option value="failed">Failed</option>
+              </select>
+            </div>
+
+            {/* Location Filter */}
+            <div className="flex items-center gap-2">
+              <MapPin size={20} className="text-gray-500" />
+              <Typography variant="body-sm">Location:</Typography>
+              <select
+                className="rounded border p-1"
+                value={locationFilter}
+                onChange={(e) => setLocationFilter(e.target.value)}
+              >
+                <option value="all">All Locations</option>
+                {locations.map(location => (
+                  <option key={location} value={location}>
+                    {location}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </Card.Content>
       </Card>
