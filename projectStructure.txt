@@ -47,13 +47,16 @@ DnDRecap
 │   │   │   ├── NPCContext.tsx
 │   │   │   ├── NavigationContext.tsx
 │   │   │   └── LocationContext.tsx
+│   │   ├── config
+│   │   │   └── buildConfig.ts
 │   │   ├── components
 │   │   │   ├── shared
 │   │   │   │   ├── SearchBar.tsx
 │   │   │   │   └── ErrorBoundary.tsx
 │   │   │   ├── layout
 │   │   │   │   ├── sidebars
-│   │   │   │   │   └── StorySidebar.tsx
+│   │   │   │   │   ├── StorySidebar.tsx
+│   │   │   │   │   └── QuestSidebar.tsx
 │   │   │   │   ├── Sidebar.tsx
 │   │   │   │   ├── Navigation.tsx
 │   │   │   │   ├── Layout.tsx
@@ -86,8 +89,6 @@ DnDRecap
 │   │   ├── index.tsx
 │   │   └── App.tsx
 │   ├── public
-│   │   ├── images
-│   │   │   └── paper-texture.png
 │   │   ├── manifest.json
 │   │   └── index.html
 │   ├── .github

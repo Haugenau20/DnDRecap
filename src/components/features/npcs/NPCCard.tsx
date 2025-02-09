@@ -52,8 +52,22 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
     <Card>
       <Card.Content className="space-y-4">
         {/* NPC Header */}
-        <div className="flex items-start gap-3">
-          <User className={`mt-1 ${getRelationshipColor(npc.relationship)}`} size={24} />
+        <div className="relative">
+          <User className={`mt-1 ${getRelationshipColor(npc.relationship)} ${npc.status === 'deceased' ? 'opacity-50' : ''}`} size={24} />
+          {npc.status === 'deceased' && (
+            <svg
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-500"
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <line x1="8" y1="8" x2="24" y2="24" />
+              <line x1="24" y1="8" x2="8" y2="24" />
+            </svg>
+          )}
           <div className="flex-1">
             <Typography variant="h4">
               {npc.name}
