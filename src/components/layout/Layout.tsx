@@ -4,7 +4,6 @@ import Header from './Header';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
 import Navigation from './Navigation';
-import { useNavigation } from '../../hooks/useNavigation';
 
 interface LayoutProps {
   children: React.ReactNode;
