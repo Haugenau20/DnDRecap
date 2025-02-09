@@ -1,14 +1,21 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useNPCs } from '../../../context/NPCContext';
+import { NPC } from '../../../types/npc';
 import NPCCard from './NPCCard';
 import Card from '../../core/Card';
 import Typography from '../../core/Typography';
 import Input from '../../core/Input';
 import { Search, Users, MapPin, Heart } from 'lucide-react';
 
-const NPCDirectory: React.FC = () => {
-  const { npcs, isLoading } = useNPCs();
+interface NPCDirectoryProps {
+  npcs: NPC[];
+  isLoading?: boolean;
+}
+
+const NPCDirectory: React.FC<NPCDirectoryProps> = ({ 
+  npcs,
+  isLoading = false
+}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [relationshipFilter, setRelationshipFilter] = useState<string>('all');
@@ -79,7 +86,7 @@ const NPCDirectory: React.FC = () => {
       }
       acc[location].push(npc);
       return acc;
-    }, {} as Record<string, typeof npcs>);
+    }, {} as Record<string, NPC[]>);
   }, [filteredNPCs]);
 
   if (isLoading) {

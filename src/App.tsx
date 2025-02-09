@@ -6,6 +6,7 @@ import { SearchProvider } from './context/SearchContext';
 import { NPCProvider } from './context/NPCContext';
 import { StoryProvider } from './context/StoryContext';
 import { LocationProvider } from './context/LocationContext';
+import { FirebaseProvider } from './context/FirebaseContext';
 import ErrorBoundary from './components/shared/ErrorBoundary';
 import Layout from './components/layout/Layout';
 
@@ -22,28 +23,30 @@ import LocationsPage from './pages/LocationsPage';
 const App: React.FC = () => {
   return (
     <ErrorBoundary>
-      <NavigationProvider>
-        <SearchProvider>
-          <NPCProvider>
-            <LocationProvider>
-              <StoryProvider>
-              <Layout>
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/story" element={<StorySelection />} />
-                  <Route path="/story/chronicles" element={<StoryPage />} />
-                  <Route path="/story/chronicles/:chapterId" element={<StoryPage />} />
-                  <Route path="/story/saga" element={<SagaPage />} />
-                  <Route path="/quests" element={<QuestsPage />} />
-                  <Route path="/npcs" element={<NPCsPage />} />
-                  <Route path="/locations" element={<LocationsPage />} />
-                </Routes>
-              </Layout>
-              </StoryProvider>
-            </LocationProvider>
-          </NPCProvider>
-        </SearchProvider>
-      </NavigationProvider>
+      <FirebaseProvider>
+        <NavigationProvider>
+          <SearchProvider>
+            <NPCProvider>
+              <LocationProvider>
+                <StoryProvider>
+                <Layout>
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/story" element={<StorySelection />} />
+                    <Route path="/story/chronicles" element={<StoryPage />} />
+                    <Route path="/story/chronicles/:chapterId" element={<StoryPage />} />
+                    <Route path="/story/saga" element={<SagaPage />} />
+                    <Route path="/quests" element={<QuestsPage />} />
+                    <Route path="/npcs" element={<NPCsPage />} />
+                    <Route path="/locations" element={<LocationsPage />} />
+                  </Routes>
+                </Layout>
+                </StoryProvider>
+              </LocationProvider>
+            </NPCProvider>
+          </SearchProvider>
+        </NavigationProvider>
+      </FirebaseProvider>
     </ErrorBoundary>
   );
 };

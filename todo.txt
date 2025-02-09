@@ -10,3 +10,5 @@ Improve Core User Experience:
 Add proper loading states
 Implement error handling
 Add proper progress tracking persistence
+
+Implement a database solution so users can type in content from the front end.

@@ -16,7 +16,11 @@ DnDRecap
 │   │   ├── services
 │   │   │   ├── search
 │   │   │   │   └── SearchService.ts
+│   │   │   ├── firebase
+│   │   │   │   └── FirebaseService.ts
 │   │   │   └── index.ts
+│   │   ├── scripts
+│   │   │   └── migrateToFirebase.ts
 │   │   ├── pages
 │   │   │   ├── story
 │   │   │   │   ├── StoryPage.tsx
@@ -29,7 +33,8 @@ DnDRecap
 │   │   ├── hooks
 │   │   │   ├── useSearch.ts
 │   │   │   ├── useQuests.ts
-│   │   │   └── useNavigation.ts
+│   │   │   ├── useNavigation.ts
+│   │   │   └── useFirebaseData.ts
 │   │   ├── data
 │   │   │   ├── story
 │   │   │   │   ├── story.json
@@ -46,7 +51,8 @@ DnDRecap
 │   │   │   ├── SearchContext.tsx
 │   │   │   ├── NPCContext.tsx
 │   │   │   ├── NavigationContext.tsx
-│   │   │   └── LocationContext.tsx
+│   │   │   ├── LocationContext.tsx
+│   │   │   └── FirebaseContext.tsx
 │   │   ├── config
 │   │   │   └── buildConfig.ts
 │   │   ├── components
@@ -76,11 +82,14 @@ DnDRecap
 │   │   │   │   │   └── QuestCard.tsx
 │   │   │   │   ├── npcs
 │   │   │   │   │   ├── NPCLegend.tsx
+│   │   │   │   │   ├── NPCForm.tsx
 │   │   │   │   │   ├── NPCDirectory.tsx
 │   │   │   │   │   └── NPCCard.tsx
-│   │   │   │   └── locations
-│   │   │   │       ├── LocationDirectory.tsx
-│   │   │   │       └── LocationCard.tsx
+│   │   │   │   ├── locations
+│   │   │   │   │   ├── LocationDirectory.tsx
+│   │   │   │   │   └── LocationCard.tsx
+│   │   │   │   └── auth
+│   │   │   │       └── SignInForm.tsx
 │   │   │   └── core
 │   │   │       ├── Typography.tsx
 │   │   │       ├── Input.tsx
@@ -109,6 +118,7 @@ DnDRecap
 │   ├── npcTemplate.txt
 │   ├── locationsTemplate.txt
 │   ├── highLevelDesign.md
+│   ├── firebaseConfig.txt
 │   ├── dirTree.ps1
 │   ├── copyfiles.ps1
 │   └── .gitignore
