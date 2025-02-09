@@ -118,7 +118,7 @@ const NPCDirectory: React.FC = () => {
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
                 <option value="all">All Status</option>
-                <option value="active">Active</option>
+                <option value="alive">Alive</option>
                 <option value="deceased">Deceased</option>
                 <option value="missing">Missing</option>
                 <option value="unknown">Unknown</option>

@@ -18,7 +18,7 @@ const NPCLegend: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const statusTypes = [
-    { icon: <Shield className="text-green-500" />, label: 'Active', description: 'NPC is currently active in the campaign' },
+    { icon: <Shield className="text-green-500" />, label: 'Alive', description: 'NPC is alive' },
     { icon: <Skull className="text-gray-500" />, label: 'Deceased', description: 'NPC is no longer living' },
     { icon: <AlertCircle className="text-yellow-500" />, label: 'Missing', description: 'NPC\'s whereabouts are unknown' },
     { icon: <HelpCircle className="text-gray-400" />, label: 'Unknown', description: 'NPC\'s status is uncertain' }

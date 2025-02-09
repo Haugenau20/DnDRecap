@@ -27,7 +27,7 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
   // Function to get status color
   const getStatusColor = (status: string): string => {
     switch (status) {
-      case 'active':
+      case 'alive':
         return 'text-green-500';
       case 'deceased':
         return 'text-red-500';

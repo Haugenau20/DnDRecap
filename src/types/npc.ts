@@ -1,6 +1,6 @@
 // types/npc.ts
 
-export type NPCStatus = 'active' | 'deceased' | 'missing' | 'unknown';
+export type NPCStatus = 'alive' | 'deceased' | 'missing' | 'unknown';
 export type NPCRelationship = 'friendly' | 'neutral' | 'hostile' | 'unknown';
 
 interface NPCConnections {
