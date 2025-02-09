@@ -97,9 +97,9 @@ const LocationDirectory: React.FC<LocationDirectoryProps> = ({
         location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         location.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const typeMatch = typeFilter === 'all' || location.type === typeFilter;
+      const typeMatch = typeFilter === 'all' || location.type.toLowerCase() === typeFilter.toLowerCase();
 
-      const statusMatch = statusFilter === 'all' || location.status === statusFilter;
+      const statusMatch = statusFilter === 'all' || location.status.toLowerCase() === statusFilter.toLowerCase();
 
       if (searchMatch && typeMatch && statusMatch) {
         validLocationIds.add(location.id);
