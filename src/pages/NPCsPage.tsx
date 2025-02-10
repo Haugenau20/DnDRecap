@@ -45,6 +45,7 @@ const NPCsPage: React.FC = () => {
     missing: npcs.filter(npc => npc.status === 'missing').length
   }), [npcs]);
 
+  // Handle form success
   const handleFormSuccess = async () => {
     setShowForm(false);
     // Refresh NPC list
@@ -52,6 +53,7 @@ const NPCsPage: React.FC = () => {
     setNpcs(updatedData || []);
   };
 
+  // Handle sign in success
   const handleSignInSuccess = () => {
     setShowSignIn(false);
   };
@@ -140,11 +142,12 @@ const NPCsPage: React.FC = () => {
           <NPCForm
             onSuccess={handleFormSuccess}
             onCancel={() => setShowForm(false)}
+            existingNPCs={npcs}
           />
         </div>
       ) : (
         <>
-          {/* NPC Legend - only show if enabled in config */}
+          {/* NPC Legend */}
           {buildConfig.features.showNPCLegend && (
             <div className="mb-6">
               <NPCLegend />
