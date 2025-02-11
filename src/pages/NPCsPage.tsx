@@ -1,27 +1,42 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Typography from '../components/core/Typography';
 import Button from '../components/core/Button';
 import Card from '../components/core/Card';
 import NPCDirectory from '../components/features/npcs/NPCDirectory';
 import NPCForm from '../components/features/npcs/NPCForm';
-import NPCLegend from '../components/features/npcs/NPCLegend';
+import NPCEditForm from '../components/features/npcs/NPCEditForm';
 import SignInForm from '../components/features/auth/SignInForm';
-import { Plus, Users, Loader2 } from 'lucide-react';
 import { useFirebase } from '../context/FirebaseContext';
 import { useFirebaseData } from '../hooks/useFirebaseData';
-import buildConfig from '../config/buildConfig';
 import { NPC } from '../types/npc';
+import { Plus, Users, Loader2, ArrowLeft, LogOut } from 'lucide-react';
 
 const NPCsPage: React.FC = () => {
-  const [showForm, setShowForm] = useState(false);
+  // State
   const [showSignIn, setShowSignIn] = useState(false);
-  const { user } = useFirebase();
-  const { getData, loading, error } = useFirebaseData<NPC>({
-    collection: 'npcs'
-  });
-
-  // State to store NPCs
+  const [showCreateForm, setShowCreateForm] = useState(false);
   const [npcs, setNpcs] = useState<NPC[]>([]);
+
+  // Hooks
+  const { user, signOut } = useFirebase();
+  const { getData, loading, error } = useFirebaseData<NPC>({ collection: 'npcs' });
+  const navigate = useNavigate();
+  const { npcId } = useParams<{ npcId?: string }>();
+
+  // Find NPC being edited if we're on the edit route
+  const editingNPC = useMemo(() => {
+    if (!npcId) return undefined;
+    return npcs.find(npc => npc.id === npcId);
+  }, [npcId, npcs]);
+
+  // Calculate stats for display
+  const stats = useMemo(() => ({
+    total: npcs.length,
+    alive: npcs.filter(npc => npc.status === 'alive').length,
+    deceased: npcs.filter(npc => npc.status === 'deceased').length,
+    missing: npcs.filter(npc => npc.status === 'missing').length
+  }), [npcs]);
 
   // Fetch NPCs when component mounts
   useEffect(() => {
@@ -37,20 +52,17 @@ const NPCsPage: React.FC = () => {
     fetchNPCs();
   }, [getData]);
 
-  // Calculate statistics for display
-  const stats = useMemo(() => ({
-    total: npcs.length,
-    alive: npcs.filter(npc => npc.status === 'alive').length,
-    deceased: npcs.filter(npc => npc.status === 'deceased').length,
-    missing: npcs.filter(npc => npc.status === 'missing').length
-  }), [npcs]);
-
-  // Handle form success
+  // Handle form success (both create and edit)
   const handleFormSuccess = async () => {
-    setShowForm(false);
     // Refresh NPC list
     const updatedData = await getData();
     setNpcs(updatedData || []);
+    // Close create form if open
+    setShowCreateForm(false);
+    // Navigate back to main listing if in edit mode
+    if (npcId) {
+      navigate('/npcs');
+    }
   };
 
   // Handle sign in success
@@ -58,6 +70,7 @@ const NPCsPage: React.FC = () => {
     setShowSignIn(false);
   };
 
+  // Show loading state
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -71,6 +84,7 @@ const NPCsPage: React.FC = () => {
     );
   }
 
+  // Show error state
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -83,6 +97,43 @@ const NPCsPage: React.FC = () => {
     );
   }
 
+  // If we're on the edit route, show the edit form
+  if (npcId) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="mb-8 flex items-center gap-4">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/npcs')}
+            startIcon={<ArrowLeft />}
+          >
+            Back to NPCs
+          </Button>
+          <Typography variant="h1">
+            {editingNPC ? `Edit ${editingNPC.name}` : 'Edit NPC'}
+          </Typography>
+        </div>
+
+        {editingNPC ? (
+          <NPCEditForm
+            npc={editingNPC}
+            mode="edit"
+            onSuccess={handleFormSuccess}
+            onCancel={() => navigate('/npcs')}
+            existingNPCs={npcs}
+          />
+        ) : (
+          <Card>
+            <Card.Content>
+              <Typography color="error">NPC not found</Typography>
+            </Card.Content>
+          </Card>
+        )}
+      </div>
+    );
+  }
+
+  // Main NPCs page
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Page Header */}
@@ -98,12 +149,21 @@ const NPCsPage: React.FC = () => {
 
         {/* Show different buttons based on auth state */}
         {user ? (
-          <Button
-            onClick={() => setShowForm(true)}
-            startIcon={<Plus className="w-5 h-5" />}
-          >
-            Add NPC
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => setShowCreateForm(true)}
+              startIcon={<Plus className="w-5 h-5" />}
+            >
+              Add NPC
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => signOut()}
+              startIcon={<LogOut className="w-5 h-5" />}
+            >
+              Sign Out
+            </Button>
+          </div>
         ) : (
           <Button
             onClick={() => setShowSignIn(true)}
@@ -121,102 +181,83 @@ const NPCsPage: React.FC = () => {
         </div>
       )}
 
-      {/* NPC Form or Directory */}
-      {showForm ? (
-        <div className="mb-8">
-          {/* Form Title */}
-          <div className="mb-6 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Users className="w-6 h-6 text-blue-500" />
-              <Typography variant="h2">Create New NPC</Typography>
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <Card>
+          <Card.Content className="flex items-center justify-center p-6">
+            <Users className="w-8 h-8 text-blue-500 mr-4" />
+            <div>
+              <Typography variant="h2" className="mb-1">
+                {stats.total}
+              </Typography>
+              <Typography color="secondary">
+                Total NPCs
+              </Typography>
             </div>
-            <Button
-              variant="ghost"
-              onClick={() => setShowForm(false)}
-            >
-              Cancel
-            </Button>
-          </div>
+          </Card.Content>
+        </Card>
 
-          {/* NPC Creation Form */}
-          <NPCForm
-            onSuccess={handleFormSuccess}
-            onCancel={() => setShowForm(false)}
-            existingNPCs={npcs}
-          />
-        </div>
-      ) : (
-        <>
-          {/* NPC Legend */}
-          {buildConfig.features.showNPCLegend && (
-            <div className="mb-6">
-              <NPCLegend />
+        <Card>
+          <Card.Content className="flex items-center justify-center p-6">
+            <Users className="w-8 h-8 text-green-500 mr-4" />
+            <div>
+              <Typography variant="h2" className="mb-1">
+                {stats.alive}
+              </Typography>
+              <Typography color="secondary">
+                Alive
+              </Typography>
             </div>
-          )}
+          </Card.Content>
+        </Card>
 
-          {/* Statistics Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <Card>
-              <Card.Content className="flex items-center justify-center p-6">
-                <Users className="w-8 h-8 text-blue-500 mr-4" />
-                <div>
-                  <Typography variant="h2" className="mb-1">
-                    {stats.total}
-                  </Typography>
-                  <Typography color="secondary">
-                    Total NPCs
-                  </Typography>
-                </div>
-              </Card.Content>
-            </Card>
+        <Card>
+          <Card.Content className="flex items-center justify-center p-6">
+            <Users className="w-8 h-8 text-red-500 mr-4" />
+            <div>
+              <Typography variant="h2" className="mb-1">
+                {stats.deceased}
+              </Typography>
+              <Typography color="secondary">
+                Deceased
+              </Typography>
+            </div>
+          </Card.Content>
+        </Card>
 
-            <Card>
-              <Card.Content className="flex items-center justify-center p-6">
-                <Users className="w-8 h-8 text-green-500 mr-4" />
-                <div>
-                  <Typography variant="h2" className="mb-1">
-                    {stats.alive}
-                  </Typography>
-                  <Typography color="secondary">
-                    Alive
-                  </Typography>
-                </div>
-              </Card.Content>
-            </Card>
+        <Card>
+          <Card.Content className="flex items-center justify-center p-6">
+            <Users className="w-8 h-8 text-yellow-500 mr-4" />
+            <div>
+              <Typography variant="h2" className="mb-1">
+                {stats.missing}
+              </Typography>
+              <Typography color="secondary">
+                Missing
+              </Typography>
+            </div>
+          </Card.Content>
+        </Card>
+      </div>
 
-            <Card>
-              <Card.Content className="flex items-center justify-center p-6">
-                <Users className="w-8 h-8 text-red-500 mr-4" />
-                <div>
-                  <Typography variant="h2" className="mb-1">
-                    {stats.deceased}
-                  </Typography>
-                  <Typography color="secondary">
-                    Deceased
-                  </Typography>
-                </div>
-              </Card.Content>
-            </Card>
-
-            <Card>
-              <Card.Content className="flex items-center justify-center p-6">
-                <Users className="w-8 h-8 text-yellow-500 mr-4" />
-                <div>
-                  <Typography variant="h2" className="mb-1">
-                    {stats.missing}
-                  </Typography>
-                  <Typography color="secondary">
-                    Missing
-                  </Typography>
-                </div>
-              </Card.Content>
-            </Card>
-          </div>
-
-          {/* NPC Directory */}
-          <NPCDirectory npcs={npcs} />
-        </>
+      {/* Create NPC Form Modal */}
+      {showCreateForm && (
+        <NPCForm
+          onSuccess={handleFormSuccess}
+          onCancel={() => setShowCreateForm(false)}
+          existingNPCs={npcs}
+        />
       )}
+
+      {/* NPC Directory */}
+      <NPCDirectory 
+        npcs={npcs}
+        onNPCUpdate={(updatedNPC: NPC) => {
+          setNpcs(prev => prev.map(npc => 
+            npc.id === updatedNPC.id ? updatedNPC : npc
+          ));
+        }}
+      />
     </div>
   );
 };

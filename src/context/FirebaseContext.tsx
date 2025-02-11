@@ -1,6 +1,6 @@
 // src/context/FirebaseContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User } from 'firebase/auth';
+import { User, onAuthStateChanged } from 'firebase/auth';
 import FirebaseService from '../services/firebase/FirebaseService';
 
 interface FirebaseContextType {
@@ -16,20 +16,28 @@ const FirebaseContext = createContext<FirebaseContextType | undefined>(undefined
 
 export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Start with loading true
   const [error, setError] = useState<string | null>(null);
 
   const firebaseService = FirebaseService.getInstance();
 
+  // Listen to authentication state changes
   useEffect(() => {
-    // Listen for auth state changes
-    const user = firebaseService.getCurrentUser();
-    setUser(user);
-    setLoading(false);
+    const auth = firebaseService.getAuth();
+    const unsubscribe = onAuthStateChanged(auth, 
+      (user) => {
+        setUser(user);
+        setLoading(false); // Set loading to false once we have the auth state
+      },
+      (error) => {
+        console.error('Auth state error:', error);
+        setError(error.message);
+        setLoading(false);
+      }
+    );
 
-    return () => {
-      // No cleanup needed for getCurrentUser
-    };
+    // Cleanup subscription
+    return () => unsubscribe();
   }, []);
 
   const signIn = async (email: string, password: string) => {
@@ -74,9 +82,14 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     signOut
   };
 
+  // Show loading state while checking auth
+  if (loading) {
+    return null; // Or a loading spinner if you prefer
+  }
+
   return (
     <FirebaseContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </FirebaseContext.Provider>
   );
 };

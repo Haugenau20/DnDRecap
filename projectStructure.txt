@@ -83,6 +83,7 @@ DnDRecap
 │   │   │   │   ├── npcs
 │   │   │   │   │   ├── NPCLegend.tsx
 │   │   │   │   │   ├── NPCForm.tsx
+│   │   │   │   │   ├── NPCEditForm.tsx
 │   │   │   │   │   ├── NPCDirectory.tsx
 │   │   │   │   │   └── NPCCard.tsx
 │   │   │   │   ├── locations
@@ -93,6 +94,7 @@ DnDRecap
 │   │   │   └── core
 │   │   │       ├── Typography.tsx
 │   │   │       ├── Input.tsx
+│   │   │       ├── Dialog.tsx
 │   │   │       ├── Card.tsx
 │   │   │       └── Button.tsx
 │   │   ├── index.tsx

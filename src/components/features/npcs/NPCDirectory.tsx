@@ -10,11 +10,13 @@ import { Search, Users, MapPin, Heart } from 'lucide-react';
 interface NPCDirectoryProps {
   npcs: NPC[];
   isLoading?: boolean;
+  onNPCUpdate?: (updatedNPC: NPC) => void;
 }
 
 const NPCDirectory: React.FC<NPCDirectoryProps> = ({ 
   npcs,
-  isLoading = false
+  isLoading = false,
+  onNPCUpdate
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');

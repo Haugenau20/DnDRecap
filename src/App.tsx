@@ -38,6 +38,7 @@ const App: React.FC = () => {
                     <Route path="/story/saga" element={<SagaPage />} />
                     <Route path="/quests" element={<QuestsPage />} />
                     <Route path="/npcs" element={<NPCsPage />} />
+                    <Route path="/npcs/edit/:npcId" element={<NPCsPage />} />
                     <Route path="/locations" element={<LocationsPage />} />
                   </Routes>
                 </Layout>

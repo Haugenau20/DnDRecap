@@ -1,27 +1,42 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { NPC } from '../../../types/npc';
+import { NPC, NPCNote } from '../../../types/npc';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
+import Input from '../../core/Input';
 import { useQuests } from '../../../hooks/useQuests';
+import { useFirebase } from '../../../context/FirebaseContext';
+import { useFirebaseData } from '../../../hooks/useFirebaseData';
 import { 
   ChevronDown, 
   ChevronUp, 
   MapPin,
-  Scroll,
+  Users,
   Calendar,
-  Heart
+  Heart,
+  Edit,
+  PlusCircle,
+  Save,
+  X
 } from 'lucide-react';
 
 interface NPCCardProps {
   npc: NPC;
+  onEdit?: (npc: NPC) => void;
 }
 
-const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
+const NPCCard: React.FC<NPCCardProps> = ({ 
+  npc,
+  onEdit 
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isAddingNote, setIsAddingNote] = useState(false);
+  const [noteInput, setNoteInput] = useState('');
   const navigate = useNavigate();
   const { getQuestById } = useQuests();
+  const { user } = useFirebase(); // Get authentication state
+  const { updateData } = useFirebaseData<NPC>({ collection: 'npcs' });
 
   // Function to get status color
   const getStatusColor = (status: string): string => {
@@ -55,11 +70,46 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
     }
   };
 
-  // Function to handle location click
+  // Handle quick note adding
+  const handleAddNote = async () => {
+    if (!noteInput.trim()) return;
+
+    const newNote: NPCNote = {
+      date: new Date().toISOString().split('T')[0],
+      text: noteInput.trim()
+    };
+
+    const updatedNPC = {
+      ...npc,
+      notes: [...npc.notes, newNote]
+    };
+
+    try {
+      await updateData(npc.id, updatedNPC);
+      setNoteInput('');
+      setIsAddingNote(false);
+      // If onEdit is provided, call it with the updated NPC
+      if (onEdit) {
+        onEdit(updatedNPC);
+      }
+    } catch (error) {
+      console.error('Failed to add note:', error);
+    }
+  };
+
+  // Handle editing the NPC
+  const handleEdit = () => {
+    if (user) { // Only allow edit if user is authenticated
+      navigate(`/npcs/edit/${npc.id}`);
+    }
+  };
+
+  // Handle location click
   const handleLocationClick = (location: string) => {
     navigate(`/locations?highlight=${encodeURIComponent(location)}`);
   };
 
+  // Handle quest click
   const handleQuestClick = (questId: string) => {
     navigate(`/quests?highlight=${encodeURIComponent(questId)}`);
   };
@@ -68,14 +118,29 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
     <Card>
       <Card.Content className="space-y-4">
         {/* NPC Header */}
-        <div className="flex-1">
-          <Typography variant="h4">
-            {npc.name}
-          </Typography>
-          {npc.title && (
-            <Typography color="secondary" className="mt-1">
-              {npc.title}
-            </Typography>
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <Typography variant="h4">
+                {npc.name}
+              </Typography>
+            </div>
+            {npc.title && (
+              <Typography color="secondary" className="mt-1">
+                {npc.title}
+              </Typography>
+            )}
+          </div>
+          {/* Edit Button - Only shown when user is authenticated */}
+          {user && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleEdit}
+              startIcon={<Edit size={16} />}
+            >
+              Edit
+            </Button>
           )}
         </div>
 
@@ -83,8 +148,8 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
         <div className="space-y-3">
           {/* Status and Relationship */}
           <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <Typography variant="body-sm" className="font-medium">
+            <div className='flex items-center gap-2'>
+            <Typography variant="body-sm" className="font-medium">
                 Status:
               </Typography>
               <Typography variant="body-sm" className={`font-medium ${getStatusColor(npc.status)}`}>
@@ -129,20 +194,66 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
           )}
         </div>
 
+        {/* Quick Note Adding - Only visible when authenticated */}
+        {user && (
+          <div>
+            {isAddingNote ? (
+              <div className="space-y-2">
+                <Input
+                  value={noteInput}
+                  onChange={(e) => setNoteInput(e.target.value)}
+                  placeholder="Enter note..."
+                  isTextArea={true}
+                />
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    onClick={handleAddNote}
+                    disabled={!noteInput.trim()}
+                    startIcon={<Save size={16} />}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setIsAddingNote(false);
+                      setNoteInput('');
+                    }}
+                    startIcon={<X size={16} />}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsAddingNote(true)}
+                startIcon={<PlusCircle size={16} />}
+              >
+                Add Note
+              </Button>
+            )}
+          </div>
+        )}
+
         {/* Expanded Content */}
         {isExpanded && (
-          <div className="space-y-4 pt-4 border-t border-gray-100">
+          <div className="pt-4 space-y-6">
             {/* Additional Details */}
             {(npc.description || npc.appearance || npc.personality || npc.background) && (
               <div className="space-y-3">
                 {npc.description && (
                   <div>
-                  <Typography variant="body-sm" className="font-medium">
-                    Description
-                  </Typography>
-                  <Typography variant="body-sm" color="secondary">
-                    {npc.description}
-                  </Typography>
+                    <Typography variant="body-sm" className="font-medium">
+                      Description
+                    </Typography>
+                    <Typography variant="body-sm" color="secondary">
+                      {npc.description}
+                    </Typography>
                   </div>
                 )}
                 {npc.appearance && (
@@ -178,6 +289,35 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
               </div>
             )}
 
+            {/* Notes */}
+            {npc.notes && npc.notes.length > 0 && (
+              <div>
+                <Typography variant="h4" className="mb-2">
+                  Notes
+                </Typography>
+                <div className="space-y-2">
+                  {npc.notes.map((note, index) => (
+                    <div
+                      key={index}
+                      className="p-3 bg-gray-50 rounded-lg space-y-1"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Calendar size={14} className="text-gray-400" />
+                          <Typography variant="body-sm" color="secondary">
+                            {note.date}
+                          </Typography>
+                        </div>
+                      </div>
+                      <Typography variant="body-sm">
+                        {note.text}
+                      </Typography>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Related Quests */}
             {npc.connections.relatedQuests.length > 0 && (
               <div>
@@ -197,7 +337,7 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
                         centered={false}
                       >
                         <div className="flex items-start gap-2 text-left">
-                          <Scroll 
+                          <Users 
                             size={16} 
                             className={`mt-1 ${
                               quest.status === 'completed' ? 'text-green-500' :
@@ -218,31 +358,6 @@ const NPCCard: React.FC<NPCCardProps> = ({ npc }) => {
                     ) : null;
                   })}
                 </div>
-              </div>
-            )}
-
-            {/* Notes */}
-            {npc.notes.length > 0 && (
-              <div className="space-y-2">
-                <Typography variant="body-sm" className="font-medium">
-                  Notes
-                </Typography>
-                {npc.notes.map((note, index) => (
-                  <div
-                    key={index}
-                    className="p-3 bg-gray-50 rounded-lg space-y-1"
-                  >
-                    <div className="flex items-center gap-2">
-                      <Calendar size={14} className="text-gray-400" />
-                      <Typography variant="body-sm" color="secondary">
-                        {note.date}
-                      </Typography>
-                    </div>
-                    <Typography variant="body-sm">
-                      {note.text}
-                    </Typography>
-                  </div>
-                ))}
               </div>
             )}
           </div>

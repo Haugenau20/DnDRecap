@@ -55,6 +55,10 @@ class FirebaseService {
     this.auth = getAuth(this.app);
   }
 
+  public getAuth() {
+    return this.auth;
+  }
+
   /**
    * Get singleton instance of FirebaseService
    */
