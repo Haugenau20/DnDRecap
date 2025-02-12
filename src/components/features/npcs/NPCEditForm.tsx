@@ -1,24 +1,17 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { NPC, NPCStatus, NPCRelationship, NPCNote } from '../../../types/npc';
+import React, { useState, useCallback } from 'react';
+import { NPC, NPCStatus, NPCRelationship } from '../../../types/npc';
 import { useFirebaseData } from '../../../hooks/useFirebaseData';
 import Typography from '../../core/Typography';
 import Input from '../../core/Input';
 import Button from '../../core/Button';
 import Card from '../../core/Card';
-import { 
-  LogIn, 
-  AlertCircle, 
-  Users, 
-  X,
-  Save,
-  PlusCircle,
-  Calendar
-} from 'lucide-react';
+import Dialog from '../../core/Dialog';
+import { Save, X, Users, Scroll } from 'lucide-react';
+import { useQuests } from '../../../hooks/useQuests';
 
 interface NPCEditFormProps {
   npc?: NPC;
-  mode?: 'create' | 'edit';
+  mode: 'create' | 'edit';
   onSuccess?: () => void;
   onCancel?: () => void;
   existingNPCs: NPC[];
@@ -44,10 +37,16 @@ const NPCEditForm: React.FC<NPCEditFormProps> = ({
       notes: []
     }
   );
-
+  
+  // State for managing new connections
   const [affiliationInput, setAffiliationInput] = useState('');
-  const [noteInput, setNoteInput] = useState('');
-  const [isAddingNote, setIsAddingNote] = useState(false);
+  const [selectedNPCs, setSelectedNPCs] = useState<Set<string>>(new Set(formData.connections?.relatedNPCs || []));
+  const [selectedQuests, setSelectedQuests] = useState<Set<string>>(new Set(formData.connections?.relatedQuests || []));
+  const [isNPCDialogOpen, setIsNPCDialogOpen] = useState(false);
+  const [isQuestDialogOpen, setIsQuestDialogOpen] = useState(false);
+
+  // Get quests data
+  const { quests } = useQuests();
 
   // Firebase hooks
   const { updateData, addData, loading, error } = useFirebaseData<NPC>({
@@ -62,37 +61,6 @@ const NPCEditForm: React.FC<NPCEditFormProps> = ({
     }));
   };
 
-  // Handle affiliation changes
-  const handleAffiliationAdd = () => {
-    if (affiliationInput.trim()) {
-      setFormData(prev => ({
-        ...prev,
-        connections: {
-          ...prev.connections!,
-          affiliations: [...(prev.connections?.affiliations || []), affiliationInput.trim()]
-        }
-      }));
-      setAffiliationInput('');
-    }
-  };
-
-  // Handle quick note adding
-  const handleAddNote = () => {
-    if (noteInput.trim()) {
-      const newNote: NPCNote = {
-        date: new Date().toISOString().split('T')[0],
-        text: noteInput.trim()
-      };
-
-      setFormData(prev => ({
-        ...prev,
-        notes: [...(prev.notes || []), newNote]
-      }));
-      setNoteInput('');
-      setIsAddingNote(false);
-    }
-  };
-
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,10 +70,11 @@ const NPCEditForm: React.FC<NPCEditFormProps> = ({
     }
 
     try {
-      const id = npc?.id || formData.name.toLowerCase().replace(/\s+/g, '-');
+      // Ensure we have a valid ID
+      const id = mode === 'edit' && npc ? npc.id : formData.name.toLowerCase().replace(/\s+/g, '-');
       
       const npcData: NPC = {
-        id,
+        id: id,
         name: formData.name,
         title: formData.title || '',
         status: formData.status as NPCStatus,
@@ -118,14 +87,14 @@ const NPCEditForm: React.FC<NPCEditFormProps> = ({
         personality: formData.personality || '',
         background: formData.background || '',
         connections: {
-          relatedNPCs: formData.connections?.relatedNPCs || [],
+          relatedNPCs: Array.from(selectedNPCs),
           affiliations: formData.connections?.affiliations || [],
-          relatedQuests: formData.connections?.relatedQuests || []
+          relatedQuests: Array.from(selectedQuests)
         },
         notes: formData.notes || []
       };
 
-      if (npc) {
+      if (mode === 'edit' && id) {
         await updateData(id, npcData);
       } else {
         await addData(npcData);
@@ -137,234 +106,361 @@ const NPCEditForm: React.FC<NPCEditFormProps> = ({
   };
 
   return (
-    <Card className="max-w-2xl mx-auto">
-      <Card.Header title={npc ? `Edit ${npc.name}` : 'Create New NPC'} />
-      <Card.Content>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Quick Note Adding */}
-          {npc && (
-            <div className="mb-6">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setIsAddingNote(!isAddingNote)}
-                startIcon={<PlusCircle />}
-              >
-                Add Quick Note
-              </Button>
+    <>
+      <Card>
+        <Card.Content>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Basic Information */}
+            <div className="space-y-4">
+              <Typography variant="h4">Basic Information</Typography>
+              <Input
+                label="Name *"
+                value={formData.name || ''}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                required
+              />
+              
+              <Input
+                label="Title"
+                value={formData.title || ''}
+                onChange={(e) => handleInputChange('title', e.target.value)}
+              />
 
-              {isAddingNote && (
-                <div className="mt-4 space-y-4">
-                  <Input
-                    label="New Note"
-                    value={noteInput}
-                    onChange={(e) => setNoteInput(e.target.value)}
-                    placeholder="Enter note text..."
-                    isTextArea={true}
-                  />
-                  <div className="flex gap-2">
-                    <Button
-                      type="button"
-                      onClick={handleAddNote}
-                      disabled={!noteInput.trim()}
-                    >
-                      Add Note
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={() => {
-                        setIsAddingNote(false);
-                        setNoteInput('');
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Status *</label>
+                  <select
+                    className="w-full rounded-lg border p-2"
+                    value={formData.status}
+                    onChange={(e) => handleInputChange('status', e.target.value)}
+                    required
+                  >
+                    <option value="alive">Alive</option>
+                    <option value="deceased">Deceased</option>
+                    <option value="missing">Missing</option>
+                    <option value="unknown">Unknown</option>
+                  </select>
                 </div>
-              )}
-            </div>
-          )}
 
-          {/* Basic Information */}
-          <div className="space-y-4">
-            <Typography variant="h4">Basic Information</Typography>
-            <Input
-              label="Name *"
-              value={formData.name || ''}
-              onChange={(e) => handleInputChange('name', e.target.value)}
-              required
-            />
-            
-            <Input
-              label="Title"
-              value={formData.title || ''}
-              onChange={(e) => handleInputChange('title', e.target.value)}
-            />
-
-            {/* Status and Relationship Selection */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Status *</label>
-                <select
-                  className="w-full rounded-lg border p-2"
-                  value={formData.status}
-                  onChange={(e) => handleInputChange('status', e.target.value)}
-                  required
-                >
-                  <option value="alive">Alive</option>
-                  <option value="deceased">Deceased</option>
-                  <option value="missing">Missing</option>
-                  <option value="unknown">Unknown</option>
-                </select>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Relationship *</label>
+                  <select
+                    className="w-full rounded-lg border p-2"
+                    value={formData.relationship}
+                    onChange={(e) => handleInputChange('relationship', e.target.value)}
+                    required
+                  >
+                    <option value="friendly">Friendly</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="hostile">Hostile</option>
+                    <option value="unknown">Unknown</option>
+                  </select>
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-1">Relationship *</label>
-                <select
-                  className="w-full rounded-lg border p-2"
-                  value={formData.relationship}
-                  onChange={(e) => handleInputChange('relationship', e.target.value)}
-                  required
-                >
-                  <option value="friendly">Friendly</option>
-                  <option value="neutral">Neutral</option>
-                  <option value="hostile">Hostile</option>
-                  <option value="unknown">Unknown</option>
-                </select>
-              </div>
+              <Input
+                label="Race"
+                value={formData.race || ''}
+                onChange={(e) => handleInputChange('race', e.target.value)}
+              />
+
+              <Input
+                label="Occupation"
+                value={formData.occupation || ''}
+                onChange={(e) => handleInputChange('occupation', e.target.value)}
+              />
+
+              <Input
+                label="Location"
+                value={formData.location || ''}
+                onChange={(e) => handleInputChange('location', e.target.value)}
+              />
             </div>
 
-            {/* Additional Fields */}
-            <Input
-              label="Race"
-              value={formData.race || ''}
-              onChange={(e) => handleInputChange('race', e.target.value)}
-            />
-
-            <Input
-              label="Occupation"
-              value={formData.occupation || ''}
-              onChange={(e) => handleInputChange('occupation', e.target.value)}
-            />
-
-            <Input
-              label="Location"
-              value={formData.location || ''}
-              onChange={(e) => handleInputChange('location', e.target.value)}
-            />
-          </div>
-
-          {/* Character Details */}
-          <div className="space-y-4">
-            <Typography variant="h4">Character Details</Typography>
-            <div>
-              <label className="block text-sm font-medium mb-1">Description</label>
-              <textarea
-                className="w-full rounded-lg border p-2 h-24"
+            {/* Character Details */}
+            <div className="space-y-4">
+              <Typography variant="h4">Character Details</Typography>
+              <Input
+                label="Description"
                 value={formData.description || ''}
                 onChange={(e) => handleInputChange('description', e.target.value)}
+                isTextArea={true}
               />
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1">Appearance</label>
-              <textarea
-                className="w-full rounded-lg border p-2 h-24"
+              <Input
+                label="Appearance"
                 value={formData.appearance || ''}
                 onChange={(e) => handleInputChange('appearance', e.target.value)}
+                isTextArea={true}
               />
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1">Personality</label>
-              <textarea
-                className="w-full rounded-lg border p-2 h-24"
+              <Input
+                label="Personality"
                 value={formData.personality || ''}
                 onChange={(e) => handleInputChange('personality', e.target.value)}
+                isTextArea={true}
               />
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-1">Background</label>
-              <textarea
-                className="w-full rounded-lg border p-2 h-24"
+              <Input
+                label="Background"
                 value={formData.background || ''}
                 onChange={(e) => handleInputChange('background', e.target.value)}
+                isTextArea={true}
               />
             </div>
-          </div>
 
-          {/* Notes Display */}
-          {formData.notes && formData.notes.length > 0 && (
+            {/* Connections Section */}
             <div className="space-y-4">
-              <Typography variant="h4">Notes</Typography>
-              <div className="space-y-2">
-                {formData.notes.map((note, index) => (
-                  <div
-                    key={index}
-                    className="p-3 bg-gray-50 rounded-lg space-y-1"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Calendar size={14} className="text-gray-400" />
-                        <Typography variant="body-sm" color="secondary">
-                          {note.date}
-                        </Typography>
+              <Typography variant="h4">Connections</Typography>
+
+              {/* Related NPCs */}
+              <div>
+                <Typography variant="body" className="font-medium mb-2">
+                  Related NPCs
+                </Typography>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsNPCDialogOpen(true)}
+                  startIcon={<Users />}
+                  className="w-full mb-2"
+                  type="button"
+                >
+                  Select Related NPCs
+                </Button>
+                <div className="flex flex-wrap gap-2">
+                  {Array.from(selectedNPCs).map(npcId => {
+                    const relatedNPC = existingNPCs.find(n => n.id === npcId);
+                    return relatedNPC ? (
+                      <div
+                        key={npcId}
+                        className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
+                      >
+                        <span>{relatedNPC.name}</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newSet = new Set(selectedNPCs);
+                            newSet.delete(npcId);
+                            setSelectedNPCs(newSet);
+                          }}
+                          className="text-gray-500 hover:text-gray-700"
+                        >
+                          <X size={14} />
+                        </button>
                       </div>
-                      <Button
+                    ) : null;
+                  })}
+                </div>
+              </div>
+
+              {/* Related Quests */}
+              <div>
+                <Typography variant="body" className="font-medium mb-2">
+                  Related Quests
+                </Typography>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsQuestDialogOpen(true)}
+                  startIcon={<Scroll />}
+                  className="w-full mb-2"
+                  type="button"
+                >
+                  Select Related Quests
+                </Button>
+                <div className="flex flex-wrap gap-2">
+                  {Array.from(selectedQuests).map(questId => {
+                    const quest = quests.find(q => q.id === questId);
+                    return quest ? (
+                      <div
+                        key={questId}
+                        className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
+                      >
+                        <span>{quest.title}</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newSet = new Set(selectedQuests);
+                            newSet.delete(questId);
+                            setSelectedQuests(newSet);
+                          }}
+                          className="text-gray-500 hover:text-gray-700"
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ) : null;
+                  })}
+                </div>
+              </div>
+
+              {/* Affiliations */}
+              <div>
+                <Typography variant="body" className="font-medium mb-2">
+                  Affiliations
+                </Typography>
+                <div className="flex gap-2">
+                  <Input
+                    value={affiliationInput}
+                    onChange={(e) => setAffiliationInput(e.target.value)}
+                    placeholder="Enter affiliation..."
+                    className="flex-1"
+                  />
+                  <Button 
+                    type="button"
+                    onClick={() => {
+                      if (affiliationInput.trim()) {
+                        setFormData(prev => ({
+                          ...prev,
+                          connections: {
+                            ...prev.connections!,
+                            affiliations: [...(prev.connections?.affiliations || []), affiliationInput.trim()]
+                          }
+                        }));
+                        setAffiliationInput('');
+                      }
+                    }}
+                    disabled={!affiliationInput.trim()}
+                  >
+                    Add
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {formData.connections?.affiliations.map((affiliation, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
+                    >
+                      <span>{affiliation}</span>
+                      <button
                         type="button"
-                        variant="ghost"
-                        size="sm"
                         onClick={() => {
                           setFormData(prev => ({
                             ...prev,
-                            notes: prev.notes?.filter((_, i) => i !== index)
+                            connections: {
+                              ...prev.connections!,
+                              affiliations: prev.connections!.affiliations.filter((_, i) => i !== index)
+                            }
                           }));
                         }}
+                        className="text-gray-500 hover:text-gray-700"
                       >
                         <X size={14} />
-                      </Button>
+                      </button>
                     </div>
-                    <Typography variant="body-sm">
-                      {note.text}
-                    </Typography>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
-          )}
 
-          {/* Error Message */}
-          {error && (
-            <div className="flex items-center gap-2 text-red-600">
-              <AlertCircle size={16} />
-              <Typography color="error">
+            {/* Error Message */}
+            {error && (
+              <Typography color="error" className="mt-2">
                 {error}
               </Typography>
-            </div>
-          )}
+            )}
 
-          {/* Form Actions */}
-          <div className="flex justify-end gap-4">
-            <Button
-              variant="ghost"
-              onClick={onCancel}
-              type="button"
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={loading}
-              startIcon={<Save />}
-            >
-              {loading ? 'Saving...' : 'Save NPC'}
-            </Button>
+            {/* Form Actions */}
+            <div className="flex justify-end gap-4">
+              <Button
+                variant="ghost"
+                onClick={onCancel}
+                type="button"
+                startIcon={<X />}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={loading}
+                startIcon={<Save />}
+              >
+                {loading ? (mode === 'edit' ? 'Saving...' : 'Creating...') : (mode === 'edit' ? 'Save NPC' : 'Create NPC')}
+              </Button>
+            </div>
+          </form>
+        </Card.Content>
+      </Card>
+
+      {/* NPC Selection Dialog */}
+      <Dialog
+        open={isNPCDialogOpen}
+        onClose={() => setIsNPCDialogOpen(false)}
+        title="Select Related NPCs"
+        maxWidth="max-w-3xl"
+      >
+        <div className="max-h-96 overflow-y-auto mb-4">
+          <div className="grid grid-cols-3 gap-2">
+            {existingNPCs
+              .filter(n => n.id !== npc?.id) // Don't show the current NPC
+              .map(otherNPC => (
+                <button
+                  key={otherNPC.id}
+                  onClick={() => {
+                    const newSet = new Set(selectedNPCs);
+                    if (newSet.has(otherNPC.id)) {
+                      newSet.delete(otherNPC.id);
+                    } else {
+                      newSet.add(otherNPC.id);
+                    }
+                    setSelectedNPCs(newSet);
+                  }}
+                  className={`p-2 rounded text-center transition-colors ${
+                    selectedNPCs.has(otherNPC.id)
+                      ? 'bg-blue-100 border-2 border-blue-500'
+                      : 'hover:bg-gray-100 border-2 border-transparent'
+                  }`}
+                >
+                  <Typography variant="body-sm" className={selectedNPCs.has(otherNPC.id) ? 'font-medium' : ''}>
+                    {otherNPC.name}
+                  </Typography>
+                </button>
+              ))}
           </div>
-        </form>
-      </Card.Content>
-    </Card>
+        </div>
+        <div className="flex justify-end">
+          <Button onClick={() => setIsNPCDialogOpen(false)}>Done</Button>
+        </div>
+      </Dialog>
+
+      {/* Quest Selection Dialog */}
+      <Dialog
+        open={isQuestDialogOpen}
+        onClose={() => setIsQuestDialogOpen(false)}
+        title="Select Related Quests"
+        maxWidth="max-w-3xl"
+      >
+        <div className="max-h-96 overflow-y-auto mb-4">
+          <div className="space-y-2">
+            {quests.map(quest => (
+              <button
+                key={quest.id}
+                onClick={() => {
+                  const newSet = new Set(selectedQuests);
+                  if (newSet.has(quest.id)) {
+                    newSet.delete(quest.id);
+                  } else {
+                    newSet.add(quest.id);
+                  }
+                  setSelectedQuests(newSet);
+                }}
+                className={`w-full p-2 rounded text-left transition-colors ${
+                  selectedQuests.has(quest.id)
+                    ? 'bg-blue-100 border-2 border-blue-500'
+                    : 'hover:bg-gray-100 border-2 border-transparent'
+                }`}
+              >
+                <Typography variant="body-sm" className={selectedQuests.has(quest.id) ? 'font-medium' : ''}>
+                  {quest.title}
+                </Typography>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <Button onClick={() => setIsQuestDialogOpen(false)}>Done</Button>
+        </div>
+      </Dialog>
+    </>
   );
 };
 

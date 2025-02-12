@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useFirebaseData } from '../../../hooks/useFirebaseData';
 import { NPC, NPCStatus, NPCRelationship } from '../../../types/npc';
-import { AlertCircle, Save, X, Users } from 'lucide-react';
+import { AlertCircle, Save, X, Users, Scroll } from 'lucide-react';
 import Input from '../../core/Input';
 import Button from '../../core/Button';
 import Typography from '../../core/Typography';
@@ -41,6 +41,8 @@ const NPCForm: React.FC<NPCFormProps> = ({
   // Quest selection state
   const { quests } = useQuests();
   const [questDropdownValue, setQuestDropdownValue] = useState('');
+  const [isQuestDialogOpen, setIsQuestDialogOpen] = useState(false);
+  const [selectedQuests, setSelectedQuests] = useState<Set<string>>(new Set(formData.connections?.relatedQuests || []));
 
   // Firebase
   const { addData, loading, error } = useFirebaseData<NPC>({
@@ -276,6 +278,46 @@ const NPCForm: React.FC<NPCFormProps> = ({
               />
             </div>
 
+            {/* Character Details */}
+            <div className="space-y-4">
+              <Typography variant="h4">Character Details</Typography>
+              <div>
+                <label className="block text-sm font-medium mb-1">Description</label>
+                <textarea
+                  className="w-full rounded-lg border p-2 h-24"
+                  value={formData.description || ''}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Appearance</label>
+                <textarea
+                  className="w-full rounded-lg border p-2 h-24"
+                  value={formData.appearance || ''}
+                  onChange={(e) => handleInputChange('appearance', e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Personality</label>
+                <textarea
+                  className="w-full rounded-lg border p-2 h-24"
+                  value={formData.personality || ''}
+                  onChange={(e) => handleInputChange('personality', e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Background</label>
+                <textarea
+                  className="w-full rounded-lg border p-2 h-24"
+                  value={formData.background || ''}
+                  onChange={(e) => handleInputChange('background', e.target.value)}
+                />
+              </div>
+            </div>
+
             {/* Related NPCs Section */}
             <div className="space-y-4">
               <Typography variant="h4">Related NPCs</Typography>
@@ -320,45 +362,46 @@ const NPCForm: React.FC<NPCFormProps> = ({
               </div>
             </div>
 
-            {/* Related Quests Section */}
-            <div className="space-y-4">
-              <Typography variant="h4">Related Quests</Typography>
+            {/* Related Quests */}
               <div>
-                <select
-                  value={questDropdownValue}
-                  onChange={(e) => handleQuestSelection(e.target.value)}
-                  className="w-full rounded-lg border p-2"
+                <Typography variant="body" className="font-medium mb-2">
+                  Related Quests
+                </Typography>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsQuestDialogOpen(true)}
+                  startIcon={<Scroll />}
+                  className="w-full mb-2"
+                  type="button"
                 >
-                  <option value="">Select a quest...</option>
-                  {availableQuests.map(quest => (
-                    <option key={quest.id} value={quest.id}>
-                      {quest.title}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              {/* Display selected quests */}
-              <div className="flex flex-wrap gap-2">
-                {formData.connections?.relatedQuests.map(questId => {
-                  const quest = quests.find(q => q.id === questId);
-                  return quest ? (
-                    <div
-                      key={questId}
-                      className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
-                    >
-                      <span>{quest.title}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveQuest(questId)}
-                        className="text-gray-500 hover:text-gray-700"
+                  Select Related Quests
+                </Button>
+                <div className="flex flex-wrap gap-2">
+                  {Array.from(selectedQuests).map(questId => {
+                    const quest = quests.find(q => q.id === questId);
+                    return quest ? (
+                      <div
+                        key={questId}
+                        className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
                       >
-                        <X size={14} />
-                      </button>
-                    </div>
-                  ) : null;
-                })}
+                        <span>{quest.title}</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newSet = new Set(selectedQuests);
+                            newSet.delete(questId);
+                            setSelectedQuests(newSet);
+                          }}
+                          className="text-gray-500 hover:text-gray-700"
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ) : null;
+                  })}
+                </div>
               </div>
-            </div>
+
 
             {/* Affiliations */}
           <div className="space-y-4">
@@ -397,46 +440,6 @@ const NPCForm: React.FC<NPCFormProps> = ({
               ))}
             </div>
           </div>
-
-            {/* Character Details */}
-            <div className="space-y-4">
-              <Typography variant="h4">Character Details</Typography>
-              <div>
-                <label className="block text-sm font-medium mb-1">Description</label>
-                <textarea
-                  className="w-full rounded-lg border p-2 h-24"
-                  value={formData.description || ''}
-                  onChange={(e) => handleInputChange('description', e.target.value)}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Appearance</label>
-                <textarea
-                  className="w-full rounded-lg border p-2 h-24"
-                  value={formData.appearance || ''}
-                  onChange={(e) => handleInputChange('appearance', e.target.value)}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Personality</label>
-                <textarea
-                  className="w-full rounded-lg border p-2 h-24"
-                  value={formData.personality || ''}
-                  onChange={(e) => handleInputChange('personality', e.target.value)}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Background</label>
-                <textarea
-                  className="w-full rounded-lg border p-2 h-24"
-                  value={formData.background || ''}
-                  onChange={(e) => handleInputChange('background', e.target.value)}
-                />
-              </div>
-            </div>
 
             {/* Error Message */}
             {error && (
@@ -526,6 +529,45 @@ const NPCForm: React.FC<NPCFormProps> = ({
               Add Selected ({selectedNPCs.size})
             </Button>
           </div>
+        </div>
+      </Dialog>
+
+      {/* Quest Selection Dialog */}
+      <Dialog
+        open={isQuestDialogOpen}
+        onClose={() => setIsQuestDialogOpen(false)}
+        title="Select Related Quests"
+        maxWidth="max-w-3xl"
+      >
+        <div className="max-h-96 overflow-y-auto mb-4">
+          <div className="space-y-2">
+            {quests.map(quest => (
+              <button
+                key={quest.id}
+                onClick={() => {
+                  const newSet = new Set(selectedQuests);
+                  if (newSet.has(quest.id)) {
+                    newSet.delete(quest.id);
+                  } else {
+                    newSet.add(quest.id);
+                  }
+                  setSelectedQuests(newSet);
+                }}
+                className={`w-full p-2 rounded text-left transition-colors ${
+                  selectedQuests.has(quest.id)
+                    ? 'bg-blue-100 border-2 border-blue-500'
+                    : 'hover:bg-gray-100 border-2 border-transparent'
+                }`}
+              >
+                <Typography variant="body-sm" className={selectedQuests.has(quest.id) ? 'font-medium' : ''}>
+                  {quest.title}
+                </Typography>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <Button onClick={() => setIsQuestDialogOpen(false)}>Done</Button>
         </div>
       </Dialog>
     </>
