@@ -26,13 +26,18 @@ DnDRecap
 │   │   │   │   ├── StoryPage.tsx
 │   │   │   │   ├── SagaPage.tsx
 │   │   │   │   └── index.tsx
+│   │   │   ├── npcs
+│   │   │   │   ├── NPCsPage.tsx
+│   │   │   │   ├── NPCsEditPage.tsx
+│   │   │   │   ├── NPCsCreatePage.tsx
+│   │   │   │   └── index.ts
 │   │   │   ├── QuestsPage.tsx
-│   │   │   ├── NPCsPage.tsx
 │   │   │   ├── LocationsPage.tsx
 │   │   │   └── HomePage.tsx
 │   │   ├── hooks
 │   │   │   ├── useSearch.ts
 │   │   │   ├── useQuests.ts
+│   │   │   ├── useNPCData.ts
 │   │   │   ├── useNavigation.ts
 │   │   │   └── useFirebaseData.ts
 │   │   ├── data
