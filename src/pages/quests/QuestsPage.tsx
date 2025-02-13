@@ -1,3 +1,4 @@
+// src/pages/QuestsPage.tsx
 import React, { useState, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import Typography from '../../components/core/Typography';
@@ -9,12 +10,25 @@ import QuestCard from '../../components/features/quests/QuestCard';
 import SignInForm from '../../components/features/auth/SignInForm';
 import { useFirebase } from '../../context/FirebaseContext';
 import { useQuests } from '../../hooks/useQuests';
-import { Scroll, CheckCircle2, XCircle, Filter, Search, MapPin, LogIn, LogOut, Loader2 } from 'lucide-react';
+import { useNavigation } from '../../hooks/useNavigation';
+import { 
+  Scroll, 
+  CheckCircle2, 
+  XCircle, 
+  Filter, 
+  Search, 
+  MapPin, 
+  LogIn, 
+  LogOut, 
+  Loader2,
+  PlusCircle 
+} from 'lucide-react';
 
 const QuestsPage: React.FC = () => {
   // Auth state
   const [showSignIn, setShowSignIn] = useState(false);
   const { user, signOut } = useFirebase();
+  const { navigateToPage } = useNavigation();
   
   // Get quests data
   const { quests, loading, error } = useQuests();
@@ -114,22 +128,32 @@ const QuestsPage: React.FC = () => {
         </div>
 
         {/* Auth actions */}
-        {user ? (
-          <Button
-            variant="ghost"
-            onClick={() => signOut()}
-            startIcon={<LogOut className="w-5 h-5" />}
-          >
-            Sign Out
-          </Button>
-        ) : (
-          <Button
-            onClick={() => setShowSignIn(true)}
-            startIcon={<LogIn className="w-5 h-5" />}
-          >
-            Sign In
-          </Button>
-        )}
+        <div className="flex gap-2">
+          {user && (
+            <Button
+              onClick={() => navigateToPage('/quests/create')}
+              startIcon={<PlusCircle className="w-5 h-5" />}
+            >
+              Create Quest
+            </Button>
+          )}
+          {user ? (
+            <Button
+              variant="ghost"
+              onClick={() => signOut()}
+              startIcon={<LogOut className="w-5 h-5" />}
+            >
+              Sign Out
+            </Button>
+          ) : (
+            <Button
+              onClick={() => setShowSignIn(true)}
+              startIcon={<LogIn className="w-5 h-5" />}
+            >
+              Sign In
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Show Sign In Form */}

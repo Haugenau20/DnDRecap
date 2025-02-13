@@ -1,3 +1,5 @@
+Add "Initial Leads", "Possible Complications", and "Rewards" to the quest create and edit pages.
+
 add a "rumor" section to the quest page.
 
 When going to the "LocationsPage" and pressing "Show Places Within" they are automatically collapsed immediately... They should be able to be expanded. 
