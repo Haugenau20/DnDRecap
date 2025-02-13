@@ -173,10 +173,14 @@ const NPCForm: React.FC<NPCFormProps> = ({
     if (!formData.name || !formData.status || !formData.relationship) {
       return;
     }
-
+  
     try {
-      const id = formData.name.toLowerCase().replace(/\s+/g, '-');
-      
+      // Generate ID from name (slug)
+      const id = formData.name.toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric chars with hyphens
+        .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+  
       const npcData: NPC = {
         id,
         name: formData.name,
@@ -191,14 +195,15 @@ const NPCForm: React.FC<NPCFormProps> = ({
         personality: formData.personality || '',
         background: formData.background || '',
         connections: {
-          relatedNPCs: formData.connections?.relatedNPCs || [],
+          relatedNPCs: Array.from(selectedNPCs),
           affiliations: formData.connections?.affiliations || [],
-          relatedQuests: formData.connections?.relatedQuests || []
+          relatedQuests: Array.from(selectedQuests)
         },
         notes: []
       };
-
-      await addData(npcData);
+  
+      // Use the generated ID when adding the document
+      await addData(npcData, id); // Pass the ID explicitly
       onSuccess?.();
     } catch (err) {
       console.error('Failed to create NPC:', err);

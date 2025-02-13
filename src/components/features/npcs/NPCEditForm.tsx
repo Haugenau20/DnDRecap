@@ -10,46 +10,37 @@ import { Save, X, Users, Scroll } from 'lucide-react';
 import { useQuests } from '../../../hooks/useQuests';
 
 interface NPCEditFormProps {
-  npc?: NPC;
-  mode: 'create' | 'edit';
+  /** The NPC being edited */
+  npc: NPC;
+  /** Callback when edit is successful */
   onSuccess?: () => void;
+  /** Callback when editing is cancelled */
   onCancel?: () => void;
+  /** List of existing NPCs for relationship selection */
   existingNPCs: NPC[];
 }
 
 const NPCEditForm: React.FC<NPCEditFormProps> = ({
   npc,
-  mode = 'create',
   onSuccess,
   onCancel,
   existingNPCs
 }) => {
-  // Form state initialized with existing NPC data if provided
-  const [formData, setFormData] = useState<Partial<NPC>>(
-    npc || {
-      status: 'alive',
-      relationship: 'neutral',
-      connections: {
-        relatedNPCs: [],
-        affiliations: [],
-        relatedQuests: []
-      },
-      notes: []
-    }
-  );
+  // Form state initialized with existing NPC data
+  const [formData, setFormData] = useState<NPC>(npc);
   
-  // State for managing new connections
+  // State for managing connections
   const [affiliationInput, setAffiliationInput] = useState('');
-  const [selectedNPCs, setSelectedNPCs] = useState<Set<string>>(new Set(formData.connections?.relatedNPCs || []));
-  const [selectedQuests, setSelectedQuests] = useState<Set<string>>(new Set(formData.connections?.relatedQuests || []));
+  const [selectedNPCs, setSelectedNPCs] = useState<Set<string>>(new Set(npc.connections?.relatedNPCs || []));
+  const [selectedQuests, setSelectedQuests] = useState<Set<string>>(new Set(npc.connections?.relatedQuests || []));
   const [isNPCDialogOpen, setIsNPCDialogOpen] = useState(false);
   const [isQuestDialogOpen, setIsQuestDialogOpen] = useState(false);
 
   // Get quests data
   const { quests } = useQuests();
 
-  // Firebase hooks
-  const { updateData, addData, loading, error } = useFirebaseData<NPC>({
+  // Firebase hook
+  const { updateData, loading, error } = useFirebaseData<NPC>({
     collection: 'npcs'
   });
 
@@ -70,38 +61,19 @@ const NPCEditForm: React.FC<NPCEditFormProps> = ({
     }
 
     try {
-      // Ensure we have a valid ID
-      const id = mode === 'edit' && npc ? npc.id : formData.name.toLowerCase().replace(/\s+/g, '-');
-      
-      const npcData: NPC = {
-        id: id,
-        name: formData.name,
-        title: formData.title || '',
-        status: formData.status as NPCStatus,
-        race: formData.race || '',
-        occupation: formData.occupation || '',
-        location: formData.location || '',
-        relationship: formData.relationship as NPCRelationship,
-        description: formData.description || '',
-        appearance: formData.appearance || '',
-        personality: formData.personality || '',
-        background: formData.background || '',
+      const updatedNPC: NPC = {
+        ...formData,
         connections: {
+          ...formData.connections,
           relatedNPCs: Array.from(selectedNPCs),
-          affiliations: formData.connections?.affiliations || [],
           relatedQuests: Array.from(selectedQuests)
-        },
-        notes: formData.notes || []
+        }
       };
 
-      if (mode === 'edit' && id) {
-        await updateData(id, npcData);
-      } else {
-        await addData(npcData);
-      }
+      await updateData(npc.id, updatedNPC);
       onSuccess?.();
     } catch (err) {
-      console.error('Failed to save NPC:', err);
+      console.error('Failed to update NPC:', err);
     }
   };
 
@@ -374,7 +346,7 @@ const NPCEditForm: React.FC<NPCEditFormProps> = ({
                 disabled={loading}
                 startIcon={<Save />}
               >
-                {loading ? (mode === 'edit' ? 'Saving...' : 'Creating...') : (mode === 'edit' ? 'Save NPC' : 'Create NPC')}
+                {loading ? 'Saving...' : 'Save Changes'}
               </Button>
             </div>
           </form>

@@ -2,8 +2,6 @@ add a "rumor" section to the quest page.
 
 When going to the "LocationsPage" and pressing "Show Places Within" they are automatically collapsed immediately... They should be able to be expanded. 
 
-When adding a new NPC, make it its own page, so that all the NPCPage content doesnt show underneath the adding part. 
-
 Fix Navigation First:
 
 Improve the breadcrumb navigation on all pages

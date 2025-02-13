@@ -28,11 +28,14 @@ export function useFirebaseData<T extends Record<string, any>>(
     }
   }, [options.collection]);
 
-  const addData = useCallback(async (data: T) => {
+  const addData = useCallback(async (data: T, documentId?: string) => {
     setLoading(true);
     setError(null);
     try {
-      const id = options.idField ? data[options.idField] as string : crypto.randomUUID();
+      // Use the provided documentId or generate one from data[idField] if specified
+      const id = documentId || 
+                (options.idField ? data[options.idField] as string : crypto.randomUUID());
+                
       await firebaseService.setDocument(options.collection, id, data);
       return id;
     } catch (err) {
