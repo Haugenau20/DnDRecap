@@ -40,7 +40,7 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
   }, [locations]);
 
   // Helper function to get parent location IDs
-  const getParentLocationIds = (locationId: string, locations: Location[]): string[] => {
+  const getParentLocationIds = useCallback((locationId: string): string[] => {
     const parentIds: string[] = [];
     let currentLocation = locations.find(loc => loc.id === locationId);
     
@@ -50,95 +50,21 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
     }
     
     return parentIds;
-  };
-
-  // Helper function to handle location searching
-  const findLocationById = (locations: Location[], locationId: string): Location | undefined => {
-    return locations.find(loc => loc.id === locationId);
-  };
-
-  // Helper function to check if a location or its children match filters
-  const locationMatchesFilters = useCallback((
-    loc: Location,
-    locationHierarchy: Record<string, Location[]>,
-    statusFilter: string,
-    typeFilter: string,
-    searchQuery: string
-  ): boolean => {
-    const matchesStatus = statusFilter === 'all' || loc.status === statusFilter;
-    const matchesType = typeFilter === 'all' || loc.type === typeFilter;
-    const matchesSearch = !searchQuery || 
-      loc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      loc.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      loc.type.toLowerCase().includes(searchQuery.toLowerCase());
-  
-    // Check if the location itself matches
-    if (matchesStatus && matchesType && matchesSearch) {
-      return true;
-    }
-  
-    // If this is a parent location that matches type/status/search, show all children
-    if ((typeFilter !== 'all' && loc.type === typeFilter) ||
-        (statusFilter !== 'all' && loc.status === statusFilter) ||
-        (searchQuery && matchesSearch)) {
-      return true;
-    }
-  
-    // Check if any children match
-    const children = locationHierarchy[loc.id] || [];
-    return children.some(child => locationMatchesFilters(child, locationHierarchy, statusFilter, typeFilter, searchQuery));
-  }, []);
-
-  // Update locations based on filters
-  useEffect(() => {
-    // Only auto-expand when specific filters are applied
-    if (typeFilter === 'all' && statusFilter === 'all' && !searchQuery) {
-      setExpandedLocations(new Set());
-      return;
-    }
-  
-    const locationsToExpand = new Set<string>();
-  
-    // Function to find and add all parent IDs of matching locations
-    const addParentIdsForMatches = (parentId: string = 'root') => {
-      const children = locationHierarchy[parentId] || [];
-      
-      children.forEach(child => {
-        if (locationMatchesFilters(child, locationHierarchy, statusFilter, typeFilter, searchQuery)) {
-          // Add all parent IDs up to the root
-          const parentIds = getParentLocationIds(child.id, locations);
-          parentIds.forEach(id => locationsToExpand.add(id));
-        }
-        // Recursively check children
-        addParentIdsForMatches(child.id);
-      });
-    };
-  
-    addParentIdsForMatches();
-    setExpandedLocations(locationsToExpand);
-  }, [typeFilter, statusFilter, searchQuery, locations, locationHierarchy, locationMatchesFilters, getParentLocationIds]);
+  }, [locations]);
 
   // Handle highlighted location from URL
   useEffect(() => {
     if (highlightId) {
-      const decodedHighlightId = decodeURIComponent(highlightId);
-      
-      // First try to find by ID, then by name
       const highlightedLocation = locations.find(loc => 
-        loc.id === decodedHighlightId || 
-        loc.name.toLowerCase() === decodedHighlightId.toLowerCase()
+        loc.id === highlightId || 
+        loc.name.toLowerCase() === highlightId.toLowerCase()
       );
 
       if (highlightedLocation) {
         setHighlightedLocationId(highlightedLocation.id);
         
-        // Set relevant filters
-        if (highlightedLocation.type) {
-          setTypeFilter(highlightedLocation.type);
-        }
-
         // Get and expand all parent locations
-        const parentIds = getParentLocationIds(highlightedLocation.id, locations);
+        const parentIds = getParentLocationIds(highlightedLocation.id);
         setExpandedLocations(prev => new Set([...prev, ...parentIds]));
         
         // Scroll to the highlighted location
@@ -150,9 +76,9 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
         }, 100);
       }
     }
-  }, [highlightId, locations]);
+  }, [highlightId, locations, getParentLocationIds]);
 
-  // Toggle expansion state
+  // Toggle expansion state without losing previous state
   const toggleExpansion = (locationId: string) => {
     setExpandedLocations(prev => {
       const newSet = new Set(prev);
@@ -165,45 +91,81 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
     });
   };
 
-  // Recursive function to render location hierarchy
-  const renderLocationHierarchy = (parentId: string = 'root', level: number = 0) => {
-    // Get all child locations for this parent
-    const childLocations = locationHierarchy[parentId] || [];
+  // Helper function to check if a location or its children match filters
+  const locationMatchesFilters = useCallback((
+    loc: Location,
+    locationHierarchy: Record<string, Location[]>,
+    statusFilter: string,
+    typeFilter: string,
+    searchQuery: string,
+    isChild: boolean = false
+  ): boolean => {
+    const matchesStatus = statusFilter === 'all' || loc.status === statusFilter;
+    const matchesType = typeFilter === 'all' || loc.type === typeFilter;
+    const matchesSearch = !searchQuery || 
+      loc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      loc.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      loc.type.toLowerCase().includes(searchQuery.toLowerCase());
 
-    // Helper function to check if a location or any of its children match the filters
-    const locationMatchesFilters = (loc: Location): boolean => {
-      const matchesStatus = statusFilter === 'all' || loc.status === statusFilter;
-      const matchesType = typeFilter === 'all' || loc.type === typeFilter;
-      const matchesSearch = !searchQuery || 
-        loc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        loc.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        loc.type.toLowerCase().includes(searchQuery.toLowerCase());
+    // If this is a child location and the parent matches type filter,
+    // only check status and search
+    if (isChild) {
+      return matchesStatus && matchesSearch;
+    }
 
-      // Check if the location itself matches
-      if (matchesStatus && matchesType && matchesSearch) {
-        return true;
-      }
+    // Check if the location itself matches all criteria
+    if (matchesStatus && matchesType && matchesSearch) {
+      return true;
+    }
 
-      // If this is a parent location that matches type/status/search, show all children
-      if ((typeFilter !== 'all' && loc.type === typeFilter) ||
-          (statusFilter !== 'all' && loc.status === statusFilter) ||
-          (searchQuery && matchesSearch)) {
-        return true;
-      }
+    // If it's a parent location, check if any children match
+    // but only if this location doesn't match the current filter
+    const children = locationHierarchy[loc.id] || [];
+    return children.some(child => 
+      locationMatchesFilters(child, locationHierarchy, statusFilter, typeFilter, searchQuery, false)
+    );
+  }, []);
 
-      // Check if any children match
-      const children = locationHierarchy[loc.id] || [];
-      return children.some(child => locationMatchesFilters(child));
+  // Update locations based on filters
+  useEffect(() => {
+    // Only auto-expand when specific filters are applied
+    if (typeFilter === 'all' && statusFilter === 'all' && !searchQuery) {
+      return;
+    }
+
+    const locationsToExpand = new Set<string>();
+
+    // Function to find and add all parent IDs of matching locations
+    const addParentIdsForMatches = (parentId: string = 'root') => {
+      const children = locationHierarchy[parentId] || [];
+      
+      children.forEach(child => {
+        if (locationMatchesFilters(child, locationHierarchy, statusFilter, typeFilter, searchQuery)) {
+          // Add all parent IDs up to the root
+          const parentIds = getParentLocationIds(child.id);
+          parentIds.forEach(id => locationsToExpand.add(id));
+        }
+        // Recursively check children
+        addParentIdsForMatches(child.id);
+      });
     };
 
-    // Filter child locations
+    addParentIdsForMatches();
+    setExpandedLocations(prev => new Set([...prev, ...locationsToExpand]));
+  }, [typeFilter, statusFilter, searchQuery, locations, locationHierarchy, locationMatchesFilters, getParentLocationIds]);
+
+  // Recursive function to render location hierarchy
+  const renderLocationHierarchy = (parentId: string = 'root', level: number = 0) => {
+    const childLocations = locationHierarchy[parentId] || [];
+
     const filteredChildLocations = childLocations.filter(location => {
-      // Include if the location matches filters
-      // OR if any of its children match filters
-      // OR if its parent matches type filter (show all children of matching parent)
+      // If parent location exists and matches type filter, show all children
       const parentLocation = locations.find(loc => loc.id === parentId);
-      return locationMatchesFilters(location) || 
-             (parentLocation && typeFilter !== 'all' && parentLocation.type === typeFilter);
+      if (parentLocation && (typeFilter === 'all' || parentLocation.type === typeFilter)) {
+        return locationMatchesFilters(location, locationHierarchy, statusFilter, typeFilter, searchQuery, true);
+      }
+      // Otherwise, apply regular filtering
+      return locationMatchesFilters(location, locationHierarchy, statusFilter, typeFilter, searchQuery, false);
     });
 
     if (filteredChildLocations.length === 0) {
