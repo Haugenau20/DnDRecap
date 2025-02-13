@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Quest } from '../../../types/quest';
 import { useNPCs } from '../../../context/NPCContext';
+import { useFirebase } from '../../../context/FirebaseContext';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
@@ -13,19 +14,20 @@ import {
   Users,
   Calendar,
   Target,
+  Edit,
+  Heart
 } from 'lucide-react';
 
 interface QuestCardProps {
   quest: Quest;
 }
 
-
-
 const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   const { getNPCById } = useNPCs();
   const { locations } = useLocations();
+  const { user } = useFirebase();
 
   // Calculate completion percentage
   const completedObjectives = quest.objectives.filter(obj => obj.completed).length;
@@ -50,6 +52,16 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
               <Typography variant="h3">
                 {quest.title}
               </Typography>
+              {user && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate(`/quests/edit/${quest.id}`)}
+                  startIcon={<Edit size={16} />}
+                >
+                  Edit
+                </Button>
+              )}
               <span className={`px-2 py-1 rounded-full text-sm ${
                 quest.status === 'completed' ? 'bg-green-100 text-green-800' :
                 quest.status === 'failed' ? 'bg-red-100 text-red-800' :
@@ -271,40 +283,40 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                       
                       return (
                         <Button
-                            key={npcId}
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => navigate(`/npcs?highlight=${npcId}`)}
-                            className="w-full"
-                            centered={false}
-                          >
-                            <div className="flex items-start gap-2 text-left">
-                              <Users 
-                                size={16} 
-                                className={`mt-1 ${
-                                  npc.relationship === 'friendly' ? 'text-green-500' :
-                                  npc.relationship === 'hostile' ? 'text-red-500' :
-                                  npc.relationship === 'neutral' ? 'text-gray-400' :
-                                  'text-blue-500'
-                                }`}
-                              />
-                              <div className="flex-1">
-                                <Typography variant="body-sm" className="font-medium">
-                                  {npc.name}
-                                  {npc.title && (
-                                    <span className="text-gray-500 ml-1">
-                                      - {npc.title}
-                                    </span>
-                                  )}
-                                </Typography>
-                                {npc.location && (
-                                  <Typography variant="body-sm" color="secondary">
-                                    {npc.location}
-                                  </Typography>
+                          key={npcId}
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => navigate(`/npcs?highlight=${npcId}`)}
+                          className="w-full"
+                          centered={false}
+                        >
+                          <div className="flex items-start gap-2 text-left">
+                            <Users 
+                              size={16} 
+                              className={`mt-1 ${
+                                npc.relationship === 'friendly' ? 'text-green-500' :
+                                npc.relationship === 'hostile' ? 'text-red-500' :
+                                npc.relationship === 'neutral' ? 'text-gray-400' :
+                                'text-blue-500'
+                              }`}
+                            />
+                            <div className="flex-1">
+                              <Typography variant="body-sm" className="font-medium">
+                                {npc.name}
+                                {npc.title && (
+                                  <span className="text-gray-500 ml-1">
+                                    - {npc.title}
+                                  </span>
                                 )}
-                              </div>
+                              </Typography>
+                              {npc.location && (
+                                <Typography variant="body-sm" color="secondary">
+                                  {npc.location}
+                                </Typography>
+                              )}
                             </div>
-                          </Button>
+                          </div>
+                        </Button>
                       );
                     })}
                   </div>

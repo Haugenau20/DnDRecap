@@ -1,48 +1,48 @@
-// pages/QuestsPage.tsx
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import Typography from '../components/core/Typography';
-import Card from '../components/core/Card';
-import Input from '../components/core/Input';
-import { Quest, QuestStatus } from '../types/quest';
-import QuestCard from '../components/features/quests/QuestCard';
-import { Scroll, CheckCircle2, XCircle, Filter, Search, MapPin } from 'lucide-react';
-
-// Import and type the quest data
-import rawQuestData from '../data/quests/metadata/quests.json';
-
-// Type assertion for the imported data
-interface QuestData {
-  quests: Quest[];
-}
-const questData = rawQuestData as QuestData;
+import Typography from '../../components/core/Typography';
+import Card from '../../components/core/Card';
+import Input from '../../components/core/Input';
+import Button from '../../components/core/Button';
+import { QuestStatus } from '../../types/quest';
+import QuestCard from '../../components/features/quests/QuestCard';
+import SignInForm from '../../components/features/auth/SignInForm';
+import { useFirebase } from '../../context/FirebaseContext';
+import { useQuests } from '../../hooks/useQuests';
+import { Scroll, CheckCircle2, XCircle, Filter, Search, MapPin, LogIn, LogOut, Loader2 } from 'lucide-react';
 
 const QuestsPage: React.FC = () => {
+  // Auth state
+  const [showSignIn, setShowSignIn] = useState(false);
+  const { user, signOut } = useFirebase();
+  
+  // Get quests data
+  const { quests, loading, error } = useQuests();
+  
+  // URL and filters state
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const highlightedQuestId = searchParams.get('highlight');
-
-  // State for filters
   const [statusFilter, setStatusFilter] = useState<QuestStatus | 'all'>('all');
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Calculate stats
+  const stats = useMemo(() => ({
+    active: quests.filter(q => q.status === 'active').length,
+    completed: quests.filter(q => q.status === 'completed').length,
+    failed: quests.filter(q => q.status === 'failed').length,
+  }), [quests]);
+
   // Get unique locations for filter dropdown
   const locations = useMemo(() => {
-    const uniqueLocations = new Set(questData.quests.map(q => q.location).filter(Boolean));
+    const uniqueLocations = new Set(quests.map(q => q.location).filter(Boolean));
     return Array.from(uniqueLocations).sort();
-  }, []);
-
-  // Calculate stats
-  const stats = {
-    active: questData.quests.filter(q => q.status === 'active').length,
-    completed: questData.quests.filter(q => q.status === 'completed').length,
-    failed: questData.quests.filter(q => q.status === 'failed').length,
-  };
+  }, [quests]);
 
   // Filter quests based on status, location and search query
   const filteredQuests = useMemo(() => {
-    return questData.quests.filter(quest => {
+    return quests.filter(quest => {
       // Status filter
       if (statusFilter !== 'all' && quest.status !== statusFilter) {
         return false;
@@ -68,35 +68,76 @@ const QuestsPage: React.FC = () => {
 
       return true;
     });
-  }, [statusFilter, locationFilter, searchQuery]);
+  }, [quests, statusFilter, locationFilter, searchQuery]);
 
-  // Scroll to highlighted quest when the URL changes
-  useEffect(() => {
-    if (highlightedQuestId) {
-      const element = document.getElementById(`quest-${highlightedQuestId}`);
-      if (element) {
-        // Add a small delay to ensure DOM is ready
-        setTimeout(() => {
-          element.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center'
-          });
-        }, 100);
-      }
-    }
-  }, [highlightedQuestId]);
+  // Handle sign in success
+  const handleSignInSuccess = () => {
+    setShowSignIn(false);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="p-8">
+          <div className="flex items-center gap-4">
+            <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+            <Typography>Loading quests...</Typography>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="p-8">
+          <Typography color="error">
+            Error loading quests. Please try again later.
+          </Typography>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 max-w-7xl mx-auto px-4 py-8">
       {/* Page Header */}
-      <div className="mb-8">
-        <Typography variant="h1" className="mb-2">
-          Campaign Quests
-        </Typography>
-        <Typography color="secondary">
-          Track your party's epic adventures and missions
-        </Typography>
+      <div className="mb-8 flex justify-between items-start">
+        <div>
+          <Typography variant="h1" className="mb-2">
+            Campaign Quests
+          </Typography>
+          <Typography color="secondary">
+            Track your party's epic adventures and missions
+          </Typography>
+        </div>
+
+        {/* Auth actions */}
+        {user ? (
+          <Button
+            variant="ghost"
+            onClick={() => signOut()}
+            startIcon={<LogOut className="w-5 h-5" />}
+          >
+            Sign Out
+          </Button>
+        ) : (
+          <Button
+            onClick={() => setShowSignIn(true)}
+            startIcon={<LogIn className="w-5 h-5" />}
+          >
+            Sign In
+          </Button>
+        )}
       </div>
+
+      {/* Show Sign In Form */}
+      {showSignIn && (
+        <div className="mb-8">
+          <SignInForm onSuccess={handleSignInSuccess} />
+        </div>
+      )}
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -174,22 +215,24 @@ const QuestsPage: React.FC = () => {
             </div>
 
             {/* Location Filter */}
-            <div className="flex items-center gap-2">
-              <MapPin size={20} className="text-gray-500" />
-              <Typography variant="body-sm">Location:</Typography>
-              <select
-                className="rounded border p-1"
-                value={locationFilter}
-                onChange={(e) => setLocationFilter(e.target.value)}
-              >
-                <option value="all">All Locations</option>
-                {locations.map(location => (
-                  <option key={location} value={location}>
-                    {location}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {locations.length > 0 && (
+              <div className="flex items-center gap-2">
+                <MapPin size={20} className="text-gray-500" />
+                <Typography variant="body-sm">Location:</Typography>
+                <select
+                  className="rounded border p-1"
+                  value={locationFilter}
+                  onChange={(e) => setLocationFilter(e.target.value)}
+                >
+                  <option value="all">All Locations</option>
+                  {locations.map(location => (
+                    <option key={location} value={location}>
+                      {location}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         </Card.Content>
       </Card>

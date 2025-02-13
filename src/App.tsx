@@ -15,7 +15,7 @@ import HomePage from './pages/HomePage';
 import StorySelection from './pages/story';
 import StoryPage from './pages/story/StoryPage';
 import SagaPage from './pages/story/SagaPage';
-import QuestsPage from './pages/QuestsPage';
+import { QuestsPage, QuestEditPage } from './pages/quests';
 import { NPCsPage, NPCsCreatePage, NPCsEditPage } from './pages/npcs';
 import LocationsPage from './pages/LocationsPage';
 
@@ -37,6 +37,7 @@ const App: React.FC = () => {
                     <Route path="/story/chronicles/:chapterId" element={<StoryPage />} />
                     <Route path="/story/saga" element={<SagaPage />} />
                     <Route path="/quests" element={<QuestsPage />} />
+                    <Route path="/quests/edit/:questId" element={<QuestEditPage />} />
                     <Route path="/npcs" element={<NPCsPage />} />
                     <Route path="/npcs/create" element={<NPCsCreatePage />} />
                     <Route path="/npcs/edit/:npcId" element={<NPCsEditPage />} />
