@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Typography from '../components/core/Typography';
-import Button from '../components/core/Button';
-import Card from '../components/core/Card';
-import NPCDirectory from '../components/features/npcs/NPCDirectory';
-import NPCForm from '../components/features/npcs/NPCForm';
-import NPCEditForm from '../components/features/npcs/NPCEditForm';
-import SignInForm from '../components/features/auth/SignInForm';
-import { useFirebase } from '../context/FirebaseContext';
-import { useFirebaseData } from '../hooks/useFirebaseData';
-import { NPC } from '../types/npc';
+import Typography from '../../components/core/Typography';
+import Button from '../../components/core/Button';
+import Card from '../../components/core/Card';
+import NPCDirectory from '../../components/features/npcs/NPCDirectory';
+import NPCForm from '../../components/features/npcs/NPCForm';
+import NPCEditForm from '../../components/features/npcs/NPCEditForm';
+import SignInForm from '../../components/features/auth/SignInForm';
+import { useFirebase } from '../../context/FirebaseContext';
+import { useFirebaseData } from '../../hooks/useFirebaseData';
+import { NPC } from '../../types/npc';
 import { Plus, Users, Loader2, ArrowLeft, LogOut } from 'lucide-react';
 
 const NPCsPage: React.FC = () => {
@@ -136,8 +136,8 @@ const NPCsPage: React.FC = () => {
   // Main NPCs page
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Page Header */}
-      <div className="mb-8 flex flex-col md:flex-row justify-between items-start gap-4">
+        {/* Page Header */}
+        <div className="mb-8 flex flex-col md:flex-row justify-between items-start gap-4">
         <div>
           <Typography variant="h1" className="mb-2">
             NPC Directory
@@ -147,11 +147,11 @@ const NPCsPage: React.FC = () => {
           </Typography>
         </div>
 
-        {/* Show different buttons based on auth state */}
+        {/* Auth actions */}
         {user ? (
           <div className="flex gap-2">
             <Button
-              onClick={() => setShowCreateForm(true)}
+              onClick={() => navigate('/npcs/create')}
               startIcon={<Plus className="w-5 h-5" />}
             >
               Add NPC
