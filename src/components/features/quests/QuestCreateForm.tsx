@@ -17,7 +17,9 @@ import {
   MapPin, 
   PlusCircle,
   Target,
-  Scroll
+  Lightbulb,
+  Coins,
+  Skull
 } from 'lucide-react';
 
 interface QuestCreateFormProps {
@@ -106,6 +108,54 @@ const QuestCreateForm: React.FC<QuestCreateFormProps> = ({
       keyLocations: prev.keyLocations?.filter((_, i) => i !== index)
     }));
   };
+
+  const handleAddReward = () => {
+    setFormData(prev => ({
+      ...prev,
+      rewards: [
+        ...(prev.rewards || []), ''
+      ]
+    }));
+  };
+
+  const handleRemoveReward = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      rewards: prev.rewards?.filter((_, i) => i !== index)
+    }))
+  }
+
+  const handleAddLead = () => {
+    setFormData(prev => ({
+      ...prev,
+      leads: [
+        ...(prev.leads || []), ''
+      ]
+    }));
+  };
+
+  const handleRemoveLead = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      leads: prev.leads?.filter((_, i) => i !== index)
+    }))
+  }
+
+  const handleAddComplication = () => {
+    setFormData(prev => ({
+      ...prev,
+      complications: [
+        ...(prev.complications || []), ''
+      ]
+    }));
+  };
+
+  const handleRemoveComplication = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      complications: prev.complications?.filter((_, i) => i !== index)
+    }))
+  }
 
   // Handle array field additions (leads, complications, rewards)
   const handleArrayFieldAdd = (field: 'leads' | 'complications' | 'rewards', value: string) => {
@@ -229,11 +279,11 @@ const QuestCreateForm: React.FC<QuestCreateFormProps> = ({
 
           {/* Objectives */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
               <Typography variant="h4">Objectives</Typography>
               <Button
                 type="button"
-                variant="outline"
+                variant="ghost"
                 onClick={handleAddObjective}
                 startIcon={<PlusCircle />}
               >
@@ -283,54 +333,52 @@ const QuestCreateForm: React.FC<QuestCreateFormProps> = ({
             </div>
           </div>
 
-          {/* Related NPCs */}
+          {/* Initial Leads */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <Typography variant="h4">Related NPCs</Typography>
+            <div className="flex items-center gap-4">
+              <Typography variant="h4">Initial Leads</Typography>
               <Button
                 type="button"
-                variant="outline"
-                onClick={() => setIsNPCDialogOpen(true)}
-                startIcon={<Users />}
+                variant="ghost"
+                onClick={handleAddLead}
+                startIcon={<Lightbulb />}
               >
-                Select NPCs
+                Add Inital Leads
               </Button>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {Array.from(selectedNPCs).map(npcId => {
-                const npc = npcs.find(n => n.id === npcId);
-                return npc ? (
-                  <div
-                    key={npcId}
-                    className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
-                  >
-                    <span>{npc.name}</span>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedNPCs(prev => {
-                          const newSet = new Set(prev);
-                          newSet.delete(npcId);
-                          return newSet;
-                        });
+            <div className="space-y-4">
+              {formData.leads?.map((lead, index) => (
+                <div key={index} className="flex gap-4">
+                  <div className="flex-1 space-y-2">
+                    <Input
+                      placeholder="Initial Lead"
+                      value={lead}
+                      onChange={(e) => {
+                        const newLeads = [...(formData.leads || [])];
+                        newLeads[index] = e.target.value
+                        handleInputChange('leads', newLeads);
                       }}
-                      className="text-gray-500 hover:text-gray-700"
-                    >
-                      <X size={14} />
-                    </button>
+                    />
                   </div>
-                ) : null;
-              })}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => handleRemoveLead(index)}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Key Locations */}
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
               <Typography variant="h4">Key Locations</Typography>
               <Button
                 type="button"
-                variant="outline"
+                variant="ghost"
                 onClick={handleAddLocation}
                 startIcon={<MapPin />}
               >
@@ -371,6 +419,125 @@ const QuestCreateForm: React.FC<QuestCreateFormProps> = ({
                     type="button"
                     variant="ghost"
                     onClick={() => handleRemoveLocation(index)}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Related NPCs */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <Typography variant="h4">Related NPCs</Typography>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setIsNPCDialogOpen(true)}
+                startIcon={<Users />}
+              >
+                Select NPCs
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {Array.from(selectedNPCs).map(npcId => {
+                const npc = npcs.find(n => n.id === npcId);
+                return npc ? (
+                  <div
+                    key={npcId}
+                    className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
+                  >
+                    <span>{npc.name}</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedNPCs(prev => {
+                          const newSet = new Set(prev);
+                          newSet.delete(npcId);
+                          return newSet;
+                        });
+                      }}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                ) : null;
+              })}
+            </div>
+          </div>
+
+          {/* Complications */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <Typography variant="h4">Complications</Typography>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={handleAddComplication}
+                startIcon={<Skull />}
+              >
+                Add Complication
+              </Button>
+            </div>
+            <div className="space-y-4">
+              {formData.complications?.map((complication, index) => (
+                <div key={index} className="flex gap-4">
+                  <div className="flex-1 space-y-2">
+                    <Input
+                      placeholder="Complication"
+                      value={complication}
+                      onChange={(e) => {
+                        const newComplications = [...(formData.complications || [])];
+                        newComplications[index] = e.target.value
+                        handleInputChange('complications', newComplications);
+                      }}
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => handleRemoveComplication(index)}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Rewards */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <Typography variant="h4">Rewards</Typography>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={handleAddReward}
+                startIcon={<Coins />}
+              >
+                Add Reward
+              </Button>
+            </div>
+            <div className="space-y-4">
+              {formData.rewards?.map((reward, index) => (
+                <div key={index} className="flex gap-4">
+                  <div className="flex-1 space-y-2">
+                    <Input
+                      placeholder="Reward"
+                      value={reward}
+                      onChange={(e) => {
+                        const newRewards = [...(formData.rewards || [])];
+                        newRewards[index] = e.target.value
+                        handleInputChange('rewards', newRewards);
+                      }}
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => handleRemoveReward(index)}
                   >
                     <X className="w-4 h-4" />
                   </Button>
