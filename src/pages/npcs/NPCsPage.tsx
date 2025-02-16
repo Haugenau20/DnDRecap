@@ -9,7 +9,7 @@ import SignInForm from '../../components/features/auth/SignInForm';
 import { useFirebase } from '../../context/FirebaseContext';
 import { useNPCData } from '../../hooks/useNPCData';
 import { NPC } from '../../types/npc';
-import { Plus, Users, Loader2, LogOut } from 'lucide-react';
+import { Plus, Users, Loader2, LogOut, LogIn } from 'lucide-react';
 
 const NPCsPage: React.FC = () => {
   // State
@@ -93,7 +93,7 @@ const NPCsPage: React.FC = () => {
         ) : (
           <Button
             onClick={() => setShowSignIn(true)}
-            startIcon={<Users className="w-5 h-5" />}
+            startIcon={<LogIn className="w-5 h-5" />}
           >
             Sign In
           </Button>

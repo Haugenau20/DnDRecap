@@ -21,7 +21,8 @@ import {
   LogIn, 
   LogOut, 
   Loader2,
-  PlusCircle 
+  PlusCircle,
+  Plus 
 } from 'lucide-react';
 
 const QuestsPage: React.FC = () => {
@@ -132,7 +133,7 @@ const QuestsPage: React.FC = () => {
           {user && (
             <Button
               onClick={() => navigateToPage('/quests/create')}
-              startIcon={<PlusCircle className="w-5 h-5" />}
+              startIcon={<Plus className="w-5 h-5" />}
             >
               Create Quest
             </Button>
