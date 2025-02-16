@@ -53,11 +53,8 @@ export interface Location {
  * Note for a location
  */
 export interface LocationNote {
-  id: string;
-  content: string;
   date: string;
-  sessionNumber?: number;
-  tags?: string[];
+  text: string;
 }
 
 /**

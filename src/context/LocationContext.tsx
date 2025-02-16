@@ -1,129 +1,79 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { Location, LocationType, LocationNote } from '../types/location';
-
-// Import location data
-import locationData from '../data/locations/locations.json';
-
-interface LocationContextState {
-  locations: Location[];
-  isLoading: boolean;
-  error: string | null;
-}
-
-interface LocationContextValue extends LocationContextState {
-  getLocationById: (id: string) => Location | undefined;
-  getLocationsByType: (type: LocationType) => Location[];
-  getLocationsByStatus: (status: Location['status']) => Location[];
-  getChildLocations: (parentId: string) => Location[];
-  updateLocationNote: (locationId: string, note: LocationNote) => void;
-  updateLocationStatus: (locationId: string, status: Location['status']) => void;
-}
+// src/context/LocationContext.tsx
+import React, { createContext, useContext, useCallback } from 'react';
+import { Location, LocationType, LocationNote, LocationContextValue } from '../types/location';
+import { useLocationData } from '../hooks/useLocationData';
+import { useFirebaseData } from '../hooks/useFirebaseData';
 
 const LocationContext = createContext<LocationContextValue | undefined>(undefined);
 
 export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState<LocationContextState>({
-    locations: [],
-    isLoading: true,
-    error: null,
-  });
-
-  // Load location data
-  useEffect(() => {
-    try {
-      setState({
-        locations: locationData.locations as Location[],
-        isLoading: false,
-        error: null,
-      });
-    } catch (error) {
-      setState(prev => ({
-        ...prev,
-        isLoading: false,
-        error: 'Failed to load location data',
-      }));
-    }
-  }, []);
-
-  const getParentLocationWithCheck = useCallback((
-    locations: Location[], 
-    currentParentId: string, 
-    requiredParentIds: Set<string>
-  ) => {
-    const location = locations.find(loc => loc.id === currentParentId);
-    if (location?.parentId) {
-      requiredParentIds.add(location.parentId);
-      getParentLocationWithCheck(locations, location.parentId, requiredParentIds);
-    }
-  }, []);
+  const { locations, loading, error, refreshLocations } = useLocationData();
+  const { updateData } = useFirebaseData<Location>({ collection: 'locations' });
 
   // Get location by ID
-  const getLocationById = (id: string) => {
-    return state.locations.find(location => location.id === id);
-  };
+  const getLocationById = useCallback((id: string) => {
+    return locations.find(location => location.id === id);
+  }, [locations]);
 
-  // Get locations by type - including necessary parent locations
+  // Get locations by type
   const getLocationsByType = useCallback((type: LocationType) => {
-    // First find all locations of the specified type
-    const matchingLocations = state.locations.filter(loc => loc.type === type);
-    
-    // Get set of all necessary parent IDs
-    const requiredParentIds = new Set<string>();
-    matchingLocations.forEach(location => {
-      if (location.parentId) {
-        getParentLocationWithCheck(state.locations, location.parentId, requiredParentIds);
-      }
-    });
-  
-    // Return matching locations plus their parent locations
-    return state.locations.filter(location => 
-      location.type === type || requiredParentIds.has(location.id)
-    );
-  }, [state.locations, getParentLocationWithCheck]);
+    return locations.filter(location => location.type === type);
+  }, [locations]);
 
   // Get locations by status
-  const getLocationsByStatus = (status: Location['status']) => {
-    return state.locations.filter(location => location.status === status);
-  };
+  const getLocationsByStatus = useCallback((status: Location['status']) => {
+    return locations.filter(location => location.status === status);
+  }, [locations]);
 
   // Get child locations
-  const getChildLocations = (parentId: string) => {
-    return state.locations.filter(location => location.parentId === parentId);
-  };
+  const getChildLocations = useCallback((parentId: string) => {
+    return locations.filter(location => location.parentId === parentId);
+  }, [locations]);
+
+  // Get parent location
+  const getParentLocation = useCallback((locationId: string) => {
+    const location = getLocationById(locationId);
+    if (location?.parentId) {
+      return getLocationById(location.parentId);
+    }
+    return undefined;
+  }, [getLocationById]);
 
   // Update location note
-  const updateLocationNote = (locationId: string, note: LocationNote) => {
-    setState(prev => ({
-      ...prev,
-      locations: prev.locations.map(location =>
-        location.id === locationId
-          ? {
-              ...location,
-              notes: [...(location.notes || []), note]
-            }
-          : location
-      ),
-    }));
-  };
+  const updateLocationNote = useCallback(async (locationId: string, note: LocationNote) => {
+    const location = getLocationById(locationId);
+    if (location) {
+      const updatedLocation = {
+        ...location,
+        notes: [...(location.notes || []), note]
+      };
+      await updateData(locationId, updatedLocation);
+      refreshLocations(); // Refresh to get updated data
+    }
+  }, [getLocationById, updateData, refreshLocations]);
 
   // Update location status
-  const updateLocationStatus = (locationId: string, status: Location['status']) => {
-    setState(prev => ({
-      ...prev,
-      locations: prev.locations.map(location =>
-        location.id === locationId
-          ? { ...location, status }
-          : location
-      ),
-    }));
-  };
+  const updateLocationStatus = useCallback(async (locationId: string, status: Location['status']) => {
+    const location = getLocationById(locationId);
+    if (location) {
+      const updatedLocation = {
+        ...location,
+        status
+      };
+      await updateData(locationId, updatedLocation);
+      refreshLocations(); // Refresh to get updated data
+    }
+  }, [getLocationById, updateData, refreshLocations]);
 
   const value: LocationContextValue = {
-    ...state,
+    locations,
+    isLoading: loading,
+    error,
     getLocationById,
     getLocationsByType,
     getLocationsByStatus,
     getChildLocations,
+    getParentLocation,
     updateLocationNote,
     updateLocationStatus,
   };

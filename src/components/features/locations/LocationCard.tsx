@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Location, LocationType } from '../../../types/location';
+import { useState } from 'react';
+import { Location, LocationNote, LocationType } from '../../../types/location';
 import { useNPCs } from '../../../context/NPCContext';
+import { useQuests } from '../../../hooks/useQuests';
+import { useFirebase } from '../../../context/FirebaseContext';
+import { useFirebaseData } from '../../../hooks/useFirebaseData';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
-import { useQuests } from '../../../hooks/useQuests';
+import Input from '../../core/Input';
+import { 
+  Heart,
+  Edit,
+  X,
+  Target,
+  Save,
+} from 'lucide-react';
 import { 
   MapPin, 
   ChevronDown, 
@@ -20,7 +30,8 @@ import {
   Landmark,
   Mountain,
   Home,
-  MapPinOff
+  MapPinOff,
+  PlusCircle
 } from 'lucide-react';
 
 interface LocationCardProps {
@@ -28,6 +39,7 @@ interface LocationCardProps {
   hasChildren?: boolean;
   isExpanded?: boolean;
   onToggleExpand?: () => void;
+  onEdit?: (location: Location) => void;
 }
 
 const formatLocationType = (type: LocationType): string => {
@@ -51,12 +63,45 @@ const LocationCard: React.FC<LocationCardProps> = ({
   location, 
   hasChildren,
   isExpanded,
-  onToggleExpand 
+  onToggleExpand,
+  onEdit 
 }) => {
-  const [isContentExpanded, setIsContentExpanded] = useState(false);
   const navigate = useNavigate();
+  const [isContentExpanded, setIsContentExpanded] = useState(false);
   const { getNPCById } = useNPCs();
   const { getQuestById } = useQuests();
+  const { user } = useFirebase();
+  const [isAddingNote, setIsAddingNote] = useState(false);
+  const [noteInput, setNoteInput] = useState('');
+  const { updateData } = useFirebaseData<Location>({ collection: 'locations' });
+
+  // Handle editing the location
+  const handleEdit = () => {
+    navigate(`/locations/edit/${location.id}`);
+  };
+
+  // Handle quick note adding
+  const handleAddNote = async () => {
+    if (!noteInput.trim()) return;
+
+    const newNote: LocationNote = {
+      date: new Date().toISOString().split('T')[0],
+      text: noteInput.trim()
+    };
+
+    try {
+      const updatedLocation = {
+        ...location,
+        notes: [...(location.notes || []), newNote]
+      };
+
+      await updateData(location.id, updatedLocation);
+      setNoteInput('');
+      setIsAddingNote(false);
+    } catch (error) {
+      console.error('Failed to add note:', error);
+    }
+  };
 
   // Fetch NPC data at component level
   const connectedNPCs = location.connectedNPCs 
@@ -100,7 +145,18 @@ const LocationCard: React.FC<LocationCardProps> = ({
           <div className="flex-1">
             <Typography variant="h4">
               {location.name}
+              {user && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleEdit}
+                  startIcon={<Edit size={16} />}
+                >
+                  Edit
+                </Button>
+              )}
             </Typography>
+            
             <div className="flex items-center gap-2 mt-1">
               <Typography variant="body-sm" color="secondary">
                 {formatLocationType(location.type)}
@@ -289,30 +345,19 @@ const LocationCard: React.FC<LocationCardProps> = ({
             {location.notes && location.notes.length > 0 && (
               <div>
                 <Typography variant="body" className="font-medium mb-2">
-                  Recent Notes
+                  Notes
                 </Typography>
                 <div className="space-y-2">
                   {location.notes.slice(0, 3).map((note) => (
-                    <div
-                      key={note.id}
-                      className="p-3 bg-gray-50 rounded-lg space-y-1"
-                    >
+                    <div className="p-3 bg-gray-50 rounded-lg space-y-1">
                       <div className="flex items-center gap-2">
                         <Calendar size={14} className="text-gray-400" />
                         <Typography variant="body-sm" color="secondary">
                           {note.date}
                         </Typography>
-                        {note.sessionNumber && (
-                          <>
-                            <span className="text-gray-300">•</span>
-                            <Typography variant="body-sm" color="secondary">
-                              Session {note.sessionNumber}
-                            </Typography>
-                          </>
-                        )}
                       </div>
                       <Typography variant="body-sm">
-                        {note.content}
+                        {note.text}
                       </Typography>
                     </div>
                   ))}
@@ -321,6 +366,52 @@ const LocationCard: React.FC<LocationCardProps> = ({
             )}
           </div>
         )}
+
+        {/* Quick Note Adding - Only visible when authenticated */}
+        {user && (
+            <div>
+              {isAddingNote ? (
+                <div className="space-y-2">
+                  <Input
+                    value={noteInput}
+                    onChange={(e) => setNoteInput(e.target.value)}
+                    placeholder="Enter note..."
+                    isTextArea={true}
+                  />
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      onClick={handleAddNote}
+                      disabled={!noteInput.trim()}
+                      startIcon={<Save size={16} />}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setIsAddingNote(false);
+                        setNoteInput('');
+                      }}
+                      startIcon={<X size={16} />}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsAddingNote(true)}
+                  startIcon={<PlusCircle size={16} />}
+                >
+                  Add Note
+                </Button>
+              )}
+            </div>
+          )}
 
         {/* Expand/Collapse Buttons */}
         <div className="flex gap-2">

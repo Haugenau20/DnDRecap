@@ -1,12 +1,21 @@
-import React, { useMemo } from 'react';
-import Typography from '../components/core/Typography';
-import Card from '../components/core/Card';
-import LocationDirectory from '../components/features/locations/LocationDirectory';
-import { useLocations } from '../context/LocationContext';
-import { Map, MapPin, Eye, EyeOff } from 'lucide-react';
+// src/pages/LocationsPage.tsx
+import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Typography from '../../components/core/Typography';
+import Card from '../../components/core/Card';
+import LocationDirectory from '../../components/features/locations/LocationDirectory';
+import SignInForm from '../../components/features/auth/SignInForm';
+import { useLocations } from '../../context/LocationContext';
+import { useFirebase } from '../../context/FirebaseContext';
+import { Map, MapPin, Eye, EyeOff, LogIn, LogOut, Plus } from 'lucide-react';
+import Button from '../../components/core/Button';
 
 const LocationsPage: React.FC = () => {
-  const { locations, isLoading } = useLocations();
+  // Auth state
+  const [showSignIn, setShowSignIn] = useState(false);
+  const { user, signOut } = useFirebase();
+  const { locations, isLoading, error } = useLocations();
+  const navigate = useNavigate();
 
   // Calculate statistics
   const stats = useMemo(() => ({
@@ -16,17 +25,76 @@ const LocationsPage: React.FC = () => {
     undiscovered: locations.filter(loc => loc.status === 'undiscovered').length
   }), [locations]);
 
+  // Handle sign in success
+  const handleSignInSuccess = () => {
+    setShowSignIn(false);
+  };
+
+  // Handle create new location
+  const handleCreateLocation = () => {
+    navigate('/locations/create');
+  };
+
+  if (error) {
+    return (
+      <Card>
+        <Card.Content>
+          <Typography color="error">
+            Error loading locations: {error}
+          </Typography>
+        </Card.Content>
+      </Card>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Page Header */}
-      <div className="mb-8">
-        <Typography variant="h1" className="mb-2">
-          Locations
-        </Typography>
-        <Typography color="secondary">
-          Explore and track the places you've discovered in your adventures
-        </Typography>
+      <div className="mb-8 flex justify-between items-start">
+        <div>
+          <Typography variant="h1" className="mb-2">
+            Locations
+          </Typography>
+          <Typography color="secondary">
+            Explore and track the places you've discovered in your adventures
+          </Typography>
+        </div>
+
+        {/* Auth actions */}
+        <div className="flex gap-2">
+          {user && (
+            <Button
+              onClick={handleCreateLocation}
+              startIcon={<Plus className="w-5 h-5" />}
+            >
+              Add Location
+            </Button>
+          )}
+          {user ? (
+            <Button
+              variant="ghost"
+              onClick={() => signOut()}
+              startIcon={<LogOut className="w-5 h-5" />}
+            >
+              Sign Out
+            </Button>
+          ) : (
+            <Button
+              onClick={() => setShowSignIn(true)}
+              startIcon={<LogIn className="w-5 h-5" />}
+            >
+              Sign In
+            </Button>
+          )}
+        </div>
       </div>
+
+      {/* Show Sign In Form */}
+      {showSignIn && (
+        <div className="mb-8">
+          <SignInForm onSuccess={handleSignInSuccess} />
+        </div>
+      )}
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">

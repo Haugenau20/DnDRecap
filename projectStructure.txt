@@ -36,13 +36,18 @@ DnDRecap
 │   │   │   │   ├── NPCsEditPage.tsx
 │   │   │   │   ├── NPCsCreatePage.tsx
 │   │   │   │   └── index.ts
-│   │   │   ├── LocationsPage.tsx
+│   │   │   ├── locations
+│   │   │   │   ├── LocationsPage.tsx
+│   │   │   │   ├── LocationEditPage.tsx
+│   │   │   │   ├── LocationCreatePage.tsx
+│   │   │   │   └── index.ts
 │   │   │   └── HomePage.tsx
 │   │   ├── hooks
 │   │   │   ├── useSearch.ts
 │   │   │   ├── useQuests.ts
 │   │   │   ├── useNPCData.ts
 │   │   │   ├── useNavigation.ts
+│   │   │   ├── useLocationData.ts
 │   │   │   └── useFirebaseData.ts
 │   │   ├── data
 │   │   │   ├── story
@@ -88,6 +93,7 @@ DnDRecap
 │   │   │   │   │   └── BookViewer.tsx
 │   │   │   │   ├── quests
 │   │   │   │   │   ├── QuestTracker.tsx
+│   │   │   │   │   ├── QuestFormSections.tsx
 │   │   │   │   │   ├── QuestEditForm.tsx
 │   │   │   │   │   ├── QuestCreateForm.tsx
 │   │   │   │   │   └── QuestCard.tsx
@@ -98,7 +104,10 @@ DnDRecap
 │   │   │   │   │   ├── NPCDirectory.tsx
 │   │   │   │   │   └── NPCCard.tsx
 │   │   │   │   ├── locations
+│   │   │   │   │   ├── LocationFormSections.tsx
+│   │   │   │   │   ├── LocationEditForm.tsx
 │   │   │   │   │   ├── LocationDirectory.tsx
+│   │   │   │   │   ├── LocationCreateForm.tsx
 │   │   │   │   │   ├── LocationCombobox.tsx
 │   │   │   │   │   └── LocationCard.tsx
 │   │   │   │   └── auth
