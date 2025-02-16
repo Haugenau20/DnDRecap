@@ -10,13 +10,6 @@ import Card from '../../core/Card';
 import Button from '../../core/Button';
 import Input from '../../core/Input';
 import { 
-  Heart,
-  Edit,
-  X,
-  Target,
-  Save,
-} from 'lucide-react';
-import { 
   MapPin, 
   ChevronDown, 
   ChevronUp,
@@ -31,7 +24,10 @@ import {
   Mountain,
   Home,
   MapPinOff,
-  PlusCircle
+  PlusCircle,
+  Edit,
+  X,
+  Save
 } from 'lucide-react';
 
 interface LocationCardProps {

@@ -7,17 +7,12 @@ import Input from '../../core/Input';
 import Button from '../../core/Button';
 import Dialog from '../../core/Dialog';
 import { useQuests } from '../../../hooks/useQuests';
-import { useNPCs } from '../../../context/NPCContext';
 import LocationCombobox from '../locations/LocationCombobox';
 import { 
   PlusCircle, 
   X, 
   Users, 
-  Target, 
-  Home, 
-  MapPin,
   Scroll,
-  Save 
 } from 'lucide-react';
 
 interface SectionProps {

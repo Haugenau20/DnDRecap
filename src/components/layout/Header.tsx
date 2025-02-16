@@ -11,8 +11,8 @@ const Header: React.FC = () => {
   const { navigateToPage } = useNavigation();
 
   return (
-    <header className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex items-center justify-between">
+    <header className="bg-gradient-to-r from-stone-600 via-stone-700 to-zinc-800 text-white p-4">
+      <div className="container mx-auto flex items-center gap-4 justify-center">
         <Link 
           to="/" 
           onClick={(e) => {
