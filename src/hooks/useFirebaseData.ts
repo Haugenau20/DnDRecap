@@ -1,5 +1,5 @@
 // src/hooks/useFirebaseData.ts
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import FirebaseService from '../services/firebase/FirebaseService';
 
 interface UseFirebaseDataOptions<T> {
@@ -10,7 +10,8 @@ interface UseFirebaseDataOptions<T> {
 export function useFirebaseData<T extends Record<string, any>>(
   options: UseFirebaseDataOptions<T>
 ) {
-  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<T[]>([]);
+  const [loading, setLoading] = useState(true); // Start with loading true
   const [error, setError] = useState<string | null>(null);
   const firebaseService = FirebaseService.getInstance();
 
@@ -18,41 +19,56 @@ export function useFirebaseData<T extends Record<string, any>>(
     setLoading(true);
     setError(null);
     try {
-      const data = await firebaseService.getCollection<T>(options.collection);
-      return data;
+      const fetchedData = await firebaseService.getCollection<T>(options.collection);
+      setData(fetchedData);
+      return fetchedData;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch data');
-      throw err;
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch data';
+      setError(errorMessage);
+      console.error('Error fetching data:', errorMessage);
+      return [];
     } finally {
       setLoading(false);
     }
   }, [options.collection]);
 
-  const addData = useCallback(async (data: T, documentId?: string) => {
+  // Add useEffect to fetch data on mount
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
+  const addData = useCallback(async (newData: T, documentId?: string) => {
     setLoading(true);
     setError(null);
     try {
-      // Use the provided documentId or generate one from data[idField] if specified
       const id = documentId || 
-                (options.idField ? data[options.idField] as string : crypto.randomUUID());
+                (options.idField ? newData[options.idField] as string : crypto.randomUUID());
                 
-      await firebaseService.setDocument(options.collection, id, data);
+      await firebaseService.setDocument(options.collection, id, newData);
+      setData(prevData => [...prevData, { ...newData, id }]);
       return id;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to add data');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to add data';
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);
     }
   }, [options.collection, options.idField]);
 
-  const updateData = useCallback(async (id: string, data: Partial<T>) => {
+  const updateData = useCallback(async (id: string, updatedData: Partial<T>) => {
     setLoading(true);
     setError(null);
     try {
-      await firebaseService.updateDocument(options.collection, id, data);
+      await firebaseService.updateDocument(options.collection, id, updatedData);
+      setData(prevData => 
+        prevData.map(item => 
+          'id' in item && item.id === id ? { ...item, ...updatedData } : item
+        )
+      );
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update data');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to update data';
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -64,8 +80,10 @@ export function useFirebaseData<T extends Record<string, any>>(
     setError(null);
     try {
       await firebaseService.deleteDocument(options.collection, id);
+      setData(prevData => prevData.filter(item => 'id' in item && item.id !== id));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete data');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to delete data';
+      setError(errorMessage);
       throw err;
     } finally {
       setLoading(false);
@@ -73,9 +91,10 @@ export function useFirebaseData<T extends Record<string, any>>(
   }, [options.collection]);
 
   return {
+    data,
     loading,
     error,
-    getData,
+    getData, // Expose getData for manual refreshes
     addData,
     updateData,
     deleteData

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Location, LocationNote, LocationType } from '../../../types/location';
 import { useNPCs } from '../../../context/NPCContext';
 import { useQuests } from '../../../hooks/useQuests';
@@ -35,7 +35,6 @@ interface LocationCardProps {
   hasChildren?: boolean;
   isExpanded?: boolean;
   onToggleExpand?: () => void;
-  onEdit?: (location: Location) => void;
 }
 
 const formatLocationType = (type: LocationType): string => {
@@ -56,11 +55,10 @@ const typeIcons: Record<LocationType, React.ReactNode> = {
 };
 
 const LocationCard: React.FC<LocationCardProps> = ({ 
-  location, 
+  location: initialLocation,  // Rename to indicate it's the initial data
   hasChildren,
   isExpanded,
-  onToggleExpand,
-  onEdit 
+  onToggleExpand
 }) => {
   const navigate = useNavigate();
   const [isContentExpanded, setIsContentExpanded] = useState(false);
@@ -69,15 +67,20 @@ const LocationCard: React.FC<LocationCardProps> = ({
   const { user } = useFirebase();
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [noteInput, setNoteInput] = useState('');
-  const { updateData } = useFirebaseData<Location>({ collection: 'locations' });
+  const [location, setLocation] = useState(initialLocation);
+
+  // Use Firebase hook to get real-time data
+  const { data: locations, updateData } = useFirebaseData<Location>({
+    collection: 'locations'
+  });
 
   // Handle editing the location
   const handleEdit = () => {
     navigate(`/locations/edit/${location.id}`);
   };
 
-  // Handle quick note adding
-  const handleAddNote = async () => {
+   // Handle quick note adding
+   const handleAddNote = async () => {
     if (!noteInput.trim()) return;
 
     const newNote: LocationNote = {
@@ -86,17 +89,108 @@ const LocationCard: React.FC<LocationCardProps> = ({
     };
 
     try {
+      // Create updated location with new note
       const updatedLocation = {
         ...location,
         notes: [...(location.notes || []), newNote]
       };
 
+      // Update the database
       await updateData(location.id, updatedLocation);
+      
+      // Update local state immediately
+      setLocation(updatedLocation);
+      
+      // Reset form
       setNoteInput('');
       setIsAddingNote(false);
     } catch (error) {
       console.error('Failed to add note:', error);
     }
+  };
+
+  // Render notes section
+  const renderNotes = () => {
+    if (!location.notes || location.notes.length === 0) {
+      return null;
+    }
+
+
+    return (
+      <div>
+        <Typography variant="h4" className="mb-2">
+          Notes
+        </Typography>
+        <div className="space-y-2">
+          {location.notes.map((note, index) => (
+            <div
+              key={`${note.date}-${index}`}
+              className="p-3 bg-gray-50 rounded-lg space-y-1"
+            >
+              <div className="flex items-center gap-2">
+                <Calendar size={14} className="text-gray-400" />
+                <Typography variant="body-sm" color="secondary">
+                  {note.date}
+                </Typography>
+              </div>
+              <Typography variant="body-sm">
+                {note.text}
+              </Typography>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  // Quick Note Adding Form
+  const renderNoteForm = () => {
+    if (!user) return null;
+
+    return (
+      <div>
+        {isAddingNote ? (
+          <div className="space-y-2">
+            <Input
+              value={noteInput}
+              onChange={(e) => setNoteInput(e.target.value)}
+              placeholder="Enter note..."
+              isTextArea={true}
+            />
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                onClick={handleAddNote}
+                disabled={!noteInput.trim()}
+                startIcon={<Save size={16} />}
+              >
+                Save
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setIsAddingNote(false);
+                  setNoteInput('');
+                }}
+                startIcon={<X size={16} />}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsAddingNote(true)}
+            startIcon={<PlusCircle size={16} />}
+          >
+            Add Note
+          </Button>
+        )}
+      </div>
+    );
   };
 
   // Fetch NPC data at component level
@@ -129,6 +223,14 @@ const LocationCard: React.FC<LocationCardProps> = ({
   const handleQuestClick = (questId: string) => {
     navigate(`/quests?highlight=${encodeURIComponent(questId)}`);
   };
+
+  // Update local state when database data changes
+  useEffect(() => {
+    const updatedLocation = locations.find(loc => loc.id === initialLocation.id);
+    if (updatedLocation) {
+      setLocation(updatedLocation);
+    }
+  }, [locations, initialLocation.id]);
 
   return (
     <Card>
@@ -338,76 +440,12 @@ const LocationCard: React.FC<LocationCardProps> = ({
             )}
 
             {/* Notes */}
-            {location.notes && location.notes.length > 0 && (
-              <div>
-                <Typography variant="body" className="font-medium mb-2">
-                  Notes
-                </Typography>
-                <div className="space-y-2">
-                  {location.notes.slice(0, 3).map((note) => (
-                    <div className="p-3 bg-gray-50 rounded-lg space-y-1">
-                      <div className="flex items-center gap-2">
-                        <Calendar size={14} className="text-gray-400" />
-                        <Typography variant="body-sm" color="secondary">
-                          {note.date}
-                        </Typography>
-                      </div>
-                      <Typography variant="body-sm">
-                        {note.text}
-                      </Typography>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            {renderNotes()}            
           </div>
         )}
 
-        {/* Quick Note Adding - Only visible when authenticated */}
-        {user && (
-            <div>
-              {isAddingNote ? (
-                <div className="space-y-2">
-                  <Input
-                    value={noteInput}
-                    onChange={(e) => setNoteInput(e.target.value)}
-                    placeholder="Enter note..."
-                    isTextArea={true}
-                  />
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      onClick={handleAddNote}
-                      disabled={!noteInput.trim()}
-                      startIcon={<Save size={16} />}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        setIsAddingNote(false);
-                        setNoteInput('');
-                      }}
-                      startIcon={<X size={16} />}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsAddingNote(true)}
-                  startIcon={<PlusCircle size={16} />}
-                >
-                  Add Note
-                </Button>
-              )}
-            </div>
-          )}
+        {/* Note Adding Form */}
+        {renderNoteForm()}
 
         {/* Expand/Collapse Buttons */}
         <div className="flex gap-2">

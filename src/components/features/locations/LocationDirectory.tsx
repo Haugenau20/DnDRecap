@@ -1,11 +1,12 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation as useRouterLocation } from 'react-router-dom';
 import { Location } from '../../../types/location';
 import LocationCard from './LocationCard';
 import Card from '../../core/Card';
 import Typography from '../../core/Typography';
 import Input from '../../core/Input';
 import { Search, MapPin, Building } from 'lucide-react';
+import { useFirebaseData } from '../../../hooks/useFirebaseData';
 
 interface LocationDirectoryProps {
   locations: Location[];
@@ -13,7 +14,7 @@ interface LocationDirectoryProps {
 }
 
 export const LocationDirectory: React.FC<LocationDirectoryProps> = ({ 
-  locations,
+  locations: initialLocations,
   isLoading = false 
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,9 +23,17 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
   const [highlightedLocationId, setHighlightedLocationId] = useState<string | null>(null);
   const [expandedLocations, setExpandedLocations] = useState<Set<string>>(new Set());
 
+  // Use Firebase hook for real-time updates
+  const { data: updatedLocations } = useFirebaseData<Location>({
+    collection: 'locations'
+  });
+
+  const routerLocation = useRouterLocation();
+
   // Get URL search params for highlighted location
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  // Use the most up-to-date data
+  const locations = updatedLocations.length > 0 ? updatedLocations : initialLocations;
+  const searchParams = new URLSearchParams(routerLocation.search);
   const highlightId = searchParams.get('highlight');
 
   // Group locations by parent to create hierarchy

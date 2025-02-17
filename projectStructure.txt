@@ -141,7 +141,6 @@ DnDRecap
 │   ├── npcTemplate.txt
 │   ├── locationsTemplate.txt
 │   ├── highLevelDesign.md
-│   ├── firebaseConfig.txt
 │   ├── dirTree.ps1
 │   ├── copyfiles.ps1
 │   └── .gitignore

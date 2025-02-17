@@ -1,12 +1,13 @@
-// src/pages/LocationsPage.tsx
+// src/pages/locations/LocationsPage.tsx
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Typography from '../../components/core/Typography';
 import Card from '../../components/core/Card';
 import LocationDirectory from '../../components/features/locations/LocationDirectory';
 import SignInForm from '../../components/features/auth/SignInForm';
-import { useLocations } from '../../context/LocationContext';
 import { useFirebase } from '../../context/FirebaseContext';
+import { useFirebaseData } from '../../hooks/useFirebaseData';
+import { Location } from '../../types/location';  // Make sure this import is present
 import { Map, MapPin, Eye, EyeOff, LogIn, LogOut, Plus } from 'lucide-react';
 import Button from '../../components/core/Button';
 
@@ -14,7 +15,10 @@ const LocationsPage: React.FC = () => {
   // Auth state
   const [showSignIn, setShowSignIn] = useState(false);
   const { user, signOut } = useFirebase();
-  const { locations, isLoading, error } = useLocations();
+  const { data: locations, loading, error } = useFirebaseData<Location>({
+    collection: 'locations'
+  });
+
   const navigate = useNavigate();
 
   // Calculate statistics
@@ -35,15 +39,30 @@ const LocationsPage: React.FC = () => {
     navigate('/locations/create');
   };
 
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <Card>
+          <Card.Content className="text-center py-8">
+            <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
+            <Typography>Loading locations...</Typography>
+          </Card.Content>
+        </Card>
+      </div>
+    );
+  }
+
   if (error) {
     return (
-      <Card>
-        <Card.Content>
-          <Typography color="error">
-            Error loading locations: {error}
-          </Typography>
-        </Card.Content>
-      </Card>
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <Card>
+          <Card.Content>
+            <Typography color="error">
+              Error loading locations: {error}
+            </Typography>
+          </Card.Content>
+        </Card>
+      </div>
     );
   }
 
@@ -157,8 +176,8 @@ const LocationsPage: React.FC = () => {
 
       {/* Location Directory */}
       <LocationDirectory 
-        locations={locations}
-        isLoading={isLoading}
+        locations={locations || []} // Provide empty array as fallback
+        isLoading={loading}
       />
     </div>
   );
