@@ -1,9 +1,8 @@
-// context/StoryContext.tsx
-import React, { createContext, useContext, useState, useEffect } from 'react';
+// src/context/StoryContext.tsx
+import React, { createContext, useContext, useCallback } from 'react';
 import { Chapter, ChapterProgress, StoryProgress } from '../types/story';
-
-// Import story data
-import storyData from '../data/story/story.json';
+import { useChapterData } from '../hooks/useChapterData';
+import { useFirebaseData } from '../hooks/useFirebaseData';
 
 interface StoryContextState {
   chapters: Chapter[];
@@ -18,136 +17,72 @@ interface StoryContextValue extends StoryContextState {
   updateCurrentChapter: (chapterId: string) => void;
 }
 
-// Raw types that match the JSON structure
-interface RawChapter {
-  id: string;
-  title: string;
-  content: string;
-  order: number;
-  lastModified: string;
-  summary?: string;
-  subChapters?: RawChapter[];
-}
-
-interface RawChapterProgress {
-  chapterId: string;
-  lastPosition: number;
-  isComplete: boolean;
-  lastRead: string;
-}
-
-interface RawStoryProgress {
-  currentChapter: string;
-  lastRead: string;
-  chapterProgress: Record<string, RawChapterProgress>;
-}
-
 const StoryContext = createContext<StoryContextValue | undefined>(undefined);
 
-/**
- * Convert a raw chapter from JSON to a proper Chapter type
- */
-const convertChapter = (rawChapter: RawChapter): Chapter => ({
-  ...rawChapter,
-  lastModified: new Date(rawChapter.lastModified),
-  subChapters: rawChapter.subChapters?.map(convertChapter)
-});
-
-/**
- * Convert raw chapter progress from JSON to proper ChapterProgress type
- */
-const convertChapterProgress = (rawProgress: RawChapterProgress): ChapterProgress => ({
-  ...rawProgress,
-  lastRead: new Date(rawProgress.lastRead)
-});
-
-/**
- * Convert raw story progress from JSON to proper StoryProgress type
- */
-const convertStoryProgress = (rawProgress: RawStoryProgress): StoryProgress => ({
-  currentChapter: rawProgress.currentChapter,
-  lastRead: new Date(rawProgress.lastRead),
-  chapterProgress: Object.entries(rawProgress.chapterProgress).reduce(
-    (acc, [key, value]) => ({
-      ...acc,
-      [key]: convertChapterProgress(value)
-    }),
-    {} as Record<string, ChapterProgress>
-  )
-});
-
 export const StoryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState<StoryContextState>({
-    chapters: [],
-    storyProgress: {
-      currentChapter: '',
-      lastRead: new Date(),
-      chapterProgress: {}
-    },
-    isLoading: true,
-    error: null,
+  // Use our new custom hook for chapters
+  const { chapters, loading: chaptersLoading, error: chaptersError, refreshChapters } = useChapterData();
+  
+  // Firebase hook for updating progress
+  const { updateData: updateProgress } = useFirebaseData<StoryProgress>({
+    collection: 'story-progress'
   });
 
-  // Load story data
-  useEffect(() => {
-    try {
-      const convertedChapters = (storyData.chapters as RawChapter[]).map(convertChapter);
-      const convertedProgress = convertStoryProgress(storyData.storyProgress as RawStoryProgress);
-
-      setState({
-        chapters: convertedChapters,
-        storyProgress: convertedProgress,
-        isLoading: false,
-        error: null,
-      });
-    } catch (error) {
-      console.error('Error loading story data:', error);
-      setState(prev => ({
-        ...prev,
-        isLoading: false,
-        error: 'Failed to load story data',
-      }));
-    }
-  }, []);
+  // Initialize story progress
+  const defaultProgress: StoryProgress = {
+    currentChapter: '',
+    lastRead: new Date(),
+    chapterProgress: {}
+  };
 
   // Get chapter by ID
-  const getChapterById = (id: string) => {
-    return state.chapters.find(chapter => chapter.id === id);
-  };
+  const getChapterById = useCallback((id: string) => {
+    return chapters.find(chapter => chapter.id === id);
+  }, [chapters]);
 
   // Update chapter progress
-  const updateChapterProgress = (chapterId: string, progress: Partial<ChapterProgress>) => {
-    setState(prev => ({
-      ...prev,
-      storyProgress: {
-        ...prev.storyProgress,
+  const updateChapterProgress = useCallback(async (chapterId: string, progress: Partial<ChapterProgress>) => {
+    try {
+      const updatedProgress = {
+        ...defaultProgress,
         chapterProgress: {
-          ...prev.storyProgress.chapterProgress,
+          ...defaultProgress.chapterProgress,
           [chapterId]: {
-            ...prev.storyProgress.chapterProgress[chapterId],
-            ...progress,
             chapterId,
-            lastRead: new Date() // Always update lastRead when progress changes
+            lastPosition: progress.lastPosition || 0,
+            isComplete: progress.isComplete || false,
+            lastRead: new Date()
           }
         }
-      }
-    }));
-  };
+      };
+      
+      await updateProgress('current-progress', updatedProgress);
+      refreshChapters(); // Refresh to get updated data
+    } catch (error) {
+      console.error('Failed to update chapter progress:', error);
+    }
+  }, [updateProgress, refreshChapters]);
 
   // Update current chapter
-  const updateCurrentChapter = (chapterId: string) => {
-    setState(prev => ({
-      ...prev,
-      storyProgress: {
-        ...prev.storyProgress,
+  const updateCurrentChapter = useCallback(async (chapterId: string) => {
+    try {
+      const updatedProgress = {
+        ...defaultProgress,
         currentChapter: chapterId,
         lastRead: new Date()
-      }
-    }));
-  };
+      };
+      
+      await updateProgress('current-progress', updatedProgress);
+    } catch (error) {
+      console.error('Failed to update current chapter:', error);
+    }
+  }, [updateProgress]);
 
   const value: StoryContextValue = {
-    ...state,
+    chapters,
+    storyProgress: defaultProgress,
+    isLoading: chaptersLoading,
+    error: chaptersError,
     getChapterById,
     updateChapterProgress,
     updateCurrentChapter,

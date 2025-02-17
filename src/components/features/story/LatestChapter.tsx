@@ -35,7 +35,7 @@ const LatestChapter: React.FC<LatestChapterProps> = ({ chapter }) => {
           <div className="flex items-center gap-1 text-gray-500">
             <Clock className="w-4 h-4" />
             <Typography variant="body-sm" color="secondary">
-              {new Date(chapter.lastModified).toLocaleDateString()}
+              {new Date(chapter.lastModified).toLocaleDateString('en-uk', { year: 'numeric', day: '2-digit', month: '2-digit'})}
             </Typography>
           </div>
         </div>

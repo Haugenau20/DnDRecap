@@ -17,7 +17,9 @@ export const useNPCData = () => {
   const fetchNPCs = useCallback(async () => {
     try {
       const data = await getData();
-      setNpcs(data || []);
+      // Sort NPCs alphabetically by name
+      const sortedNPCs = data.sort((a, b) => a.name.localeCompare(b.name));
+      setNpcs(sortedNPCs);
     } catch (err) {
       console.error('Error fetching NPCs:', err);
     }

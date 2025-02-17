@@ -2,12 +2,14 @@
 import React, { createContext, useContext, useState, useCallback, useEffect, useMemo } from 'react';
 import { SearchResult, SearchResultType, SearchDocument } from '../types/search';
 import { SearchService } from '../services/search/SearchService';
+import { useChapterData } from '../hooks/useChapterData';
+import { useNPCData } from '../hooks/useNPCData';
+import { useLocationData } from '../hooks/useLocationData';
+import { useQuests } from '../hooks/useQuests';
 import { Chapter } from '../types/story';
-
-// Import sample data (in a real app, this would come from an API or database)
-import questData from '../data/quests/metadata/quests.json';
-import npcData from '../data/npcs/npcs.json';
-import locationData from '../data/locations/locations.json';
+import { Quest } from '../types/quest';
+import { NPC } from '../types/npc';
+import { Location } from '../types/location';
 
 interface SearchContextData {
   query: string;
@@ -20,72 +22,10 @@ interface SearchContextData {
 
 const SearchContext = createContext<SearchContextData | undefined>(undefined);
 
-// Sample chapters - replace with actual data source
-const sampleChapters = [
-  {
-    id: 'chapter-1',
-    title: 'Chapter 1: The Beginning',
-    content: 'It was a dark and stormy night in the realm of Faerûn...',
-    order: 1
-  },
-  {
-    id: 'chapter-2',
-    title: 'Chapter 2: The First Quest',
-    content: 'The party gathered at the Yawning Portal Inn...',
-    order: 2
-  }
-];
-
 /**
- * Convert quest data to search documents
+ * Convert chapters to search documents
  */
-const createQuestSearchDocuments = (): SearchDocument[] => {
-  return questData.quests.map(quest => ({
-    id: quest.id,
-    type: 'quest' as SearchResultType,
-    content: `${quest.title} ${quest.description} ${quest.objectives.map(obj => obj.description).join(' ')}`,
-    metadata: {
-      title: quest.title,
-      status: quest.status
-    }
-  }));
-};
-
-/**
- * Convert NPC data to search documents
- */
-const createNPCSearchDocuments = (): SearchDocument[] => {
-  return npcData.npcs.map(npc => ({
-    id: npc.id,
-    type: 'npc' as SearchResultType,
-    content: `${npc.name} ${npc.description} ${npc.background || ''} ${npc.occupation || ''}`,
-    metadata: {
-      title: npc.name,
-      location: npc.location
-    }
-  }));
-};
-
-/**
- * Convert location data to search documents
- */
-const createLocationSearchDocuments = (): SearchDocument[] => {
-  return locationData.locations.map(location => ({
-    id: location.id,
-    type: 'location' as SearchResultType,
-    content: `${location.name} ${location.description} ${location.features?.join(' ')} ${location.tags?.join(' ')}`,
-    metadata: {
-      title: location.name,
-      type: location.type,
-      status: location.status
-    }
-  }));
-};
-
-/**
- * Convert story chapters to search documents
- */
-const createStorySearchDocuments = (chapters: Chapter[]): SearchDocument[] => {
+const createChapterSearchDocuments = (chapters: Chapter[]): SearchDocument[] => {
   return chapters.map(chapter => ({
     id: chapter.id,
     type: 'story' as SearchResultType,
@@ -98,12 +38,64 @@ const createStorySearchDocuments = (chapters: Chapter[]): SearchDocument[] => {
 };
 
 /**
+ * Convert quests to search documents
+ */
+const createQuestSearchDocuments = (quests: Quest[]): SearchDocument[] => {
+  return quests.map(quest => ({
+    id: quest.id,
+    type: 'quest' as SearchResultType,
+    content: `${quest.title} ${quest.description} ${quest.objectives.map((obj: { description: string }) => obj.description).join(' ')}`,
+    metadata: {
+      title: quest.title,
+      status: quest.status
+    }
+  }));
+};
+
+/**
+ * Convert NPCs to search documents
+ */
+const createNPCSearchDocuments = (npcs: NPC[]): SearchDocument[] => {
+  return npcs.map(npc => ({
+    id: npc.id,
+    type: 'npc' as SearchResultType,
+    content: `${npc.name} ${npc.description} ${npc.background || ''} ${npc.occupation || ''}`,
+    metadata: {
+      title: npc.name,
+      location: npc.location
+    }
+  }));
+};
+
+/**
+ * Convert locations to search documents
+ */
+const createLocationSearchDocuments = (locations: Location[]): SearchDocument[] => {
+  return locations.map(location => ({
+    id: location.id,
+    type: 'location' as SearchResultType,
+    content: `${location.name} ${location.description} ${location.features?.join(' ')} ${location.tags?.join(' ')}`,
+    metadata: {
+      title: location.name,
+      type: location.type,
+      status: location.status
+    }
+  }));
+};
+
+/**
  * Provider component for global search functionality
  */
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+
+  // Get data from all our collections
+  const { chapters } = useChapterData();
+  const { npcs } = useNPCData();
+  const { locations } = useLocationData();
+  const { quests } = useQuests();
 
   // Initialize SearchService with options
   const searchService = useMemo(() => new SearchService({
@@ -118,10 +110,10 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const initializeSearch = () => {
       try {
         const searchDocuments: Record<SearchResultType, SearchDocument[]> = {
-          story: createStorySearchDocuments(sampleChapters), // Replace with actual chapters
-          quest: createQuestSearchDocuments(),
-          npc: createNPCSearchDocuments(),
-          location: createLocationSearchDocuments()
+          story: createChapterSearchDocuments(chapters),
+          quest: createQuestSearchDocuments(quests),
+          npc: createNPCSearchDocuments(npcs),
+          location: createLocationSearchDocuments(locations)
         };
 
         searchService.initializeIndex(searchDocuments);
@@ -130,8 +122,11 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       }
     };
 
-    initializeSearch();
-  }, [searchService]);
+    // Only initialize if we have all the data
+    if (chapters.length && quests.length && npcs.length && locations.length) {
+      initializeSearch();
+    }
+  }, [searchService, chapters, quests, npcs, locations]);
 
   /**
    * Handle search query execution

@@ -165,8 +165,8 @@ const BookViewer = ({
         <div className="relative bg-amber-50">
           {/* Content Container */}
           <div className="max-w-2xl mx-auto p-8 pb-20">
-            <Typography className="leading-relaxed font-serif whitespace-pre-line">
-              {pages[currentPage - 1]}
+            <Typography className="leading-relaxed font-serif whitespace-pre-wrap">
+              {pages[currentPage - 1]?.replace(/\\n/g, '\n')}
             </Typography>
           </div>
 

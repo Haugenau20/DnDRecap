@@ -4,10 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Typography from '../components/core/Typography';
 import Card from '../components/core/Card';
 import LatestChapter from '../components/features/story/LatestChapter';
+import { useChapterData } from '../hooks/useChapterData';
 import { Book, Scroll, Users, MapPin } from 'lucide-react';
-
-// Import story data
-import storyData from '../data/story/story.json';
 
 /**
  * Interface for quick access section items
@@ -24,12 +22,26 @@ interface QuickAccessItem {
  */
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const { chapters, loading, error } = useChapterData();
 
-  // Get the latest chapter from the story data
+  // Get the latest chapter from the fetched data
   const latestChapter = useMemo(() => {
-    const chapters = storyData.chapters;
-    return chapters.length > 0 ? chapters[chapters.length - 1] : null;
-  }, []);
+    if (!chapters || chapters.length === 0) return null;
+    
+    // Sort chapters by order and get the latest one
+    const sortedChapters = [...chapters].sort((a, b) => b.order - a.order);
+    const latest = sortedChapters[0];
+    
+    if (!latest) return null;
+
+    // Convert the chapter data to match LatestChapter's expected type
+    return {
+      ...latest,
+      lastModified: latest.lastModified 
+        ? new Date(latest.lastModified).toISOString() 
+        : new Date().toISOString()
+    };
+  }, [chapters]);
 
   // Quick access section items
   const quickAccessItems: QuickAccessItem[] = [
@@ -109,7 +121,24 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="space-y-4">
-          {latestChapter ? (
+          {loading ? (
+            <Card>
+              <Card.Content className="text-center py-8">
+                <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
+                <Typography variant="h3" className="mb-2">
+                  Loading Recent Activity
+                </Typography>
+              </Card.Content>
+            </Card>
+          ) : error ? (
+            <Card>
+              <Card.Content className="text-center py-8">
+                <Typography color="error" className="mb-2">
+                  {error}
+                </Typography>
+              </Card.Content>
+            </Card>
+          ) : latestChapter ? (
             <LatestChapter chapter={latestChapter} />
           ) : (
             <Card>

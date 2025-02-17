@@ -1,22 +1,25 @@
-// pages/story/StoryPage.tsx
+// src/pages/story/StoryPage.tsx
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import BookViewer from '../../components/features/story/BookViewer';
 import Typography from '../../components/core/Typography';
 import Breadcrumb from '../../components/layout/Breadcrumb';
 import SlidingChapters from '../../components/features/story/SlidingChapters';
+import Card from '../../components/core/Card';
+import Button from '../../components/core/Button';
 import { useStory } from '../../context/StoryContext';
 import { useNavigation } from '../../hooks/useNavigation';
-import { Book, Menu } from 'lucide-react';
-import Button from '../../components/core/Button';
+import { Book, Menu, Loader2 } from 'lucide-react';
 
 const StoryPage: React.FC = () => {
   const { chapterId } = useParams();
+  const navigate = useNavigate();
   const { navigateToPage } = useNavigation();
   const { 
     chapters, 
-    storyProgress, 
+    storyProgress,
     isLoading,
+    error,
     getChapterById, 
     updateChapterProgress, 
     updateCurrentChapter 
@@ -26,6 +29,35 @@ const StoryPage: React.FC = () => {
     chapterId ? getChapterById(chapterId) : undefined
   );
   const [isChaptersOpen, setChaptersOpen] = useState(false);
+
+  // Navigate to appropriate chapter on initial load
+  useEffect(() => {
+    if (!isLoading && chapters.length > 0) {
+      if (chapterId) {
+        // If a specific chapter is requested, load it
+        const chapter = getChapterById(chapterId);
+        if (chapter) {
+          setCurrentChapter(chapter);
+          updateCurrentChapter(chapter.id);
+        } else {
+          // If requested chapter doesn't exist, go to first chapter
+          navigate(`/story/chronicles/${chapters[0].id}`);
+        }
+      } else if (storyProgress.currentChapter) {
+        // If no specific chapter requested, go to last read chapter
+        const lastChapter = getChapterById(storyProgress.currentChapter);
+        if (lastChapter) {
+          navigate(`/story/chronicles/${lastChapter.id}`);
+        } else {
+          // If last read chapter no longer exists, go to first chapter
+          navigate(`/story/chronicles/${chapters[0].id}`);
+        }
+      } else {
+        // If no last read chapter, start from the beginning
+        navigate(`/story/chronicles/${chapters[0].id}`);
+      }
+    }
+  }, [isLoading, chapters, chapterId, navigate, getChapterById, storyProgress.currentChapter, updateCurrentChapter]);
 
   // Calculate next and previous chapters
   const { nextChapter, previousChapter } = useMemo(() => {
@@ -46,29 +78,12 @@ const StoryPage: React.FC = () => {
     { label: currentChapter ? `${currentChapter.order}. ${currentChapter.title}` : 'Select Chapter' }
   ], [currentChapter]);
 
-  // Set initial chapter based on URL parameter or last read chapter
-  useEffect(() => {
-    if (chapterId) {
-      const chapter = getChapterById(chapterId);
-      if (chapter) {
-        setCurrentChapter(chapter);
-        updateCurrentChapter(chapter.id);
-      }
-    } else if (storyProgress.currentChapter) {
-      const chapter = getChapterById(storyProgress.currentChapter);
-      if (chapter) {
-        navigateToPage(`/story/chronicles/${chapter.id}`);
-      }
-    }
-  }, [chapterId, getChapterById, storyProgress.currentChapter, navigateToPage, updateCurrentChapter]);
-
   // For tracking reading progress
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (page: number, isComplete?: boolean) => {
     if (currentChapter) {
       updateChapterProgress(currentChapter.id, {
         lastPosition: page,
-        lastRead: new Date(),
-        isComplete: page === 1 // Mark as complete if single page
+        isComplete: isComplete || page === 1
       });
     }
   };
@@ -77,10 +92,29 @@ const StoryPage: React.FC = () => {
     navigateToPage(`/story/chronicles/${selectedChapterId}`);
   };
 
+  // Loading state
   if (isLoading) {
     return (
-      <div className="p-4">
-        <Typography>Loading story...</Typography>
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="p-8">
+          <div className="flex items-center gap-4">
+            <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+            <Typography>Loading chapter...</Typography>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="p-8">
+          <Typography color="error">
+            {error}
+          </Typography>
+        </Card>
       </div>
     );
   }

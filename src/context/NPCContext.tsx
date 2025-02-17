@@ -1,88 +1,76 @@
 // context/NPCContext.tsx
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useCallback } from 'react';
 import { NPC, NPCContextValue, NPCContextState, NPCRelationship, NPCNote } from '../types/npc';
-
-// Import NPC data
-import npcData from '../data/npcs/npcs.json';
+import { useNPCData } from '../hooks/useNPCData';
+import { useFirebaseData } from '../hooks/useFirebaseData';
 
 const NPCContext = createContext<NPCContextValue | undefined>(undefined);
 
 export const NPCProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [state, setState] = useState<NPCContextState>({
-    npcs: [],
-    isLoading: true,
-    error: null,
+  // Use the NPCData hook for basic CRUD operations
+  const { npcs, loading, error, refreshNPCs } = useNPCData();
+  
+  // Additional Firebase hook for specific updates
+  const { updateData } = useFirebaseData<NPC>({
+    collection: 'npcs'
   });
 
-  // Load NPC data
-  useEffect(() => {
-    try {
-      setState({
-        npcs: npcData.npcs as NPC[],
-        isLoading: false,
-        error: null,
-      });
-    } catch (error) {
-      setState(prev => ({
-        ...prev,
-        isLoading: false,
-        error: 'Failed to load NPC data',
-      }));
-    }
-  }, []);
-
   // Get NPC by ID
-  const getNPCById = (id: string) => {
-    return state.npcs.find(npc => npc.id === id);
-  };
+  const getNPCById = useCallback((id: string) => {
+    return npcs.find(npc => npc.id === id);
+  }, [npcs]);
 
   // Get NPCs by quest
-  const getNPCsByQuest = (questId: string) => {
-    return state.npcs.filter(npc => 
+  const getNPCsByQuest = useCallback((questId: string) => {
+    return npcs.filter(npc => 
       npc.connections.relatedQuests.includes(questId)
     );
-  };
+  }, [npcs]);
 
   // Get NPCs by location
-  const getNPCsByLocation = (location: string) => {
-    return state.npcs.filter(npc => 
+  const getNPCsByLocation = useCallback((location: string) => {
+    return npcs.filter(npc => 
       npc.location?.toLowerCase() === location.toLowerCase()
     );
-  };
+  }, [npcs]);
 
   // Get NPCs by relationship
-  const getNPCsByRelationship = (relationship: NPCRelationship) => {
-    return state.npcs.filter(npc => 
+  const getNPCsByRelationship = useCallback((relationship: NPCRelationship) => {
+    return npcs.filter(npc => 
       npc.relationship === relationship
     );
-  };
+  }, [npcs]);
 
   // Update NPC note
-  const updateNPCNote = (npcId: string, note: NPCNote) => {
-    setState(prev => ({
-      ...prev,
-      npcs: prev.npcs.map(npc => 
-        npc.id === npcId
-          ? { ...npc, notes: [...npc.notes, note] }
-          : npc
-      ),
-    }));
-  };
+  const updateNPCNote = useCallback(async (npcId: string, note: NPCNote) => {
+    const npc = getNPCById(npcId);
+    if (npc) {
+      const updatedNPC = {
+        ...npc,
+        notes: [...(npc.notes || []), note]
+      };
+      await updateData(npcId, updatedNPC);
+      refreshNPCs(); // Refresh to get updated data
+    }
+  }, [getNPCById, updateData, refreshNPCs]);
 
   // Update NPC relationship
-  const updateNPCRelationship = (npcId: string, relationship: NPCRelationship) => {
-    setState(prev => ({
-      ...prev,
-      npcs: prev.npcs.map(npc =>
-        npc.id === npcId
-          ? { ...npc, relationship }
-          : npc
-      ),
-    }));
-  };
+  const updateNPCRelationship = useCallback(async (npcId: string, relationship: NPCRelationship) => {
+    const npc = getNPCById(npcId);
+    if (npc) {
+      const updatedNPC = {
+        ...npc,
+        relationship
+      };
+      await updateData(npcId, updatedNPC);
+      refreshNPCs(); // Refresh to get updated data
+    }
+  }, [getNPCById, updateData, refreshNPCs]);
 
   const value: NPCContextValue = {
-    ...state,
+    npcs,
+    isLoading: loading,
+    error,
     getNPCById,
     getNPCsByQuest,
     getNPCsByLocation,
