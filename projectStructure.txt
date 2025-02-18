@@ -5,6 +5,7 @@ DnDRecap
 │   │   │   ├── search.ts
 │   │   │   └── navigation.ts
 │   │   ├── types
+│   │   │   ├── theme.ts
 │   │   │   ├── story.ts
 │   │   │   ├── search.ts
 │   │   │   ├── saga.ts
@@ -51,6 +52,7 @@ DnDRecap
 │   │   │   ├── useFirebaseData.ts
 │   │   │   └── useChapterData.ts
 │   │   ├── context
+│   │   │   ├── ThemeContext.tsx
 │   │   │   ├── StoryContext.tsx
 │   │   │   ├── SearchContext.tsx
 │   │   │   ├── NPCContext.tsx
@@ -58,9 +60,11 @@ DnDRecap
 │   │   │   ├── LocationContext.tsx
 │   │   │   └── FirebaseContext.tsx
 │   │   ├── config
+│   │   │   ├── themes.ts
 │   │   │   └── buildConfig.ts
 │   │   ├── components
 │   │   │   ├── shared
+│   │   │   │   ├── ThemeSelector.tsx
 │   │   │   │   ├── SearchBar.tsx
 │   │   │   │   └── ErrorBoundary.tsx
 │   │   │   ├── layout

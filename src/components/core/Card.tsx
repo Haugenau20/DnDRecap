@@ -3,6 +3,7 @@ import React from 'react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import Typography from './Typography';
+import { useTheme } from '../../context/ThemeContext';
 
 /**
  * Available padding sizes for the card
@@ -166,11 +167,17 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         className
       )
     );
+    const { theme } = useTheme();
 
     return (
       <div
+        className={clsx(
+          'card',
+          theme.name === 'dnd' && 'dnd-card',
+          className
+        )}
         ref={ref}
-        className={styles}
+        // className={styles}
         onClick={onClick}
         role={onClick ? 'button' : undefined}
         tabIndex={onClick ? 0 : undefined}
