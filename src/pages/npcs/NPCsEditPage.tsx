@@ -1,17 +1,18 @@
 // src/pages/npcs/NPCsEditPage.tsx
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Typography from '../../components/core/Typography';
 import Button from '../../components/core/Button';
 import Card from '../../components/core/Card';
 import NPCEditForm from '../../components/features/npcs/NPCEditForm';
 import { useNPCData } from '../../hooks/useNPCData';
+import { useNavigation } from '../../context/NavigationContext';
 import { ArrowLeft } from 'lucide-react';
 
 const NPCsEditPage: React.FC = () => {
-  const navigate = useNavigate();
+  const { navigateToPage } = useNavigation();
   const { npcId } = useParams<{ npcId: string }>();
-  const { npcs, loading, error } = useNPCData();
+  const { npcs } = useNPCData();
   
   const editingNPC = npcs.find(npc => npc.id === npcId);
 
@@ -20,7 +21,7 @@ const NPCsEditPage: React.FC = () => {
       <div className="mb-8 flex items-center gap-4">
         <Button
           variant="ghost"
-          onClick={() => navigate('/npcs')}
+          onClick={() => navigateToPage('/npcs')}
           startIcon={<ArrowLeft />}
         >
           Back to NPCs
@@ -33,8 +34,8 @@ const NPCsEditPage: React.FC = () => {
       {editingNPC ? (
         <NPCEditForm
           npc={editingNPC}
-          onSuccess={() => navigate('/npcs')}
-          onCancel={() => navigate('/npcs')}
+          onSuccess={() => navigateToPage('/npcs')}
+          onCancel={() => navigateToPage('/npcs')}
           existingNPCs={npcs}
         />
       ) : (

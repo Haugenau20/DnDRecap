@@ -8,7 +8,7 @@ import { useNavigation } from '../../hooks/useNavigation';
  * Header component containing branding and search functionality.
  */
 const Header: React.FC = () => {
-  const { navigateToPage } = useNavigation();
+  const { navigateToPage, createPath } = useNavigation();
 
   return (
     <header className="bg-gradient-to-r from-stone-600 via-stone-700 to-zinc-800 text-white p-4">

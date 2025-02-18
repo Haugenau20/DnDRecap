@@ -25,12 +25,7 @@ $excludePatterns = @(
     "^.*.png",
     "^.*\\recaps.txt",
     "^.*\\*Template.txt",
-    "^.*\\*locations.json",
-    "^.*\\*npcs.json",
-    "^.*\\*quests.json",
-    "^.*\\*saga.json",
-    "^.*\\*story.json",
-    "^.*\\*saga.txt"
+    "^.*\\saga.txt"
 )
 
 # Get all files recursively, excluding specified patterns

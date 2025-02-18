@@ -1,6 +1,5 @@
 // src/pages/locations/LocationsPage.tsx
 import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Typography from '../../components/core/Typography';
 import Card from '../../components/core/Card';
 import LocationDirectory from '../../components/features/locations/LocationDirectory';
@@ -10,6 +9,7 @@ import { useFirebaseData } from '../../hooks/useFirebaseData';
 import { Location } from '../../types/location';  // Make sure this import is present
 import { Map, MapPin, Eye, EyeOff, LogIn, LogOut, Plus } from 'lucide-react';
 import Button from '../../components/core/Button';
+import { useNavigation } from '../../context/NavigationContext';
 
 const LocationsPage: React.FC = () => {
   // Auth state
@@ -19,8 +19,8 @@ const LocationsPage: React.FC = () => {
     collection: 'locations'
   });
 
-  const navigate = useNavigate();
-
+  const { navigateToPage } = useNavigation();
+  
   // Calculate statistics
   const stats = useMemo(() => ({
     total: locations.length,
@@ -36,7 +36,7 @@ const LocationsPage: React.FC = () => {
 
   // Handle create new location
   const handleCreateLocation = () => {
-    navigate('/locations/create');
+    navigateToPage('/locations/create');
   };
 
   if (loading) {

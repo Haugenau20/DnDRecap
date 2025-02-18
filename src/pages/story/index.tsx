@@ -1,12 +1,11 @@
 // pages/story/index.tsx
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Typography from '../../components/core/Typography';
 import Card from '../../components/core/Card';
+import { useNavigation } from '../../context/NavigationContext';
 import { ScrollText, BookOpen } from 'lucide-react';
 
 const StorySelection = () => {
-  const navigate = useNavigate();
+  const { navigateToPage } = useNavigation();
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -23,7 +22,7 @@ const StorySelection = () => {
         {/* Session Chronicles Card */}
         <Card
           hoverable
-          onClick={() => navigate('/story/chronicles')}
+          onClick={() => navigateToPage('/story/chronicles')}
           className="text-center p-8 cursor-pointer transition-transform hover:scale-105"
         >
           <Card.Content>
@@ -44,7 +43,7 @@ const StorySelection = () => {
         {/* Campaign Saga Card */}
         <Card
           hoverable
-          onClick={() => navigate('/story/saga')}
+          onClick={() => navigateToPage('/story/saga')}
           className="text-center p-8 cursor-pointer transition-transform hover:scale-105"
         >
           <Card.Content>

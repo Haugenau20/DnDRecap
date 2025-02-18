@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { NPC, NPCNote } from '../../../types/npc';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
@@ -8,6 +7,7 @@ import Input from '../../core/Input';
 import { useQuests } from '../../../hooks/useQuests';
 import { useFirebase } from '../../../context/FirebaseContext';
 import { useFirebaseData } from '../../../hooks/useFirebaseData';
+import { useNavigation } from '../../../context/NavigationContext';
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -33,10 +33,10 @@ const NPCCard: React.FC<NPCCardProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [noteInput, setNoteInput] = useState('');
-  const navigate = useNavigate();
   const { getQuestById } = useQuests();
   const { user } = useFirebase(); // Get authentication state
   const { updateData } = useFirebaseData<NPC>({ collection: 'npcs' });
+  const { navigateToPage, createPath } = useNavigation();
 
   // Function to get status color
   const getStatusColor = (status: string): string => {
@@ -100,18 +100,18 @@ const NPCCard: React.FC<NPCCardProps> = ({
   // Handle editing the NPC
   const handleEdit = () => {
     if (user) { // Only allow edit if user is authenticated
-      navigate(`/npcs/edit/${npc.id}`);
+      navigateToPage(`/npcs/edit/${npc.id}`);
     }
   };
 
   // Handle location click
   const handleLocationClick = (location: string) => {
-    navigate(`/locations?highlight=${encodeURIComponent(location)}`);
+    navigateToPage(createPath('/locations', {}, { highlight: location }));
   };
 
   // Handle quest click
   const handleQuestClick = (questId: string) => {
-    navigate(`/quests?highlight=${encodeURIComponent(questId)}`);
+    navigateToPage(createPath('/quests', {}, { highlight: questId }));
   };
 
   return (
@@ -305,7 +305,7 @@ const NPCCard: React.FC<NPCCardProps> = ({
                         <div className="flex items-center gap-2">
                           <Calendar size={14} className="text-gray-400" />
                           <Typography variant="body-sm" color="secondary">
-                            {note.date}
+                            {new Date(note.date).toLocaleDateString('en-uk', { year: 'numeric', day: '2-digit', month: '2-digit'})}
                           </Typography>
                         </div>
                       </div>

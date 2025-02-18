@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useQuests } from '../../../hooks/useQuests';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
 import { MapPin, ChevronRight } from 'lucide-react';
+import { useNavigation } from '../../../context/NavigationContext';
 
 const QuestSidebar = () => {
-  const navigate = useNavigate();
   const { quests } = useQuests();
+  const { navigateToPage, createPath } = useNavigation();
 
   // Group quests by location
   const questsByLocation = useMemo(() => {
@@ -44,7 +44,7 @@ const QuestSidebar = () => {
                     key={quest.id}
                     variant="ghost"
                     size="sm"
-                    onClick={() => navigate(`/quests?highlight=${encodeURIComponent(quest.id)}`)}
+                    onClick={() => navigateToPage(createPath('/quests', {}, { highlight: quest.id}))}
                     className="w-full pl-4"
                     centered={false}
                   >

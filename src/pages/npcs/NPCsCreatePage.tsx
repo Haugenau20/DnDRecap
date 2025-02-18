@@ -1,14 +1,14 @@
 // src/pages/npcs/NPCsCreatePage.tsx
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Typography from '../../components/core/Typography';
 import Button from '../../components/core/Button';
 import NPCForm from '../../components/features/npcs/NPCForm';
 import { useNPCs } from '../../context/NPCContext';
 import { ArrowLeft } from 'lucide-react';
+import { useNavigation } from '../../context/NavigationContext';
 
 const NPCsCreatePage: React.FC = () => {
-  const navigate = useNavigate();
+  const { navigateToPage } = useNavigation();
   const { npcs } = useNPCs();
 
   return (
@@ -16,7 +16,7 @@ const NPCsCreatePage: React.FC = () => {
       <div className="mb-8 flex items-center gap-4">
         <Button
           variant="ghost"
-          onClick={() => navigate('/npcs')}
+          onClick={() => navigateToPage('/npcs')}
           startIcon={<ArrowLeft />}
         >
           Back to NPCs
@@ -25,8 +25,8 @@ const NPCsCreatePage: React.FC = () => {
       </div>
 
       <NPCForm
-        onSuccess={() => navigate('/npcs')}
-        onCancel={() => navigate('/npcs')}
+        onSuccess={() => navigateToPage('/npcs')}
+        onCancel={() => navigateToPage('/npcs')}
         existingNPCs={npcs}
       />
     </div>

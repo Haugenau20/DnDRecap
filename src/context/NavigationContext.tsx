@@ -1,238 +1,198 @@
-// context/NavigationContext.tsx
-import React, { createContext, useContext, useState, useCallback } from 'react';
+// src/context/NavigationContext.tsx
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { 
+  NavigationPath,
+  createNavigationPath,
+  buildUrl,
+  getQueryParams,
+  normalizePath,
+  formatPath
+} from '../utils/navigation';
+
+/**
+ * Navigation history entry
+ */
+interface NavigationHistoryEntry {
+  path: string;
+  timestamp: number;
+}
 
 /**
  * Navigation state interface
  */
 interface NavigationState {
-  /** Current route path */
   currentPath: string;
-  /** Previous route path for back navigation */
   previousPath: string | null;
-  /** Reading progress tracking for story pages */
-  readingProgress: {
-    currentChapter: string;
-    currentPage: number;
-    lastPosition: {
-      chapter: string;
-      page: number;
-    };
-  };
-  /** Chapter progress tracking */
-  chapterProgress: Record<string, {
-    completed: boolean;
-    lastRead: string;
-  }>;
-  /** Breadcrumb trail */
-  breadcrumbs: string[];
+  navigationStack: NavigationHistoryEntry[];
+  queryParams: Record<string, string>;
 }
 
 /**
  * Navigation context interface
  */
-interface NavigationContextData {
+interface NavigationContextValue {
   /** Current navigation state */
   state: NavigationState;
   /** Navigate to a specific page */
-  navigateToPage: (path: string) => void;
+  navigateToPage: (to: string | NavigationPath) => void;
   /** Go back to previous page */
   goBack: () => void;
-  /** Update breadcrumb trail */
-  updateBreadcrumbs: (newPath: string) => void;
-  /** Update reading progress */
-  updateReadingProgress: (chapter: string, page: number) => void;
-  /** Return to last reading position */
-  returnToLastPosition: () => void;
-  /** Navigate to next page in chapter */
-  nextPage: () => void;
-  /** Navigate to previous page in chapter */
-  previousPage: () => void;
-  /** Jump to specific chapter */
-  jumpToChapter: (chapterId: string) => void;
+  /** Update query parameters */
+  updateQueryParams: (params: Record<string, string>) => void;
+  /** Get current query parameters */
+  getCurrentQueryParams: () => Record<string, string>;
+  /** Clear navigation history */
+  clearHistory: () => void;
+  /** Create a navigation path object */
+  createPath: (path: string, params?: Record<string, string>, query?: Record<string, string>) => NavigationPath;
 }
 
-const NavigationContext = createContext<NavigationContextData | undefined>(undefined);
+const NavigationContext = createContext<NavigationContextValue | undefined>(undefined);
 
 /**
- * Default navigation state
+ * Maximum number of entries to keep in navigation history
  */
-const defaultState: NavigationState = {
-  currentPath: '',
-  previousPath: null,
-  readingProgress: {
-    currentChapter: '',
-    currentPage: 1,
-    lastPosition: {
-      chapter: '',
-      page: 1
-    }
-  },
-  chapterProgress: {},
-  breadcrumbs: []
-};
+const MAX_HISTORY_LENGTH = 50;
 
 /**
- * Navigation provider component
+ * Provider component for navigation functionality
  */
 export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Get query parameters from URL search string
+  const parseQueryParams = (search: string): Record<string, string> => {
+    const params = new URLSearchParams(search);
+    const result: Record<string, string> = {};
+    params.forEach((value, key) => {
+      result[key] = value;
+    });
+    return result;
+  };
+
+  // Initialize state with current location
   const [state, setState] = useState<NavigationState>({
-    ...defaultState,
     currentPath: location.pathname,
-    breadcrumbs: [location.pathname]
+    previousPath: null,
+    navigationStack: [{
+      path: location.pathname,
+      timestamp: Date.now()
+    }],
+    queryParams: parseQueryParams(location.search)
   });
+
+  // Update state when location changes
+  useEffect(() => {
+    setState(prev => {
+      const newStack = [...prev.navigationStack];
+      
+      // Add new entry
+      newStack.push({
+        path: location.pathname,
+        timestamp: Date.now()
+      });
+      
+      // Limit stack size
+      if (newStack.length > MAX_HISTORY_LENGTH) {
+        newStack.shift();
+      }
+
+      return {
+        currentPath: location.pathname,
+        previousPath: prev.currentPath,
+        navigationStack: newStack,
+        queryParams: parseQueryParams(location.search)
+      };
+    });
+  }, [location]);
 
   /**
    * Navigate to a specific page
    */
-  const navigateToPage = useCallback((path: string) => {
-    setState(prev => ({
-      ...prev,
-      currentPath: path,
-      previousPath: prev.currentPath,
-      breadcrumbs: [...prev.breadcrumbs, path]
-    }));
-    navigate(path);
+  const navigateToPage = useCallback((to: string | NavigationPath) => {
+    try {
+      if (typeof to === 'string') {
+        navigate(normalizePath(to));
+      } else {
+        const url = buildUrl(to.path, to.query || {});
+        navigate(url);
+      }
+    } catch (error) {
+      console.error('Navigation error:', error);
+      // Fallback to home page on error
+      navigate('/');
+    }
   }, [navigate]);
 
   /**
    * Go back to previous page
    */
   const goBack = useCallback(() => {
-    if (state.previousPath) {
-      navigate(state.previousPath);
-      setState(prev => ({
-        ...prev,
-        currentPath: prev.previousPath!,
-        previousPath: prev.breadcrumbs[prev.breadcrumbs.length - 2] || null,
-        breadcrumbs: prev.breadcrumbs.slice(0, -1)
-      }));
+    if (state.navigationStack.length > 1) {
+      const previousEntry = state.navigationStack[state.navigationStack.length - 2];
+      navigateToPage(previousEntry.path);
+    } else {
+      // If no history, go to home
+      navigateToPage('/');
     }
-  }, [navigate, state.previousPath]);
+  }, [state.navigationStack, navigateToPage]);
 
   /**
-   * Update breadcrumb trail
+   * Update query parameters
    */
-  const updateBreadcrumbs = useCallback((newPath: string) => {
-    setState(prev => {
-      const pathSegments = newPath.split('/').filter(Boolean);
-      const newBreadcrumbs = ['/', ...pathSegments.map((_, index) => 
-        '/' + pathSegments.slice(0, index + 1).join('/')
-      )];
-
-      return {
-        ...prev,
-        breadcrumbs: newBreadcrumbs
-      };
+  const updateQueryParams = useCallback((params: Record<string, string>) => {
+    const url = buildUrl(state.currentPath, {
+      ...state.queryParams,
+      ...params
     });
-  }, []);
+    navigate(url);
+  }, [state.currentPath, state.queryParams, navigate]);
 
   /**
-   * Update reading progress
+   * Get current query parameters
    */
-  const updateReadingProgress = useCallback((chapter: string, page: number, isComplete: boolean = false) => {
+  const getCurrentQueryParams = useCallback(() => {
+    return state.queryParams;
+  }, [state.queryParams]);
+
+  /**
+   * Clear navigation history
+   */
+  const clearHistory = useCallback(() => {
     setState(prev => ({
       ...prev,
-      readingProgress: {
-        currentChapter: chapter,
-        currentPage: page,
-        lastPosition: {
-          chapter: prev.readingProgress.currentChapter,
-          page: prev.readingProgress.currentPage
-        }
-      },
-      chapterProgress: {
-        ...prev.chapterProgress,
-        [chapter]: {
-          completed: isComplete,
-          lastRead: new Date().toISOString()
-        }
-      }
+      navigationStack: [{
+        path: prev.currentPath,
+        timestamp: Date.now()
+      }]
     }));
   }, []);
 
   /**
-   * Return to last reading position
+   * Create a navigation path object
    */
-  const returnToLastPosition = useCallback(() => {
-    const { chapter, page } = state.readingProgress.lastPosition;
-    if (chapter) {
-      navigateToPage(`/story/chronicles/${chapter}`);
-      setState(prev => ({
-        ...prev,
-        readingProgress: {
-          ...prev.readingProgress,
-          currentChapter: chapter,
-          currentPage: page
-        }
-      }));
-    }
-  }, [state.readingProgress.lastPosition, navigateToPage]);
-
-  /**
-   * Navigate to next page
-   */
-  const nextPage = useCallback(() => {
-    setState(prev => ({
-      ...prev,
-      readingProgress: {
-        ...prev.readingProgress,
-        currentPage: prev.readingProgress.currentPage + 1,
-        lastPosition: {
-          chapter: prev.readingProgress.currentChapter,
-          page: prev.readingProgress.currentPage
-        }
-      }
-    }));
+  const createPath = useCallback((
+    path: string,
+    params?: Record<string, string>,
+    query?: Record<string, string>
+  ): NavigationPath => {
+    return {
+      path: formatPath(path),
+      params,
+      query
+    };
   }, []);
-
-  /**
-   * Navigate to previous page
-   */
-  const previousPage = useCallback(() => {
-    setState(prev => ({
-      ...prev,
-      readingProgress: {
-        ...prev.readingProgress,
-        currentPage: Math.max(1, prev.readingProgress.currentPage - 1),
-        lastPosition: {
-          chapter: prev.readingProgress.currentChapter,
-          page: prev.readingProgress.currentPage
-        }
-      }
-    }));
-  }, []);
-
-  /**
-   * Jump to specific chapter
-   */
-  const jumpToChapter = useCallback((chapterId: string) => {
-    navigateToPage(`/story/chronicles/${chapterId}`);
-    setState(prev => ({
-      ...prev,
-      readingProgress: {
-        currentChapter: chapterId,
-        currentPage: 1,
-        lastPosition: {
-          chapter: prev.readingProgress.currentChapter,
-          page: prev.readingProgress.currentPage
-        }
-      }
-    }));
-  }, [navigateToPage]);
 
   const value = {
     state,
     navigateToPage,
     goBack,
-    updateBreadcrumbs,
-    updateReadingProgress,
-    returnToLastPosition,
-    nextPage,
-    previousPage,
-    jumpToChapter
+    updateQueryParams,
+    getCurrentQueryParams,
+    clearHistory,
+    createPath
   };
 
   return (
@@ -243,16 +203,8 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 };
 
 /**
- * Format breadcrumb label from path
- */
-export const formatBreadcrumbLabel = (path: string): string => {
-  if (path === '/') return 'Home';
-  const segment = path.split('/').pop() || '';
-  return segment.charAt(0).toUpperCase() + segment.slice(1);
-};
-
-/**
  * Hook to access navigation context
+ * @throws {Error} If used outside of NavigationProvider
  */
 export const useNavigation = () => {
   const context = useContext(NavigationContext);

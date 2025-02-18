@@ -12,36 +12,60 @@ interface StoryContextState {
 }
 
 interface StoryContextValue extends StoryContextState {
+  /** Get a specific chapter by ID */
   getChapterById: (id: string) => Chapter | undefined;
+  /** Update progress for a specific chapter */
   updateChapterProgress: (chapterId: string, progress: Partial<ChapterProgress>) => void;
+  /** Update the current chapter */
   updateCurrentChapter: (chapterId: string) => void;
+  /** Get next chapter if available */
+  getNextChapter: (currentChapterId: string) => Chapter | undefined;
+  /** Get previous chapter if available */
+  getPreviousChapter: (currentChapterId: string) => Chapter | undefined;
+  /** Mark a chapter as complete */
+  markChapterComplete: (chapterId: string) => void;
+  /** Get reading progress percentage */
+  getReadingProgress: () => number;
 }
 
 const StoryContext = createContext<StoryContextValue | undefined>(undefined);
 
-export const StoryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Use our new custom hook for chapters
-  const { chapters, loading: chaptersLoading, error: chaptersError, refreshChapters } = useChapterData();
-  
-  // Firebase hook for updating progress
-  const { updateData: updateProgress } = useFirebaseData<StoryProgress>({
-    collection: 'story-progress'
-  });
+/**
+ * Default story progress state
+ */
+const defaultProgress: StoryProgress = {
+  currentChapter: '',
+  lastRead: new Date(),
+  chapterProgress: {}
+};
 
-  // Initialize story progress
-  const defaultProgress: StoryProgress = {
-    currentChapter: '',
-    lastRead: new Date(),
-    chapterProgress: {}
-  };
+export const StoryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Use existing hooks for data
+  const { chapters, loading: chaptersLoading, error: chaptersError, refreshChapters } = useChapterData();
+  const { updateData } = useFirebaseData<StoryProgress>({ collection: 'story-progress' });
 
   // Get chapter by ID
   const getChapterById = useCallback((id: string) => {
     return chapters.find(chapter => chapter.id === id);
   }, [chapters]);
 
+  // Get next chapter
+  const getNextChapter = useCallback((currentChapterId: string) => {
+    const currentIndex = chapters.findIndex(chapter => chapter.id === currentChapterId);
+    return currentIndex < chapters.length - 1 ? chapters[currentIndex + 1] : undefined;
+  }, [chapters]);
+
+  // Get previous chapter
+  const getPreviousChapter = useCallback((currentChapterId: string) => {
+    const currentIndex = chapters.findIndex(chapter => chapter.id === currentChapterId);
+    return currentIndex > 0 ? chapters[currentIndex - 1] : undefined;
+  }, [chapters]);
+
   // Update chapter progress
-  const updateChapterProgress = useCallback(async (chapterId: string, progress: Partial<ChapterProgress>) => {
+  const updateChapterProgress = useCallback(async (
+    chapterId: string, 
+    progress: Partial<ChapterProgress>
+  ) => {
     try {
       const updatedProgress = {
         ...defaultProgress,
@@ -56,12 +80,12 @@ export const StoryProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
       };
       
-      await updateProgress('current-progress', updatedProgress);
-      refreshChapters(); // Refresh to get updated data
+      await updateData('current-progress', updatedProgress);
+      refreshChapters();
     } catch (error) {
       console.error('Failed to update chapter progress:', error);
     }
-  }, [updateProgress, refreshChapters]);
+  }, [updateData, refreshChapters]);
 
   // Update current chapter
   const updateCurrentChapter = useCallback(async (chapterId: string) => {
@@ -72,11 +96,37 @@ export const StoryProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         lastRead: new Date()
       };
       
-      await updateProgress('current-progress', updatedProgress);
+      await updateData('current-progress', updatedProgress);
     } catch (error) {
       console.error('Failed to update current chapter:', error);
     }
-  }, [updateProgress]);
+  }, [updateData]);
+
+  // Mark chapter as complete
+  const markChapterComplete = useCallback(async (chapterId: string) => {
+    try {
+      const chapter = getChapterById(chapterId);
+      if (!chapter) return;
+
+      await updateChapterProgress(chapterId, {
+        lastPosition: 100,
+        isComplete: true
+      });
+    } catch (error) {
+      console.error('Failed to mark chapter as complete:', error);
+    }
+  }, [getChapterById, updateChapterProgress]);
+
+  // Calculate reading progress
+  const getReadingProgress = useCallback(() => {
+    const completedChapters = Object.values(defaultProgress.chapterProgress)
+      .filter(progress => progress.isComplete)
+      .length;
+    
+    return chapters.length > 0 
+      ? (completedChapters / chapters.length) * 100 
+      : 0;
+  }, [chapters.length]);
 
   const value: StoryContextValue = {
     chapters,
@@ -86,6 +136,10 @@ export const StoryProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     getChapterById,
     updateChapterProgress,
     updateCurrentChapter,
+    getNextChapter,
+    getPreviousChapter,
+    markChapterComplete,
+    getReadingProgress
   };
 
   return (
@@ -95,6 +149,10 @@ export const StoryProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   );
 };
 
+/**
+ * Hook to use story context
+ * @throws {Error} If used outside of StoryProvider
+ */
 export const useStory = () => {
   const context = useContext(StoryContext);
   if (context === undefined) {
@@ -102,3 +160,5 @@ export const useStory = () => {
   }
   return context;
 };
+
+export default StoryContext;

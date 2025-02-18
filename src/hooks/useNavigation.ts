@@ -1,5 +1,5 @@
-// hooks/useNavigation.ts
-import { useCallback } from 'react';
+// src/hooks/useNavigation.ts
+import { useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useNavigation as useNavigationContext } from '../context/NavigationContext';
 import {
@@ -9,7 +9,8 @@ import {
   getQueryParams,
   buildUrl,
   getPathSegments,
-  getParentPath
+  getParentPath,
+  NavigationPath
 } from '../utils/navigation';
 
 /**
@@ -48,6 +49,57 @@ export const useNavigation = () => {
     navigation.navigateToPage(url);
   }, [location.pathname, getCurrentParams, navigation]);
 
+  /**
+   * Create a navigation path object
+   */
+  const createPath = useCallback((
+    path: string,
+    params?: Record<string, string>,
+    query?: Record<string, string>
+  ): NavigationPath => {
+    return {
+      path: formatPath(path),
+      params,
+      query
+    };
+  }, []);
+
+  /**
+   * Get breadcrumb path segments
+   */
+  const getBreadcrumbs = useCallback(() => {
+    const segments = getPathSegments(location.pathname);
+    return segments.map((_, index) => {
+      const path = '/' + segments.slice(0, index + 1).join('/');
+      return {
+        label: segments[index],
+        path
+      };
+    });
+  }, [location.pathname]);
+
+  /**
+   * Check if path should be highlighted in navigation
+   */
+  const shouldHighlightPath = useCallback((
+    path: string,
+    exact: boolean = false
+  ): boolean => {
+    return exact 
+      ? isActivePath(location.pathname, path)
+      : isParentPath(location.pathname, path);
+  }, [location.pathname]);
+
+  /**
+   * Get navigation state including computed values
+   */
+  const navigationState = useMemo(() => ({
+    ...navigation.state,
+    pathSegments: getPathSegments(location.pathname),
+    parentPath: getParentPath(location.pathname),
+    breadcrumbs: getBreadcrumbs()
+  }), [location.pathname, navigation.state, getBreadcrumbs]);
+
   return {
     // Original navigation context
     ...navigation,
@@ -56,6 +108,9 @@ export const useNavigation = () => {
     navigateWithParams,
     getCurrentParams,
     updateParams,
+    createPath,
+    getBreadcrumbs,
+    shouldHighlightPath,
     
     // Path utilities
     formatPath,
@@ -63,6 +118,9 @@ export const useNavigation = () => {
     isParentPath: (path: string) => isParentPath(location.pathname, path),
     getPathSegments: () => getPathSegments(location.pathname),
     getParentPath: () => getParentPath(location.pathname),
+    
+    // Enhanced state
+    navigationState,
     
     // Current location info
     currentPath: location.pathname,

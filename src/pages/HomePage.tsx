@@ -1,10 +1,10 @@
 // pages/HomePage.tsx
 import React, { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Typography from '../components/core/Typography';
 import Card from '../components/core/Card';
 import LatestChapter from '../components/features/story/LatestChapter';
 import { useChapterData } from '../hooks/useChapterData';
+import { useNavigation } from '../context/NavigationContext';
 import { Book, Scroll, Users, MapPin } from 'lucide-react';
 
 /**
@@ -21,8 +21,8 @@ interface QuickAccessItem {
  * HomePage component serving as the main landing page of the application
  */
 const HomePage: React.FC = () => {
-  const navigate = useNavigate();
   const { chapters, loading, error } = useChapterData();
+  const { navigateToPage } = useNavigation();
 
   // Get the latest chapter from the fetched data
   const latestChapter = useMemo(() => {
@@ -93,7 +93,7 @@ const HomePage: React.FC = () => {
             <Card
               key={item.path}
               hoverable
-              onClick={() => navigate(item.path)}
+              onClick={() => navigateToPage(item.path)}
               className="h-full"
             >
               <Card.Content className="flex flex-col items-center text-center p-6">

@@ -1,6 +1,5 @@
 // src/pages/QuestsPage.tsx
 import React, { useState, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
 import Typography from '../../components/core/Typography';
 import Card from '../../components/core/Card';
 import Input from '../../components/core/Input';
@@ -21,7 +20,6 @@ import {
   LogIn, 
   LogOut, 
   Loader2,
-  PlusCircle,
   Plus 
 } from 'lucide-react';
 
@@ -35,9 +33,8 @@ const QuestsPage: React.FC = () => {
   const { quests, loading, error } = useQuests();
   
   // URL and filters state
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const highlightedQuestId = searchParams.get('highlight');
+  const { getCurrentQueryParams } = useNavigation();
+  const { highlight: highlightedQuestId } = getCurrentQueryParams();
   const [statusFilter, setStatusFilter] = useState<QuestStatus | 'all'>('all');
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');

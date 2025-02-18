@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { NPC } from '../../../types/npc';
 import NPCCard from './NPCCard';
 import Card from '../../core/Card';
 import Typography from '../../core/Typography';
 import Input from '../../core/Input';
 import { Search, Users, MapPin, Heart } from 'lucide-react';
+import { useNavigation } from '../../../context/NavigationContext';
 
 interface NPCDirectoryProps {
   npcs: NPC[];
@@ -25,9 +25,8 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
   const [highlightedNpcId, setHighlightedNpcId] = useState<string | null>(null);
 
   // Get URL search params for highlighted NPC
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const highlightId = searchParams.get('highlight');
+  const { getCurrentQueryParams } = useNavigation();
+  const { highlight: highlightId } = getCurrentQueryParams();
 
   // Handle highlighted NPC from URL
   useEffect(() => {

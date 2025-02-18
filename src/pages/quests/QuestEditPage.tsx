@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Typography from '../../components/core/Typography';
 import Button from '../../components/core/Button';
 import Card from '../../components/core/Card';
 import QuestEditForm from '../../components/features/quests/QuestEditForm';
 import { useQuests } from '../../hooks/useQuests';
 import { useFirebase } from '../../context/FirebaseContext';
+import { useNavigation } from '../../context/NavigationContext';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 
 const QuestEditPage: React.FC = () => {
-  const navigate = useNavigate();
+  const { navigateToPage } = useNavigation();
   const { questId } = useParams<{ questId: string }>();
   const { quests, loading, error, refreshQuests } = useQuests();
   const { user } = useFirebase();
@@ -19,9 +20,9 @@ const QuestEditPage: React.FC = () => {
   // Redirect if not authenticated
   useEffect(() => {
     if (!user) {
-      navigate('/quests');
+      navigateToPage('/quests');
     }
-  }, [user, navigate]);
+  }, [user, navigateToPage]);
 
   if (loading) {
     return (
@@ -53,7 +54,7 @@ const QuestEditPage: React.FC = () => {
       <div className="mb-8 flex items-center gap-4">
         <Button
           variant="ghost"
-          onClick={() => navigate('/quests')}
+          onClick={() => navigateToPage('/quests')}
           startIcon={<ArrowLeft />}
         >
           Back to Quests
@@ -68,9 +69,9 @@ const QuestEditPage: React.FC = () => {
           quest={editingQuest}
           onSuccess={() => {
             refreshQuests(); // Refresh quest data after successful edit
-            navigate('/quests');
+            navigateToPage('/quests');
           }}
-          onCancel={() => navigate('/quests')}
+          onCancel={() => navigateToPage('/quests')}
         />
       ) : (
         <Card>

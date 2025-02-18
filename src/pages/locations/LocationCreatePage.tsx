@@ -1,29 +1,30 @@
 // src/pages/locations/LocationCreatePage.tsx
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Typography from '../../components/core/Typography';
 import Button from '../../components/core/Button';
 import LocationCreateForm from '../../components/features/locations/LocationCreateForm';
 import { useFirebase } from '../../context/FirebaseContext';
 import { ArrowLeft } from 'lucide-react';
+import { useNavigation } from '../../context/NavigationContext';
 
 const LocationCreatePage: React.FC = () => {
-  const navigate = useNavigate();
   const { user } = useFirebase();
+  const { navigateToPage } = useNavigation();
+  
 
   // Redirect if not authenticated
   useEffect(() => {
     if (!user) {
-      navigate('/locations');
+      navigateToPage('/locations');
     }
-  }, [user, navigate]);
+  }, [user, navigateToPage]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="mb-8 flex items-center gap-4">
         <Button
           variant="ghost"
-          onClick={() => navigate('/locations')}
+          onClick={() => navigateToPage('/locations')}
           startIcon={<ArrowLeft />}
         >
           Back to Locations
@@ -32,8 +33,8 @@ const LocationCreatePage: React.FC = () => {
       </div>
 
       <LocationCreateForm
-        onSuccess={() => navigate('/locations')}
-        onCancel={() => navigate('/locations')}
+        onSuccess={() => navigateToPage('/locations')}
+        onCancel={() => navigateToPage('/locations')}
       />
     </div>
   );

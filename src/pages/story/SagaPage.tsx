@@ -1,6 +1,5 @@
 // src/pages/story/SagaPage.tsx
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import BookViewer from '../../components/features/story/BookViewer';
 import Typography from '../../components/core/Typography';
 import Breadcrumb from '../../components/layout/Breadcrumb';
@@ -8,10 +7,11 @@ import Button from '../../components/core/Button';
 import Card from '../../components/core/Card';
 import { Book, Loader2 } from 'lucide-react';
 import { SagaData } from '../../types/saga';
+import { useNavigation } from '../../context/NavigationContext';
 import FirebaseService from '../../services/firebase/FirebaseService';
 
 const SagaPage: React.FC = () => {
-  const navigate = useNavigate();
+  const { navigateToPage } = useNavigation();
   const [data, setData] = useState<SagaData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +46,7 @@ const SagaPage: React.FC = () => {
   const breadcrumbItems = [
     { label: 'Home', href: '/' },
     { label: 'Story', href: '/story' },
-    { label: 'Campaign Saga', href: '/story/saga' }
+    { label: 'Campaign Saga' }
   ];
 
   const handlePageChange = (page: number) => {
@@ -97,7 +97,7 @@ const SagaPage: React.FC = () => {
 
           <Button
             variant="ghost"
-            onClick={() => navigate('/story')}
+            onClick={() => navigateToPage('/story')}
             startIcon={<Book />}
           >
             Back to Selection

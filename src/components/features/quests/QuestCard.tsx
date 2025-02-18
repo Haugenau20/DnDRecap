@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Quest } from '../../../types/quest';
 import { useNPCs } from '../../../context/NPCContext';
 import { useFirebase } from '../../../context/FirebaseContext';
@@ -7,6 +6,7 @@ import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
 import { useLocations } from '../../../context/LocationContext';
+import { useNavigation } from '../../../context/NavigationContext';
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -14,8 +14,7 @@ import {
   Users,
   Calendar,
   Target,
-  Edit,
-  Heart
+  Edit
 } from 'lucide-react';
 
 interface QuestCardProps {
@@ -23,11 +22,11 @@ interface QuestCardProps {
 }
 
 const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
-  const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   const { getNPCById } = useNPCs();
   const { locations } = useLocations();
   const { user } = useFirebase();
+  const { navigateToPage, createPath } = useNavigation();
 
   // Calculate completion percentage
   const completedObjectives = quest.objectives.filter(obj => obj.completed).length;
@@ -56,7 +55,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate(`/quests/edit/${quest.id}`)}
+                  onClick={() => navigateToPage(`/quests/edit/${quest.id}`)}
                   startIcon={<Edit size={16} />}
                 >
                   Edit
@@ -88,7 +87,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                   onClick={() => {
                     // Type guard to ensure location is defined
                     if (quest.location) {
-                      navigate(`/locations?highlight=${encodeURIComponent(quest.location)}`);
+                      navigateToPage(createPath('/locations', {}, { highlight: quest.location }));
                     }
                   }}
                   className="p-0 hover:underline"
@@ -201,7 +200,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                           size="sm"
                           onClick={() => {
                             if (location.name) {
-                              navigate(`/locations?highlight=${encodeURIComponent(location.name)}`);
+                              navigateToPage(createPath('/locations', {}, { highlight: location.name }));
                             }
                           }}
                           className="w-full"
@@ -286,7 +285,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                           key={npcId}
                           variant="ghost"
                           size="sm"
-                          onClick={() => navigate(`/npcs?highlight=${npcId}`)}
+                          onClick={() => navigateToPage(createPath('/npcs', {}, { highlight: npcId }))}
                           className="w-full"
                           centered={false}
                         >

@@ -1,6 +1,5 @@
 // src/pages/npcs/NPCsPage.tsx
 import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Typography from '../../components/core/Typography';
 import Button from '../../components/core/Button';
 import Card from '../../components/core/Card';
@@ -9,6 +8,7 @@ import SignInForm from '../../components/features/auth/SignInForm';
 import { useFirebase } from '../../context/FirebaseContext';
 import { useNPCData } from '../../hooks/useNPCData';
 import { NPC } from '../../types/npc';
+import { useNavigation } from '../../context/NavigationContext';
 import { Plus, Users, Loader2, LogOut, LogIn } from 'lucide-react';
 
 const NPCsPage: React.FC = () => {
@@ -18,7 +18,8 @@ const NPCsPage: React.FC = () => {
   // Hooks
   const { user, signOut } = useFirebase();
   const { npcs, loading, error, refreshNPCs } = useNPCData();
-  const navigate = useNavigate();
+  const { navigateToPage } = useNavigation();
+  
 
   // Calculate stats for display
   const stats = useMemo(() => ({
@@ -77,7 +78,7 @@ const NPCsPage: React.FC = () => {
         {user ? (
           <div className="flex gap-2">
             <Button
-              onClick={() => navigate('/npcs/create')}
+              onClick={() => navigateToPage('/npcs/create')}
               startIcon={<Plus className="w-5 h-5" />}
             >
               Add NPC

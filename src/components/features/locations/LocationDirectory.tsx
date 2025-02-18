@@ -7,6 +7,7 @@ import Typography from '../../core/Typography';
 import Input from '../../core/Input';
 import { Search, MapPin, Building } from 'lucide-react';
 import { useFirebaseData } from '../../../hooks/useFirebaseData';
+import { useNavigation } from '../../../context/NavigationContext';
 
 interface LocationDirectoryProps {
   locations: Location[];
@@ -33,8 +34,8 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
   // Get URL search params for highlighted location
   // Use the most up-to-date data
   const locations = updatedLocations.length > 0 ? updatedLocations : initialLocations;
-  const searchParams = new URLSearchParams(routerLocation.search);
-  const highlightId = searchParams.get('highlight');
+  const { getCurrentQueryParams } = useNavigation();
+  const { highlight: highlightId } = getCurrentQueryParams();
 
   // Group locations by parent to create hierarchy
   const locationHierarchy = useMemo(() => {

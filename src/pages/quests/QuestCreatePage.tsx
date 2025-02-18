@@ -1,29 +1,29 @@
 // src/pages/quests/QuestCreatePage.tsx
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Typography from '../../components/core/Typography';
 import Button from '../../components/core/Button';
 import QuestCreateForm from '../../components/features/quests/QuestCreateForm';
 import { useFirebase } from '../../context/FirebaseContext';
+import { useNavigation } from '../../context/NavigationContext';
 import { ArrowLeft } from 'lucide-react';
 
 const QuestCreatePage: React.FC = () => {
-  const navigate = useNavigate();
+  const { navigateToPage } = useNavigation();
   const { user } = useFirebase();
 
   // Redirect if not authenticated
   useEffect(() => {
     if (!user) {
-      navigate('/quests');
+      navigateToPage('/quests');
     }
-  }, [user, navigate]);
+  }, [user, navigateToPage]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="mb-8 flex items-center gap-4">
         <Button
           variant="ghost"
-          onClick={() => navigate('/quests')}
+          onClick={() => navigateToPage('/quests')}
           startIcon={<ArrowLeft />}
         >
           Back to Quests
@@ -32,8 +32,8 @@ const QuestCreatePage: React.FC = () => {
       </div>
 
       <QuestCreateForm
-        onSuccess={() => navigate('/quests')}
-        onCancel={() => navigate('/quests')}
+        onSuccess={() => navigateToPage('/quests')}
+        onCancel={() => navigateToPage('/quests')}
       />
     </div>
   );

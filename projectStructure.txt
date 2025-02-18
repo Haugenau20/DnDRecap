@@ -48,18 +48,8 @@ DnDRecap
 │   │   │   ├── useNPCData.ts
 │   │   │   ├── useNavigation.ts
 │   │   │   ├── useLocationData.ts
-│   │   │   └── useFirebaseData.ts
-│   │   ├── data
-│   │   │   ├── story
-│   │   │   │   ├── story.json
-│   │   │   │   └── saga.json
-│   │   │   ├── quests
-│   │   │   │   └── metadata
-│   │   │   │       └── quests.json
-│   │   │   ├── npcs
-│   │   │   │   └── npcs.json
-│   │   │   └── locations
-│   │   │       └── locations.json
+│   │   │   ├── useFirebaseData.ts
+│   │   │   └── useChapterData.ts
 │   │   ├── context
 │   │   │   ├── StoryContext.tsx
 │   │   │   ├── SearchContext.tsx
@@ -85,11 +75,8 @@ DnDRecap
 │   │   │   │   └── Breadcrumb.tsx
 │   │   │   ├── features
 │   │   │   │   ├── story
-│   │   │   │   │   ├── TableOfContents.tsx
-│   │   │   │   │   ├── StoryViewer.tsx
 │   │   │   │   │   ├── SlidingChapters.tsx
 │   │   │   │   │   ├── LatestChapter.tsx
-│   │   │   │   │   ├── ChapterNavigation.tsx
 │   │   │   │   │   └── BookViewer.tsx
 │   │   │   │   ├── quests
 │   │   │   │   │   ├── QuestTracker.tsx
@@ -122,7 +109,8 @@ DnDRecap
 │   │   └── App.tsx
 │   ├── public
 │   │   ├── manifest.json
-│   │   └── index.html
+│   │   ├── index.html
+│   │   └── 404.html
 │   ├── .github
 │   │   └── workflows
 │   │       └── npm-publish-github-packages.yml

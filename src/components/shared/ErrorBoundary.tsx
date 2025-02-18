@@ -6,6 +6,7 @@ import { AlertCircle } from 'lucide-react';
 
 interface Props {
   children: React.ReactNode;
+  fallback?: React.ReactNode;
 }
 
 interface State {
@@ -32,6 +33,12 @@ class ErrorBoundary extends React.Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
+      // Return custom fallback if provided, otherwise use default
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
+      // Default error UI
       return (
         <div className="flex flex-col items-center justify-center min-h-screen p-4">
           <AlertCircle className="w-12 h-12 text-red-500 mb-4" />

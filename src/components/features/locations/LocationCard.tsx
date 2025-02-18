@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Location, LocationNote, LocationType } from '../../../types/location';
 import { useNPCs } from '../../../context/NPCContext';
@@ -9,6 +8,7 @@ import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
 import Input from '../../core/Input';
+import { useNavigation } from '../../../context/NavigationContext';
 import { 
   MapPin, 
   ChevronDown, 
@@ -60,7 +60,6 @@ const LocationCard: React.FC<LocationCardProps> = ({
   isExpanded,
   onToggleExpand
 }) => {
-  const navigate = useNavigate();
   const [isContentExpanded, setIsContentExpanded] = useState(false);
   const { getNPCById } = useNPCs();
   const { getQuestById } = useQuests();
@@ -68,6 +67,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [noteInput, setNoteInput] = useState('');
   const [location, setLocation] = useState(initialLocation);
+  const { navigateToPage, createPath } = useNavigation();
 
   // Use Firebase hook to get real-time data
   const { data: locations, updateData } = useFirebaseData<Location>({
@@ -76,7 +76,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
 
   // Handle editing the location
   const handleEdit = () => {
-    navigate(`/locations/edit/${location.id}`);
+    navigateToPage(`/locations/edit/${location.id}`);
   };
 
    // Handle quick note adding
@@ -130,7 +130,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
               <div className="flex items-center gap-2">
                 <Calendar size={14} className="text-gray-400" />
                 <Typography variant="body-sm" color="secondary">
-                  {note.date}
+                  {new Date(note.date).toLocaleDateString('en-uk', { year: 'numeric', day: '2-digit', month: '2-digit'})}
                 </Typography>
               </div>
               <Typography variant="body-sm">
@@ -216,12 +216,12 @@ const LocationCard: React.FC<LocationCardProps> = ({
 
   // Handle NPC click
   const handleNPCClick = (npcId: string) => {
-    navigate(`/npcs?highlight=${encodeURIComponent(npcId)}`);
+    navigateToPage(createPath('/npcs', {}, { highlight: npcId }));
   };
 
   // Inside the LocationCard component, add:
   const handleQuestClick = (questId: string) => {
-    navigate(`/quests?highlight=${encodeURIComponent(questId)}`);
+    navigateToPage(createPath('/quests', {}, { highlight: questId }));
   };
 
   // Update local state when database data changes

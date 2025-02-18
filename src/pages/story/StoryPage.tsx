@@ -1,6 +1,6 @@
 // src/pages/story/StoryPage.tsx
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import BookViewer from '../../components/features/story/BookViewer';
 import Typography from '../../components/core/Typography';
 import Breadcrumb from '../../components/layout/Breadcrumb';
@@ -8,13 +8,12 @@ import SlidingChapters from '../../components/features/story/SlidingChapters';
 import Card from '../../components/core/Card';
 import Button from '../../components/core/Button';
 import { useStory } from '../../context/StoryContext';
-import { useNavigation } from '../../hooks/useNavigation';
+import { useNavigation } from '../../context/NavigationContext';
 import { Book, Menu, Loader2 } from 'lucide-react';
 
 const StoryPage: React.FC = () => {
   const { chapterId } = useParams();
-  const navigate = useNavigate();
-  const { navigateToPage } = useNavigation();
+  const { navigateToPage, getCurrentQueryParams, updateQueryParams } = useNavigation();
   const { 
     chapters, 
     storyProgress,
@@ -22,7 +21,9 @@ const StoryPage: React.FC = () => {
     error,
     getChapterById, 
     updateChapterProgress, 
-    updateCurrentChapter 
+    updateCurrentChapter,
+    getNextChapter,
+    getPreviousChapter  
   } = useStory();
   
   const [currentChapter, setCurrentChapter] = useState(
@@ -41,23 +42,23 @@ const StoryPage: React.FC = () => {
           updateCurrentChapter(chapter.id);
         } else {
           // If requested chapter doesn't exist, go to first chapter
-          navigate(`/story/chronicles/${chapters[0].id}`);
+          navigateToPage(`/story/chronicles/${chapters[0].id}`);
         }
       } else if (storyProgress.currentChapter) {
         // If no specific chapter requested, go to last read chapter
         const lastChapter = getChapterById(storyProgress.currentChapter);
         if (lastChapter) {
-          navigate(`/story/chronicles/${lastChapter.id}`);
+          navigateToPage(`/story/chronicles/${lastChapter.id}`);
         } else {
           // If last read chapter no longer exists, go to first chapter
-          navigate(`/story/chronicles/${chapters[0].id}`);
+          navigateToPage(`/story/chronicles/${chapters[0].id}`);
         }
       } else {
         // If no last read chapter, start from the beginning
-        navigate(`/story/chronicles/${chapters[0].id}`);
+        navigateToPage(`/story/chronicles/${chapters[0].id}`);
       }
     }
-  }, [isLoading, chapters, chapterId, navigate, getChapterById, storyProgress.currentChapter, updateCurrentChapter]);
+  }, [isLoading, chapters, chapterId, navigateToPage, getChapterById, storyProgress.currentChapter, updateCurrentChapter]);
 
   // Calculate next and previous chapters
   const { nextChapter, previousChapter } = useMemo(() => {

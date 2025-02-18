@@ -1,9 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import Card from '../../core/Card';
 import Typography from '../../core/Typography';
 import Button from '../../core/Button';
 import { Book, Clock, ChevronRight } from 'lucide-react';
+import { useNavigation } from '../../../context/NavigationContext';
 
 interface LatestChapterProps {
   chapter: {
@@ -17,10 +17,10 @@ interface LatestChapterProps {
 }
 
 const LatestChapter: React.FC<LatestChapterProps> = ({ chapter }) => {
-  const navigate = useNavigate();
+  const { navigateToPage } = useNavigation();
 
   const handleContinueReading = () => {
-    navigate(`/story/chronicles/${chapter.id}`);
+    navigateToPage(`/story/chronicles/${chapter.id}`);
   };
 
   return (

@@ -1,8 +1,8 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useSearch } from '../../hooks/useSearch';
 import { SearchResult, SearchResultType } from '../../types/search';
 import Typography from '../core/Typography';
+import { useNavigation } from '../../context/NavigationContext';
 import { 
   Search as SearchIcon, 
   X, 
@@ -33,7 +33,6 @@ const resultTypeLabels: Record<SearchResultType, string> = {
  * Search bar component with real-time search functionality and results dropdown
  */
 export const SearchBar: React.FC = () => {
-  const navigate = useNavigate();
   const { 
     query, 
     results, 
@@ -45,6 +44,7 @@ export const SearchBar: React.FC = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { navigateToPage, createPath } = useNavigation();
 
   /**
    * Navigate to appropriate page based on result type
@@ -52,19 +52,19 @@ export const SearchBar: React.FC = () => {
   const navigateToResult = useCallback((result: SearchResult) => {
     switch (result.type) {
       case 'story':
-        navigate(`/story/${result.id}`);
+        navigateToPage(createPath('/story', {}, { highlight: result.id }));
         break;
       case 'quest':
-        navigate(`/quests?highlight=${result.id}`);
+        navigateToPage(createPath('/quests', {}, { highlight: result.id }));
         break;
       case 'npc':
-        navigate(`/npcs?highlight=${result.id}`);
+        navigateToPage(createPath('/npcs', {}, { highlight: result.id }));
         break;
       case 'location':
-        navigate(`/locations?highlight=${result.id}`);
+        navigateToPage(createPath('/locations', {}, { highlight: result.id }));
         break;
     }
-  }, [navigate]);
+  }, [navigateToPage]);
 
   /**
    * Handle input changes and trigger search

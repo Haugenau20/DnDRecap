@@ -16,7 +16,7 @@ interface NavItem {
  * Provides navigation links and highlights active routes
  */
 const Navigation: React.FC = () => {
-  const { isActivePath, isParentPath } = useNavigation();
+  const { shouldHighlightPath } = useNavigation();
 
   const navItems: NavItem[] = [
     { 
@@ -48,7 +48,7 @@ const Navigation: React.FC = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => {
-              const isActive = isActivePath(item.path) || isParentPath(item.path);
+              const isActive = shouldHighlightPath(item.path);
               
               return (
                 <Link
@@ -75,7 +75,7 @@ const Navigation: React.FC = () => {
           {/* Mobile Navigation */}
           <div className="flex md:hidden">
             {navItems.map((item) => {
-              const isActive = isActivePath(item.path) || isParentPath(item.path);
+              const isActive = shouldHighlightPath(item.path);
               
               return (
                 <Link
