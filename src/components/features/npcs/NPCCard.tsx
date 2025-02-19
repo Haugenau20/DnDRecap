@@ -8,6 +8,8 @@ import { useQuests } from '../../../hooks/useQuests';
 import { useFirebase } from '../../../context/FirebaseContext';
 import { useFirebaseData } from '../../../hooks/useFirebaseData';
 import { useNavigation } from '../../../context/NavigationContext';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -37,38 +39,8 @@ const NPCCard: React.FC<NPCCardProps> = ({
   const { user } = useFirebase(); // Get authentication state
   const { updateData } = useFirebaseData<NPC>({ collection: 'npcs' });
   const { navigateToPage, createPath } = useNavigation();
-
-  // Function to get status color
-  const getStatusColor = (status: string): string => {
-    switch (status) {
-      case 'alive':
-        return 'text-green-500';
-      case 'deceased':
-        return 'text-red-500';
-      case 'missing':
-        return 'text-yellow-500';
-      case 'unknown':
-        return 'text-blue-500';
-      default:
-        return 'text-gray-500';
-    }
-  };
-
-  // Function to get relationship color
-  const getRelationshipColor = (relationship: string): string => {
-    switch (relationship) {
-      case 'friendly':
-        return 'text-green-500';
-      case 'hostile':
-        return 'text-red-500';
-      case 'neutral':
-        return 'text-gray-500';
-      case 'unknown':
-        return 'text-blue-500';
-      default:
-        return 'text-gray-500';
-    }
-  };
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   // Handle quick note adding
   const handleAddNote = async () => {
@@ -115,7 +87,7 @@ const NPCCard: React.FC<NPCCardProps> = ({
   };
 
   return (
-    <Card>
+    <Card className={clsx(`${themePrefix}-npc-card`)}>
       <Card.Content className="space-y-4">
         {/* NPC Header */}
         <div className="flex items-start justify-between">
@@ -149,10 +121,16 @@ const NPCCard: React.FC<NPCCardProps> = ({
           {/* Status and Relationship */}
           <div className="space-y-1">
             <div className='flex items-center gap-2'>
-            <Typography variant="body-sm" className="font-medium">
+              <Typography variant="body-sm" className="font-medium">
                 Status:
               </Typography>
-              <Typography variant="body-sm" className={`font-medium ${getStatusColor(npc.status)}`}>
+              <Typography 
+                variant="body-sm" 
+                className={clsx(
+                  "font-medium",
+                  `${themePrefix}-npc-status-${npc.status}`
+                )}
+              >
                 {npc.status.charAt(0).toUpperCase() + npc.status.slice(1)}
               </Typography>
             </div>
@@ -160,7 +138,13 @@ const NPCCard: React.FC<NPCCardProps> = ({
               <Typography variant="body-sm" className="font-medium">
                 Relationship:
               </Typography>
-              <Typography variant="body-sm" className={`font-medium ${getRelationshipColor(npc.relationship)}`}>
+              <Typography 
+                variant="body-sm" 
+                className={clsx(
+                  "font-medium",
+                  `${themePrefix}-npc-relationship-${npc.relationship}`
+                )}
+              >
                 {npc.relationship.charAt(0).toUpperCase() + npc.relationship.slice(1)}
               </Typography>
             </div>
@@ -299,7 +283,10 @@ const NPCCard: React.FC<NPCCardProps> = ({
                   {npc.notes.map((note, index) => (
                     <div
                       key={index}
-                      className="p-3 bg-gray-50 rounded-lg space-y-1"
+                      className={clsx(
+                        "p-3 rounded-lg space-y-1",
+                        `${themePrefix}-note`
+                      )}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -339,11 +326,10 @@ const NPCCard: React.FC<NPCCardProps> = ({
                         <div className="flex items-start gap-2 text-left">
                           <Users 
                             size={16} 
-                            className={`mt-1 ${
-                              quest.status === 'completed' ? 'text-green-500' :
-                              quest.status === 'failed' ? 'text-red-500' :
-                              'text-blue-500'
-                            }`}
+                            className={clsx(
+                              "mt-1",
+                              `${themePrefix}-quest-status-${quest.status}`
+                            )}
                           />
                           <div className="flex-1">
                             <Typography variant="body-sm" className="font-medium">

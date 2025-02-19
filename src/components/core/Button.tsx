@@ -2,6 +2,7 @@
 import React from 'react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { useTheme } from '../../context/ThemeContext';
 
 /**
  * Button variant types for different visual styles
@@ -34,17 +35,6 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 /**
- * Base button styles for each variant
- */
-const variantStyles: Record<ButtonVariant, string> = {
-  primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-  secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500',
-  outline: 'border-2 border-gray-200 text-gray-600 hover:bg-gray-50 focus:ring-gray-100',
-  ghost: 'text-gray-600 hover:bg-gray-100 focus:ring-gray-200',
-  link: 'text-blue-600 hover:underline focus:ring-blue-500 p-0'
-};
-
-/**
  * Size styles for the button
  */
 const sizeStyles: Record<ButtonSize, string> = {
@@ -70,6 +60,32 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...props
 }) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name; // 'default' or 'dnd'
+
+  // Get button-specific colors from theme
+  const getButtonStyles = () => {
+    // Only use these custom styles when button colors are defined in theme
+    if (theme.colors.button && theme.colors.button[variant]) {
+      const buttonColors = theme.colors.button[variant];
+      
+      // For ghost/outline/link buttons, use transparent background
+      const bgColor = variant === 'ghost' || variant === 'outline' || variant === 'link' 
+        ? 'transparent' 
+        : buttonColors.background;
+      
+      return {
+        backgroundColor: bgColor,
+        color: buttonColors.text,
+        borderColor: variant === 'outline' ? buttonColors.background : 'transparent',
+        // Store hover color as custom property for CSS to use
+        '--hover-bg-color': buttonColors.hover
+      } as React.CSSProperties;
+    }
+    
+    return {};
+  };
+
   // Combine styles using clsx and tailwind-merge
   const buttonStyles = twMerge(
     clsx(
@@ -77,9 +93,6 @@ export const Button: React.FC<ButtonProps> = ({
       'relative rounded-lg font-medium transition-colors duration-200',
       'focus:outline-none focus:ring-2 focus:ring-offset-2',
       'disabled:opacity-50 disabled:cursor-not-allowed',
-      
-      // Variant specific styles
-      variantStyles[variant],
       
       // Size specific styles
       variant !== 'link' && sizeStyles[size],
@@ -94,6 +107,10 @@ export const Button: React.FC<ButtonProps> = ({
       // Loading state styles
       isLoading && 'cursor-wait',
       
+      // Theme-specific class
+      `${themePrefix}-button`,
+      `${themePrefix}-button-${variant}`,
+      
       // Custom classes
       className
     )
@@ -103,6 +120,8 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       className={buttonStyles}
       disabled={disabled || isLoading}
+      style={getButtonStyles()}
+      data-variant={variant}
       {...props}
     >
       {isLoading && (

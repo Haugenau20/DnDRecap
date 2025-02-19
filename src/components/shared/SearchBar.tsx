@@ -1,8 +1,11 @@
+// components/shared/SearchBar.tsx
 import React, { useState, useRef, useCallback } from 'react';
 import { useSearch } from '../../hooks/useSearch';
 import { SearchResult, SearchResultType } from '../../types/search';
 import Typography from '../core/Typography';
 import { useNavigation } from '../../context/NavigationContext';
+import { useTheme } from '../../context/ThemeContext';
+import { clsx } from 'clsx';
 import { 
   Search as SearchIcon, 
   X, 
@@ -45,6 +48,8 @@ export const SearchBar: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const { navigateToPage, createPath } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   /**
    * Navigate to appropriate page based on result type
@@ -64,7 +69,7 @@ export const SearchBar: React.FC = () => {
         navigateToPage(createPath('/locations', {}, { highlight: result.id }));
         break;
     }
-  }, [navigateToPage]);
+  }, [navigateToPage, createPath]);
 
   /**
    * Handle input changes and trigger search
@@ -132,9 +137,12 @@ export const SearchBar: React.FC = () => {
     return (
       <div
         key={`${result.type}-${result.id}`}
-        className={`p-3 cursor-pointer ${
-          isSelected ? 'bg-blue-50' : 'hover:bg-gray-50'
-        }`}
+        className={clsx(
+          'p-3 cursor-pointer',
+          isSelected 
+            ? `${themePrefix}-search-result-selected` 
+            : `${themePrefix}-search-result`
+        )}
         onClick={() => handleResultClick(result)}
         onMouseEnter={() => setSelectedIndex(index)}
         role="option"
@@ -161,7 +169,7 @@ export const SearchBar: React.FC = () => {
         ))}
       </div>
     );
-  }, [selectedIndex, handleResultClick]);
+  }, [selectedIndex, handleResultClick, themePrefix]);
 
   return (
     <div className="relative w-full max-w-2xl">
@@ -179,7 +187,10 @@ export const SearchBar: React.FC = () => {
           ref={inputRef}
           type="search"
           placeholder="Search stories, quests, NPCs..."
-          className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white [&::-webkit-search-cancel-button]:hidden"
+          className={clsx(
+            "w-full pl-10 pr-4 py-2 rounded-lg border text-gray-900 bg-white [&::-webkit-search-cancel-button]:hidden",
+            `${themePrefix}-search`
+          )}
           value={query}
           onChange={handleInputChange}
           onFocus={() => setIsFocused(true)}
@@ -214,7 +225,10 @@ export const SearchBar: React.FC = () => {
       {isFocused && (query || isSearching) && (
       <div
         id="search-results"
-        className="absolute z-50 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 max-h-96 overflow-y-auto"
+        className={clsx(
+          "absolute z-50 w-full mt-1 rounded-lg shadow-lg border max-h-96 overflow-y-auto",
+          `${themePrefix}-search-results`
+        )}
         role="listbox"
       >
           {results.length > 0 ? (

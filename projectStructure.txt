@@ -2,6 +2,7 @@
 DnDRecap
 │   ├── src
 │   │   ├── utils
+│   │   │   ├── theme-utils.ts
 │   │   │   ├── search.ts
 │   │   │   └── navigation.ts
 │   │   ├── types
@@ -13,7 +14,8 @@ DnDRecap
 │   │   │   ├── npc.ts
 │   │   │   └── location.ts
 │   │   ├── styles
-│   │   │   └── globals.css
+│   │   │   ├── globals.css
+│   │   │   └── dnd-theme.css
 │   │   ├── services
 │   │   │   ├── search
 │   │   │   │   └── SearchService.ts
@@ -112,6 +114,10 @@ DnDRecap
 │   │   ├── index.tsx
 │   │   └── App.tsx
 │   ├── public
+│   │   ├── decorative
+│   │   │   ├── scroll-end.svg
+│   │   │   ├── parchment-texture.svg
+│   │   │   └── corner-dragon.svg
 │   │   ├── manifest.json
 │   │   ├── index.html
 │   │   └── 404.html

@@ -37,6 +37,21 @@ export interface ThemeColors {
       text: string;
       hover: string;
     };
+    link: {
+      background: string;
+      text: string;
+      hover: string;
+    };
+    outline: {
+      background: string;
+      text: string;
+      hover: string;
+    };
+    ghost: {
+      background: string;
+      text: string;
+      hover: string;
+    };
   };
 }
 

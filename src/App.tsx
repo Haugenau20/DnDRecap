@@ -10,7 +10,6 @@ import { FirebaseProvider } from './context/FirebaseContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ErrorBoundary from './components/shared/ErrorBoundary';
 import Layout from './components/layout/Layout';
-import './styles/dnd-themes.css';
 
 // Import pages
 import HomePage from './pages/HomePage';

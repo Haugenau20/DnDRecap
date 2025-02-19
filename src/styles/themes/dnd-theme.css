@@ -1,0 +1,489 @@
+/* src/styles/dnd-theme.css */
+
+/* 
+  IMPORTANT: This file doesn't redefine colors - it only creates semantic
+  aliases that reference the theme variables set by ThemeContext.
+  All actual color values are in themes.ts
+*/
+
+/* Apply styles only when data-theme="dnd" is set */
+[data-theme="dnd"] {
+  /* Semantic aliases for theme variables */
+  --parchment-bg: var(--color-background-primary);
+  --parchment-dark: var(--color-background-secondary);
+  --parchment-accent: var(--color-background-accent);
+  --ink-color: var(--color-text-primary);
+  --ink-secondary: var(--color-text-secondary);
+  --accent-color: var(--color-accent);
+  --primary-color: var(--color-primary);
+  --border-color: var(--color-card-border);
+  --card-bg: var(--color-card-background);
+}
+
+/* Base theme styles */
+.dnd-theme {
+  /* Apply parchment texture to background */
+  background-image: url('../../../public/decorative/parchment-texture.svg');
+  background-repeat: repeat;
+  background-color: var(--parchment-bg);
+  color: var(--ink-color);
+  font-family: var(--font-primary);
+}
+
+/* Enhanced card styling */
+.dnd-card {
+  position: relative;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  background-color: var(--card-bg);
+  box-shadow: 0 4px 6px rgba(139, 69, 19, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+/* Card hover effect */
+.dnd-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(139, 69, 19, 0.2);
+}
+
+/* Decorative corners */
+.dnd-card::before,
+.dnd-card::after {
+  content: '';
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  background-image: url('../../../public/decorative/corner-dragon.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.dnd-card::before {
+  top: -0.5rem;
+  left: -0.5rem;
+  transform: rotate(0deg);
+}
+
+.dnd-card::after {
+  bottom: -0.5rem;
+  right: -0.5rem;
+  transform: rotate(180deg);
+}
+
+/* Heading styles */
+.dnd-heading {
+  font-family: var(--font-heading);
+  color: var(--ink-color);
+  text-shadow: 1px 1px 2px rgba(139, 69, 19, 0.2);
+  position: relative;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dnd-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--border-color) 50%,
+    transparent 100%
+  );
+}
+
+/* ====== Button styles ====== */
+.dnd-button {
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-primary);
+}
+
+/* FIXED HOVER EFFECT - Uses --hover-bg-color custom property */
+.dnd-button:hover {
+  background-color: var(--hover-bg-color) !important; /* Use !important to ensure it overrides inline styles */
+  transform: translateY(-1px);
+}
+
+/* Special hover effect for ghost button */
+.dnd-button-ghost:hover {
+  background-color: var(--hover-bg-color) !important;
+}
+
+/* Special hover effect for outline button */
+.dnd-button-outline:hover {
+  background-color: var(--hover-bg-color) !important;
+}
+
+/* Shine effect */
+.dnd-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  transition: left 0.5s ease;
+}
+
+.dnd-button:hover::before {
+  left: 100%;
+}
+
+/* Input styles */
+.dnd-input {
+  background-color: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 0.5rem;
+  color: var(--ink-color);
+  transition: all 0.3s ease;
+  font-family: var(--font-primary);
+}
+
+.dnd-input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(218, 165, 32, 0.2);
+}
+
+.dnd-input::placeholder {
+  color: var(--ink-secondary);
+  opacity: 0.7;
+}
+
+/* Typography styles */
+.dnd-typography {
+  font-family: var(--font-primary);
+  color: var(--ink-color);
+}
+
+.dnd-typography-heading {
+  font-family: var(--font-heading);
+}
+
+.dnd-typography-secondary {
+  font-family: var(--font-secondary);
+}
+
+/* Status indicators */
+.dnd-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.dnd-status-active {
+  background-color: var(--accent-color);
+  color: var(--ink-color);
+}
+
+.dnd-status-completed {
+  background-color: #006400; /* Using a literal color as it's a semantic color not in our theme */
+  color: var(--parchment-bg);
+}
+
+.dnd-status-failed {
+  background-color: var(--primary-color);
+  color: var(--parchment-bg);
+}
+
+/* Navigation styles */
+.dnd-navigation {
+  background-color: var(--card-bg);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.dnd-navigation-item {
+  color: var(--ink-secondary);
+  transition: all 0.3s ease;
+}
+
+.dnd-navigation-item:hover {
+  color: var(--primary-color);
+  background-color: var(--parchment-accent);
+}
+
+.dnd-navigation-item-active {
+  color: var(--primary-color);
+  background-color: var(--parchment-accent);
+  font-weight: 500;
+}
+
+/* Dialog styles */
+.dnd-dialog {
+  background-color: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 8px 16px rgba(139, 69, 19, 0.2);
+}
+
+.dnd-dialog-backdrop {
+  background-color: rgba(44, 24, 16, 0.4);
+}
+
+/* Divider */
+.dnd-divider {
+  height: 2px;
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--border-color) 50%,
+    transparent 100%
+  );
+  margin: 1rem 0;
+}
+
+/* Search component */
+.dnd-search {
+  background-color: var(--card-bg);
+  border: 2px solid var(--border-color);
+  color: var(--ink-color);
+}
+
+.dnd-search:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(218, 165, 32, 0.2);
+}
+
+.dnd-search-results {
+  background-color: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+}
+
+.dnd-search-result-item {
+  border-bottom: 1px solid var(--parchment-accent);
+}
+
+.dnd-search-result-item:hover {
+  background-color: var(--parchment-accent);
+}
+
+/* Scrollbar styling */
+.dnd-theme::-webkit-scrollbar {
+  width: 12px;
+}
+
+.dnd-theme::-webkit-scrollbar-track {
+  background: var(--parchment-dark);
+}
+
+.dnd-theme::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border: 3px solid var(--parchment-dark);
+  border-radius: 6px;
+}
+
+.dnd-theme::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+
+/* Quest and NPC specific styling */
+.dnd-quest-card {
+  border-left: 4px solid var(--accent-color);
+}
+
+.dnd-npc-card {
+  border-left: 4px solid var(--primary-color);
+}
+
+/* Decorative elements */
+.dnd-decoration-scroll {
+  position: relative;
+}
+
+.dnd-decoration-scroll::before,
+.dnd-decoration-scroll::after {
+  content: '';
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  background-image: url('../../../public/decorative/scroll-end.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.dnd-decoration-scroll::before {
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+}
+
+.dnd-decoration-scroll::after {
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Additional styles for QuestCard, NPCCard, LocationCard, and BookViewer in dnd-theme.css */
+
+/* Quest Card styles */
+.dnd-quest-card {
+  border-left: 4px solid var(--accent-color);
+}
+
+.dnd-progress-container {
+  background-color: var(--parchment-dark);
+}
+
+.dnd-progress-bar {
+  background-color: var(--primary-color);
+}
+
+.dnd-progress-bar-active {
+  background-color: var(--accent-color);
+}
+
+.dnd-progress-bar-completed {
+  background-color: #006400;
+}
+
+.dnd-progress-bar-failed {
+  background-color: var(--primary-color);
+}
+
+.dnd-objective-completed {
+  background-color: #006400;
+  border-color: #006400;
+}
+
+.dnd-objective-pending {
+  border-color: var(--border-color);
+}
+
+/* NPC Card styles */
+.dnd-npc-card {
+  border-left: 4px solid var(--primary-color);
+}
+
+.dnd-npc-status-alive {
+  color: #006400;
+}
+
+.dnd-npc-status-deceased {
+  color: var(--primary-color);
+}
+
+.dnd-npc-status-missing {
+  color: #DAA520;
+}
+
+.dnd-npc-status-unknown {
+  color: var(--ink-secondary);
+}
+
+.dnd-npc-relationship-friendly {
+  color: #006400;
+}
+
+.dnd-npc-relationship-hostile {
+  color: var(--primary-color);
+}
+
+.dnd-npc-relationship-neutral {
+  color: var(--ink-secondary);
+}
+
+.dnd-npc-relationship-unknown {
+  color: var(--ink-secondary);
+}
+
+.dnd-note {
+  background-color: var(--parchment-dark);
+  border: 1px solid var(--border-color);
+}
+
+/* Location Card styles */
+.dnd-location-card {
+  border-left: 4px solid #483C32;
+}
+
+.dnd-location-status-discovered {
+  color: #006400;
+}
+
+.dnd-location-status-undiscovered {
+  color: var(--ink-secondary);
+}
+
+.dnd-location-status-visited {
+  color: var(--accent-color);
+}
+
+.dnd-tag {
+  background-color: var(--parchment-dark);
+  border: 1px solid var(--border-color);
+}
+
+/* Book Viewer styles */
+.dnd-book {
+  background-color: var(--parchment-bg);
+  border: 2px solid var(--border-color);
+}
+
+.dnd-book-header {
+  background-color: var(--parchment-dark);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.dnd-book-nav {
+  background-color: var(--parchment-dark);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dnd-book-content-area {
+  background-color: var(--parchment-bg);
+  background-image: url('../../../public/decorative/parchment-texture.svg');
+  background-repeat: repeat;
+}
+
+.dnd-book-content {
+  font-family: 'Crimson Text', serif;
+}
+
+.dnd-book-text {
+  font-family: 'Crimson Text', serif;
+  color: var(--ink-color);
+}
+
+.dnd-book-pagination {
+  background-color: var(--parchment-bg);
+  border-top: 1px solid var(--border-color);
+}
+
+.dnd-page-nav-button {
+  background-color: transparent;
+}
+
+.dnd-page-nav-button:hover {
+  background-color: var(--parchment-accent);
+}
+
+.dnd-progress-container {
+  background-color: var(--parchment-dark);
+}
+
+.dnd-progress-bar {
+  background-color: var(--accent-color);
+}
+
+.dnd-hint {
+  background-color: var(--parchment-accent);
+  color: var(--ink-color);
+  border: 1px solid var(--border-color);
+}

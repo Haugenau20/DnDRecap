@@ -4,20 +4,30 @@ import { Link } from 'react-router-dom';
 import { SearchBar } from '../shared/SearchBar';
 import ThemeSelector from '../shared/ThemeSelector';
 import { useNavigation } from '../../hooks/useNavigation';
+import { useTheme } from '../../context/ThemeContext';
+import { clsx } from 'clsx';
 
 const Header: React.FC = () => {
   const { navigateToPage } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   return (
-    <header className="bg-gradient-to-r from-stone-600 via-stone-700 to-zinc-800 text-white p-4">
-      <div className="container mx-auto flex items-center gap-4 justify-between">
+    <header className={clsx(
+      'p-4',
+      `${themePrefix}-header`
+    )}>
+      <div className="container justify-center mx-auto flex items-center gap-4">
         <Link 
           to="/" 
           onClick={(e) => {
             e.preventDefault();
             navigateToPage('/');
           }}
-          className="text-xl font-bold"
+          className={clsx(
+            'text-xl font-bold',
+            `${themePrefix}-header-title`
+          )}
         >
           D&D Campaign Companion
         </Link>

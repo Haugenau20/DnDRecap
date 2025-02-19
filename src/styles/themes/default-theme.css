@@ -1,0 +1,436 @@
+/* src/styles/default-theme.css */
+
+/* 
+  Default theme styling that mirrors the structure of dnd-theme.css
+  for consistency across themes
+*/
+
+/* Apply styles only when data-theme="default" is set */
+[data-theme="default"] {
+  /* Semantic aliases for theme variables */
+  --default-bg: var(--color-background-primary);
+  --default-bg-secondary: var(--color-background-secondary);
+  --default-bg-accent: var(--color-background-accent);
+  --default-text: var(--color-text-primary);
+  --default-text-secondary: var(--color-text-secondary);
+  --default-accent: var(--color-accent);
+  --default-primary: var(--color-primary);
+  --default-card-border: var(--color-card-border);
+  --default-card-bg: var(--color-card-background);
+}
+
+/* Base theme styles */
+.default-theme {
+  background-color: var(--default-bg);
+  color: var(--default-text);
+  font-family: var(--font-primary);
+}
+
+/* Enhanced card styling */
+.default-card {
+  border: 1px solid var(--default-card-border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--default-card-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+/* Card hover effect */
+.default-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styles */
+.default-heading {
+  font-family: var(--font-heading);
+  color: var(--default-text);
+  margin-bottom: 0.75rem;
+}
+
+/* ====== Button styles ====== */
+.default-button {
+  transition: all 0.2s ease;
+  position: relative;
+  font-family: var(--font-primary);
+  font-weight: 500;
+}
+
+/* FIXED HOVER EFFECT - Uses --hover-bg-color custom property */
+.default-button:hover {
+  background-color: var(--hover-bg-color) !important;
+}
+
+/* Variant-specific button styling */
+.default-button-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.default-button-secondary {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+.default-button-outline {
+  background-color: transparent;
+  border: 2px solid var(--color-card-border);
+  color: var(--color-text-primary);
+}
+
+.default-button-outline:hover {
+  background-color: var(--hover-bg-color) !important;
+}
+
+.default-button-ghost {
+  background-color: transparent;
+  color: var(--color-text-primary);
+}
+
+.default-button-ghost:hover {
+  background-color: var(--hover-bg-color) !important;
+}
+
+.default-button-link {
+  background-color: transparent;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.default-button-link:hover {
+  text-decoration: underline;
+  background-color: transparent !important;
+}
+
+/* Input styles */
+.default-input {
+  background-color: white;
+  border: 1px solid var(--default-card-border);
+  border-radius: var(--border-radius-md);
+  padding: 0.5rem;
+  color: var(--default-text);
+  transition: all 0.2s ease;
+  font-family: var(--font-primary);
+}
+
+.default-input:focus {
+  border-color: var(--default-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.default-input::placeholder {
+  color: var(--default-text-secondary);
+  opacity: 0.7;
+}
+
+/* Typography styles */
+.default-typography {
+  font-family: var(--font-primary);
+  color: var(--default-text);
+}
+
+.default-typography-heading {
+  font-family: var(--font-heading);
+}
+
+.default-typography-secondary {
+  font-family: var(--font-secondary);
+}
+
+.default-typography-label {
+  color: var(--default-text);
+  font-weight: 500;
+}
+
+/* Status indicators */
+.default-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.default-status-active {
+  background-color: #3B82F6;
+  color: white;
+}
+
+.default-status-completed {
+  background-color: #10B981; /* Green */
+  color: white;
+}
+
+.default-status-failed {
+  background-color: #EF4444; /* Red */
+  color: white;
+}
+
+/* Navigation styles */
+.default-navigation {
+  background-color: var(--default-card-bg);
+  border-bottom: 1px solid var(--default-card-border);
+}
+
+.default-navigation-item {
+  color: var(--default-text-secondary);
+  transition: all 0.2s ease;
+}
+
+.default-navigation-item:hover {
+  color: var(--default-primary);
+  background-color: var(--default-bg-accent);
+}
+
+.default-navigation-item-active {
+  color: var(--default-primary);
+  background-color: var(--default-bg-accent);
+  font-weight: 500;
+}
+
+/* Header styles */
+.default-header {
+  background-color: var(--default-primary);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.default-header-title {
+  color: white;
+  font-family: var(--font-heading);
+}
+
+/* Footer styles */
+.default-footer {
+  background-color: white;
+  color: white;
+}
+
+/* Content area */
+.default-content {
+  background-color: var(--default-bg);
+}
+
+/* Search component */
+.default-search {
+  background-color: white;
+  border: 1px solid var(--default-card-border);
+  transition: all 0.2s ease;
+}
+
+.default-search:focus {
+  border-color: var(--default-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.default-search-results {
+  background-color: white;
+  border: 1px solid var(--default-card-border);
+}
+
+.default-search-result {
+  transition: background-color 0.2s ease;
+}
+
+.default-search-result:hover {
+  background-color: var(--default-bg-secondary);
+}
+
+.default-search-result-selected {
+  background-color: var(--default-bg-accent);
+}
+
+/* Dropdown component */
+.default-dropdown {
+  background-color: white;
+  border-color: var(--default-card-border);
+}
+
+.default-dropdown-item {
+  color: var(--default-text);
+  transition: background-color 0.2s ease;
+}
+
+.default-dropdown-item:hover {
+  background-color: var(--default-bg-secondary);
+}
+
+.default-dropdown-item-active {
+  background-color: var(--default-bg-accent);
+  color: var(--default-primary);
+}
+
+/* Dialog styles */
+.default-dialog {
+  background-color: white;
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.default-dialog-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Quest Card styles */
+.default-quest-card {
+  border-left: 4px solid var(--default-primary);
+}
+
+.default-progress-container {
+  background-color: #E5E7EB;
+}
+
+.default-progress-bar {
+  background-color: var(--default-primary);
+}
+
+.default-progress-bar-active {
+  background-color: var(--default-primary);
+}
+
+.default-progress-bar-completed {
+  background-color: #10B981;
+}
+
+.default-progress-bar-failed {
+  background-color: #EF4444;
+}
+
+.default-objective-completed {
+  background-color: #10B981;
+  border-color: #10B981;
+}
+
+.default-objective-pending {
+  border-color: #E5E7EB;
+}
+
+/* NPC Card styles */
+.default-npc-card {
+  border-left: 4px solid var(--default-primary);
+}
+
+.default-npc-status-alive {
+  color: #10B981;
+}
+
+.default-npc-status-deceased {
+  color: #EF4444;
+}
+
+.default-npc-status-missing {
+  color: #F59E0B;
+}
+
+.default-npc-status-unknown {
+  color: #6B7280;
+}
+
+.default-npc-relationship-friendly {
+  color: #10B981;
+}
+
+.default-npc-relationship-hostile {
+  color: #EF4444;
+}
+
+.default-npc-relationship-neutral {
+  color: #6B7280;
+}
+
+.default-npc-relationship-unknown {
+  color: #6B7280;
+}
+
+.default-note {
+  background-color: #F3F4F6;
+}
+
+/* Location Card styles */
+.default-location-card {
+  border-left: 4px solid var(--default-primary);
+}
+
+.default-location-status-discovered {
+  color: #10B981;
+}
+
+.default-location-status-undiscovered {
+  color: #6B7280;
+}
+
+.default-location-status-visited {
+  color: #3B82F6;
+}
+
+.default-tag {
+  background-color: #F3F4F6;
+}
+
+/* Book Viewer styles */
+.default-book {
+  background-color: white;
+}
+
+.default-book-header {
+  background-color: #F9FAFB;
+}
+
+.default-book-nav {
+  background-color: #F9FAFB;
+}
+
+.default-book-content-area {
+  background-color: #FFF9ED;
+}
+
+.default-book-content {
+  font-family: 'Crimson Text', serif;
+}
+
+.default-book-text {
+  font-family: 'Crimson Text', serif;
+}
+
+.default-book-pagination {
+  background-color: #FFFDF8;
+  border-color: #F3F4F6;
+}
+
+.default-page-nav-button {
+  background-color: transparent;
+}
+
+.default-page-nav-button:hover {
+  background-color: #F3F4F6;
+}
+
+.default-progress-container {
+  background-color: #F3F4F6;
+}
+
+.default-progress-bar {
+  background-color: var(--default-primary);
+}
+
+.default-hint {
+  background-color: #EEF2FF;
+  color: #4F46E5;
+}
+
+/* Scrollbar styling */
+.default-theme::-webkit-scrollbar {
+  width: 10px;
+}
+
+.default-theme::-webkit-scrollbar-track {
+  background: var(--default-bg-secondary);
+}
+
+.default-theme::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 10px;
+}
+
+.default-theme::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}

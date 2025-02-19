@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { useNavigation } from '../../hooks/useNavigation';
 import Typography from '../core/Typography';
 import { Book, Scroll, Users, MapPin } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
+import { clsx } from 'clsx';
 
 interface NavItem {
   label: string;
@@ -17,6 +19,8 @@ interface NavItem {
  */
 const Navigation: React.FC = () => {
   const { shouldHighlightPath } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   const navItems: NavItem[] = [
     { 
@@ -42,7 +46,9 @@ const Navigation: React.FC = () => {
   ];
 
   return (
-    <nav className="bg-white border-b border-gray-200">
+    <nav className={clsx(
+      `${themePrefix}-navigation`
+    )}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Desktop Navigation */}
@@ -54,11 +60,12 @@ const Navigation: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
+                  className={clsx(
+                    'flex items-center space-x-2 px-3 py-2 rounded-md transition-colors',
                     isActive
-                      ? 'text-blue-600 bg-blue-50'
-                      : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
-                  }`}
+                      ? `${themePrefix}-navigation-item-active`
+                      : `${themePrefix}-navigation-item`
+                  )}
                 >
                   {item.icon}
                   <Typography
@@ -81,11 +88,12 @@ const Navigation: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex flex-col items-center justify-center flex-1 min-w-0 text-sm ${
+                  className={clsx(
+                    'flex flex-col items-center justify-center flex-1 min-w-0 text-sm',
                     isActive
-                      ? 'text-blue-600'
-                      : 'text-gray-600 hover:text-blue-600'
-                  }`}
+                      ? `${themePrefix}-navigation-item-active`
+                      : `${themePrefix}-navigation-item`
+                  )}
                 >
                   {item.icon}
                   <Typography

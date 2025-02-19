@@ -3,6 +3,8 @@ import { BookOpen, ChevronLeft, ChevronRight, ArrowLeftCircle, ArrowRightCircle 
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 interface BookViewerProps {
   content: string;
@@ -15,7 +17,7 @@ interface BookViewerProps {
   className?: string;
 }
 
-const BookViewer = ({
+const BookViewer: React.FC<BookViewerProps> = ({
   content,
   title,
   onPageChange,
@@ -24,11 +26,13 @@ const BookViewer = ({
   hasNextChapter = false,
   hasPreviousChapter = false,
   className
-}: BookViewerProps) => {
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pages, setPages] = useState<string[]>([]);
   const [showShortcutHint, setShowShortcutHint] = useState(true);
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   // Split content into pages
   useEffect(() => {
@@ -120,10 +124,13 @@ const BookViewer = ({
   }
 
   return (
-    <div className={`flex flex-col items-center ${className}`}>
+    <div className={clsx('flex flex-col items-center', className)}>
       {/* Keyboard Shortcuts Hint */}
       {showShortcutHint && (
-        <div className="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg mb-4 transition-opacity duration-500">
+        <div className={clsx(
+          "px-4 py-2 rounded-lg mb-4 transition-opacity duration-500",
+          `${themePrefix}-hint`
+        )}>
           <Typography variant="body-sm">
             Tip: Use arrow keys or spacebar to navigate pages
           </Typography>
@@ -131,16 +138,25 @@ const BookViewer = ({
       )}
 
       {/* Book Container */}
-      <div className="w-full max-w-4xl bg-white shadow-xl rounded-lg overflow-hidden">
+      <div className={clsx(
+        "w-full max-w-4xl overflow-hidden rounded-lg shadow-xl",
+        `${themePrefix}-book`
+      )}>
         {/* Book Header */}
-        <div className="bg-gray-50 border-b p-4">
+        <div className={clsx(
+          "border-b p-4",
+          `${themePrefix}-book-header`
+        )}>
           <Typography variant="h3" className="text-center">
             {title}
           </Typography>
         </div>
 
         {/* Chapter Navigation */}
-        <div className="flex justify-between px-4 py-2 bg-gray-50 border-b">
+        <div className={clsx(
+          "flex justify-between px-4 py-2 border-b", 
+          `${themePrefix}-book-nav`
+        )}>
           <Button
             variant="ghost"
             onClick={onPreviousChapter}
@@ -162,21 +178,33 @@ const BookViewer = ({
         </div>
 
         {/* Book Content Area */}
-        <div className="relative bg-amber-50">
+        <div className={clsx("relative", `${themePrefix}-book-content-area`)}>
           {/* Content Container */}
-          <div className="max-w-2xl mx-auto p-8 pb-20">
-            <Typography className="leading-relaxed font-serif whitespace-pre-wrap">
+          <div className={clsx(
+            "max-w-2xl mx-auto p-8 pb-20",
+            `${themePrefix}-book-content`
+          )}>
+            <Typography className={clsx(
+              "leading-relaxed whitespace-pre-wrap",
+              `${themePrefix}-book-text`
+            )}>
               {pages[currentPage - 1]?.replace(/\\n/g, '\n')}
             </Typography>
           </div>
 
           {/* Navigation Bar */}
-          <div className="absolute bottom-0 left-0 right-0 bg-amber-50 border-t border-amber-100">
+          <div className={clsx(
+            "absolute bottom-0 left-0 right-0 border-t",
+            `${themePrefix}-book-pagination`
+          )}>
             <div className="flex justify-center items-center gap-4 p-4">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1 && !hasPreviousChapter}
-                className="p-2 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                className={clsx(
+                  "p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed",
+                  `${themePrefix}-page-nav-button`
+                )}
                 aria-label="Previous page"
               >
                 <ChevronLeft className="w-6 h-6" />
@@ -189,7 +217,10 @@ const BookViewer = ({
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages && !hasNextChapter}
-                className="p-2 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                className={clsx(
+                  "p-2 rounded-full disabled:opacity-50 disabled:cursor-not-allowed",
+                  `${themePrefix}-page-nav-button`
+                )}
                 aria-label="Next page"
               >
                 <ChevronRight className="w-6 h-6" />
@@ -199,9 +230,9 @@ const BookViewer = ({
         </div>
 
         {/* Progress Bar */}
-        <div className="h-2 bg-gray-100">
+        <div className={clsx("h-2", `${themePrefix}-progress-container`)}>
           <div 
-            className="h-full bg-blue-600 transition-all duration-300"
+            className={clsx("h-full transition-all duration-300", `${themePrefix}-progress-bar`)}
             style={{ width: `${(currentPage / totalPages) * 100}%` }}
           />
         </div>

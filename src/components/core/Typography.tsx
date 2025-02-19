@@ -2,6 +2,7 @@
 import React from 'react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { useTheme } from '../../context/ThemeContext';
 
 /**
  * Available variant styles for the Typography component
@@ -104,6 +105,11 @@ export const Typography = <C extends React.ElementType = 'p'>({
   ...props
 }: TypographyProps<C>) => {
   const Component = as || defaultElements[variant];
+  const { theme } = useTheme();
+  const themePrefix = theme.name; // 'default' or 'dnd'
+
+  // Is this variant a heading?
+  const isHeading = variant === 'h1' || variant === 'h2' || variant === 'h3' || variant === 'h4';
 
   // Combine all styles using clsx and tailwind-merge
   const styles = twMerge(
@@ -114,12 +120,17 @@ export const Typography = <C extends React.ElementType = 'p'>({
       // Variant styles
       variantStyles[variant],
       
-      // Color styles
+      // Default color styles (as fallback)
       colorStyles[color],
       
       // Optional styles
       centered && 'text-center',
       truncate && 'truncate',
+      
+      // Theme-specific classes
+      `${themePrefix}-typography`,
+      isHeading && `${themePrefix}-heading`,
+      color === 'secondary' && `${themePrefix}-typography-secondary`,
       
       // Custom classes
       className

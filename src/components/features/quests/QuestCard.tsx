@@ -7,6 +7,8 @@ import Card from '../../core/Card';
 import Button from '../../core/Button';
 import { useLocations } from '../../../context/LocationContext';
 import { useNavigation } from '../../../context/NavigationContext';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -14,7 +16,8 @@ import {
   Users,
   Calendar,
   Target,
-  Edit
+  Edit,
+  Scroll
 } from 'lucide-react';
 
 interface QuestCardProps {
@@ -27,6 +30,8 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   const { locations } = useLocations();
   const { user } = useFirebase();
   const { navigateToPage, createPath } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   // Calculate completion percentage
   const completedObjectives = quest.objectives.filter(obj => obj.completed).length;
@@ -42,7 +47,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   };
 
   return (
-    <Card>
+    <Card className={clsx(`${themePrefix}-quest-card`)}>
       <Card.Content className="space-y-4">
         {/* Quest Header */}
         <div className="flex items-start justify-between">
@@ -61,11 +66,11 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                   Edit
                 </Button>
               )}
-              <span className={`px-2 py-1 rounded-full text-sm ${
-                quest.status === 'completed' ? 'bg-green-100 text-green-800' :
-                quest.status === 'failed' ? 'bg-red-100 text-red-800' :
-                'bg-blue-100 text-blue-800'
-              }`}>
+              <span className={clsx(
+                'px-2 py-1 rounded-full text-sm',
+                `${themePrefix}-status`,
+                `${themePrefix}-status-${quest.status}`
+              )}>
                 {quest.status.charAt(0).toUpperCase() + quest.status.slice(1)}
               </span>
             </div>
@@ -85,7 +90,6 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                   variant="ghost"
                   size="sm"
                   onClick={() => {
-                    // Type guard to ensure location is defined
                     if (quest.location) {
                       navigateToPage(createPath('/locations', {}, { highlight: quest.location }));
                     }
@@ -118,9 +122,12 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
         </div>
 
         {/* Progress Bar */}
-        <div className="w-full bg-gray-200 rounded-full h-2">
+        <div className={clsx("w-full bg-gray-200 rounded-full h-2", `${themePrefix}-progress-container`)}>
           <div 
-            className="bg-blue-500 rounded-full h-2 transition-all duration-300"
+            className={clsx(
+              "rounded-full h-2 transition-all duration-300",
+              `${themePrefix}-progress-bar-${quest.status}`
+            )}
             style={{ width: `${completionPercentage}%` }}
           />
         </div>
@@ -151,9 +158,12 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                     key={objective.id}
                     className="flex items-center gap-2"
                   >
-                    <div className={`w-4 h-4 rounded border ${
-                      objective.completed ? 'bg-green-500 border-green-500' : 'border-gray-300'
-                    }`} />
+                    <div className={clsx(
+                      `w-4 h-4 rounded border`,
+                      objective.completed 
+                        ? `${themePrefix}-objective-completed` 
+                        : `${themePrefix}-objective-pending`
+                    )} />
                     <Typography
                       color={objective.completed ? 'secondary' : 'default'}
                       className={objective.completed ? 'line-through' : ''}
@@ -292,12 +302,10 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                           <div className="flex items-start gap-2 text-left">
                             <Users 
                               size={16} 
-                              className={`mt-1 ${
-                                npc.relationship === 'friendly' ? 'text-green-500' :
-                                npc.relationship === 'hostile' ? 'text-red-500' :
-                                npc.relationship === 'neutral' ? 'text-gray-400' :
-                                'text-blue-500'
-                              }`}
+                              className={clsx(
+                                "mt-1",
+                                `${themePrefix}-npc-relationship-${npc.relationship}`
+                              )}
                             />
                             <div className="flex-1">
                               <Typography variant="body-sm" className="font-medium">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Location, LocationNote, LocationType } from '../../../types/location';
 import { useNPCs } from '../../../context/NPCContext';
 import { useQuests } from '../../../hooks/useQuests';
@@ -9,6 +9,8 @@ import Card from '../../core/Card';
 import Button from '../../core/Button';
 import Input from '../../core/Input';
 import { useNavigation } from '../../../context/NavigationContext';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 import { 
   MapPin, 
   ChevronDown, 
@@ -68,6 +70,8 @@ const LocationCard: React.FC<LocationCardProps> = ({
   const [noteInput, setNoteInput] = useState('');
   const [location, setLocation] = useState(initialLocation);
   const { navigateToPage, createPath } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   // Use Firebase hook to get real-time data
   const { data: locations, updateData } = useFirebaseData<Location>({
@@ -79,8 +83,8 @@ const LocationCard: React.FC<LocationCardProps> = ({
     navigateToPage(`/locations/edit/${location.id}`);
   };
 
-   // Handle quick note adding
-   const handleAddNote = async () => {
+  // Handle quick note adding
+  const handleAddNote = async () => {
     if (!noteInput.trim()) return;
 
     const newNote: LocationNote = {
@@ -115,7 +119,6 @@ const LocationCard: React.FC<LocationCardProps> = ({
       return null;
     }
 
-
     return (
       <div>
         <Typography variant="h4" className="mb-2">
@@ -125,7 +128,10 @@ const LocationCard: React.FC<LocationCardProps> = ({
           {location.notes.map((note, index) => (
             <div
               key={`${note.date}-${index}`}
-              className="p-3 bg-gray-50 rounded-lg space-y-1"
+              className={clsx(
+                "p-3 rounded-lg space-y-1",
+                `${themePrefix}-note`
+              )}
             >
               <div className="flex items-center gap-2">
                 <Calendar size={14} className="text-gray-400" />
@@ -204,11 +210,11 @@ const LocationCard: React.FC<LocationCardProps> = ({
   const getStatusIcon = () => {
     switch (location.status) {
       case 'discovered':
-        return <Eye className="text-green-500" />;
+        return <Eye className={clsx(`${themePrefix}-location-status-discovered`)} />;
       case 'undiscovered':
-        return <EyeOff className="text-gray-400" />;
+        return <EyeOff className={clsx(`${themePrefix}-location-status-undiscovered`)} />;
       case 'visited':
-        return <MapPin className="text-blue-500" />;
+        return <MapPin className={clsx(`${themePrefix}-location-status-visited`)} />;
       default:
         return <MapPinOff className="text-gray-400" />;
     }
@@ -219,7 +225,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
     navigateToPage(createPath('/npcs', {}, { highlight: npcId }));
   };
 
-  // Inside the LocationCard component, add:
+  // Handle Quest click
   const handleQuestClick = (questId: string) => {
     navigateToPage(createPath('/quests', {}, { highlight: questId }));
   };
@@ -233,7 +239,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
   }, [locations, initialLocation.id]);
 
   return (
-    <Card>
+    <Card className={clsx(`${themePrefix}-location-card`)}>
       <Card.Content className="space-y-4">
         {/* Location Header */}
         <div className="flex items-start gap-3">
@@ -303,7 +309,6 @@ const LocationCard: React.FC<LocationCardProps> = ({
           )}
         </div>
 
-
         {/* Expanded Content */}
         {isContentExpanded && (
           <div className="pt-4 space-y-4 border-t border-gray-100">
@@ -347,11 +352,10 @@ const LocationCard: React.FC<LocationCardProps> = ({
                         <div className="flex items-start gap-2 text-left">
                           <Scroll 
                             size={16} 
-                            className={`mt-1 ${
-                              quest.status === 'completed' ? 'text-green-500' :
-                              quest.status === 'failed' ? 'text-red-500' :
-                              'text-blue-500'
-                            }`}
+                            className={clsx(
+                              "mt-1",
+                              `${themePrefix}-quest-status-${quest.status}`
+                            )}
                           />
                           <div className="flex-1">
                             <Typography variant="body-sm" className="font-medium">
@@ -388,12 +392,10 @@ const LocationCard: React.FC<LocationCardProps> = ({
                       <div className="flex items-start gap-2 text-left">
                         <Users 
                           size={16} 
-                          className={`mt-1 ${
-                            npc.relationship === 'friendly' ? 'text-green-500' :
-                            npc.relationship === 'hostile' ? 'text-red-500' :
-                            npc.relationship === 'neutral' ? 'text-gray-400' :
-                            'text-blue-500'
-                          }`}
+                          className={clsx(
+                            "mt-1",
+                            `${themePrefix}-npc-relationship-${npc.relationship}`
+                          )}
                         />
                         <div className="flex-1">
                           <Typography variant="body-sm" className="font-medium">
@@ -427,7 +429,10 @@ const LocationCard: React.FC<LocationCardProps> = ({
                   {location.tags.map((tag, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full"
+                      className={clsx(
+                        "flex items-center gap-1 px-2 py-1 rounded-full",
+                        `${themePrefix}-tag`
+                      )}
                     >
                       <Tag size={12} className="text-gray-400" />
                       <Typography variant="body-sm" color="secondary">

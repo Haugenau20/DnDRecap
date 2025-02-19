@@ -1,6 +1,8 @@
+// components/core/Input.tsx
 import React from 'react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { useTheme } from '../../context/ThemeContext';
 
 /**
  * Base props shared between input and textarea
@@ -78,6 +80,9 @@ export const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, In
     },
     ref
   ) => {
+    const { theme } = useTheme();
+    const themePrefix = theme.name; // 'default' or 'dnd'
+
     const inputStyles = twMerge(
       clsx(
         'w-full rounded-lg border bg-white transition-colors duration-200',
@@ -87,18 +92,14 @@ export const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, In
         isTextArea && 'p-3',
         startIcon && 'pl-10',
         endIcon && 'pr-10',
-        error && [
-          'border-red-500',
-          'focus:border-red-500 focus:ring-red-500'
-        ],
-        successMessage && [
-          'border-green-500',
-          'focus:border-green-500 focus:ring-green-500'
-        ],
-        !error && !successMessage && [
-          'border-gray-300',
-          'focus:border-blue-500 focus:ring-blue-500'
-        ],
+        
+        // Theme-specific class
+        `${themePrefix}-input`,
+        
+        // Standard error/success states
+        error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
+        successMessage && 'border-green-500 focus:border-green-500 focus:ring-green-500',
+        !error && !successMessage && 'border-gray-300 focus:border-blue-500 focus:ring-blue-500',
         className
       )
     );
@@ -114,7 +115,10 @@ export const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, In
     return (
       <div className={containerStyles}>
         {label && (
-          <label className="mb-1.5 text-sm font-medium">
+          <label className={clsx(
+            'mb-1.5 text-sm font-medium',
+            `${themePrefix}-typography-label`
+          )}>
             {label}
           </label>
         )}
@@ -149,7 +153,7 @@ export const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, In
             'mt-1.5 text-sm',
             error && 'text-red-500',
             successMessage && 'text-green-500',
-            !error && !successMessage && 'text-gray-500'
+            !error && !successMessage && `${themePrefix}-typography-secondary`
           )}>
             {error || successMessage || helperText}
           </p>

@@ -25,7 +25,8 @@ $excludePatterns = @(
     "^.*.png",
     "^.*\\recaps.txt",
     "^.*\\*Template.txt",
-    "^.*\\saga.txt"
+    "^.*\\saga.txt",
+    "^.*\\*.svg"
 )
 
 # Get all files recursively, excluding specified patterns

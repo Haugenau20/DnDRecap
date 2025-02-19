@@ -154,30 +154,27 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     },
     ref
   ) => {
+    const { theme } = useTheme();
+    const themePrefix = theme.name; // 'default' or 'dnd'
+
     const styles = twMerge(
       clsx(
         'rounded-lg shadow-sm overflow-hidden',
-        'border border-gray-200',
-        variant === 'default' ? 'bg-white' : 'bg-gray-50',
+        'border',
         hoverable && [
           'transition-shadow duration-200',
           'hover:shadow-md',
           onClick && 'cursor-pointer'
         ],
+        `${themePrefix}-card`, // Theme-specific class
         className
       )
     );
-    const { theme } = useTheme();
 
     return (
       <div
-        className={clsx(
-          'card',
-          theme.name === 'dnd' && 'dnd-card',
-          className
-        )}
+        className={styles}
         ref={ref}
-        // className={styles}
         onClick={onClick}
         role={onClick ? 'button' : undefined}
         tabIndex={onClick ? 0 : undefined}
