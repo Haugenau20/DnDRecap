@@ -159,7 +159,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Søren Haug**
 - GitHub: [@haugenau20](https://github.com/haugenau20)
-- LinkedIn: [John Haugen](https://www.linkedin.com/in/s%C3%B8ren-kj%C3%A6degaard-haug-0723855a/)
+- LinkedIn: [Søren Haug](https://www.linkedin.com/in/s%C3%B8ren-kj%C3%A6degaard-haug-0723855a/)
 
 ## 🙏 Acknowledgements
 
