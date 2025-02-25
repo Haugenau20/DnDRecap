@@ -13,9 +13,13 @@ DnDRecap
 │   │   │   ├── quest.ts
 │   │   │   ├── npc.ts
 │   │   │   └── location.ts
+│   │   ├── test-utils
+│   │   │   └── test-utils.tsx
 │   │   ├── styles
-│   │   │   ├── globals.css
-│   │   │   └── dnd-theme.css
+│   │   │   ├── themes
+│   │   │   │   ├── dnd-theme.css
+│   │   │   │   └── default-theme.css
+│   │   │   └── globals.css
 │   │   ├── services
 │   │   │   ├── search
 │   │   │   │   └── SearchService.ts
@@ -111,6 +115,10 @@ DnDRecap
 │   │   │       ├── Dialog.tsx
 │   │   │       ├── Card.tsx
 │   │   │       └── Button.tsx
+│   │   ├── __mocks__
+│   │   │   ├── mockData.ts
+│   │   │   └── fileMock.ts
+│   │   ├── setupTests.ts
 │   │   ├── index.tsx
 │   │   └── App.tsx
 │   ├── public
@@ -130,6 +138,7 @@ DnDRecap
 │   ├── saga.txt
 │   ├── requirements.md
 │   ├── recaps.txt
+│   ├── README.md
 │   ├── questsTemplate.txt
 │   ├── projectStructure.txt
 │   ├── postcss.config.js
@@ -138,6 +147,8 @@ DnDRecap
 │   ├── package.json
 │   ├── npcTemplate.txt
 │   ├── locationsTemplate.txt
+│   ├── LICENSE
+│   ├── jest.config.ts
 │   ├── highLevelDesign.md
 │   ├── dirTree.ps1
 │   ├── copyfiles.ps1
