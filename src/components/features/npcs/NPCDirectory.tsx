@@ -14,10 +14,12 @@ interface NPCDirectoryProps {
 }
 
 const NPCDirectory: React.FC<NPCDirectoryProps> = ({ 
-  npcs,
+  npcs: initialNpcs,
   isLoading = false,
   onNPCUpdate
 }) => {
+  // Track npcs locally
+  const [npcs, setNpcs] = useState<NPC[]>(initialNpcs);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [relationshipFilter, setRelationshipFilter] = useState<string>('all');
@@ -27,6 +29,24 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
   // Get URL search params for highlighted NPC
   const { getCurrentQueryParams } = useNavigation();
   const { highlight: highlightId } = getCurrentQueryParams();
+
+  // Update when props change
+  useEffect(() => {
+    setNpcs(initialNpcs);
+  }, [initialNpcs]);
+
+  // Handle NPC updates from child components
+  const handleNPCUpdate = (updatedNPC: NPC) => {
+    // Update local state
+    setNpcs(prev => 
+      prev.map(npc => npc.id === updatedNPC.id ? updatedNPC : npc)
+    );
+    
+    // Call the parent handler if provided
+    if (onNPCUpdate) {
+      onNPCUpdate(updatedNPC);
+    }
+  };
 
   // Handle highlighted NPC from URL
   useEffect(() => {
@@ -186,7 +206,9 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
                   highlightedNpcId === npc.id ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg' : ''
                 }`}
               >
-                <NPCCard npc={npc} />
+                <NPCCard 
+                  npc={npc} 
+                  onEdit={handleNPCUpdate} />
               </div>
             ))}
           </div>

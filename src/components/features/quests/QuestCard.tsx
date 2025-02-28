@@ -16,8 +16,7 @@ import {
   Users,
   Calendar,
   Target,
-  Edit,
-  Scroll
+  Edit
 } from 'lucide-react';
 
 interface QuestCardProps {

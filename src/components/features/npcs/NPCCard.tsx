@@ -29,9 +29,10 @@ interface NPCCardProps {
 }
 
 const NPCCard: React.FC<NPCCardProps> = ({ 
-  npc,
+  npc: initialNpc,
   onEdit 
 }) => {
+  const [npc, setNpc] = useState<NPC>(initialNpc);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isAddingNote, setIsAddingNote] = useState(false);
   const [noteInput, setNoteInput] = useState('');
@@ -51,21 +52,31 @@ const NPCCard: React.FC<NPCCardProps> = ({
       text: noteInput.trim()
     };
 
+    // Create updated NPC with new note (optimistic update)
     const updatedNPC = {
       ...npc,
       notes: [...npc.notes, newNote]
     };
 
+    // Update local state immediately
+    setNpc(updatedNPC);
+    
+    // Reset form
+    setNoteInput('');
+    setIsAddingNote(false);
+
     try {
+      // Update Firebase in the background
       await updateData(npc.id, updatedNPC);
-      setNoteInput('');
-      setIsAddingNote(false);
-      // If onEdit is provided, call it with the updated NPC
+      
+      // Notify parent component if needed
       if (onEdit) {
         onEdit(updatedNPC);
       }
     } catch (error) {
       console.error('Failed to add note:', error);
+      // Revert the optimistic update in case of error
+      setNpc(initialNpc);
     }
   };
 
