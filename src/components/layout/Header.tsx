@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { SearchBar } from '../shared/SearchBar';
 import ThemeSelector from '../shared/ThemeSelector';
+import UserProfileButton from '../features/auth/UserProfileButton';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useTheme } from '../../context/ThemeContext';
 import { clsx } from 'clsx';
@@ -18,7 +19,7 @@ const Header: React.FC = () => {
       `${themePrefix}-header`
     )}>
       <div className="container justify-center mx-auto flex items-center gap-4">
-        <Link 
+      <Link 
           to="/" 
           onClick={(e) => {
             e.preventDefault();
@@ -32,11 +33,14 @@ const Header: React.FC = () => {
           D&D Campaign Companion
         </Link>
         
-        <div className="flex-1 max-w-3xl mx-4">
+        <div className="flex-1 max-w-2xl mx-4 hidden md:block">
           <SearchBar />
         </div>
         
-        <ThemeSelector />
+        <div className="flex items-center gap-3">
+          <ThemeSelector />
+          <UserProfileButton />
+        </div>
       </div>
     </header>
   );

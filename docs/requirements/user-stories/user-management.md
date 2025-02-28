@@ -70,9 +70,6 @@ The User Management system enables users to create and manage personalized accou
    - Last login date
 
 2. **Optional User Data**
-   - Display name (separate from username)
-   - Profile image/avatar
-   - Character name(s)
    - Theme preferences
 
 3. **Security Requirements**
