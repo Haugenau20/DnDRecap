@@ -134,7 +134,7 @@ const HomePage: React.FC = () => {
             <Card>
               <Card.Content className="text-center py-8">
                 <Typography color="error" className="mb-2">
-                  {error}
+                  {"Error Loading Recent Activity. Sign in to view content."}
                 </Typography>
               </Card.Content>
             </Card>

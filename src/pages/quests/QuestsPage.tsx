@@ -96,7 +96,7 @@ const QuestsPage: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8">
           <Typography color="error">
-            Error loading quests. Please try again later.
+            Error Loading Quests. Sign in to view content.
           </Typography>
         </Card>
       </div>

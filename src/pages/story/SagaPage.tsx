@@ -33,7 +33,7 @@ const SagaPage: React.FC = () => {
         }
       } catch (err) {
         console.error('Error loading saga:', err);
-        setError('Failed to load saga content');
+        setError('Error Loading Saga. Sign in to view content.');
       } finally {
         setLoading(false);
       }

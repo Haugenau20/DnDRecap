@@ -1,5 +1,1 @@
 add a "rumor" section to the quest page.
-
-NPC 
-- When creating new or editing existing entry, show it immediately without having to reload page. (Applicable for all pages)
-- When adding quick note it should be shown without having to reload page. (also applicable for NPCCard)

@@ -45,7 +45,7 @@ const NPCsPage: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8">
           <Typography color="error">
-            Error loading NPCs. Please try again later.
+            Error Loading NPCs. Sign in to view content.
           </Typography>
         </Card>
       </div>

@@ -47,13 +47,11 @@ const LocationsPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <Card>
-          <Card.Content>
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="p-8">
             <Typography color="error">
-              Error loading locations: {error}
+              Error Loading Locations. Sign in to view content.
             </Typography>
-          </Card.Content>
         </Card>
       </div>
     );
