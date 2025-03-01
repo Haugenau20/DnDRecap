@@ -9,7 +9,7 @@ interface FirebaseContextType {
   userProfile: PlayerProfile | null;
   loading: boolean;
   error: string | null;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<User>;
   signUp: (email: string, password: string, username: string) => Promise<void>;
   signOut: () => Promise<void>;
   validateUsername: (username: string) => Promise<UsernameValidationResult>;
@@ -20,6 +20,7 @@ interface FirebaseContextType {
   addAllowedUser: (email: string, notes?: string) => Promise<void>;
   removeAllowedUser: (email: string) => Promise<void>;
   getAllowedUsers: () => Promise<AllowedUser[]>;
+  removeUserCompletely: (email: string) => Promise<void>;
 }
 
 const FirebaseContext = createContext<FirebaseContextType | undefined>(undefined);
@@ -79,9 +80,18 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const signIn = async (email: string, password: string) => {
     try {
       setError(null);
+      // Get user from Firebase auth
       const user = await firebaseService.signIn(email, password);
+      // Update application state
       setUser(user);
-      await fetchUserProfile(user);
+      // Try to fetch profile, but don't let it affect sign-in success
+      try {
+        await fetchUserProfile(user);
+      } catch (profileErr) {
+        console.error("Error fetching profile, but user is authenticated:", profileErr);
+        // Don't throw here - user is still authenticated
+      }
+      return user;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during sign in');
       throw err;
@@ -115,6 +125,23 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setIsAdmin(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during sign out');
+      throw err;
+    }
+  };
+
+  // Add the implementation in the FirebaseProvider component
+  const removeUserCompletely = async (email: string) => {
+    try {
+      setError(null);
+      
+      // Check if current user is admin
+      if (!isAdmin) {
+        throw new Error('Only admins can remove users completely');
+      }
+      
+      await firebaseService.removeUserCompletely(email);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred removing user');
       throw err;
     }
   };
@@ -247,7 +274,8 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     isUserAdmin,
     addAllowedUser,
     removeAllowedUser,
-    getAllowedUsers
+    getAllowedUsers,
+    removeUserCompletely
   };
 
   return (

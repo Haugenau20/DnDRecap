@@ -48,7 +48,7 @@ function Get-DirectoryTree {
     
     # Get all items in directory, excluding node_modules and build
     $items = Get-ChildItem -Path $Path | Where-Object { 
-        $_.Name -notin @("node_modules", "build")
+        $_.Name -notin @("node_modules", "build", "coverage")
     }
     
     # Sort items (directories first, then files)

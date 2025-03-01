@@ -13,10 +13,7 @@ This folder contains all documentation for the D&D Campaign Companion applicatio
 ```
 /docs
 ├── README.md                       # Documentation overview & navigation
-├── /requirements/                  # What the system should do
-│   ├── /user-stories/             # Features from user perspective
-│   ├── /functional/               # Technical specifications
-│   └── /non-functional/           # System qualities
+├── /requirements/                  # What the system should do (user stories, functional and non-functional req.)
 ├── /design/                        # How the system should be built
 │   ├── /architecture/             # System structure
 │   ├── /ui/                       # User interface design

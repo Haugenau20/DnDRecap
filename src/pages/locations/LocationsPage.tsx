@@ -3,18 +3,16 @@ import React, { useState, useMemo } from 'react';
 import Typography from '../../components/core/Typography';
 import Card from '../../components/core/Card';
 import LocationDirectory from '../../components/features/locations/LocationDirectory';
-import SignInForm from '../../components/features/auth/SignInForm';
 import { useFirebase } from '../../context/FirebaseContext';
 import { useFirebaseData } from '../../hooks/useFirebaseData';
-import { Location } from '../../types/location';  // Make sure this import is present
+import { Location } from '../../types/location'; 
 import { Map, MapPin, Eye, EyeOff, LogIn, LogOut, Plus } from 'lucide-react';
 import Button from '../../components/core/Button';
 import { useNavigation } from '../../context/NavigationContext';
 
 const LocationsPage: React.FC = () => {
   // Auth state
-  const [showSignIn, setShowSignIn] = useState(false);
-  const { user, signOut } = useFirebase();
+  const { user } = useFirebase();
   const { data: locations, loading, error } = useFirebaseData<Location>({
     collection: 'locations'
   });
@@ -28,11 +26,6 @@ const LocationsPage: React.FC = () => {
     discovered: locations.filter(loc => loc.status === 'discovered').length,
     undiscovered: locations.filter(loc => loc.status === 'undiscovered').length
   }), [locations]);
-
-  // Handle sign in success
-  const handleSignInSuccess = () => {
-    setShowSignIn(false);
-  };
 
   // Handle create new location
   const handleCreateLocation = () => {
@@ -89,31 +82,8 @@ const LocationsPage: React.FC = () => {
               Add Location
             </Button>
           )}
-          {user ? (
-            <Button
-              variant="ghost"
-              onClick={() => signOut()}
-              startIcon={<LogOut className="w-5 h-5" />}
-            >
-              Sign Out
-            </Button>
-          ) : (
-            <Button
-              onClick={() => setShowSignIn(true)}
-              startIcon={<LogIn className="w-5 h-5" />}
-            >
-              Sign In
-            </Button>
-          )}
         </div>
       </div>
-
-      {/* Show Sign In Form */}
-      {showSignIn && (
-        <div className="mb-8">
-          <SignInForm onSuccess={handleSignInSuccess} />
-        </div>
-      )}
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">

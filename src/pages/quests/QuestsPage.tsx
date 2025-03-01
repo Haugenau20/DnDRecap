@@ -6,7 +6,6 @@ import Input from '../../components/core/Input';
 import Button from '../../components/core/Button';
 import { QuestStatus } from '../../types/quest';
 import QuestCard from '../../components/features/quests/QuestCard';
-import SignInForm from '../../components/features/auth/SignInForm';
 import { useFirebase } from '../../context/FirebaseContext';
 import { useQuests } from '../../hooks/useQuests';
 import { useNavigation } from '../../hooks/useNavigation';
@@ -17,16 +16,13 @@ import {
   Filter, 
   Search, 
   MapPin, 
-  LogIn, 
-  LogOut, 
   Loader2,
   Plus 
 } from 'lucide-react';
 
 const QuestsPage: React.FC = () => {
   // Auth state
-  const [showSignIn, setShowSignIn] = useState(false);
-  const { user, signOut } = useFirebase();
+  const { user } = useFirebase();
   const { navigateToPage } = useNavigation();
   
   // Get quests data
@@ -82,11 +78,6 @@ const QuestsPage: React.FC = () => {
     });
   }, [quests, statusFilter, locationFilter, searchQuery]);
 
-  // Handle sign in success
-  const handleSignInSuccess = () => {
-    setShowSignIn(false);
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -135,31 +126,8 @@ const QuestsPage: React.FC = () => {
               Create Quest
             </Button>
           )}
-          {user ? (
-            <Button
-              variant="ghost"
-              onClick={() => signOut()}
-              startIcon={<LogOut className="w-5 h-5" />}
-            >
-              Sign Out
-            </Button>
-          ) : (
-            <Button
-              onClick={() => setShowSignIn(true)}
-              startIcon={<LogIn className="w-5 h-5" />}
-            >
-              Sign In
-            </Button>
-          )}
         </div>
       </div>
-
-      {/* Show Sign In Form */}
-      {showSignIn && (
-        <div className="mb-8">
-          <SignInForm onSuccess={handleSignInSuccess} />
-        </div>
-      )}
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">

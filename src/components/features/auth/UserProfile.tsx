@@ -13,7 +13,6 @@ interface UserProfileProps {
 
 const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
   const { user, userProfile, changeUsername, validateUsername } = useFirebase();
-  const [displayName, setDisplayName] = useState('');
   const [newUsername, setNewUsername] = useState('');
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
@@ -26,7 +25,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
   // Initialize form with user data
   useEffect(() => {
     if (userProfile) {
-      setDisplayName(userProfile.displayName || '');
       setNewUsername(userProfile.username || '');
     }
   }, [userProfile]);
@@ -52,7 +50,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
       try {
         const result = await validateUsername(newUsername);
         setUsernameValid(result.isValid);
-        setUsernameAvailable(result.isAvailable);
+        setUsernameAvailable(result.isAvailable ?? null);
         setUsernameError(result.error || null);
       } catch (err) {
         setUsernameError('Error checking username');
@@ -174,13 +172,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
               <Typography>{userProfile.username}</Typography>
             )}
           </div>
-
-          <Input
-            label="Display Name (optional)"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-            disabled={saveLoading}
-          />
 
           {error && (
             <div className="flex items-center gap-2 text-red-600">

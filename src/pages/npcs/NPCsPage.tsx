@@ -4,19 +4,15 @@ import Typography from '../../components/core/Typography';
 import Button from '../../components/core/Button';
 import Card from '../../components/core/Card';
 import NPCDirectory from '../../components/features/npcs/NPCDirectory';
-import SignInForm from '../../components/features/auth/SignInForm';
 import { useFirebase } from '../../context/FirebaseContext';
 import { useNPCData } from '../../hooks/useNPCData';
 import { NPC } from '../../types/npc';
 import { useNavigation } from '../../context/NavigationContext';
-import { Plus, Users, Loader2, LogOut, LogIn } from 'lucide-react';
+import { Plus, Users, Loader2 } from 'lucide-react';
 
 const NPCsPage: React.FC = () => {
-  // State
-  const [showSignIn, setShowSignIn] = useState(false);
-
   // Hooks
-  const { user, signOut } = useFirebase();
+  const { user } = useFirebase();
   const { npcs, loading, error, refreshNPCs } = useNPCData();
   const { navigateToPage } = useNavigation();
   
@@ -28,11 +24,6 @@ const NPCsPage: React.FC = () => {
     deceased: npcs.filter(npc => npc.status === 'deceased').length,
     missing: npcs.filter(npc => npc.status === 'missing').length
   }), [npcs]);
-
-  // Handle sign in success
-  const handleSignInSuccess = () => {
-    setShowSignIn(false);
-  };
 
   // Show loading state
   if (loading) {
@@ -75,7 +66,7 @@ const NPCsPage: React.FC = () => {
         </div>
 
         {/* Auth actions */}
-        {user ? (
+        {user && (
           <div className="flex gap-2">
             <Button
               onClick={() => navigateToPage('/npcs/create')}
@@ -83,30 +74,9 @@ const NPCsPage: React.FC = () => {
             >
               Add NPC
             </Button>
-            <Button
-              variant="ghost"
-              onClick={() => signOut()}
-              startIcon={<LogOut className="w-5 h-5" />}
-            >
-              Sign Out
-            </Button>
           </div>
-        ) : (
-          <Button
-            onClick={() => setShowSignIn(true)}
-            startIcon={<LogIn className="w-5 h-5" />}
-          >
-            Sign In
-          </Button>
         )}
       </div>
-
-      {/* Show Sign In Form */}
-      {showSignIn && (
-        <div className="mb-8">
-          <SignInForm onSuccess={handleSignInSuccess} />
-        </div>
-      )}
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">

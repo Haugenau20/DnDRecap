@@ -25,11 +25,14 @@ const SignInForm: React.FC<SignInFormProps> = ({ onSuccess }) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
-
+  
     try {
+      // Wait for sign in to complete
       await signIn(email, password);
+      // If we get here, sign in was successful
       onSuccess?.();
     } catch (err) {
+      // Only set error if authentication actually failed
       setError('Invalid email or password');
     } finally {
       setLoading(false);

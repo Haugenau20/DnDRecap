@@ -73,7 +73,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       try {
         const result = await validateUsername(username);
         setUsernameValid(result.isValid);
-        setUsernameAvailable(result.isAvailable);
+        setUsernameAvailable(result.isAvailable ?? null);
         setUsernameError(result.error || null);
       } catch (err) {
         setUsernameError('Error checking username');

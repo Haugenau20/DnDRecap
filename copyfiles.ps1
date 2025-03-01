@@ -27,7 +27,9 @@ $excludePatterns = @(
     "^.*\\*Template.txt",
     "^.*\\saga.txt",
     "^.*\\*.svg",
-    "^.*\\migrateToFirebase.ts"
+    "^.*\\migrateToFirebase.ts",
+    "^.*\\coverage*",
+    "^.*\\futureThougths*"
 )
 
 # Get all files recursively, excluding specified patterns

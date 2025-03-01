@@ -17,7 +17,8 @@ import {
   WithFieldValue,
   DocumentReference,
   runTransaction,
-  serverTimestamp
+  serverTimestamp, 
+  writeBatch
 } from 'firebase/firestore';
 import {
   getAuth,
@@ -101,15 +102,21 @@ class FirebaseService {
    * Sign in with email and password
    */
   public async signIn(email: string, password: string): Promise<User> {
-    const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
-    
-    // Update last login date
-    const userDoc = doc(this.db, 'users', userCredential.user.uid);
-    await updateDoc(userDoc, {
-      lastLogin: new Date()
-    });
-    
-    return userCredential.user;
+    try {
+      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      
+      // Update last login date
+      const userDoc = doc(this.db, 'users', userCredential.user.uid);
+      await updateDoc(userDoc, {
+        lastLogin: new Date()
+      });
+      
+      return userCredential.user;
+    } catch (error) {
+      // Make sure this only catches actual authentication errors
+      console.error("Sign in error:", error);
+      throw error;
+    }
   }
 
   /**
@@ -148,6 +155,59 @@ class FirebaseService {
       throw error;
     }
   }
+
+  /**
+ * Completely removes a user from the system including:
+ * - Removing from allowed users list
+ * - Removing user data from 'users' collection
+ * - Removing username reservation from 'usernames' collection
+ * 
+ * @param email Email of the user to remove
+ */
+public async removeUserCompletely(email: string): Promise<void> {
+  const lowercaseEmail = email.toLowerCase();
+  
+  try {
+    // Get the user document by querying for this email
+    const usersQuery = query(
+      collection(this.db, 'users'), 
+      where('email', '==', lowercaseEmail)
+    );
+    
+    const userSnapshots = await getDocs(usersQuery);
+    
+    if (!userSnapshots.empty) {
+      // If we found a user, get their data and start batch delete operation
+      const userDoc = userSnapshots.docs[0];
+      const userData = userDoc.data() as PlayerProfile;
+      const uid = userDoc.id;
+      
+      // Start a batch for atomic operations
+      const batch = writeBatch(this.db);
+      
+      // Delete username reservation
+      if (userData.username) {
+        const usernameDoc = doc(this.db, 'usernames', userData.username.toLowerCase());
+        batch.delete(usernameDoc);
+      }
+      
+      // Delete user profile
+      batch.delete(doc(this.db, 'users', uid));
+      
+      // Delete from allowed users
+      batch.delete(doc(this.db, 'allowedUsers', lowercaseEmail));
+      
+      // Commit all the deletions
+      await batch.commit();
+    } else {
+      // If no user exists, just remove from allowed users
+      await this.removeAllowedUser(email);
+    }
+  } catch (error) {
+    console.error("Error removing user completely:", error);
+    throw error;
+  }
+}
 
   /**
    * Mark an allowed user as registered
@@ -202,7 +262,20 @@ class FirebaseService {
     const allowedUsersCollection = collection(this.db, 'allowedUsers');
     const snapshot = await getDocs(allowedUsersCollection);
     
-    return snapshot.docs.map(doc => doc.data() as AllowedUser);
+    return snapshot.docs.map(doc => {
+      const data = doc.data();
+      
+      // Convert Firestore Timestamp to JavaScript Date
+      return {
+        ...data,
+        addedAt: data.addedAt && typeof data.addedAt.toDate === 'function' 
+          ? data.addedAt.toDate() 
+          : data.addedAt,
+        registeredAt: data.registeredAt && typeof data.registeredAt.toDate === 'function' 
+          ? data.registeredAt.toDate() 
+          : data.registeredAt
+      } as AllowedUser;
+    });
   }
 
   /**
@@ -223,14 +296,14 @@ class FirebaseService {
       const now = new Date();
       
       // Create username reservation
-      transaction.set<UsernameDocument>(usernameDoc, {
+      transaction.set(usernameDoc, {
         uid: uid,
         originalUsername: username, // Preserve case for display
         createdAt: now
       });
       
       // Create player profile
-      transaction.set<PlayerProfile>(userDoc, {
+      transaction.set(userDoc, {
         email: email,
         username: username,
         dateCreated: now,
@@ -298,7 +371,7 @@ class FirebaseService {
       }
       
       // Create new username reservation
-      transaction.set<UsernameDocument>(newUsernameDoc, {
+      transaction.set(newUsernameDoc, {
         uid: uid,
         originalUsername: newUsername,
         createdAt: new Date()

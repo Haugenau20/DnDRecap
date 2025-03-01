@@ -6,6 +6,7 @@ DnDRecap
 │   │   │   ├── search.ts
 │   │   │   └── navigation.ts
 │   │   ├── types
+│   │   │   ├── user.ts
 │   │   │   ├── theme.ts
 │   │   │   ├── story.ts
 │   │   │   ├── search.ts
@@ -108,8 +109,15 @@ DnDRecap
 │   │   │   │   │   ├── LocationCombobox.tsx
 │   │   │   │   │   └── LocationCard.tsx
 │   │   │   │   └── auth
-│   │   │   │       └── SignInForm.tsx
+│   │   │   │       ├── UserProfileButton.tsx
+│   │   │   │       ├── UserProfile.tsx
+│   │   │   │       ├── SignInForm.tsx
+│   │   │   │       ├── RegistrationForm.tsx
+│   │   │   │       └── AdminPanel.tsx
 │   │   │   └── core
+│   │   │       ├── __tests__
+│   │   │       │   ├── Card.test.tsx
+│   │   │       │   └── Button.test.tsx
 │   │   │       ├── Typography.tsx
 │   │   │       ├── Input.tsx
 │   │   │       ├── Dialog.tsx
@@ -129,6 +137,159 @@ DnDRecap
 │   │   ├── manifest.json
 │   │   ├── index.html
 │   │   └── 404.html
+│   ├── docs
+│   │   ├── technical
+│   │   │   ├── implementation-guides
+│   │   │   │   └── authentication-flow.md
+│   │   │   └── api
+│   │   ├── requirements
+│   │   │   ├── user-management.md
+│   │   │   └── rumor-management.md
+│   │   ├── futureThoughts
+│   │   │   └── FirebaseAuthenticationUserDeleteOptions.md
+│   │   ├── design
+│   │   │   ├── ui
+│   │   │   │   └── page-layouts
+│   │   │   │       └── rumors.md
+│   │   │   └── architecture
+│   │   └── README.md
+│   ├── coverage
+│   │   ├── lcov-report
+│   │   │   ├── src
+│   │   │   │   ├── utils
+│   │   │   │   │   ├── theme-utils.ts.html
+│   │   │   │   │   ├── search.ts.html
+│   │   │   │   │   ├── navigation.ts.html
+│   │   │   │   │   └── index.html
+│   │   │   │   ├── test-utils
+│   │   │   │   │   ├── test-utils.tsx.html
+│   │   │   │   │   └── index.html
+│   │   │   │   ├── services
+│   │   │   │   │   ├── search
+│   │   │   │   │   │   ├── SearchService.ts.html
+│   │   │   │   │   │   └── index.html
+│   │   │   │   │   ├── firebase
+│   │   │   │   │   │   ├── index.html
+│   │   │   │   │   │   └── FirebaseService.ts.html
+│   │   │   │   │   ├── index.ts.html
+│   │   │   │   │   └── index.html
+│   │   │   │   ├── pages
+│   │   │   │   │   ├── story
+│   │   │   │   │   │   ├── StoryPage.tsx.html
+│   │   │   │   │   │   ├── SagaPage.tsx.html
+│   │   │   │   │   │   ├── index.tsx.html
+│   │   │   │   │   │   └── index.html
+│   │   │   │   │   ├── quests
+│   │   │   │   │   │   ├── QuestsPage.tsx.html
+│   │   │   │   │   │   ├── QuestEditPage.tsx.html
+│   │   │   │   │   │   ├── QuestCreatePage.tsx.html
+│   │   │   │   │   │   ├── index.ts.html
+│   │   │   │   │   │   └── index.html
+│   │   │   │   │   ├── npcs
+│   │   │   │   │   │   ├── NPCsPage.tsx.html
+│   │   │   │   │   │   ├── NPCsEditPage.tsx.html
+│   │   │   │   │   │   ├── NPCsCreatePage.tsx.html
+│   │   │   │   │   │   ├── index.ts.html
+│   │   │   │   │   │   └── index.html
+│   │   │   │   │   ├── locations
+│   │   │   │   │   │   ├── LocationsPage.tsx.html
+│   │   │   │   │   │   ├── LocationEditPage.tsx.html
+│   │   │   │   │   │   ├── LocationCreatePage.tsx.html
+│   │   │   │   │   │   ├── index.ts.html
+│   │   │   │   │   │   └── index.html
+│   │   │   │   │   ├── index.html
+│   │   │   │   │   └── HomePage.tsx.html
+│   │   │   │   ├── hooks
+│   │   │   │   │   ├── useSearch.ts.html
+│   │   │   │   │   ├── useQuests.ts.html
+│   │   │   │   │   ├── useNPCData.ts.html
+│   │   │   │   │   ├── useNavigation.ts.html
+│   │   │   │   │   ├── useLocationData.ts.html
+│   │   │   │   │   ├── useFirebaseData.ts.html
+│   │   │   │   │   ├── useChapterData.ts.html
+│   │   │   │   │   └── index.html
+│   │   │   │   ├── context
+│   │   │   │   │   ├── ThemeContext.tsx.html
+│   │   │   │   │   ├── StoryContext.tsx.html
+│   │   │   │   │   ├── SearchContext.tsx.html
+│   │   │   │   │   ├── NPCContext.tsx.html
+│   │   │   │   │   ├── NavigationContext.tsx.html
+│   │   │   │   │   ├── LocationContext.tsx.html
+│   │   │   │   │   ├── index.html
+│   │   │   │   │   └── FirebaseContext.tsx.html
+│   │   │   │   ├── config
+│   │   │   │   │   ├── themes.ts.html
+│   │   │   │   │   ├── index.html
+│   │   │   │   │   └── buildConfig.ts.html
+│   │   │   │   ├── components
+│   │   │   │   │   ├── shared
+│   │   │   │   │   │   ├── ThemeSelector.tsx.html
+│   │   │   │   │   │   ├── SearchBar.tsx.html
+│   │   │   │   │   │   ├── index.html
+│   │   │   │   │   │   └── ErrorBoundary.tsx.html
+│   │   │   │   │   ├── layout
+│   │   │   │   │   │   ├── sidebars
+│   │   │   │   │   │   │   ├── StorySidebar.tsx.html
+│   │   │   │   │   │   │   ├── QuestSidebar.tsx.html
+│   │   │   │   │   │   │   └── index.html
+│   │   │   │   │   │   ├── Sidebar.tsx.html
+│   │   │   │   │   │   ├── Navigation.tsx.html
+│   │   │   │   │   │   ├── Layout.tsx.html
+│   │   │   │   │   │   ├── index.html
+│   │   │   │   │   │   ├── Header.tsx.html
+│   │   │   │   │   │   ├── Footer.tsx.html
+│   │   │   │   │   │   └── Breadcrumb.tsx.html
+│   │   │   │   │   ├── features
+│   │   │   │   │   │   ├── story
+│   │   │   │   │   │   │   ├── SlidingChapters.tsx.html
+│   │   │   │   │   │   │   ├── LatestChapter.tsx.html
+│   │   │   │   │   │   │   ├── index.html
+│   │   │   │   │   │   │   └── BookViewer.tsx.html
+│   │   │   │   │   │   ├── quests
+│   │   │   │   │   │   │   ├── QuestTracker.tsx.html
+│   │   │   │   │   │   │   ├── QuestFormSections.tsx.html
+│   │   │   │   │   │   │   ├── QuestEditForm.tsx.html
+│   │   │   │   │   │   │   ├── QuestCreateForm.tsx.html
+│   │   │   │   │   │   │   ├── QuestCard.tsx.html
+│   │   │   │   │   │   │   └── index.html
+│   │   │   │   │   │   ├── npcs
+│   │   │   │   │   │   │   ├── NPCLegend.tsx.html
+│   │   │   │   │   │   │   ├── NPCForm.tsx.html
+│   │   │   │   │   │   │   ├── NPCEditForm.tsx.html
+│   │   │   │   │   │   │   ├── NPCDirectory.tsx.html
+│   │   │   │   │   │   │   ├── NPCCard.tsx.html
+│   │   │   │   │   │   │   └── index.html
+│   │   │   │   │   │   ├── locations
+│   │   │   │   │   │   │   ├── LocationFormSections.tsx.html
+│   │   │   │   │   │   │   ├── LocationEditForm.tsx.html
+│   │   │   │   │   │   │   ├── LocationDirectory.tsx.html
+│   │   │   │   │   │   │   ├── LocationCreateForm.tsx.html
+│   │   │   │   │   │   │   ├── LocationCombobox.tsx.html
+│   │   │   │   │   │   │   ├── LocationCard.tsx.html
+│   │   │   │   │   │   │   └── index.html
+│   │   │   │   │   │   └── auth
+│   │   │   │   │   │       ├── SignInForm.tsx.html
+│   │   │   │   │   │       └── index.html
+│   │   │   │   │   └── core
+│   │   │   │   │       ├── Typography.tsx.html
+│   │   │   │   │       ├── Input.tsx.html
+│   │   │   │   │       ├── index.html
+│   │   │   │   │       ├── Dialog.tsx.html
+│   │   │   │   │       ├── Card.tsx.html
+│   │   │   │   │       └── Button.tsx.html
+│   │   │   │   ├── index.html
+│   │   │   │   └── App.tsx.html
+│   │   │   ├── sorter.js
+│   │   │   ├── sort-arrow-sprite.png
+│   │   │   ├── prettify.js
+│   │   │   ├── prettify.css
+│   │   │   ├── index.html
+│   │   │   ├── favicon.png
+│   │   │   ├── block-navigation.js
+│   │   │   └── base.css
+│   │   ├── lcov.info
+│   │   ├── coverage-final.json
+│   │   └── clover.xml
 │   ├── .github
 │   │   └── workflows
 │   │       └── npm-publish-github-packages.yml
@@ -139,14 +300,11 @@ DnDRecap
 │   ├── requirements.md
 │   ├── recaps.txt
 │   ├── README.md
-│   ├── questsTemplate.txt
 │   ├── projectStructure.txt
 │   ├── postcss.config.js
 │   ├── placeHolder.md
 │   ├── package-lock.json
 │   ├── package.json
-│   ├── npcTemplate.txt
-│   ├── locationsTemplate.txt
 │   ├── LICENSE
 │   ├── jest.config.ts
 │   ├── highLevelDesign.md
