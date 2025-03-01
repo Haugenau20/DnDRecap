@@ -1,1 +1,17 @@
 add a "rumor" section to the quest page.
+
+On the rumor page:
+
+When Signing in and out update the page to shoe or not show content
+
+Figure out a way to show recent activity correctly in the latest chapter section and in the story view (latest chapter has \n showing.)
+
+In the user profile, add possibility to change theme preference.
+Add a Display name to the user profile. The motivation for this is so the user can e.g. type in their character name.
+
+Add so that the user is automatically logged out after inactivity time or upon closing the browser.
+
+In the admin panel, instead of showing email of users, show their username.
+- This should be done to minimise Admins exposure and access to to users email.
+- When the user has not yet registered, a placeholder should be in the place of the username.
+- This needs to be thought over.. There probably needs to be some way for the Admin to differentiate who they have added, even when the person hasnt registered yet.

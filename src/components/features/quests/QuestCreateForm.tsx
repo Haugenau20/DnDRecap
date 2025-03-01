@@ -1,5 +1,5 @@
 // src/components/features/quests/QuestCreateForm.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Quest, QuestStatus } from '../../../types/quest';
 import { useFirebaseData } from '../../../hooks/useFirebaseData';
 import Typography from '../../core/Typography';
@@ -22,6 +22,8 @@ import {
 } from 'lucide-react';
 
 interface QuestCreateFormProps {
+  /** Initial data for the form (e.g., from a converted rumor) */
+  initialData?: Partial<Quest>;
   /** Callback when creation is successful */
   onSuccess?: () => void;
   /** Callback when creation is cancelled */
@@ -29,10 +31,11 @@ interface QuestCreateFormProps {
 }
 
 const QuestCreateForm: React.FC<QuestCreateFormProps> = ({
+  initialData,
   onSuccess,
   onCancel,
 }) => {
-  // Initial empty quest state
+  // Initial quest state
   const [formData, setFormData] = useState<Partial<Quest>>({
     status: 'active',
     objectives: [],
@@ -56,6 +59,21 @@ const QuestCreateForm: React.FC<QuestCreateFormProps> = ({
   const { addData, loading, error } = useFirebaseData<Quest>({
     collection: 'quests'
   });
+
+  // Apply initial data when available
+  useEffect(() => {
+    if (initialData) {
+      setFormData(prev => ({
+        ...prev,
+        ...initialData
+      }));
+
+      // Set selected NPCs if provided
+      if (initialData.relatedNPCIds && initialData.relatedNPCIds.length > 0) {
+        setSelectedNPCs(new Set(initialData.relatedNPCIds));
+      }
+    }
+  }, [initialData]);
 
   // Handle basic input changes
   const handleInputChange = <K extends keyof Quest>(

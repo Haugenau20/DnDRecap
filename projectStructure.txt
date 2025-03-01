@@ -11,6 +11,7 @@ DnDRecap
 │   │   │   ├── story.ts
 │   │   │   ├── search.ts
 │   │   │   ├── saga.ts
+│   │   │   ├── rumor.ts
 │   │   │   ├── quest.ts
 │   │   │   ├── npc.ts
 │   │   │   └── location.ts
@@ -34,6 +35,11 @@ DnDRecap
 │   │   │   │   ├── StoryPage.tsx
 │   │   │   │   ├── SagaPage.tsx
 │   │   │   │   └── index.tsx
+│   │   │   ├── rumors
+│   │   │   │   ├── RumorsPage.tsx
+│   │   │   │   ├── RumorEditPage.tsx
+│   │   │   │   ├── RumorCreatePage.tsx
+│   │   │   │   └── index.ts
 │   │   │   ├── quests
 │   │   │   │   ├── QuestsPage.tsx
 │   │   │   │   ├── QuestEditPage.tsx
@@ -52,6 +58,7 @@ DnDRecap
 │   │   │   └── HomePage.tsx
 │   │   ├── hooks
 │   │   │   ├── useSearch.ts
+│   │   │   ├── useRumorData.ts
 │   │   │   ├── useQuests.ts
 │   │   │   ├── useNPCData.ts
 │   │   │   ├── useNavigation.ts
@@ -62,6 +69,7 @@ DnDRecap
 │   │   │   ├── ThemeContext.tsx
 │   │   │   ├── StoryContext.tsx
 │   │   │   ├── SearchContext.tsx
+│   │   │   ├── RumorContext.tsx
 │   │   │   ├── NPCContext.tsx
 │   │   │   ├── NavigationContext.tsx
 │   │   │   ├── LocationContext.tsx
@@ -89,6 +97,13 @@ DnDRecap
 │   │   │   │   │   ├── SlidingChapters.tsx
 │   │   │   │   │   ├── LatestChapter.tsx
 │   │   │   │   │   └── BookViewer.tsx
+│   │   │   │   ├── rumors
+│   │   │   │   │   ├── RumorForm.tsx
+│   │   │   │   │   ├── RumorDirectory.tsx
+│   │   │   │   │   ├── RumorCard.tsx
+│   │   │   │   │   ├── RumorBatchActions.tsx
+│   │   │   │   │   ├── ConvertToQuestDialog.tsx
+│   │   │   │   │   └── CombineRumorsDialog.tsx
 │   │   │   │   ├── quests
 │   │   │   │   │   ├── QuestTracker.tsx
 │   │   │   │   │   ├── QuestFormSections.tsx
@@ -144,7 +159,8 @@ DnDRecap
 │   │   │   └── api
 │   │   ├── requirements
 │   │   │   ├── user-management.md
-│   │   │   └── rumor-management.md
+│   │   │   ├── rumor-management.md
+│   │   │   └── public-sample-data.md
 │   │   ├── futureThoughts
 │   │   │   └── FirebaseAuthenticationUserDeleteOptions.md
 │   │   ├── design
@@ -160,7 +176,6 @@ DnDRecap
 │   ├── todo.txt
 │   ├── tailwind.config.js
 │   ├── saga.txt
-│   ├── requirements.md
 │   ├── recaps.txt
 │   ├── README.md
 │   ├── projectStructure.txt
@@ -169,7 +184,6 @@ DnDRecap
 │   ├── package.json
 │   ├── LICENSE
 │   ├── jest.config.ts
-│   ├── highLevelDesign.md
 │   ├── dirTree.ps1
 │   ├── copyfiles.ps1
 │   └── .gitignore

@@ -13,7 +13,8 @@ import {
   Book,
   Scroll,
   Users,
-  MapPin
+  MapPin,
+  MessageSquare
 } from 'lucide-react';
 
 // Map of icons for each result type
@@ -21,7 +22,8 @@ const resultTypeIcons: Record<SearchResultType, JSX.Element> = {
   story: <Book className="w-4 h-4" />,
   quest: <Scroll className="w-4 h-4" />,
   npc: <Users className="w-4 h-4" />,
-  location: <MapPin className="w-4 h-4" />
+  location: <MapPin className="w-4 h-4" />,
+  rumors: <MessageSquare className="w-4 h-4" />
 };
 
 // Labels for each result type
@@ -29,7 +31,8 @@ const resultTypeLabels: Record<SearchResultType, string> = {
   story: 'Story',
   quest: 'Quest',
   npc: 'NPC',
-  location: 'Location'
+  location: 'Location',
+  rumors: 'Rumor'
 };
 
 /**

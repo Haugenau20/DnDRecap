@@ -10,6 +10,8 @@ import { Chapter } from '../types/story';
 import { Quest } from '../types/quest';
 import { NPC } from '../types/npc';
 import { Location } from '../types/location';
+import { Rumor } from '../types/rumor';
+import { useRumorData } from '../hooks/useRumorData';
 
 interface SearchContextData {
   query: string;
@@ -84,6 +86,22 @@ const createLocationSearchDocuments = (locations: Location[]): SearchDocument[] 
 };
 
 /**
+   * Convert rumors to search documents
+   */
+const createRumorSearchDocuments = (rumors: Rumor[]): SearchDocument[] => {
+  return rumors.map(rumor => ({
+    id: rumor.id,
+    type: 'rumors' as SearchResultType,
+    content: `${rumor.title} ${rumor.content} ${rumor.sourceName} ${rumor.notes.map(n => n.content).join(' ')}`,
+    metadata: {
+      title: rumor.title,
+      status: rumor.status,
+      source: rumor.sourceName
+    }
+  }));
+};
+
+/**
  * Provider component for global search functionality
  */
 export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -96,6 +114,7 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const { npcs } = useNPCData();
   const { locations } = useLocationData();
   const { quests } = useQuests();
+  const { rumors } = useRumorData();
 
   // Initialize SearchService with options
   const searchService = useMemo(() => new SearchService({
@@ -113,7 +132,8 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           story: createChapterSearchDocuments(chapters),
           quest: createQuestSearchDocuments(quests),
           npc: createNPCSearchDocuments(npcs),
-          location: createLocationSearchDocuments(locations)
+          location: createLocationSearchDocuments(locations),
+          rumors: createRumorSearchDocuments(rumors)
         };
 
         searchService.initializeIndex(searchDocuments);
@@ -123,10 +143,10 @@ export const SearchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     };
 
     // Only initialize if we have all the data
-    if (chapters.length && quests.length && npcs.length && locations.length) {
+    if (chapters.length && quests.length && npcs.length && locations.length && rumors.length) {
       initializeSearch();
     }
-  }, [searchService, chapters, quests, npcs, locations]);
+  }, [searchService, chapters, quests, npcs, locations, rumors]);
 
   /**
    * Handle search query execution

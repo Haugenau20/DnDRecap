@@ -487,3 +487,44 @@
   color: var(--ink-color);
   border: 1px solid var(--border-color);
 }
+
+/* Rumor Card styles */
+.dnd-rumor-card {
+  border-left: 4px solid var(--primary-color);
+}
+
+.dnd-rumor-card-confirmed {
+  border-left: 4px solid #006400;
+}
+
+.dnd-rumor-card-unconfirmed {
+  border-left: 4px solid var(--accent-color);
+}
+
+.dnd-rumor-card-false {
+  border-left: 4px solid var(--primary-color);
+}
+
+.dnd-rumor-status-confirmed {
+  color: #006400;
+}
+
+.dnd-rumor-status-unconfirmed {
+  color: var(--accent-color);
+}
+
+.dnd-rumor-status-false {
+  color: var(--primary-color);
+}
+
+.dnd-rumor-status-border-confirmed {
+  border-color: #006400;
+}
+
+.dnd-rumor-status-border-unconfirmed {
+  border-color: var(--accent-color);
+}
+
+.dnd-rumor-status-border-false {
+  border-color: var(--primary-color);
+}

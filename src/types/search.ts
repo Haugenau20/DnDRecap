@@ -1,5 +1,5 @@
 // types/search.ts
-export type SearchResultType = 'story' | 'quest' | 'npc' | 'location';
+export type SearchResultType = 'story' | 'quest' | 'npc' | 'location' | 'rumors';
 
 export interface SearchResult {
   id: string;
@@ -14,6 +14,7 @@ export interface SearchIndex {
   quests: SearchDocument[];
   npcs: SearchDocument[];
   locations: SearchDocument[];
+  rumors: SearchDocument[];
 }
 
 export interface SearchDocument {

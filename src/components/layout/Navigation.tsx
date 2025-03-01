@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigation } from '../../hooks/useNavigation';
 import Typography from '../core/Typography';
-import { Book, Scroll, Users, MapPin } from 'lucide-react';
+import { Book, Scroll, Users, MapPin, MessageSquare } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
 import { clsx } from 'clsx';
 
@@ -32,6 +32,11 @@ const Navigation: React.FC = () => {
       label: 'Quests', 
       path: '/quests',
       icon: <Scroll className="w-5 h-5" />
+    },
+    {
+      label: 'Rumors', 
+    path: '/rumors',
+    icon: <MessageSquare className="w-5 h-5" />
     },
     { 
       label: 'NPCs', 

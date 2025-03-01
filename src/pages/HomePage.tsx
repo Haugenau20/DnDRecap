@@ -5,7 +5,7 @@ import Card from '../components/core/Card';
 import LatestChapter from '../components/features/story/LatestChapter';
 import { useChapterData } from '../hooks/useChapterData';
 import { useNavigation } from '../context/NavigationContext';
-import { Book, Scroll, Users, MapPin } from 'lucide-react';
+import { Book, Scroll, Users, MapPin, MessageSquare } from 'lucide-react';
 
 /**
  * Interface for quick access section items
@@ -58,6 +58,12 @@ const HomePage: React.FC = () => {
       path: '/quests'
     },
     {
+      title: 'Rumors',
+      description: 'Track and investigate rumors from across the realm',
+      icon: <MessageSquare className="w-6 h-6" />,
+      path: '/rumors'
+    },
+    {
       title: 'NPCs',
       description: 'Keep track of friends, foes, and everyone in between',
       icon: <Users className="w-6 h-6" />,
@@ -88,7 +94,7 @@ const HomePage: React.FC = () => {
         <Typography variant="h2" className="mb-6">
           Quick Access
         </Typography>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {quickAccessItems.map((item) => (
             <Card
               key={item.path}

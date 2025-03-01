@@ -434,3 +434,44 @@
 .default-theme::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
 }
+
+/* Rumor Card styles */
+.default-rumor-card {
+  border-left: 4px solid var(--default-primary);
+}
+
+.default-rumor-card-confirmed {
+  border-left: 4px solid #10B981;
+}
+
+.default-rumor-card-unconfirmed {
+  border-left: 4px solid #F59E0B;
+}
+
+.default-rumor-card-false {
+  border-left: 4px solid #EF4444;
+}
+
+.default-rumor-status-confirmed {
+  color: #10B981;
+}
+
+.default-rumor-status-unconfirmed {
+  color: #F59E0B;
+}
+
+.default-rumor-status-false {
+  color: #EF4444;
+}
+
+.default-rumor-status-border-confirmed {
+  border-color: #10B981;
+}
+
+.default-rumor-status-border-unconfirmed {
+  border-color: #F59E0B;
+}
+
+.default-rumor-status-border-false {
+  border-color: #EF4444;
+}
