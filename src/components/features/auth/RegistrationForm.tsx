@@ -4,6 +4,7 @@ import Typography from '../../core/Typography';
 import Input from '../../core/Input';
 import Button from '../../core/Button';
 import Card from '../../core/Card';
+import { useLocation } from 'react-router-dom';
 import { LogIn, AlertCircle, UserPlus, Check, X, Loader2 } from 'lucide-react';
 
 interface RegistrationFormProps {
@@ -21,8 +22,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [username, setUsername] = useState('');
-  const [isEmailAllowedToRegister, setIsEmailAllowedToRegister] = useState<boolean | null>(null);
-  const [checkingEmail, setCheckingEmail] = useState(false);
+  const [inviteToken, setInviteToken] = useState('');
+  const [tokenVerified, setTokenVerified] = useState<boolean | null>(null);
+  const [checkingToken, setCheckingToken] = useState(false);
   const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
   const [usernameValid, setUsernameValid] = useState<boolean | null>(null);
   const [usernameError, setUsernameError] = useState<string | null>(null);
@@ -30,34 +32,44 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const { signUp, validateUsername, isEmailAllowed } = useFirebase();
-
-  // Check if email is allowed to register with debounce
+  const { signUpWithToken, validateUsername, validateToken } = useFirebase();
+  const location = useLocation();
+  
+  // Extract token from query parameters on load
   useEffect(() => {
-    if (!email || !email.includes('@')) {
-      setIsEmailAllowedToRegister(null);
+    const query = new URLSearchParams(location.search);
+    const token = query.get('token');
+    if (token) {
+      setInviteToken(token);
+    }
+  }, [location]);
+
+  // Verify token when it changes
+  useEffect(() => {
+    if (!inviteToken) {
+      setTokenVerified(null);
       return;
     }
 
-    const checkEmailAllowed = async () => {
-      setCheckingEmail(true);
+    const verifyToken = async () => {
+      setCheckingToken(true);
       try {
-        const allowed = await isEmailAllowed(email);
-        setIsEmailAllowedToRegister(allowed);
+        const isValid = await validateToken(inviteToken);
+        setTokenVerified(isValid);
+        if (!isValid) {
+          setError("This invitation link is invalid or has already been used.");
+        }
       } catch (err) {
-        console.error('Error checking email permission:', err);
-        setIsEmailAllowedToRegister(false);
+        console.error('Error validating token:', err);
+        setTokenVerified(false);
+        setError("Error validating invitation. Please try again.");
       } finally {
-        setCheckingEmail(false);
+        setCheckingToken(false);
       }
     };
 
-    const timer = setTimeout(() => {
-      checkEmailAllowed();
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [email, isEmailAllowed]);
+    verifyToken();
+  }, [inviteToken, validateToken]);
 
   // Username validation with debounce
   useEffect(() => {
@@ -84,7 +96,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       }
     };
 
-    // Debounce username validation
     const timer = setTimeout(() => {
       checkUsername();
     }, 500);
@@ -92,13 +103,25 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
     return () => clearTimeout(timer);
   }, [username, validateUsername]);
 
+  // Validate email format
+  const isEmailValid = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    // Validate email is allowed
-    if (!isEmailAllowedToRegister) {
-      setError("This email is not authorized to create an account. Please contact your administrator.");
+    // Validate token is valid
+    if (!tokenVerified) {
+      setError("Invalid or expired invitation token");
+      return;
+    }
+
+    // Validate email
+    if (!email || !isEmailValid(email)) {
+      setError("Please enter a valid email address");
       return;
     }
 
@@ -116,7 +139,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
     setLoading(true);
     try {
-      await signUp(email, password, username);
+      await signUpWithToken(inviteToken, email, password, username);
       if (onSuccess) onSuccess();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
@@ -132,23 +155,35 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="relative">
             <Input
+              label="Invitation Token *"
+              value={inviteToken}
+              onChange={(e) => setInviteToken(e.target.value)}
+              required
+              disabled={loading || tokenVerified === true}
+              error={tokenVerified === false ? "Invalid or expired invitation token" : undefined}
+              successMessage={tokenVerified === true ? "Valid invitation" : undefined}
+              helperText="Enter the invitation token you received"
+              endIcon={
+                checkingToken ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : inviteToken && tokenVerified === true ? (
+                  <Check className="w-4 h-4 text-green-500" />
+                ) : inviteToken && tokenVerified === false ? (
+                  <X className="w-4 h-4 text-red-500" />
+                ) : null
+              }
+            />
+          </div>
+
+          <div className="relative">
+            <Input
               label="Email *"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              disabled={loading}
-              error={isEmailAllowedToRegister === false ? "This email is not authorized to register" : undefined}
-              successMessage={isEmailAllowedToRegister === true ? "Email authorized" : undefined}
-              endIcon={
-                checkingEmail ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : email && isEmailAllowedToRegister === true ? (
-                  <Check className="w-4 h-4 text-green-500" />
-                ) : email && isEmailAllowedToRegister === false ? (
-                  <X className="w-4 h-4 text-red-500" />
-                ) : null
-              }
+              disabled={loading || tokenVerified !== true}
+              error={email && !isEmailValid(email) ? "Please enter a valid email address" : undefined}
             />
           </div>
 
@@ -158,7 +193,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              disabled={loading}
+              disabled={loading || tokenVerified !== true}
               helperText="3-20 characters, letters, numbers, underscores, and hyphens only"
               error={usernameError || undefined}
               successMessage={usernameValid && usernameAvailable ? "Username available" : undefined}
@@ -180,7 +215,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            disabled={loading}
+            disabled={loading || tokenVerified !== true}
           />
 
           <Input
@@ -189,7 +224,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            disabled={loading}
+            disabled={loading || tokenVerified !== true}
             error={password !== confirmPassword && confirmPassword.length > 0 ? "Passwords don't match" : undefined}
           />
 
@@ -205,10 +240,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               type="submit"
               disabled={
                 loading || 
-                !isEmailAllowedToRegister || 
+                tokenVerified !== true || 
                 !usernameValid || 
                 !usernameAvailable || 
-                password !== confirmPassword
+                password !== confirmPassword ||
+                !isEmailValid(email) ||
+                password.length === 0
               }
               className="w-full"
               startIcon={<UserPlus />}

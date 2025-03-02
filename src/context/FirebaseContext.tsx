@@ -13,17 +13,19 @@ interface FirebaseContextType {
   loading: boolean;
   error: string | null;
   signIn: (email: string, password: string) => Promise<User>;
-  signUp: (email: string, password: string, username: string) => Promise<void>;
   signOut: () => Promise<void>;
   validateUsername: (username: string) => Promise<UsernameValidationResult>;
   changeUsername: (uid: string, newUsername: string) => Promise<void>;
   isUsernameAvailable: (username: string) => Promise<boolean>;
-  isEmailAllowed: (email: string) => Promise<boolean>;
   isUserAdmin: (uid: string) => Promise<boolean>;
-  addAllowedUser: (email: string, notes?: string) => Promise<void>;
-  removeAllowedUser: (email: string) => Promise<void>;
-  getAllowedUsers: () => Promise<AllowedUser[]>;
-  removeUserCompletely: (email: string) => Promise<void>;
+  generateRegistrationToken: (notes?: string) => Promise<string>;
+  validateToken: (token: string) => Promise<boolean>;
+  signUpWithToken: (token: string, email: string, password: string, username: string) => Promise<void>;
+  getRegistrationTokens: () => Promise<any[]>;
+  deleteRegistrationToken: (token: string) => Promise<void>;
+  getAllUsers: () => Promise<any[]>;
+  deleteUser: (userId: string) => Promise<void>;
+  
 }
 
 const FirebaseContext = createContext<FirebaseContextType | undefined>(undefined);
@@ -102,6 +104,82 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return () => unsubscribe();
   }, [fetchUserProfile, dispatchAuthStateChangedEvent]);
 
+  const generateRegistrationToken = async (notes: string = ''): Promise<string> => {
+    try {
+      setError(null);
+      // Check if current user is admin
+      if (!isAdmin || !user) {
+        throw new Error('Only admins can generate registration tokens');
+      }
+      
+      return await firebaseService.generateRegistrationToken(notes, user.uid);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to generate registration token');
+      throw err;
+    }
+  };
+  
+  const validateToken = async (token: string): Promise<boolean> => {
+    try {
+      setError(null);
+      return await firebaseService.isTokenValid(token);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred validating the invitation');
+      return false;
+    }
+  };
+  
+  const signUpWithToken = async (token: string, email: string, password: string, username: string) => {
+    try {
+      setError(null);
+      // First validate token
+      const isValid = await firebaseService.isTokenValid(token);
+      if (!isValid) {
+        throw new Error('Invalid or expired invitation token');
+      }
+      
+      const user = await firebaseService.signUpWithToken(token, email, password, username);
+      setUser(user);
+      await fetchUserProfile(user);
+      
+      // Dispatch auth state changed event
+      dispatchAuthStateChangedEvent(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred during sign up');
+      throw err;
+    }
+  };
+
+  const getRegistrationTokens = async () => {
+    try {
+      setError(null);
+      // Check if current user is admin
+      if (!isAdmin) {
+        throw new Error('Only admins can view registration tokens');
+      }
+      
+      return await firebaseService.getRegistrationTokens();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to get registration tokens');
+      throw err;
+    }
+  };
+  
+  const deleteRegistrationToken = async (token: string) => {
+    try {
+      setError(null);
+      // Check if current user is admin
+      if (!isAdmin) {
+        throw new Error('Only admins can delete registration tokens');
+      }
+      
+      await firebaseService.deleteRegistrationToken(token);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete registration token');
+      throw err;
+    }
+  };
+
   const signIn = async (email: string, password: string) => {
     try {
       setError(null);
@@ -127,27 +205,6 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
-  const signUp = async (email: string, password: string, username: string) => {
-    try {
-      setError(null);
-      // First check if email is allowed
-      const isAllowed = await firebaseService.isEmailAllowed(email);
-      if (!isAllowed) {
-        throw new Error('This email is not authorized to create an account. Please contact your administrator.');
-      }
-      
-      const user = await firebaseService.signUp(email, password, username);
-      setUser(user);
-      await fetchUserProfile(user);
-      
-      // Dispatch auth state changed event
-      dispatchAuthStateChangedEvent(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred during sign up');
-      throw err;
-    }
-  };
-
   const signOut = async () => {
     try {
       setError(null);
@@ -164,37 +221,39 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
-  // Add the implementation in the FirebaseProvider component
-  const removeUserCompletely = async (email: string) => {
+  const getAllUsers = async () => {
     try {
       setError(null);
-      
       // Check if current user is admin
       if (!isAdmin) {
-        throw new Error('Only admins can remove users completely');
+        throw new Error('Only admins can view user list');
       }
       
-      await firebaseService.removeUserCompletely(email);
-      
-      // Update local state
-      setAllowedUsers(prev => prev.filter(user => user.email !== email));
-      
-      // Close dialog
-      setConfirmationDialog({ isOpen: false, userEmail: '' });
+      return await firebaseService.getAllUsers();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred removing user');
+      setError(err instanceof Error ? err.message : 'Failed to fetch users');
       throw err;
     }
   };
-
-  // Check if an email is allowed to register
-  const isEmailAllowed = async (email: string): Promise<boolean> => {
+  
+  const deleteUser = async (userId: string) => {
     try {
       setError(null);
-      return await firebaseService.isEmailAllowed(email);
+      // Check if current user is admin
+      if (!isAdmin) {
+        throw new Error('Only admins can delete users');
+      }
+      
+      // Prevent admins from deleting themselves
+      if (user && userId === user.uid) {
+        throw new Error('Cannot delete your own account');
+      }
+      
+      // Use the complete deletion method instead
+      await firebaseService.deleteUser(userId);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred checking email permission');
-      return false;
+      setError(err instanceof Error ? err.message : 'Failed to delete user');
+      throw err;
     }
   };
 
@@ -249,74 +308,24 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
-  // Add allowed user (admin only)
-  const addAllowedUser = async (email: string, notes: string = '') => {
-    try {
-      setError(null);
-      
-      // Check if current user is admin
-      if (!isAdmin || !user) {
-        throw new Error('Only admins can add allowed users');
-      }
-      
-      await firebaseService.addAllowedUser(email, notes, user.uid);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred adding allowed user');
-      throw err;
-    }
-  };
-
-  // Remove allowed user (admin only)
-  const removeAllowedUser = async (email: string) => {
-    try {
-      setError(null);
-      
-      // Check if current user is admin
-      if (!isAdmin) {
-        throw new Error('Only admins can remove allowed users');
-      }
-      
-      await firebaseService.removeAllowedUser(email);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred removing allowed user');
-      throw err;
-    }
-  };
-
-  // Get all allowed users (admin only)
-  const getAllowedUsers = async (): Promise<AllowedUser[]> => {
-    try {
-      setError(null);
-      
-      // Check if current user is admin
-      if (!isAdmin) {
-        throw new Error('Only admins can view allowed users');
-      }
-      
-      return await firebaseService.getAllowedUsers();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred getting allowed users');
-      throw err;
-    }
-  };
-
   const value = {
     user,
     userProfile,
     loading,
     error,
     signIn,
-    signUp,
     signOut,
     validateUsername,
     changeUsername,
     isUsernameAvailable,
-    isEmailAllowed,
     isUserAdmin,
-    addAllowedUser,
-    removeAllowedUser,
-    getAllowedUsers,
-    removeUserCompletely
+    generateRegistrationToken,
+    validateToken,
+    signUpWithToken,
+    getRegistrationTokens,
+    deleteRegistrationToken,
+    getAllUsers,
+    deleteUser,
   };
 
   return (

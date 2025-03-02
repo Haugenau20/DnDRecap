@@ -1,6 +1,7 @@
 // src/services/firebase/FirebaseService.ts
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
+import { httpsCallable, getFunctions } from 'firebase/functions';
 import { 
   getFirestore, 
   collection, 
@@ -81,24 +82,6 @@ class FirebaseService {
   }
 
   /**
-   * Check if an email is allowed to register
-   */
-  public async isEmailAllowed(email: string): Promise<boolean> {
-    try {
-      const q = query(
-        collection(this.db, 'allowedUsers'),
-        where('email', '==', email.toLowerCase())
-      );
-      
-      const querySnapshot = await getDocs(q);
-      return !querySnapshot.empty;
-    } catch (err) {
-      console.error('Error checking allowed email:', err);
-      return false;
-    }
-  }
-
-  /**
    * Sign in with email and password
    */
   public async signIn(email: string, password: string): Promise<User> {
@@ -120,16 +103,16 @@ class FirebaseService {
   }
 
   /**
-   * Create a new user account with username
+   * Sign up with an invite token and user-provided email
    */
-  public async signUp(email: string, password: string, username: string): Promise<User> {
-    // First, check if email is allowed to register
-    const isAllowed = await this.isEmailAllowed(email);
-    if (!isAllowed) {
-      throw new Error('This email is not authorized to create an account. Please contact your administrator.');
+  public async signUpWithToken(token: string, email: string, password: string, username: string): Promise<User> {
+    // First, validate the token
+    const isValid = await this.isTokenValid(token);
+    if (!isValid) {
+      throw new Error('Invalid or expired invitation token');
     }
     
-    // Then, validate the username
+    // Validate the username
     const validation = await this.validateUsername(username);
     if (!validation.isValid) {
       throw new Error(validation.error);
@@ -139,80 +122,85 @@ class FirebaseService {
     }
 
     try {
-      // Create Firebase Auth user
+      // Create Firebase Auth user first (outside the transaction)
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       const user = userCredential.user;
       
-      // Create user profile and reserve username in a transaction
-      await this.createPlayerProfile(user.uid, email, username);
-      
-      // Update the allowed user record to mark as registered
-      await this.markUserAsRegistered(email);
+      // Use a transaction for Firestore operations
+      await runTransaction(this.db, async (transaction) => {
+        // PERFORM ALL READS FIRST
+        const tokenDocRef = doc(this.db, 'registrationTokens', token);
+        const tokenSnapshot = await transaction.get(tokenDocRef);
+        
+        const usernameLower = username.toLowerCase();
+        const usernameDoc = doc(this.db, 'usernames', usernameLower);
+        const usernameSnapshot = await transaction.get(usernameDoc);
+        
+        // Validate reads before doing any writes
+        if (!tokenSnapshot.exists()) {
+          throw new Error('Token does not exist');
+        }
+        
+        const tokenData = tokenSnapshot.data();
+        if (tokenData?.used === true) {
+          throw new Error('Token has already been used');
+        }
+        
+        if (usernameSnapshot.exists()) {
+          throw new Error('Username already taken');
+        }
+        
+        // THEN PERFORM ALL WRITES
+        const now = new Date();
+        const userDocRef = doc(this.db, 'users', user.uid);
+        
+        // Create user profile
+        transaction.set(userDocRef, {
+          email: email,
+          username: username,
+          dateCreated: now,
+          lastLogin: now,
+          isAdmin: false,
+          preferences: {
+            theme: 'default'
+          }
+        });
+        
+        // Create username reservation
+        transaction.set(usernameDoc, {
+          uid: user.uid,
+          originalUsername: username, // Preserve case for display
+          createdAt: now
+        });
+        
+        // Mark the token as used
+        transaction.update(tokenDocRef, {
+          used: true,
+          usedAt: now,
+          usedBy: user.uid
+        });
+      });
       
       return user;
     } catch (error) {
-      // If any step fails, clean up and throw
+      // If transaction fails, try to delete the auth user to avoid orphaned accounts
+      try {
+        const currentUser = this.auth.currentUser;
+        if (currentUser) {
+          await currentUser.delete();
+        }
+      } catch (deleteError) {
+        console.error("Error cleaning up auth user after failed transaction:", deleteError);
+      }
+      
       throw error;
     }
   }
-
-  /**
- * Completely removes a user from the system including:
- * - Removing from allowed users list
- * - Removing user data from 'users' collection
- * - Removing username reservation from 'usernames' collection
- * 
- * @param email Email of the user to remove
- */
-public async removeUserCompletely(email: string): Promise<void> {
-  const lowercaseEmail = email.toLowerCase();
   
-  try {
-    // Get the user document by querying for this email
-    const usersQuery = query(
-      collection(this.db, 'users'), 
-      where('email', '==', lowercaseEmail)
-    );
-    
-    const userSnapshots = await getDocs(usersQuery);
-    
-    if (!userSnapshots.empty) {
-      // If we found a user, get their data and start batch delete operation
-      const userDoc = userSnapshots.docs[0];
-      const userData = userDoc.data() as PlayerProfile;
-      const uid = userDoc.id;
-      
-      // Start a batch for atomic operations
-      const batch = writeBatch(this.db);
-      
-      // Delete username reservation
-      if (userData.username) {
-        const usernameDoc = doc(this.db, 'usernames', userData.username.toLowerCase());
-        batch.delete(usernameDoc);
-      }
-      
-      // Delete user profile
-      batch.delete(doc(this.db, 'users', uid));
-      
-      // Delete from allowed users
-      batch.delete(doc(this.db, 'allowedUsers', lowercaseEmail));
-      
-      // Commit all the deletions
-      await batch.commit();
-    } else {
-      // If no user exists, just remove from allowed users
-      await this.removeAllowedUser(email);
-    }
-  } catch (error) {
-    console.error("Error removing user completely:", error);
-    throw error;
-  }
-}
-
   /**
    * Mark an allowed user as registered
    */
-  private async markUserAsRegistered(email: string): Promise<void> {
+  private async markUserAsRegistered(email: string, username: string, uid: string): Promise<void> {
     const q = query(
       collection(this.db, 'allowedUsers'),
       where('email', '==', email.toLowerCase())
@@ -223,60 +211,214 @@ public async removeUserCompletely(email: string): Promise<void> {
       const docRef = querySnapshot.docs[0].ref;
       await updateDoc(docRef, {
         hasRegistered: true,
-        registeredAt: new Date()
+        registeredAt: new Date(),
+        username: username,
+        userId: uid
       });
     }
   }
 
   /**
-   * Add a user to the allowed users list (admin only)
+   * Generate a secure random token
    */
-  public async addAllowedUser(email: string, notes: string = '', adminUid: string): Promise<void> {
+  private generateInviteToken(): string {
+    // Generate a random 16-byte token and convert to hex
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes)
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
+  /**
+   * Generate a registration token (admin only)
+   * Now completely decoupled from email addresses
+   */
+  public async generateRegistrationToken(notes: string = '', adminUid: string): Promise<string> {
+    // Generate a unique invite token
+    const inviteToken = this.generateInviteToken();
+    
+    // Create the public token document (readable by anyone)
+    const tokenDoc = {
+      createdAt: new Date(),
+      createdBy: adminUid,
+      notes: notes, // Optional notes about this token
+      used: false
+    };
+    
+    // Store in the public collection
+    await setDoc(doc(this.db, 'registrationTokens', inviteToken), tokenDoc);
+    
+    return inviteToken;
+  }
+
+  /**
+   * Get all registration tokens (admin only)
+   */
+  public async getRegistrationTokens(): Promise<any[]> {
+    try {
+      const tokensCollection = collection(this.db, 'registrationTokens');
+      const snapshot = await getDocs(tokensCollection);
+      
+      return snapshot.docs.map(doc => {
+        const data = doc.data();
+        
+        // Convert Firestore Timestamp to JavaScript Date
+        return {
+          token: doc.id,
+          ...data,
+          createdAt: data.createdAt && typeof data.createdAt.toDate === 'function' 
+            ? data.createdAt.toDate() 
+            : data.createdAt,
+          usedAt: data.usedAt && typeof data.usedAt.toDate === 'function' 
+            ? data.usedAt.toDate() 
+            : data.usedAt
+        };
+      });
+    } catch (err) {
+      console.error('Error fetching registration tokens:', err);
+      throw err;
+    }
+  }
+
+  /**
+   * Delete a registration token (admin only)
+   */
+  public async deleteRegistrationToken(token: string): Promise<void> {
+    await deleteDoc(doc(this.db, 'registrationTokens', token));
+  }
+
+  /**
+   * Add a user to the allowed users list with an invite token (admin only)
+   */
+  public async addAllowedUser(email: string, notes: string = '', adminUid: string): Promise<string> {
     // Create a document with email as the ID
     const docId = email.toLowerCase();
     const allowedUserRef = doc(this.db, 'allowedUsers', docId);
     
-    const allowedUser: AllowedUser = {
-      email: email.toLowerCase(),
-      notes,
-      addedAt: new Date(),
-      addedBy: adminUid,
-      hasRegistered: false
-    };
+    // Generate a unique invite token
+    const inviteToken = this.generateInviteToken();
     
-    await setDoc(allowedUserRef, allowedUser);
-  }
-
-  /**
-   * Remove a user from the allowed users list (admin only)
-   */
-  public async removeAllowedUser(email: string): Promise<void> {
-    const docId = email.toLowerCase();
-    await deleteDoc(doc(this.db, 'allowedUsers', docId));
-  }
-
-  /**
-   * Get all allowed users (admin only)
-   */
-  public async getAllowedUsers(): Promise<AllowedUser[]> {
-    const allowedUsersCollection = collection(this.db, 'allowedUsers');
-    const snapshot = await getDocs(allowedUsersCollection);
-    
-    return snapshot.docs.map(doc => {
-      const data = doc.data();
+    // Create a transaction to ensure both documents are created atomically
+    await runTransaction(this.db, async (transaction) => {
+      // Create the allowedUser document (admin only access)
+      const allowedUser: AllowedUser = {
+        email: email.toLowerCase(),
+        notes,
+        addedAt: new Date(),
+        addedBy: adminUid,
+        hasRegistered: false,
+        inviteToken // Store token reference for admin use
+      };
       
-      // Convert Firestore Timestamp to JavaScript Date
-      return {
-        ...data,
-        addedAt: data.addedAt && typeof data.addedAt.toDate === 'function' 
-          ? data.addedAt.toDate() 
-          : data.addedAt,
-        registeredAt: data.registeredAt && typeof data.registeredAt.toDate === 'function' 
-          ? data.registeredAt.toDate() 
-          : data.registeredAt
-      } as AllowedUser;
+      // Create the public token document (readable by anyone)
+      const tokenDoc = {
+        createdAt: new Date(),
+        used: false
+      };
+      
+      transaction.set(allowedUserRef, allowedUser);
+      transaction.set(doc(this.db, 'registrationTokens', inviteToken), tokenDoc);
     });
+    
+    return inviteToken;
   }
+
+  /**
+   * Check if an invite token is valid for registration
+   * No longer tries to look up emails
+   */
+  public async isTokenValid(token: string): Promise<boolean> {
+    try {
+      // Check if the token exists in the public collection
+      const tokenDocRef = doc(this.db, 'registrationTokens', token);
+      const tokenSnapshot = await getDoc(tokenDocRef);
+      
+      if (!tokenSnapshot.exists()) {
+        return false;
+      }
+      
+      const tokenData = tokenSnapshot.data();
+      // Token is valid if it exists and hasn't been used yet
+      return tokenData.used !== true;
+    } catch (err) {
+      console.error('Error validating token:', err);
+      return false;
+    }
+  }
+
+  /**
+   * Get all users (admin only)
+   * Returns user data without email addresses
+   */
+  public async getAllUsers(): Promise<any[]> {
+    try {
+      const usersCollection = collection(this.db, 'users');
+      const snapshot = await getDocs(usersCollection);
+      
+      return snapshot.docs.map(doc => {
+        const data = doc.data();
+        
+        // Important: Remove email field for privacy
+        const { email, ...safeUserData } = data;
+        
+        // Convert Firestore Timestamp to JavaScript Date
+        return {
+          id: doc.id,
+          ...safeUserData,
+          dateCreated: data.dateCreated && typeof data.dateCreated.toDate === 'function' 
+            ? data.dateCreated.toDate() 
+            : data.dateCreated,
+          lastLogin: data.lastLogin && typeof data.lastLogin.toDate === 'function' 
+            ? data.lastLogin.toDate() 
+            : data.lastLogin
+        };
+      });
+    } catch (err) {
+      console.error('Error fetching users:', err);
+      throw err;
+    }
+  }
+
+  /**
+   * Delete a user from both Firestore and Firebase Authentication (admin only)
+   */
+  public async deleteUser(userId: string): Promise<void> {
+    try {
+      // 1. First delete the user data from Firestore
+      const userDoc = await getDoc(doc(this.db, 'users', userId));
+      if (!userDoc.exists()) {
+        throw new Error('User not found');
+      }
+      
+      const userData = userDoc.data();
+      const username = userData.username;
+      
+      // Start a batch operation for Firestore deletion
+      const batch = writeBatch(this.db);
+      
+      // Delete user document
+      batch.delete(doc(this.db, 'users', userId));
+      
+      // Delete username reservation if it exists
+      if (username) {
+        batch.delete(doc(this.db, 'usernames', username.toLowerCase()));
+      }
+      
+      // Commit the Firestore batch
+      await batch.commit();
+      
+      // 2. Now delete from Firebase Authentication using the cloud function
+      const functions = getFunctions();
+      const deleteUserFunction = httpsCallable(functions, 'deleteUser');
+      await deleteUserFunction({ userId });
+      
+    } catch (err) {
+      console.error('Error deleting user:', err);
+      throw err;
+    }
+  }
+
 
   /**
    * Creates player profile and reserves username in a transaction

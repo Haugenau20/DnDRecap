@@ -55,6 +55,12 @@ export interface AllowedUser {
   hasRegistered?: boolean;
   /** Date when the user registered */
   registeredAt?: Date | string;
+  /** Invite token for registration */
+  inviteToken: string;
+  /** Username (only present if user has registered) */
+  username?: string;
+  /** User ID (only present if user has registered) */
+  userId?: string;
 }
 
 /**
