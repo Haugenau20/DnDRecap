@@ -20,4 +20,4 @@ migrateNewChapter.ts
 migrateToFirebase.ts
 
 dirTree.ps1
-copyFiles.ps1
+copyfiles.ps1
