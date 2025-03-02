@@ -32,7 +32,9 @@ $excludePatterns = @(
     "^.*\\futureThoughts*",
     "^.*\\*.test*",
     "^.*\\__mocks__",
-    "^.*\\test-utils*"
+    "^.*\\test-utils*",
+    "^.*\\*sidebar*",
+    "^.*\\*NPCLegend*"
 )
 
 # Get all files recursively, excluding specified patterns

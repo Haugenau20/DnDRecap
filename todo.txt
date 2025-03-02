@@ -10,3 +10,5 @@ In the admin panel, instead of showing email of users, show their username.
 - This should be done to minimise Admins exposure and access to to users email.
 - When the user has not yet registered, a placeholder should be in the place of the username.
 - This needs to be thought over.. There probably needs to be some way for the Admin to differentiate who they have added, even when the person hasnt registered yet.
+
+User deletion of content with appropriate pop up warning that any deletion is permanent.

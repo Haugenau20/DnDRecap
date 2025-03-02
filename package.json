@@ -28,7 +28,7 @@
     "test:coverage": "jest --coverage",
     "test:ci": "jest --ci --coverage",
     "eject": "react-scripts eject",
-    "migrate": "npx ts-node src/scripts/migrateToFirebase.ts"
+    "migrate": "npx ts-node src/scripts/migrateNewChapter.ts"
   },
   "eslintConfig": {
     "extends": [
