@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Location } from '../types/location';
 import { useFirebaseData } from './useFirebaseData';
+import { useFirebase } from '../context/FirebaseContext';
 
 /**
  * Hook for managing location data fetching and state
@@ -9,7 +10,8 @@ import { useFirebaseData } from './useFirebaseData';
  */
 export const useLocationData = () => {
   const [locations, setLocations] = useState<Location[]>([]);
-  const { getData, loading, error } = useFirebaseData<Location>({ collection: 'locations' });
+  const { getData, loading, error, data } = useFirebaseData<Location>({ collection: 'locations' });
+  const { user } = useFirebase();
 
   /**
    * Fetch locations from Firebase
@@ -27,6 +29,16 @@ export const useLocationData = () => {
   useEffect(() => {
     fetchLocations();
   }, [fetchLocations]);
+
+  // Update locations when Firebase data changes
+  useEffect(() => {
+    if (data.length > 0) {
+      setLocations(data);
+    } else if (!user) {
+      // Clear locations when signed out
+      setLocations([]);
+    }
+  }, [data, user]);
 
   return {
     locations,

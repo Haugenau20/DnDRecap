@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Chapter } from '../types/story';
 import { useFirebaseData } from './useFirebaseData';
+import { useFirebase } from '../context/FirebaseContext';
 
 /**
  * Hook for managing chapter data fetching and state
@@ -9,7 +10,8 @@ import { useFirebaseData } from './useFirebaseData';
  */
 export const useChapterData = () => {
   const [chapters, setChapters] = useState<Chapter[]>([]);
-  const { getData, loading, error } = useFirebaseData<Chapter>({ collection: 'chapters' });
+  const { getData, loading, error, data } = useFirebaseData<Chapter>({ collection: 'chapters' });
+  const { user } = useFirebase();
 
   /**
    * Fetch chapters from Firebase
@@ -29,6 +31,18 @@ export const useChapterData = () => {
   useEffect(() => {
     fetchChapters();
   }, [fetchChapters]);
+
+  // Update chapters when Firebase data changes
+  useEffect(() => {
+    if (data.length > 0) {
+      // Sort chapters by order number
+      const sortedChapters = [...data].sort((a, b) => a.order - b.order);
+      setChapters(sortedChapters);
+    } else if (!user) {
+      // Clear chapters when signed out
+      setChapters([]);
+    }
+  }, [data, user]);
 
   return {
     chapters,

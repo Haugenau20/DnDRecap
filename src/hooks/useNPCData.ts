@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { NPC } from '../types/npc';
 import { useFirebaseData } from './useFirebaseData';
+import { useFirebase } from '../context/FirebaseContext';
 
 /**
  * Hook for managing NPC data fetching and state
@@ -9,7 +10,8 @@ import { useFirebaseData } from './useFirebaseData';
  */
 export const useNPCData = () => {
   const [npcs, setNpcs] = useState<NPC[]>([]);
-  const { getData, loading, error } = useFirebaseData<NPC>({ collection: 'npcs' });
+  const { getData, loading, error, data } = useFirebaseData<NPC>({ collection: 'npcs' });
+  const { user } = useFirebase();
 
   /**
    * Fetch NPCs from Firebase
@@ -29,6 +31,18 @@ export const useNPCData = () => {
   useEffect(() => {
     fetchNPCs();
   }, [fetchNPCs]);
+
+  // Update NPCs when Firebase data changes
+  useEffect(() => {
+    if (data.length > 0) {
+      // Sort NPCs alphabetically by name
+      const sortedNPCs = [...data].sort((a, b) => a.name.localeCompare(b.name));
+      setNpcs(sortedNPCs);
+    } else if (!user) {
+      // Clear NPCs when signed out
+      setNpcs([]);
+    }
+  }, [data, user]);
 
   return {
     npcs,

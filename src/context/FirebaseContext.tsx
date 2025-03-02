@@ -4,6 +4,9 @@ import { User, onAuthStateChanged } from 'firebase/auth';
 import FirebaseService from '../services/firebase/FirebaseService';
 import { PlayerProfile, UserWithProfile, UsernameValidationResult, AllowedUser } from '../types/user';
 
+// Define a custom event for auth state changes
+export const AUTH_STATE_CHANGED_EVENT = 'auth-state-changed';
+
 interface FirebaseContextType {
   user: User | null;
   userProfile: PlayerProfile | null;
@@ -26,11 +29,16 @@ interface FirebaseContextType {
 const FirebaseContext = createContext<FirebaseContextType | undefined>(undefined);
 
 export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [allowedUsers, setAllowedUsers] = useState<AllowedUser[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<PlayerProfile | null>(null);
   const [loading, setLoading] = useState(true); // Start with loading true
   const [error, setError] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [confirmationDialog, setConfirmationDialog] = useState({
+      isOpen: false,
+      userEmail: ''
+    });
 
   const firebaseService = FirebaseService.getInstance();
 
@@ -50,11 +58,23 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }, []);
 
+  // Dispatch an auth state change event
+  const dispatchAuthStateChangedEvent = useCallback((authenticated: boolean) => {
+    const event = new CustomEvent(AUTH_STATE_CHANGED_EVENT, { 
+      detail: { authenticated } 
+    });
+    window.dispatchEvent(event);
+  }, []);
+
   // Listen to authentication state changes
   useEffect(() => {
     const auth = firebaseService.getAuth();
     const unsubscribe = onAuthStateChanged(auth, 
       async (user) => {
+        // Check if auth state has actually changed
+        const wasAuthenticated = !!user;
+        const wasAuthenticatedBefore = !!user;
+        
         setUser(user);
         
         if (user) {
@@ -65,6 +85,11 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }
         
         setLoading(false); // Set loading to false once we have the auth state
+        
+        // Dispatch auth state changed event only if there was an actual change
+        if (wasAuthenticated !== wasAuthenticatedBefore) {
+          dispatchAuthStateChangedEvent(wasAuthenticated);
+        }
       },
       (error) => {
         console.error('Auth state error:', error);
@@ -75,7 +100,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     // Cleanup subscription
     return () => unsubscribe();
-  }, [fetchUserProfile]);
+  }, [fetchUserProfile, dispatchAuthStateChangedEvent]);
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -91,6 +116,10 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.error("Error fetching profile, but user is authenticated:", profileErr);
         // Don't throw here - user is still authenticated
       }
+      
+      // Dispatch auth state changed event
+      dispatchAuthStateChangedEvent(true);
+      
       return user;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during sign in');
@@ -110,6 +139,9 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       const user = await firebaseService.signUp(email, password, username);
       setUser(user);
       await fetchUserProfile(user);
+      
+      // Dispatch auth state changed event
+      dispatchAuthStateChangedEvent(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during sign up');
       throw err;
@@ -123,6 +155,9 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setUser(null);
       setUserProfile(null);
       setIsAdmin(false);
+      
+      // Dispatch auth state changed event
+      dispatchAuthStateChangedEvent(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during sign out');
       throw err;
@@ -140,6 +175,12 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
       
       await firebaseService.removeUserCompletely(email);
+      
+      // Update local state
+      setAllowedUsers(prev => prev.filter(user => user.email !== email));
+      
+      // Close dialog
+      setConfirmationDialog({ isOpen: false, userEmail: '' });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred removing user');
       throw err;

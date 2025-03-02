@@ -1,6 +1,7 @@
 // src/hooks/useFirebaseData.ts
 import { useState, useCallback, useEffect } from 'react';
 import FirebaseService from '../services/firebase/FirebaseService';
+import { AUTH_STATE_CHANGED_EVENT } from '../context/FirebaseContext';
 
 interface UseFirebaseDataOptions<T> {
   collection: string;
@@ -35,6 +36,27 @@ export function useFirebaseData<T extends Record<string, any>>(
   // Add useEffect to fetch data on mount
   useEffect(() => {
     getData();
+  }, [getData]);
+
+  // Add listener for auth state changes to refresh data
+  useEffect(() => {
+    const handleAuthStateChanged = (event: Event) => {
+      const customEvent = event as CustomEvent<{authenticated: boolean}>;
+      
+      // Clear data immediately on sign out
+      if (!customEvent.detail.authenticated) {
+        setData([]);
+      }
+      
+      // Refresh data on both sign in and sign out
+      getData();
+    };
+
+    window.addEventListener(AUTH_STATE_CHANGED_EVENT, handleAuthStateChanged);
+    
+    return () => {
+      window.removeEventListener(AUTH_STATE_CHANGED_EVENT, handleAuthStateChanged);
+    };
   }, [getData]);
 
   const addData = useCallback(async (newData: T, documentId?: string) => {

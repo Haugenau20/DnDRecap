@@ -2,12 +2,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Quest } from '../types/quest';
 import { useFirebaseData } from './useFirebaseData';
+import { useFirebase } from '../context/FirebaseContext';
 
 export const useQuests = () => {
   const [quests, setQuests] = useState<Quest[]>([]);
-  const { getData, loading, error } = useFirebaseData<Quest>({ 
+  const { getData, loading, error, data } = useFirebaseData<Quest>({ 
     collection: 'quests'
   });
+  const { user } = useFirebase();
 
   /**
    * Fetch quests from Firebase
@@ -25,6 +27,16 @@ export const useQuests = () => {
   useEffect(() => {
     fetchQuests();
   }, [fetchQuests]);
+
+  // Update quests when Firebase data changes
+  useEffect(() => {
+    if (data.length > 0) {
+      setQuests(data);
+    } else if (!user) {
+      // Clear quests when signed out
+      setQuests([]);
+    }
+  }, [data, user]);
 
   /**
    * Get a quest by ID
