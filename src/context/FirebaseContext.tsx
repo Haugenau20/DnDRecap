@@ -1,8 +1,9 @@
 // src/context/FirebaseContext.tsx
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { User, onAuthStateChanged } from 'firebase/auth';
+import { User, onAuthStateChanged, browserLocalPersistence, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import FirebaseService from '../services/firebase/FirebaseService';
-import { PlayerProfile, UserWithProfile, UsernameValidationResult, AllowedUser } from '../types/user';
+import { PlayerProfile, UsernameValidationResult } from '../types/user';
+import { REMEMBER_ME_DURATION, SESSION_DURATION } from '../constants/time';
 
 // Define a custom event for auth state changes
 export const AUTH_STATE_CHANGED_EVENT = 'auth-state-changed';
@@ -12,7 +13,7 @@ interface FirebaseContextType {
   userProfile: PlayerProfile | null;
   loading: boolean;
   error: string | null;
-  signIn: (email: string, password: string) => Promise<User>;
+  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<User>;
   signOut: () => Promise<void>;
   validateUsername: (username: string) => Promise<UsernameValidationResult>;
   changeUsername: (uid: string, newUsername: string) => Promise<void>;
@@ -25,13 +26,14 @@ interface FirebaseContextType {
   deleteRegistrationToken: (token: string) => Promise<void>;
   getAllUsers: () => Promise<any[]>;
   deleteUser: (userId: string) => Promise<void>;
-  
+  refreshSession: () => void;
+  sessionExpired: boolean;
+  renewSession: (rememberMe?: boolean) => Promise<void>;
 }
 
 const FirebaseContext = createContext<FirebaseContextType | undefined>(undefined);
 
 export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [allowedUsers, setAllowedUsers] = useState<AllowedUser[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<PlayerProfile | null>(null);
   const [loading, setLoading] = useState(true); // Start with loading true
@@ -41,6 +43,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       isOpen: false,
       userEmail: ''
     });
+  const [sessionExpired, setSessionExpired] = useState(false);
 
   const firebaseService = FirebaseService.getInstance();
 
@@ -180,19 +183,20 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string, rememberMe: boolean = false) => {
     try {
       setError(null);
-      // Get user from Firebase auth
-      const user = await firebaseService.signIn(email, password);
+      // Get user from Firebase auth with rememberMe option
+      const user = await firebaseService.signIn(email, password, rememberMe);
       // Update application state
       setUser(user);
+      setSessionExpired(false);
+      
       // Try to fetch profile, but don't let it affect sign-in success
       try {
         await fetchUserProfile(user);
       } catch (profileErr) {
         console.error("Error fetching profile, but user is authenticated:", profileErr);
-        // Don't throw here - user is still authenticated
       }
       
       // Dispatch auth state changed event
@@ -217,6 +221,74 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       dispatchAuthStateChangedEvent(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during sign out');
+      throw err;
+    }
+  };
+
+  const refreshSession = useCallback(() => {
+    if (user) {
+      firebaseService.updateLastActivity();
+    }
+  }, [user]);
+
+  // Add session check on mount and periodically
+  useEffect(() => {
+    if (!user) return;
+    
+    const checkSessionStatus = () => {
+      const isExpired = firebaseService.checkSessionExpired();
+      if (isExpired) {
+        setSessionExpired(true);
+        signOut();
+      }
+    };
+    
+    // Check on mount
+    checkSessionStatus();
+    
+    // Check every 5 minutes
+    const intervalId = setInterval(checkSessionStatus, 5 * 60 * 1000);
+    
+    return () => clearInterval(intervalId);
+  }, [user]);
+
+  /**
+   * Renews the session without requiring re-authentication
+   * Used when approaching the absolute session timeout
+   */
+  const renewSession = async (rememberMe: boolean = false) => {
+    try {
+      setError(null);
+      
+      if (!user) {
+        throw new Error('No authenticated user');
+      }
+      
+      // Create a new session with updated timing
+      const sessionInfo = {
+        createdAt: new Date().getTime(),
+        expiresAt: new Date().getTime() + (rememberMe ? REMEMBER_ME_DURATION : SESSION_DURATION),
+        lastActivityAt: new Date().getTime(),
+        rememberMe: rememberMe
+      };
+      localStorage.setItem('sessionInfo', JSON.stringify(sessionInfo));
+      
+      // Update Firebase Auth persistence if different from current setting
+      const auth = firebaseService.getAuth();
+      const persistenceType = rememberMe 
+        ? browserLocalPersistence 
+        : browserSessionPersistence;
+      
+      // Try to set persistence - may fail if user's session isn't fresh enough
+      try {
+        await setPersistence(auth, persistenceType);
+      } catch (err) {
+        console.log('Could not change persistence level - continuing with current level');
+      }
+      
+      return;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to renew session');
       throw err;
     }
   };
@@ -313,8 +385,11 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     userProfile,
     loading,
     error,
+    renewSession,
     signIn,
     signOut,
+    refreshSession,
+    sessionExpired,
     validateUsername,
     changeUsername,
     isUsernameAvailable,

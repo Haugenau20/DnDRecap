@@ -18,17 +18,28 @@ import {
   WithFieldValue,
   DocumentReference,
   runTransaction,
-  serverTimestamp, 
   writeBatch
 } from 'firebase/firestore';
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
   signOut,
-  User
+  User,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence
 } from 'firebase/auth';
-import { PlayerProfile, UsernameDocument, UsernameValidationResult, AllowedUser } from '../../types/user';
+import { 
+  PlayerProfile, 
+  UsernameDocument, 
+  UsernameValidationResult
+} from '../../types/user';
+import { 
+  SESSION_DURATION, 
+  REMEMBER_ME_DURATION, 
+  INACTIVITY_TIMEOUT 
+} from '../../constants/time';
 
 /**
  * Firebase configuration object
@@ -82,11 +93,79 @@ class FirebaseService {
   }
 
   /**
-   * Sign in with email and password
+   * Updates the last activity timestamp for the current session
+   * Used for the sliding window session timeout
    */
-  public async signIn(email: string, password: string): Promise<User> {
+  public updateLastActivity(): void {
+    const sessionInfoStr = localStorage.getItem('sessionInfo');
+    if (sessionInfoStr) {
+      try {
+        const sessionInfo = JSON.parse(sessionInfoStr);
+        sessionInfo.lastActivityAt = new Date().getTime();
+        localStorage.setItem('sessionInfo', JSON.stringify(sessionInfo));
+      } catch (e) {
+        console.error('Error updating last activity:', e);
+      }
+    }
+  }
+
+  /**
+   * Checks if the current session has expired based on inactivity
+   * @returns true if the session has expired, false otherwise
+   */
+  public checkSessionExpired(): boolean {
+    const sessionInfoStr = localStorage.getItem('sessionInfo');
+    if (!sessionInfoStr) return false; // No session info, let Firebase handle it
+    
     try {
+      const sessionInfo = JSON.parse(sessionInfoStr);
+      const now = new Date().getTime();
+      
+      // Check absolute expiry (30 days for rememberMe, 24 hours for session)
+      if (now > sessionInfo.expiresAt) {
+        return true;
+      }
+      
+      // Check inactivity timeout (24 hours of inactivity)
+      if (now - sessionInfo.lastActivityAt > INACTIVITY_TIMEOUT) {
+        return true;
+      }
+      
+      return false;
+    } catch (e) {
+      console.error('Error checking session expiry:', e);
+      return false;
+    }
+  }
+
+  /**
+   * Sign in with email and password
+   * @param email User's email address
+   * @param password User's password
+   * @param rememberMe Whether to persist the session across browser restarts
+   * @returns The authenticated User object
+   */
+  public async signIn(email: string, password: string, rememberMe: boolean = false): Promise<User> {
+    try {
+      // Set the appropriate persistence based on rememberMe
+      const persistenceType = rememberMe 
+        ? browserLocalPersistence   // Persists session across browser restarts
+        : browserSessionPersistence; // Session only persists until tab/window closes
+      
+      // Set persistence before signing in
+      await setPersistence(this.auth, persistenceType);
+      
+      // Proceed with sign in
       const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      
+      // Store the session creation time and settings in local storage
+      const sessionInfo = {
+        createdAt: new Date().getTime(),
+        expiresAt: new Date().getTime() + (rememberMe ? REMEMBER_ME_DURATION : SESSION_DURATION),
+        lastActivityAt: new Date().getTime(),
+        rememberMe: rememberMe
+      };
+      localStorage.setItem('sessionInfo', JSON.stringify(sessionInfo));
       
       // Update last login date
       const userDoc = doc(this.db, 'users', userCredential.user.uid);
@@ -96,7 +175,6 @@ class FirebaseService {
       
       return userCredential.user;
     } catch (error) {
-      // Make sure this only catches actual authentication errors
       console.error("Sign in error:", error);
       throw error;
     }
@@ -196,27 +274,6 @@ class FirebaseService {
       throw error;
     }
   }
-  
-  /**
-   * Mark an allowed user as registered
-   */
-  private async markUserAsRegistered(email: string, username: string, uid: string): Promise<void> {
-    const q = query(
-      collection(this.db, 'allowedUsers'),
-      where('email', '==', email.toLowerCase())
-    );
-    
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-      const docRef = querySnapshot.docs[0].ref;
-      await updateDoc(docRef, {
-        hasRegistered: true,
-        registeredAt: new Date(),
-        username: username,
-        userId: uid
-      });
-    }
-  }
 
   /**
    * Generate a secure random token
@@ -286,42 +343,6 @@ class FirebaseService {
    */
   public async deleteRegistrationToken(token: string): Promise<void> {
     await deleteDoc(doc(this.db, 'registrationTokens', token));
-  }
-
-  /**
-   * Add a user to the allowed users list with an invite token (admin only)
-   */
-  public async addAllowedUser(email: string, notes: string = '', adminUid: string): Promise<string> {
-    // Create a document with email as the ID
-    const docId = email.toLowerCase();
-    const allowedUserRef = doc(this.db, 'allowedUsers', docId);
-    
-    // Generate a unique invite token
-    const inviteToken = this.generateInviteToken();
-    
-    // Create a transaction to ensure both documents are created atomically
-    await runTransaction(this.db, async (transaction) => {
-      // Create the allowedUser document (admin only access)
-      const allowedUser: AllowedUser = {
-        email: email.toLowerCase(),
-        notes,
-        addedAt: new Date(),
-        addedBy: adminUid,
-        hasRegistered: false,
-        inviteToken // Store token reference for admin use
-      };
-      
-      // Create the public token document (readable by anyone)
-      const tokenDoc = {
-        createdAt: new Date(),
-        used: false
-      };
-      
-      transaction.set(allowedUserRef, allowedUser);
-      transaction.set(doc(this.db, 'registrationTokens', inviteToken), tokenDoc);
-    });
-    
-    return inviteToken;
   }
 
   /**
@@ -584,9 +605,13 @@ class FirebaseService {
   }
 
   /**
-   * Sign out the current user
+   * Sign out and clear session data
    */
   public async signOut(): Promise<void> {
+    // Clear the session info from local storage
+    localStorage.removeItem('sessionInfo');
+    
+    // Sign out from Firebase Auth
     await signOut(this.auth);
   }
 

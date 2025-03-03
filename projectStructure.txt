@@ -29,7 +29,8 @@ DnDRecap
 │   │   │   │   └── FirebaseService.ts
 │   │   │   └── index.ts
 │   │   ├── scripts
-│   │   │   └── migrateToFirebase.ts
+│   │   │   ├── migrateToFirebase.ts
+│   │   │   └── migrateNewChapter.ts
 │   │   ├── pages
 │   │   │   ├── story
 │   │   │   │   ├── StoryPage.tsx
@@ -152,6 +153,18 @@ DnDRecap
 │   │   ├── manifest.json
 │   │   ├── index.html
 │   │   └── 404.html
+│   ├── functions
+│   │   ├── src
+│   │   │   └── index.ts
+│   │   ├── lib
+│   │   │   ├── index.js.map
+│   │   │   └── index.js
+│   │   ├── tsconfig.json
+│   │   ├── tsconfig.dev.json
+│   │   ├── package-lock.json
+│   │   ├── package.json
+│   │   ├── .gitignore
+│   │   └── .eslintrc.js
 │   ├── docs
 │   │   ├── technical
 │   │   │   ├── implementation-guides
@@ -160,7 +173,8 @@ DnDRecap
 │   │   ├── requirements
 │   │   │   ├── user-management.md
 │   │   │   ├── rumor-management.md
-│   │   │   └── public-sample-data.md
+│   │   │   ├── public-sample-data.md
+│   │   │   └── chapter-management.md
 │   │   ├── futureThoughts
 │   │   │   └── FirebaseAuthenticationUserDeleteOptions.md
 │   │   ├── design
@@ -184,6 +198,9 @@ DnDRecap
 │   ├── package.json
 │   ├── LICENSE
 │   ├── jest.config.ts
+│   ├── firebase.json
 │   ├── dirTree.ps1
 │   ├── copyfiles.ps1
-│   └── .gitignore
+│   ├── chapter.json
+│   ├── .gitignore
+│   └── .firebaserc

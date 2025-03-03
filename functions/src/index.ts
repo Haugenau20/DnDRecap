@@ -10,6 +10,7 @@
 // functions/src/index.ts
 import * as functions from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
+import {sendContactEmail} from "./contact";
 
 admin.initializeApp();
 
@@ -64,3 +65,5 @@ export const deleteUser = functions.onCall(
     }
   }
 );
+
+export {sendContactEmail};

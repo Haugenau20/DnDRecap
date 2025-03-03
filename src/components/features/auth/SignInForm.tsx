@@ -1,11 +1,10 @@
-// src/components/features/auth/SignInForm.tsx
 import React, { useState } from 'react';
 import { useFirebase } from '../../../context/FirebaseContext';
 import Typography from '../../core/Typography';
 import Input from '../../core/Input';
 import Button from '../../core/Button';
 import Card from '../../core/Card';
-import { LogIn, AlertCircle, UserPlus } from 'lucide-react';
+import { LogIn, AlertCircle, UserPlus, Save } from 'lucide-react';
 import RegistrationForm from './RegistrationForm';
 
 interface SignInFormProps {
@@ -15,6 +14,7 @@ interface SignInFormProps {
 const SignInForm: React.FC<SignInFormProps> = ({ onSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showRegistration, setShowRegistration] = useState(false);
@@ -27,8 +27,8 @@ const SignInForm: React.FC<SignInFormProps> = ({ onSuccess }) => {
     setLoading(true);
   
     try {
-      // Wait for sign in to complete
-      await signIn(email, password);
+      // Pass the rememberMe option to signIn
+      await signIn(email, password, rememberMe);
       // If we get here, sign in was successful
       onSuccess?.();
     } catch (err) {
@@ -71,6 +71,20 @@ const SignInForm: React.FC<SignInFormProps> = ({ onSuccess }) => {
             required
             disabled={loading}
           />
+
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+              disabled={loading}
+            />
+            <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-700">
+              Remember me for 30 days
+            </label>
+          </div>
 
           {error && (
             <div className="flex items-center gap-2 text-red-600">

@@ -1,6 +1,4 @@
 // src/types/user.ts
-import { User as FirebaseUser } from 'firebase/auth';
-
 /**
  * Player profile information stored in the users collection
  */
@@ -37,38 +35,6 @@ export interface UsernameDocument {
   originalUsername: string;
   /** When the username was created */
   createdAt: Date | string;
-}
-
-/**
- * Represents a pre-approved user who can register
- */
-export interface AllowedUser {
-  /** Email address that is allowed to register */
-  email: string;
-  /** Notes about this user (optional) */
-  notes?: string;
-  /** Date when the user was added to the allowlist */
-  addedAt: Date | string;
-  /** UID of the admin who added this user */
-  addedBy?: string;
-  /** Whether the user has registered yet */
-  hasRegistered?: boolean;
-  /** Date when the user registered */
-  registeredAt?: Date | string;
-  /** Invite token for registration */
-  inviteToken: string;
-  /** Username (only present if user has registered) */
-  username?: string;
-  /** User ID (only present if user has registered) */
-  userId?: string;
-}
-
-/**
- * Extended user type that includes Firebase user and profile
- */
-export interface UserWithProfile extends FirebaseUser {
-  /** User's profile information */
-  profile?: PlayerProfile;
 }
 
 /**

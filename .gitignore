@@ -21,3 +21,5 @@ migrateToFirebase.ts
 
 dirTree.ps1
 copyfiles.ps1
+
+copyFeatureFiles.ps1
