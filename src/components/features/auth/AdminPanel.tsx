@@ -381,7 +381,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                   <div className="text-center py-8">
                     <div className={clsx(
                       "animate-spin w-8 h-8 border-4 border-t-transparent rounded-full mx-auto mb-4",
-                      `border-${themePrefix}-primary`
+                      `${themePrefix}-primary`
                     )} />
                     <Typography>Loading tokens...</Typography>
                   </div>
@@ -547,7 +547,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 <div className="text-center py-8">
                   <div className={clsx(
                     "animate-spin w-8 h-8 border-4 border-t-transparent rounded-full mx-auto mb-4",
-                    `border-${themePrefix}-primary`
+                    `${themePrefix}-primary`
                   )} />
                   <Typography>Loading users...</Typography>
                 </div>

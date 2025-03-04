@@ -8,6 +8,8 @@ import { useFirebase } from '../../context/FirebaseContext';
 import { useNPCData } from '../../hooks/useNPCData';
 import { NPC } from '../../types/npc';
 import { useNavigation } from '../../context/NavigationContext';
+import { useTheme } from '../../context/ThemeContext';
+import clsx from 'clsx';
 import { Plus, Users, Loader2 } from 'lucide-react';
 
 const NPCsPage: React.FC = () => {
@@ -15,7 +17,8 @@ const NPCsPage: React.FC = () => {
   const { user } = useFirebase();
   const { npcs, loading, error, refreshNPCs } = useNPCData();
   const { navigateToPage } = useNavigation();
-  
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   // Calculate stats for display
   const stats = useMemo(() => ({
@@ -31,7 +34,7 @@ const NPCsPage: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8">
           <div className="flex items-center gap-4">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+            <Loader2 className={clsx("w-6 h-6 animate-spin", `${themePrefix}-primary`)} />
             <Typography>Loading NPCs...</Typography>
           </div>
         </Card>
@@ -82,7 +85,7 @@ const NPCsPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <Users className="w-8 h-8 text-blue-500 mr-4" />
+            <Users className={clsx("w-8 h-8 mr-4", `${themePrefix}-status-general`)} />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.total}
@@ -96,7 +99,7 @@ const NPCsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <Users className="w-8 h-8 text-green-500 mr-4" />
+            <Users className={clsx("w-8 h-8 mr-4", `${themePrefix}-npc-status-alive`)} />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.alive}
@@ -110,7 +113,7 @@ const NPCsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <Users className="w-8 h-8 text-red-500 mr-4" />
+            <Users className={clsx("w-8 h-8 mr-4", `${themePrefix}-npc-status-deceased`)} />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.deceased}
@@ -124,7 +127,7 @@ const NPCsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <Users className="w-8 h-8 text-yellow-500 mr-4" />
+            <Users className={clsx("w-8 h-8 mr-4", `${themePrefix}-npc-status-missing`)} />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.missing}

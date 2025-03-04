@@ -6,6 +6,8 @@ import Typography from '../../core/Typography';
 import Input from '../../core/Input';
 import { Search, Users, MapPin, Heart } from 'lucide-react';
 import { useNavigation } from '../../../context/NavigationContext';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 interface NPCDirectoryProps {
   npcs: NPC[];
@@ -26,6 +28,10 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [highlightedNpcId, setHighlightedNpcId] = useState<string | null>(null);
 
+  // Get theme context
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+  
   // Get URL search params for highlighted NPC
   const { getCurrentQueryParams } = useNavigation();
   const { highlight: highlightId } = getCurrentQueryParams();
@@ -132,16 +138,16 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
                 placeholder="Search NPCs..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                startIcon={<Search className="text-gray-400" />}
+                startIcon={<Search className={clsx(`${themePrefix}-typography-secondary`)} />}
                 fullWidth
               />
             </div>
 
             {/* Status Filter */}
             <div className="flex items-center gap-2">
-              <Users size={20} className="text-gray-500" />
+              <Users size={20} className={clsx(`${themePrefix}-typography-secondary`)} />
               <select
-                className="rounded border p-2"
+                className={clsx("rounded border p-2", `${themePrefix}-input`)}
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
@@ -155,9 +161,9 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
 
             {/* Relationship Filter */}
             <div className="flex items-center gap-2">
-              <Heart size={20} className="text-gray-500" />
+              <Heart size={20} className={clsx(`${themePrefix}-typography-secondary`)} />
               <select
-                className="rounded border p-2"
+                className={clsx("rounded border p-2", `${themePrefix}-input`)}
                 value={relationshipFilter}
                 onChange={(e) => setRelationshipFilter(e.target.value)}
               >
@@ -171,9 +177,9 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
 
             {/* Location Filter */}
             <div className="flex items-center gap-2">
-              <MapPin size={20} className="text-gray-500" />
+              <MapPin size={20} className={clsx(`${themePrefix}-typography-secondary`)} />
               <select
-                className="rounded border p-2"
+                className={clsx("rounded border p-2", `${themePrefix}-input`)}
                 value={locationFilter}
                 onChange={(e) => setLocationFilter(e.target.value)}
               >
@@ -193,7 +199,7 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
       {Object.entries(groupedNPCs).map(([location, locationNPCs]) => (
         <div key={location}>
           <div className="flex items-center gap-2 mb-4">
-            <MapPin className="text-gray-500" />
+            <MapPin className={clsx(`${themePrefix}-typography-secondary`)} />
             <Typography variant="h3">{location}</Typography>
           </div>
 
@@ -202,9 +208,10 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
               <div
                 key={npc.id}
                 id={`npc-${npc.id}`}
-                className={`transition-all duration-300 ${
-                  highlightedNpcId === npc.id ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg' : ''
-                }`}
+                className={clsx(
+                  "transition-all duration-300",
+                  highlightedNpcId === npc.id ? `${themePrefix}-highlighted-item` : ''
+                )}
               >
                 <NPCCard 
                   npc={npc} 
@@ -219,7 +226,7 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
       {filteredNPCs.length === 0 && (
         <Card>
           <Card.Content className="text-center py-8">
-            <Users className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+            <Users className={clsx("w-12 h-12 mx-auto mb-4", `${themePrefix}-typography-secondary`)} />
             <Typography variant="h3" className="mb-2">
               No NPCs Found
             </Typography>

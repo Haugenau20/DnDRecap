@@ -102,7 +102,7 @@ const StoryPage: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen">
         <Card className={clsx("p-8", `${themePrefix}-card`)}>
           <div className="flex items-center gap-4">
-            <Loader2 className={clsx("w-6 h-6 animate-spin", `text-${themePrefix}-primary`)} />
+            <Loader2 className={clsx("w-6 h-6 animate-spin", `${themePrefix}-primary`)} />
             <Typography>Loading chapter...</Typography>
           </div>
         </Card>
@@ -151,7 +151,7 @@ const StoryPage: React.FC = () => {
               Chapters
             </Button>
             <div className="flex items-center gap-2">
-              <Book className={clsx(`text-${themePrefix}-primary`)} />
+              <Book className={clsx(`${themePrefix}-primary`)} />
               <Typography color="secondary">
                 Reading Chapter {currentChapter?.order || 0} of {chapters.length}
               </Typography>

@@ -166,7 +166,7 @@ const NPCCard: React.FC<NPCCardProps> = ({
             <div className="space-y-2">
               {npc.occupation && (
                 <div className="flex items-center gap-2">
-                  <Heart size={16} className="text-gray-400" />
+                  <Heart size={16} className={clsx(`${themePrefix}-typography-secondary`)} />
                   <Typography variant="body-sm">
                     {npc.occupation}
                   </Typography>
@@ -179,7 +179,7 @@ const NPCCard: React.FC<NPCCardProps> = ({
                   onClick={() => handleLocationClick(npc.location!)}
                   className="flex items-center gap-2 w-full justify-start"
                 >
-                  <MapPin size={16} className="text-gray-400" />
+                  <MapPin size={16} className={clsx(`${themePrefix}-typography-secondary`)} />
                   <Typography variant="body-sm">
                     {npc.location}
                   </Typography>
@@ -301,7 +301,7 @@ const NPCCard: React.FC<NPCCardProps> = ({
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Calendar size={14} className="text-gray-400" />
+                          <Calendar size={14} className={clsx(`${themePrefix}-typography-secondary`)} />
                           <Typography variant="body-sm" color="secondary">
                             {new Date(note.date).toLocaleDateString('en-uk', { year: 'numeric', day: '2-digit', month: '2-digit'})}
                           </Typography>

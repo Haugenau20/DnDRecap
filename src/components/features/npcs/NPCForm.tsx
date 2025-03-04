@@ -8,6 +8,8 @@ import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Dialog from '../../core/Dialog';
 import { useQuests } from '../../../hooks/useQuests';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 interface NPCFormProps {
   onSuccess?: () => void;
@@ -20,6 +22,10 @@ const NPCForm: React.FC<NPCFormProps> = ({
   onCancel,
   existingNPCs
 }) => {
+  // Theme context
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+
   // Form state
   const [formData, setFormData] = useState<Partial<NPC>>({
     status: 'alive',
@@ -234,9 +240,9 @@ const NPCForm: React.FC<NPCFormProps> = ({
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">Status *</label>
+                  <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Status *</label>
                   <select
-                    className="w-full rounded-lg border p-2"
+                    className={clsx("w-full rounded-lg border p-2", `${themePrefix}-input`)}
                     value={formData.status}
                     onChange={(e) => handleInputChange('status', e.target.value)}
                     required
@@ -249,9 +255,9 @@ const NPCForm: React.FC<NPCFormProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Relationship *</label>
+                  <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Relationship *</label>
                   <select
-                    className="w-full rounded-lg border p-2"
+                    className={clsx("w-full rounded-lg border p-2", `${themePrefix}-input`)}
                     value={formData.relationship}
                     onChange={(e) => handleInputChange('relationship', e.target.value)}
                     required
@@ -287,36 +293,36 @@ const NPCForm: React.FC<NPCFormProps> = ({
             <div className="space-y-4">
               <Typography variant="h4">Character Details</Typography>
               <div>
-                <label className="block text-sm font-medium mb-1">Description</label>
+                <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Description</label>
                 <textarea
-                  className="w-full rounded-lg border p-2 h-24"
+                  className={clsx("w-full rounded-lg border p-2 h-24", `${themePrefix}-input`)}
                   value={formData.description || ''}
                   onChange={(e) => handleInputChange('description', e.target.value)}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Appearance</label>
+                <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Appearance</label>
                 <textarea
-                  className="w-full rounded-lg border p-2 h-24"
+                  className={clsx("w-full rounded-lg border p-2 h-24", `${themePrefix}-input`)}
                   value={formData.appearance || ''}
                   onChange={(e) => handleInputChange('appearance', e.target.value)}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Personality</label>
+                <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Personality</label>
                 <textarea
-                  className="w-full rounded-lg border p-2 h-24"
+                  className={clsx("w-full rounded-lg border p-2 h-24", `${themePrefix}-input`)}
                   value={formData.personality || ''}
                   onChange={(e) => handleInputChange('personality', e.target.value)}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Background</label>
+                <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Background</label>
                 <textarea
-                  className="w-full rounded-lg border p-2 h-24"
+                  className={clsx("w-full rounded-lg border p-2 h-24", `${themePrefix}-input`)}
                   value={formData.background || ''}
                   onChange={(e) => handleInputChange('background', e.target.value)}
                 />
@@ -343,7 +349,10 @@ const NPCForm: React.FC<NPCFormProps> = ({
                   return npc ? (
                     <div
                       key={npcId}
-                      className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
+                      className={clsx(
+                        "flex items-center gap-1 px-3 py-1 rounded-full",
+                        `${themePrefix}-tag`
+                      )}
                     >
                       <span>{npc.name}</span>
                       <button
@@ -357,7 +366,7 @@ const NPCForm: React.FC<NPCFormProps> = ({
                             }
                           }));
                         }}
-                        className="text-gray-500 hover:text-gray-700"
+                        className={clsx(`${themePrefix}-typography-secondary`, "hover:opacity-75")}
                       >
                         <X size={14} />
                       </button>
@@ -387,7 +396,10 @@ const NPCForm: React.FC<NPCFormProps> = ({
                     return quest ? (
                       <div
                         key={questId}
-                        className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
+                        className={clsx(
+                          "flex items-center gap-1 px-3 py-1 rounded-full",
+                          `${themePrefix}-tag`
+                        )}
                       >
                         <span>{quest.title}</span>
                         <button
@@ -397,7 +409,7 @@ const NPCForm: React.FC<NPCFormProps> = ({
                             newSet.delete(questId);
                             setSelectedQuests(newSet);
                           }}
-                          className="text-gray-500 hover:text-gray-700"
+                          className={clsx(`${themePrefix}-typography-secondary`, "hover:opacity-75")}
                         >
                           <X size={14} />
                         </button>
@@ -431,13 +443,16 @@ const NPCForm: React.FC<NPCFormProps> = ({
               {formData.connections?.affiliations.map((affiliation, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
+                  className={clsx(
+                    "flex items-center gap-1 px-3 py-1 rounded-full",
+                    `${themePrefix}-tag`
+                  )}
                 >
                   <span>{affiliation}</span>
                   <button
                     type="button"
                     onClick={() => handleAffiliationRemove(index)}
-                    className="text-gray-500 hover:text-gray-700"
+                    className={clsx(`${themePrefix}-typography-secondary`, "hover:opacity-75")}
                   >
                     <X size={14} />
                   </button>
@@ -448,8 +463,8 @@ const NPCForm: React.FC<NPCFormProps> = ({
 
             {/* Error Message */}
             {error && (
-              <div className="flex items-center gap-2 text-red-600">
-                <AlertCircle size={16} />
+              <div className="flex items-center gap-2">
+                <AlertCircle size={16} className={clsx(`${themePrefix}-typography-error`)} />
                 <Typography color="error">
                   {error}
                 </Typography>
@@ -494,11 +509,12 @@ const NPCForm: React.FC<NPCFormProps> = ({
               <button
                 key={npc.id}
                 onClick={() => toggleNPCSelection(npc.id)}
-                className={`p-2 rounded text-center transition-colors ${
+                className={clsx(
+                  "p-2 rounded text-center transition-colors",
                   selectedNPCs.has(npc.id)
-                    ? 'bg-blue-100 border-2 border-blue-500'
-                    : 'hover:bg-gray-100 border-2 border-transparent'
-                }`}
+                    ? `${themePrefix}-selected-item`
+                    : `${themePrefix}-selectable-item`
+                )}
               >
                 <Typography 
                   variant="body"
@@ -558,11 +574,12 @@ const NPCForm: React.FC<NPCFormProps> = ({
                   }
                   setSelectedQuests(newSet);
                 }}
-                className={`w-full p-2 rounded text-left transition-colors ${
+                className={clsx(
+                  "w-full p-2 rounded text-left transition-colors",
                   selectedQuests.has(quest.id)
-                    ? 'bg-blue-100 border-2 border-blue-500'
-                    : 'hover:bg-gray-100 border-2 border-transparent'
-                }`}
+                    ? `${themePrefix}-selected-item`
+                    : `${themePrefix}-selectable-item`
+                )}
               >
                 <Typography variant="body-sm" className={selectedQuests.has(quest.id) ? 'font-medium' : ''}>
                   {quest.title}

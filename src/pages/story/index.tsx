@@ -31,7 +31,7 @@ const StorySelection = () => {
         >
           <Card.Content>
             <div className="flex flex-col items-center">
-              <ScrollText className={clsx("w-24 h-24 mb-6", `text-${themePrefix}-primary`)} />
+              <ScrollText className={clsx("w-24 h-24 mb-6", `${themePrefix}-primary`)} />
               <Typography variant="h2" className={`mb-4 ${themePrefix}-typography-heading`}>
                 Session Chronicles
               </Typography>
@@ -52,7 +52,7 @@ const StorySelection = () => {
         >
           <Card.Content>
             <div className="flex flex-col items-center">
-              <BookOpen className={clsx("w-24 h-24 mb-6", `text-${themePrefix}-accent`)} />
+              <BookOpen className={clsx("w-24 h-24 mb-6", `${themePrefix}-accent`)} />
               <Typography variant="h2" className={`mb-4 ${themePrefix}-typography-heading`}>
                 Campaign Saga
               </Typography>

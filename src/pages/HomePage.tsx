@@ -113,7 +113,7 @@ const HomePage: React.FC = () => {
                   `${themePrefix}-icon-bg` // Use our new theme-specific class
                 )}>
                   {/* Theme-specific icon color */}
-                  <span className={clsx(`text-${themePrefix}-primary`)}>
+                  <span className={clsx(`${themePrefix}-primary`)}>
                     {item.icon}
                   </span>
                 </div>

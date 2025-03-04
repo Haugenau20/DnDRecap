@@ -52,9 +52,11 @@ export const darkTheme: Theme = {
     // New UI-specific colors to replace hardcoded values
     ui: {
       heading: '#FFFFFF', // White for headings
+      statusGeneral: '#8AB4F8',
       statusActive: '#888888', // Soft gray for active status
       statusCompleted: '#12873d', // Deep green for completed status
       statusFailed: '#c52020', // Light gray for failed status
+      statusUnknown: '#deaf21',
       statusText: '#121212', // Near black for status text on light backgrounds
       headerBackground: '#222222', // Slightly lighter than main bg for headers
       footerBackground: '#222222', // Match header for consistency

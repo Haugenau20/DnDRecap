@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
 import Typography from '../core/Typography';
+import { useTheme } from '../../context/ThemeContext';
+import clsx from 'clsx';
 
 interface BreadcrumbItem {
   label: string;
@@ -14,16 +16,22 @@ interface BreadcrumbProps {
 }
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className = '' }) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+
   return (
     <nav 
       aria-label="Breadcrumb" 
-      className={`flex items-center space-x-2 py-2 ${className}`}
+      className={clsx(`flex items-center space-x-2 py-2`, className)}
     >
       <ol className="flex items-center space-x-2">
         <li>
           <Link
             to="/"
-            className="text-gray-500 hover:text-gray-700 transition-colors"
+            className={clsx(
+              "hover:opacity-80 transition-colors",
+              `${themePrefix}-typography-secondary`
+            )}
             aria-label="Home"
           >
             <Home className="w-4 h-4" />
@@ -35,7 +43,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className = '' }) => {
 
           return (
             <li key={item.label} className="flex items-center">
-              <ChevronRight className="w-4 h-4 text-gray-400 mx-2" />
+              <ChevronRight className={clsx("w-4 h-4 mx-2", `${themePrefix}-typography-secondary`)} />
               {isLast ? (
                 <Typography
                   variant="body-sm"
@@ -48,7 +56,10 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ items, className = '' }) => {
               ) : (
                 <Link
                   to={item.href || '#'}
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                  className={clsx(
+                    "transition-colors hover:opacity-80",
+                    `${themePrefix}-typography-secondary`
+                  )}
                 >
                   {item.label}
                 </Link>

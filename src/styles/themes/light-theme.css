@@ -40,9 +40,11 @@
   --light-heading: var(--color-ui-heading);
   --light-input-bg: var(--color-ui-inputBackground);
   --light-placeholder: var(--color-ui-inputPlaceholder);
+  --light-status-general: var(--color-ui-statusGeneral);
   --light-status-active: var(--color-ui-statusActive);
   --light-status-completed: var(--color-ui-statusCompleted);
   --light-status-failed: var(--color-ui-statusFailed);
+  --light-status-unknown: var(--color-ui-statusUnknown);
   --light-status-text: var(--color-ui-statusText);
   --light-header-bg: var(--color-ui-headerBackground);
   --light-footer-bg: var(--color-ui-footerBackground);
@@ -57,6 +59,14 @@
   background-color: var(--light-bg);
   color: var(--light-text);
   font-family: var(--font-primary);
+}
+
+.light-primary {
+  color: var(--light-primary)
+}
+
+.light-accent {
+  color: var(--light-accent);
 }
 
 /* Enhanced card styling */
@@ -232,6 +242,10 @@
   font-weight: 500;
 }
 
+.light-status-general {
+  color: var(--light-status-general);
+}
+
 .light-status-active {
   /* background-color: var(--light-status-active); */
   color: var(--light-status-active);
@@ -400,11 +414,11 @@
 }
 
 .light-npc-status-missing {
-  color: var(--light-status-active);
+  color: var(--light-status-unknown);
 }
 
 .light-npc-status-unknown {
-  color: var(--light-text-secondary);
+  color: var(--light-status-unknown);
 }
 
 .light-npc-relationship-friendly {
@@ -446,6 +460,7 @@
 
 .light-tag {
   background-color: var(--light-bg-secondary);
+  border: 1px solid var(--light-card-border);
 }
 
 /* Book Viewer styles */
@@ -577,4 +592,10 @@
 .light-selected-item {
   background-color: var(--light-bg-accent);
   border: 2px solid var(--light-primary);
+}
+
+.light-highlighted-item {
+  outline: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 0 0 2px var(--color-background-primary);
 }

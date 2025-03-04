@@ -51,9 +51,11 @@ export const lightTheme: Theme = {
       },
       ui: {
         heading: '#FFFFFF', // Deep navy for strong headings
+        statusGeneral: '#2563EB',
         statusActive: '#3B82F6', // Bright blue for active state
         statusCompleted: '#16A34A', // Strong green for success
         statusFailed: '#DC2626', // Bold red for errors
+        statusUnknown: '#e1b737',
         statusText: '#FFFFFF', // White text for status indicators
         headerBackground: '#3B82F6', // **Stronger, more vibrant blue header**
         footerBackground: '#E5EDF8', // Soft blue-gray footer for balance

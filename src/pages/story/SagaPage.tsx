@@ -63,7 +63,7 @@ const SagaPage: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen">
         <Card className={clsx("p-8", `${themePrefix}-card`)}>
           <div className="flex items-center gap-4">
-            <Loader2 className={clsx("w-6 h-6 animate-spin", `text-${themePrefix}-primary`)} />
+            <Loader2 className={clsx("w-6 h-6 animate-spin", `${themePrefix}-primary`)} />
             <Typography className={`${themePrefix}-typography`}>Loading saga...</Typography>
           </div>
         </Card>

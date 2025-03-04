@@ -35,9 +35,11 @@
   --dark-heading: var(--color-ui-heading);
   --dark-input-bg: var(--color-ui-inputBackground);
   --dark-placeholder: var(--color-ui-inputPlaceholder);
+  --dark-status-general: var(--color-ui-statusGeneral);
   --dark-status-active: var(--color-ui-statusActive);
   --dark-status-completed: var(--color-ui-statusCompleted);
   --dark-status-failed: var(--color-ui-statusFailed);
+  --dark-status-unknown: var(--color-ui-statusUnknown);
   --dark-status-text: var(--color-ui-statusText);
   --dark-header-bg: var(--color-ui-headerBackground);
   --dark-footer-bg: var(--color-ui-footerBackground);
@@ -52,6 +54,14 @@
   background-color: var(--dark-bg);
   color: var(--dark-text);
   font-family: var(--font-primary);
+}
+
+.dark-primary {
+  color: var(--dark-primary);
+}
+
+.dark-accent {
+  color: var(--dark-accent);
 }
 
 /* Enhanced card styling */
@@ -228,6 +238,10 @@
   font-weight: 500;
 }
 
+.dark-status-general {
+  color: var(--dark-status-general);
+}
+
 .dark-status-active {
   color: var(--dark-status-active);
 }
@@ -398,11 +412,11 @@
 }
 
 .dark-npc-status-missing {
-  color: var(--dark-status-active);
+  color: var(--dark-status-unknown);
 }
 
 .dark-npc-status-unknown {
-  color: var(--dark-text-secondary);
+  color: var(--dark-status-unknown);
 }
 
 .dark-npc-relationship-friendly {
@@ -601,4 +615,10 @@
 .dark-selected-item {
   background-color: var(--dark-bg-accent);
   border: 2px solid var(--dark-primary);
+}
+
+.dark-highlighted-item {
+  outline: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 0 0 2px var(--color-background-primary);
 }

@@ -59,9 +59,11 @@ export interface ThemeColors {
     // Headers and bright elements
     heading: string;
     // Status indicators
+    statusGeneral: string;
     statusActive: string;
     statusCompleted: string;
     statusFailed: string;
+    statusUnknown: string;
     statusText: string;
     // Navigation and layout
     headerBackground: string;

@@ -41,9 +41,11 @@
   --medieval-heading: var(--color-ui-heading);
   --medieval-input-bg: var(--color-ui-inputBackground);
   --medieval-placeholder: var(--color-ui-inputPlaceholder);
+  --medieval-status-general: var(--color-ui-statusGeneral);
   --medieval-status-active: var(--color-ui-statusActive);
   --medieval-status-completed: var(--color-ui-statusCompleted);
   --medieval-status-failed: var(--color-ui-statusFailed);
+  --medieval-status-unknown: var(--color-ui-statusUnknown);
   --medieval-status-text: var(--color-ui-statusText);
   --medieval-header-bg: var(--color-ui-headerBackground);
   --medieval-footer-bg: var(--color-ui-footerBackground);
@@ -61,6 +63,14 @@
   background-color: var(--parchment-bg);
   color: var(--ink-color);
   font-family: var(--font-primary);
+}
+
+.medieval-primary {
+  color: var(--primary-color)
+}
+
+.medieval-accent {
+  color: var(--accent-color);
 }
 
 /* Enhanced card styling */
@@ -301,6 +311,10 @@
   font-weight: 500;
 }
 
+.medieval-status-general {
+  color: var(--medieval-status-general);
+}
+
 .medieval-status-active {
   color: var(--medieval-status-active);
 }
@@ -511,11 +525,11 @@
 }
 
 .medieval-npc-status-missing {
-  color: var(--medieval-status-active);
+  color: var(--medieval-status-unknown);
 }
 
 .medieval-npc-status-unknown {
-  color: var(--ink-secondary);
+  color: var(--medieval-status-unknown);
 }
 
 .medieval-npc-relationship-friendly {
@@ -680,4 +694,10 @@
 .medieval-selected-item {
   background-color: var(--parchment-accent);
   border: 2px solid var(--primary-color);
+}
+
+.medieval-highlighted-item {
+  outline: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 0 0 2px var(--color-background-primary);
 }

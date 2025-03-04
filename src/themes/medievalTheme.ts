@@ -53,9 +53,11 @@ export const medievalTheme: Theme = {
     // Add UI-specific colors for the D&D theme
     ui: {
       heading: '#2C1810',     // Deep brown for headings
+      statusGeneral: '#1147bb',
       statusActive: '#DAA520', // Gold for active status
       statusCompleted: '#006400', // Deep green for completed status
       statusFailed: '#8B0000', // Deep red for failed status
+      statusUnknown: '#DAA520',
       statusText: '#FDF5E6', // Light parchment for status text
       headerBackground: '#F5E6D3', // Slightly darker parchment for header
       footerBackground: '#F5E6D3', // Match header for consistency

@@ -239,7 +239,7 @@ const QuestsPage: React.FC = () => {
             id={`quest-${quest.id}`}
             className={clsx(
               `transition-all duration-300`,
-              highlightedQuestId === quest.id ? `ring-2 ring-offset-2 rounded-lg ${themePrefix}-primary ring-opacity-100` : ''
+              highlightedQuestId === quest.id ? `${themePrefix}-highlighted-item` : ''
             )}
           >
             <QuestCard quest={quest} />

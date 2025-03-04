@@ -75,7 +75,7 @@ const StorySidebar = () => {
       {/* Reading Progress */}
       <div>
         <div className="flex items-center gap-2 mb-3">
-          <Book className={clsx("w-5 h-5", `text-${themePrefix}-primary`)} />
+          <Book className={clsx("w-5 h-5", `${themePrefix}-primary`)} />
           <Typography variant="h4">Reading Progress</Typography>
         </div>
         <div className={clsx("rounded-full h-2 mb-2", `${themePrefix}-progress-container`)}>
@@ -92,7 +92,7 @@ const StorySidebar = () => {
       {/* Recently Read */}
       <div>
         <div className="flex items-center gap-2 mb-3">
-          <Clock className={clsx("w-5 h-5", `text-${themePrefix}-primary`)} />
+          <Clock className={clsx("w-5 h-5", `${themePrefix}-primary`)} />
           <Typography variant="h4">Recently Read</Typography>
         </div>
         <div className="space-y-2">
@@ -124,7 +124,7 @@ const StorySidebar = () => {
       {/* Quick Actions */}
       <div>
         <div className="flex items-center gap-2 mb-3">
-          <ListRestart className={clsx("w-5 h-5", `text-${themePrefix}-primary`)} />
+          <ListRestart className={clsx("w-5 h-5", `${themePrefix}-primary`)} />
           <Typography variant="h4">Quick Actions</Typography>
         </div>
         <div className="space-y-2">
