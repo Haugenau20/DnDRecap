@@ -73,6 +73,10 @@
   color: var(--accent-color);
 }
 
+.medieval-bg-secondary {
+  background-color: var(--parchment-dark);
+}
+
 /* Enhanced card styling */
 .medieval-card {
   position: relative;

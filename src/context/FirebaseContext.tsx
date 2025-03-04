@@ -29,6 +29,7 @@ interface FirebaseContextType {
   refreshSession: () => void;
   sessionExpired: boolean;
   renewSession: (rememberMe?: boolean) => Promise<void>;
+  updateUserProfile: (uid: string, updates: Partial<PlayerProfile>) => Promise<void>;
 }
 
 const FirebaseContext = createContext<FirebaseContextType | undefined>(undefined);
@@ -106,6 +107,24 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     // Cleanup subscription
     return () => unsubscribe();
   }, [fetchUserProfile, dispatchAuthStateChangedEvent]);
+
+  const updateUserProfile = async (uid: string, updates: Partial<PlayerProfile>) => {
+    try {
+      setError(null);
+      // Update the user profile in Firestore
+      await firebaseService.updateDocument('users', uid, updates);
+      
+      // Update local state if the user is the current user
+      if (user && user.uid === uid) {
+        setUserProfile(prevProfile => 
+          prevProfile ? { ...prevProfile, ...updates } : null
+        );
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update user profile');
+      throw err;
+    }
+  };
 
   const generateRegistrationToken = async (notes: string = ''): Promise<string> => {
     try {
@@ -401,6 +420,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     deleteRegistrationToken,
     getAllUsers,
     deleteUser,
+    updateUserProfile,
   };
 
   return (

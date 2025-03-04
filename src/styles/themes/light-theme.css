@@ -69,6 +69,10 @@
   color: var(--light-accent);
 }
 
+.light-bg-secondary {
+  background-color: var(--light-bg-secondary);
+}
+
 /* Enhanced card styling */
 .light-card {
   border: 1px solid var(--light-card-border);

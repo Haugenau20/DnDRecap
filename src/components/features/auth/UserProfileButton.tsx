@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useFirebase } from '../../../context/FirebaseContext';
+import { useTheme } from '../../../context/ThemeContext';
 import Button from '../../core/Button';
 import Dialog from '../../core/Dialog';
 import { LogIn, LogOut, User, UserPlus, ShieldAlert } from 'lucide-react';
@@ -7,14 +8,36 @@ import SignInForm from './SignInForm';
 import UserProfile from './UserProfile';
 import RegistrationForm from './RegistrationForm';
 import AdminPanel from './AdminPanel';
+import { ThemeName } from '../../../types/theme';
 
 const UserProfileButton: React.FC = () => {
   const { user, userProfile, signOut } = useFirebase();
+  const { setTheme } = useTheme();
   const [showSignIn, setShowSignIn] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
+  
+  // Use a ref to track if we've already loaded the theme from preferences
+  const initialThemeLoadedRef = useRef(false);
 
   const isAdmin = userProfile?.isAdmin || false;
+
+  // Sync theme from user profile only on initial login
+  useEffect(() => {
+    // Only apply theme from preferences if:
+    // 1. User profile is loaded (after login)
+    // 2. We haven't already loaded the theme (to prevent overriding manual changes)
+    if (userProfile?.preferences?.theme && !initialThemeLoadedRef.current) {
+      setTheme(userProfile.preferences.theme as ThemeName);
+      // Mark that we've loaded the theme from preferences
+      initialThemeLoadedRef.current = true;
+    }
+    
+    // Reset the flag when user logs out
+    if (!userProfile) {
+      initialThemeLoadedRef.current = false;
+    }
+  }, [userProfile, setTheme]);
 
   const handleSignOut = async () => {
     try {
