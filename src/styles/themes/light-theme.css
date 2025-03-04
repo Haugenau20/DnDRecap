@@ -542,7 +542,7 @@
 }
 
 .light-rumor-card-unconfirmed {
-  border-left: 4px solid var(--light-status-active);
+  border-left: 4px solid var(--light-status-unknown);
 }
 
 .light-rumor-card-false {
@@ -554,7 +554,7 @@
 }
 
 .light-rumor-status-unconfirmed {
-  color: var(--light-status-active);
+  color: var(--light-status-unknown);
 }
 
 .light-rumor-status-false {
@@ -566,7 +566,7 @@
 }
 
 .light-rumor-status-border-unconfirmed {
-  border-color: var(--light-status-active);
+  border-color: var(--light-status-unknown);
 }
 
 .light-rumor-status-border-false {

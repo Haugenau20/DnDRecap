@@ -550,7 +550,7 @@
 }
 
 .dark-rumor-card-unconfirmed {
-  border-left: 4px solid var(--dark-status-active);
+  border-left: 4px solid var(--dark-status-unknown);
 }
 
 .dark-rumor-card-false {
@@ -562,7 +562,7 @@
 }
 
 .dark-rumor-status-unconfirmed {
-  color: var(--dark-status-active);
+  color: var(--dark-status-unknown);
 }
 
 .dark-rumor-status-false {
@@ -574,7 +574,7 @@
 }
 
 .dark-rumor-status-border-unconfirmed {
-  border-color: var(--dark-status-active);
+  border-color: var(--dark-status-unknown);
 }
 
 .dark-rumor-status-border-false {

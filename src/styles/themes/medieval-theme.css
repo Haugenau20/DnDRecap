@@ -440,11 +440,7 @@
   background: var(--primary-color);
 }
 
-/* Quest and NPC specific styling */
-.medieval-quest-card {
-  border-left: 4px solid var(--medieval-status-active);
-}
-
+/* NPC specific styling */
 .medieval-npc-card {
   border-left: 4px solid var(--primary-color);
 }
@@ -479,7 +475,7 @@
 
 /* Quest Card styles */
 .medieval-quest-card {
-  border-left: 4px solid var(--medieval-status-active);
+  border-left: 4px solid var(--primary-color);
 }
 
 .medieval-progress-container {
@@ -643,7 +639,7 @@
 }
 
 .medieval-rumor-card-unconfirmed {
-  border-left: 4px solid var(--medieval-status-active);
+  border-left: 4px solid var(--medieval-status-unknown);
 }
 
 .medieval-rumor-card-false {
@@ -655,7 +651,7 @@
 }
 
 .medieval-rumor-status-unconfirmed {
-  color: var(--medieval-status-active);
+  color: var(--medieval-status-unknown);
 }
 
 .medieval-rumor-status-false {
@@ -667,7 +663,7 @@
 }
 
 .medieval-rumor-status-border-unconfirmed {
-  border-color: var(--medieval-status-active);
+  border-color: var(--medieval-status-unknown);
 }
 
 .medieval-rumor-status-border-false {

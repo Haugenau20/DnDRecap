@@ -53,7 +53,7 @@ export const darkTheme: Theme = {
     ui: {
       heading: '#FFFFFF', // White for headings
       statusGeneral: '#8AB4F8',
-      statusActive: '#888888', // Soft gray for active status
+      statusActive: '#8AB4F8', // Soft gray for active status
       statusCompleted: '#12873d', // Deep green for completed status
       statusFailed: '#c52020', // Light gray for failed status
       statusUnknown: '#deaf21',

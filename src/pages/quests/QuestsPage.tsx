@@ -137,7 +137,7 @@ const QuestsPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <Scroll className={clsx("w-8 h-8 mr-4", `${themePrefix}-primary`)} />
+            <Scroll className={clsx("w-8 h-8 mr-4", `${themePrefix}-status-active`)} />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.active}

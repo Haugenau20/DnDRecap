@@ -54,7 +54,7 @@ export const medievalTheme: Theme = {
     ui: {
       heading: '#2C1810',     // Deep brown for headings
       statusGeneral: '#1147bb',
-      statusActive: '#DAA520', // Gold for active status
+      statusActive: '#1147bb',
       statusCompleted: '#006400', // Deep green for completed status
       statusFailed: '#8B0000', // Deep red for failed status
       statusUnknown: '#DAA520',
