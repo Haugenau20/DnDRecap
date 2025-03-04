@@ -9,6 +9,8 @@ import QuestCard from '../../components/features/quests/QuestCard';
 import { useFirebase } from '../../context/FirebaseContext';
 import { useQuests } from '../../hooks/useQuests';
 import { useNavigation } from '../../hooks/useNavigation';
+import { useTheme } from '../../context/ThemeContext';
+import clsx from 'clsx';
 import { 
   Scroll, 
   CheckCircle2, 
@@ -24,6 +26,8 @@ const QuestsPage: React.FC = () => {
   // Auth state
   const { user } = useFirebase();
   const { navigateToPage } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
   
   // Get quests data
   const { quests, loading, error } = useQuests();
@@ -83,7 +87,7 @@ const QuestsPage: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8">
           <div className="flex items-center gap-4">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+            <Loader2 className={clsx("w-6 h-6 animate-spin", `${themePrefix}-primary`)} />
             <Typography>Loading quests...</Typography>
           </div>
         </Card>
@@ -133,7 +137,7 @@ const QuestsPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <Scroll className="w-8 h-8 text-blue-500 mr-4" />
+            <Scroll className={clsx("w-8 h-8 mr-4", `${themePrefix}-primary`)} />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.active}
@@ -147,7 +151,7 @@ const QuestsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <CheckCircle2 className="w-8 h-8 text-green-500 mr-4" />
+            <CheckCircle2 className={clsx("w-8 h-8 mr-4", `${themePrefix}-status-completed`)} />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.completed}
@@ -161,7 +165,7 @@ const QuestsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <XCircle className="w-8 h-8 text-red-500 mr-4" />
+            <XCircle className={clsx("w-8 h-8 mr-4", `${themePrefix}-status-failed`)} />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.failed}
@@ -179,7 +183,7 @@ const QuestsPage: React.FC = () => {
         <Card.Content className="flex flex-col md:flex-row items-start md:items-center gap-4">
           <div className="flex-1 w-full md:w-auto">
             <Input
-              startIcon={<Search className="text-gray-400" />}
+              startIcon={<Search className={`${themePrefix}-typography-secondary`} />}
               placeholder="Search quests..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -190,10 +194,10 @@ const QuestsPage: React.FC = () => {
           <div className="flex items-center gap-4">
             {/* Status Filter */}
             <div className="flex items-center gap-2">
-              <Filter size={20} className="text-gray-500" />
+              <Filter size={20} className={`${themePrefix}-typography-secondary`} />
               <Typography variant="body-sm">Status:</Typography>
               <select
-                className="rounded border p-1"
+                className={clsx("rounded border p-1", `${themePrefix}-input`)}
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as QuestStatus | 'all')}
               >
@@ -207,10 +211,10 @@ const QuestsPage: React.FC = () => {
             {/* Location Filter */}
             {locations.length > 0 && (
               <div className="flex items-center gap-2">
-                <MapPin size={20} className="text-gray-500" />
+                <MapPin size={20} className={`${themePrefix}-typography-secondary`} />
                 <Typography variant="body-sm">Location:</Typography>
                 <select
-                  className="rounded border p-1"
+                  className={clsx("rounded border p-1", `${themePrefix}-input`)}
                   value={locationFilter}
                   onChange={(e) => setLocationFilter(e.target.value)}
                 >
@@ -233,9 +237,10 @@ const QuestsPage: React.FC = () => {
           <div
             key={quest.id}
             id={`quest-${quest.id}`}
-            className={`transition-all duration-300 ${
-              highlightedQuestId === quest.id ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg' : ''
-            }`}
+            className={clsx(
+              `transition-all duration-300`,
+              highlightedQuestId === quest.id ? `ring-2 ring-offset-2 rounded-lg ${themePrefix}-primary ring-opacity-100` : ''
+            )}
           >
             <QuestCard quest={quest} />
           </div>
@@ -244,7 +249,7 @@ const QuestsPage: React.FC = () => {
         {filteredQuests.length === 0 && (
           <Card>
             <Card.Content className="text-center py-12">
-              <Scroll className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+              <Scroll className={clsx("w-12 h-12 mx-auto mb-4", `${themePrefix}-typography-secondary`)} />
               <Typography variant="h3" className="mb-2">
                 No Quests Found
               </Typography>

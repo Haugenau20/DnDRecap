@@ -4,6 +4,8 @@ import { Quest, QuestStatus } from '../../../types/quest';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 import { 
   Scroll, 
   CheckCircle2, 
@@ -26,6 +28,9 @@ const QuestTracker: React.FC<QuestTrackerProps> = ({
   quests,
   onUpdateQuest 
 }) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+
   // State for filters and sorting
   const [statusFilter, setStatusFilter] = useState<QuestStatus | 'all'>('all');
   const [sortByDate, setSortByDate] = useState(true);
@@ -71,10 +76,10 @@ const QuestTracker: React.FC<QuestTrackerProps> = ({
       <Card>
         <Card.Content className="flex flex-wrap items-center gap-4">
           <div className="flex items-center space-x-2">
-            <Filter size={20} className="text-gray-500" />
+            <Filter size={20} className={`${themePrefix}-typography-secondary`} />
             <Typography variant="body-sm">Status:</Typography>
             <select
-              className="rounded border p-1"
+              className={clsx("rounded border p-1", `${themePrefix}-input`)}
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as QuestStatus | 'all')}
             >
@@ -101,9 +106,10 @@ const QuestTracker: React.FC<QuestTrackerProps> = ({
         {sortedQuests.map(quest => (
           <Card 
             key={quest.id}
-            className={`transition-all ${
+            className={clsx(
+              "transition-all",
               quest.status === 'completed' ? 'opacity-75' : ''
-            }`}
+            )}
           >
             <Card.Content className="space-y-4">
               {/* Quest Header */}
@@ -123,7 +129,7 @@ const QuestTracker: React.FC<QuestTrackerProps> = ({
                     variant="ghost"
                     size="sm"
                     onClick={() => handleStatusUpdate(quest, 'completed')}
-                    startIcon={<CheckCircle2 className="text-green-500" />}
+                    startIcon={<CheckCircle2 className={`${themePrefix}-status-completed`} />}
                     disabled={quest.status === 'completed'}
                   >
                     Complete
@@ -132,7 +138,7 @@ const QuestTracker: React.FC<QuestTrackerProps> = ({
                     variant="ghost"
                     size="sm"
                     onClick={() => handleStatusUpdate(quest, 'failed')}
-                    startIcon={<XCircle className="text-red-500" />}
+                    startIcon={<XCircle className={`${themePrefix}-status-failed`} />}
                     disabled={quest.status === 'failed'}
                   >
                     Fail
@@ -142,7 +148,7 @@ const QuestTracker: React.FC<QuestTrackerProps> = ({
 
               {/* Quest Details */}
               {expanded.has(quest.id) && (
-                <div className="pl-4 border-l-2 border-gray-200">
+                <div className={clsx("pl-4 border-l-2", `${themePrefix}-border`)}>
                   {/* Objectives */}
                   <Typography variant="h4" className="mb-2">
                     Objectives
@@ -168,7 +174,7 @@ const QuestTracker: React.FC<QuestTrackerProps> = ({
                               });
                             }
                           }}
-                          className="h-4 w-4"
+                          className={`h-4 w-4 ${themePrefix}-input`}
                         />
                         <Typography
                           color={objective.completed ? 'secondary' : 'default'}
@@ -228,7 +234,7 @@ const QuestTracker: React.FC<QuestTrackerProps> = ({
       {sortedQuests.length === 0 && (
         <Card>
           <Card.Content className="text-center py-8">
-            <Scroll className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+            <Scroll className={clsx("w-12 h-12 mx-auto mb-4", `${themePrefix}-typography-secondary`)} />
             <Typography variant="h3" className="mb-2">
               No Quests Found
             </Typography>

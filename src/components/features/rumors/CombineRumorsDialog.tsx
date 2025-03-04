@@ -5,6 +5,8 @@ import Dialog from '../../core/Dialog';
 import Typography from '../../core/Typography';
 import Button from '../../core/Button';
 import Input from '../../core/Input';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 import { X, Layers, AlertCircle } from 'lucide-react';
 
 interface CombineRumorsDialogProps {
@@ -25,6 +27,9 @@ const CombineRumorsDialog: React.FC<CombineRumorsDialogProps> = ({
   rumors,
   onCombine
 }) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+
   // Form state
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -123,11 +128,17 @@ const CombineRumorsDialog: React.FC<CombineRumorsDialogProps> = ({
             Selected Rumors
           </Typography>
           {selectedRumors.length > 0 ? (
-            <div className="space-y-2 max-h-40 overflow-y-auto p-2 border rounded-lg">
+            <div className={clsx(
+              "space-y-2 max-h-40 overflow-y-auto p-2 border rounded-lg",
+              `${themePrefix}-card-content`
+            )}>
               {selectedRumors.map(rumor => (
                 <div
                   key={rumor.id}
-                  className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+                  className={clsx(
+                    "flex items-center justify-between p-2 rounded-lg",
+                    `${themePrefix}-selectable-item`
+                  )}
                 >
                   <div className="flex-1">
                     <Typography variant="body-sm" className="font-medium">
@@ -183,9 +194,9 @@ const CombineRumorsDialog: React.FC<CombineRumorsDialogProps> = ({
           />
 
           <div>
-            <label className="block text-sm font-medium mb-1">Status *</label>
+            <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Status *</label>
             <select
-              className="w-full rounded-lg border p-2"
+              className={clsx("w-full rounded-lg border p-2", `${themePrefix}-input`)}
               value={status}
               onChange={(e) => setStatus(e.target.value as RumorStatus)}
               required
@@ -200,7 +211,7 @@ const CombineRumorsDialog: React.FC<CombineRumorsDialogProps> = ({
 
         {/* Error Message */}
         {error && (
-          <div className="flex items-center gap-2 text-red-600">
+          <div className={clsx("flex items-center gap-2", `${themePrefix}-form-error`)}>
             <AlertCircle size={16} />
             <Typography color="error">{error}</Typography>
           </div>

@@ -41,7 +41,7 @@ const UserProfileButton: React.FC = () => {
       {user ? (
         <div className="flex items-center gap-2">
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={handleProfileClick}
             startIcon={<User className="w-5 h-5" />}
           >
@@ -50,7 +50,7 @@ const UserProfileButton: React.FC = () => {
           
           {isAdmin && (
             <Button
-              variant="outline"
+              variant="ghost"
               onClick={handleAdminClick}
               startIcon={<ShieldAlert className="w-5 h-5" />}
             >

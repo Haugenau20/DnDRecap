@@ -81,25 +81,21 @@ export const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, In
     ref
   ) => {
     const { theme } = useTheme();
-    const themePrefix = theme.name; // 'default' or 'dnd'
+    const themePrefix = theme.name;
 
     const inputStyles = twMerge(
       clsx(
-        'w-full rounded-lg border bg-white transition-colors duration-200',
-        'focus:outline-none focus:ring-2 focus:ring-offset-2',
-        'disabled:bg-gray-50 disabled:cursor-not-allowed',
+        'w-full rounded-lg border transition-colors duration-200',
+        'focus:outline-none',
         !isTextArea && sizeStyles[size],
         isTextArea && 'p-3',
         startIcon && 'pl-10',
         endIcon && 'pr-10',
         
-        // Theme-specific class
+        // Theme-specific classes
         `${themePrefix}-input`,
-        
-        // Standard error/success states
-        error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
-        successMessage && 'border-green-500 focus:border-green-500 focus:ring-green-500',
-        !error && !successMessage && 'border-gray-300 focus:border-blue-500 focus:ring-blue-500',
+        error && `${themePrefix}-input-error`,
+        successMessage && `${themePrefix}-input-success`,
         className
       )
     );
@@ -117,14 +113,17 @@ export const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, In
         {label && (
           <label className={clsx(
             'mb-1.5 text-sm font-medium',
-            `${themePrefix}-typography-label`
+            `${themePrefix}-form-label`
           )}>
             {label}
           </label>
         )}
         <div className="relative">
           {startIcon && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <div className={clsx(
+              "absolute left-3 top-1/2 -translate-y-1/2",
+              `${themePrefix}-typography-secondary`
+            )}>
               {startIcon}
             </div>
           )}
@@ -143,7 +142,10 @@ export const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, In
             />
           )}
           {endIcon && (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <div className={clsx(
+              "absolute right-3 top-1/2 -translate-y-1/2",
+              `${themePrefix}-typography-secondary`
+            )}>
               {endIcon}
             </div>
           )}
@@ -151,9 +153,9 @@ export const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, In
         {(helperText || error || successMessage) && (
           <p className={clsx(
             'mt-1.5 text-sm',
-            error && 'text-red-500',
-            successMessage && 'text-green-500',
-            !error && !successMessage && `${themePrefix}-typography-secondary`
+            error && `${themePrefix}-form-error`,
+            successMessage && `${themePrefix}-form-success`,
+            !error && !successMessage && `${themePrefix}-form-helper`
           )}>
             {error || successMessage || helperText}
           </p>

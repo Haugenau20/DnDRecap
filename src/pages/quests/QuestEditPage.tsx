@@ -1,3 +1,4 @@
+// src/pages/quests/QuestEditPage.tsx
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Typography from '../../components/core/Typography';
@@ -7,6 +8,8 @@ import QuestEditForm from '../../components/features/quests/QuestEditForm';
 import { useQuests } from '../../hooks/useQuests';
 import { useFirebase } from '../../context/FirebaseContext';
 import { useNavigation } from '../../context/NavigationContext';
+import { useTheme } from '../../context/ThemeContext';
+import clsx from 'clsx';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 
 const QuestEditPage: React.FC = () => {
@@ -14,6 +17,8 @@ const QuestEditPage: React.FC = () => {
   const { questId } = useParams<{ questId: string }>();
   const { quests, loading, error, refreshQuests } = useQuests();
   const { user } = useFirebase();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
   
   const editingQuest = quests.find(quest => quest.id === questId);
 
@@ -29,7 +34,7 @@ const QuestEditPage: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8">
           <div className="flex items-center gap-4">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+            <Loader2 className={clsx("w-6 h-6 animate-spin", `${themePrefix}-primary`)} />
             <Typography>Loading quest data...</Typography>
           </div>
         </Card>

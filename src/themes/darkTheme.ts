@@ -41,21 +41,20 @@ export const darkTheme: Theme = {
         background: 'transparent',
         text: '#E0E0E0',
         hover: '#3B3B52',
+        border: '#3B3B52',
       },
       ghost: {
         background: 'transparent',
         text: '#B0B0B0',
-        hover: '#8AB4F8',
+        hover: '#3D3D5C',
       },
     },
     // New UI-specific colors to replace hardcoded values
     ui: {
       heading: '#FFFFFF', // White for headings
-      inputBackground: '#1A1A1A', // Slightly lighter than main bg
-      inputPlaceholder: '#777777', // Medium gray for placeholders
       statusActive: '#888888', // Soft gray for active status
-      statusCompleted: '#666666', // Medium gray for completed status
-      statusFailed: '#AAAAAA', // Light gray for failed status
+      statusCompleted: '#12873d', // Deep green for completed status
+      statusFailed: '#c52020', // Light gray for failed status
       statusText: '#121212', // Near black for status text on light backgrounds
       headerBackground: '#222222', // Slightly lighter than main bg for headers
       footerBackground: '#222222', // Match header for consistency
@@ -63,6 +62,30 @@ export const darkTheme: Theme = {
       hoverMedium: 'rgba(255, 255, 255, 0.1)', // Slightly stronger hover effect
       iconBackground: '#3F4A5D', // Brighter background for icons
       iconBorder: '#323A47', // Border for icons
+
+      // Input styling
+      inputBackground: '#2a2a2a',
+      inputPlaceholder: '#6b7280',
+      inputBorder: '#4b5563',
+      inputBorderFocus: '#60a5fa',
+      inputRingFocus: 'rgba(59, 130, 246, 0.5)',
+      
+      // Error states
+      inputErrorBorder: '#ef4444',
+      inputErrorFocus: '#ef4444',
+      inputErrorRing: 'rgba(239, 68, 68, 0.5)',
+      
+      // Success states
+      inputSuccessBorder: '#10b981',
+      inputSuccessFocus: '#10b981',
+      inputSuccessRing: 'rgba(16, 185, 129, 0.5)',
+      
+      // Form element states
+      formDisabledBg: '#374151',
+      formLabelText: '#d1d5db',
+      formHelperText: '#9ca3af',
+      formErrorText: '#f87171',
+      formSuccessText: '#34d399',
     }
   },
   fonts: {

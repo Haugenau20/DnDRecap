@@ -113,9 +113,9 @@ const RumorCard: React.FC<RumorCardProps> = ({
   };
 
   // Handle convert to quest
-const handleConvertToQuest = () => {
-  navigateToPage(createPath('/quests/create', {}, { fromRumor: rumor.id }));
-};
+  const handleConvertToQuest = () => {
+    navigateToPage(createPath('/quests/create', {}, { fromRumor: rumor.id }));
+  };
 
   // Handle edit rumor
   const handleEdit = () => {
@@ -201,7 +201,7 @@ const handleConvertToQuest = () => {
             {/* Creator attribution */}
             {rumor.createdByUsername && (
               <div className="flex items-center gap-2 mt-1">
-                <User size={14} className="text-gray-400" />
+                <User size={14} className={`${themePrefix}-typography-secondary`} />
                 <Typography variant="body-sm" color="secondary">
                   Added by {rumor.createdByUsername} on {new Date(rumor.dateAdded).toLocaleDateString()}
                 </Typography>
@@ -211,7 +211,7 @@ const handleConvertToQuest = () => {
             {/* Location display (if present) */}
             {rumor.location && (
               <div className="flex items-center gap-2 mt-1">
-                <MapPin size={14} className="text-gray-400" />
+                <MapPin size={14} className={`${themePrefix}-typography-secondary`} />
                 <Typography variant="body-sm" color="secondary">
                   Location: {rumor.location}
                 </Typography>
@@ -288,7 +288,7 @@ const handleConvertToQuest = () => {
                       )}
                     >
                       <div className="flex items-center gap-2">
-                        <Calendar size={14} className="text-gray-400" />
+                        <Calendar size={14} className={`${themePrefix}-typography-secondary`} />
                         <Typography variant="body-sm" color="secondary">
                           {new Date(note.dateAdded).toLocaleDateString()} by {note.addedByUsername}
                         </Typography>
@@ -377,7 +377,7 @@ const handleConvertToQuest = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => handleStatusChange('confirmed')}
-                    startIcon={<CheckCircle size={16} className="text-green-500" />}
+                    startIcon={<CheckCircle size={16} className={`${themePrefix}-rumor-status-confirmed`} />}
                     disabled={rumor.status === 'confirmed'}
                   >
                     Confirm
@@ -386,7 +386,7 @@ const handleConvertToQuest = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => handleStatusChange('unconfirmed')}
-                    startIcon={<HelpCircle size={16} className="text-yellow-500" />}
+                    startIcon={<HelpCircle size={16} className={`${themePrefix}-rumor-status-unconfirmed`} />}
                     disabled={rumor.status === 'unconfirmed'}
                   >
                     Unconfirm
@@ -395,7 +395,7 @@ const handleConvertToQuest = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => handleStatusChange('false')}
-                    startIcon={<XCircle size={16} className="text-red-500" />}
+                    startIcon={<XCircle size={16} className={`${themePrefix}-rumor-status-false`} />}
                     disabled={rumor.status === 'false'}
                   >
                     Mark False

@@ -41,6 +41,7 @@ export const lightTheme: Theme = {
           background: 'transparent',
           text: '#1E40AF', // Bold secondary blue
           hover: '#E5EDF8', // Soft blue hover effect
+          border: '#93C5FD',
         },
         ghost: {
           background: 'transparent',
@@ -50,8 +51,6 @@ export const lightTheme: Theme = {
       },
       ui: {
         heading: '#FFFFFF', // Deep navy for strong headings
-        inputBackground: '#FFFFFF', // White for input fields
-        inputPlaceholder: '#64748B', // Soft blue-gray for placeholders
         statusActive: '#3B82F6', // Bright blue for active state
         statusCompleted: '#16A34A', // Strong green for success
         statusFailed: '#DC2626', // Bold red for errors
@@ -62,6 +61,30 @@ export const lightTheme: Theme = {
         hoverMedium: '#93C5FD', // Stronger blue hover effect
         iconBackground: '#D6E4F5', // Soft blue for icons
         iconBorder: '#93C5FD', // Subtle blue-gray for icon borders
+
+        // Input styling
+        inputBackground: '#ffffff',
+        inputPlaceholder: '#9ca3af',
+        inputBorder: '#d1d5db',
+        inputBorderFocus: '#3b82f6',
+        inputRingFocus: 'rgba(59, 130, 246, 0.5)',
+        
+        // Error states
+        inputErrorBorder: '#ef4444',
+        inputErrorFocus: '#ef4444',
+        inputErrorRing: 'rgba(239, 68, 68, 0.5)',
+        
+        // Success states
+        inputSuccessBorder: '#10b981',
+        inputSuccessFocus: '#10b981',
+        inputSuccessRing: 'rgba(16, 185, 129, 0.5)',
+        
+        // Form element states
+        formDisabledBg: '#f3f4f6',
+        formLabelText: '#111827',
+        formHelperText: '#6b7280',
+        formErrorText: '#ef4444',
+        formSuccessText: '#10b981',
       }
     },
     fonts: {

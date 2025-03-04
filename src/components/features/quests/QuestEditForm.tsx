@@ -1,3 +1,4 @@
+// src/components/features/quests/QuestEditForm.tsx
 import React, { useState } from 'react';
 import { Quest } from '../../../types/quest';
 import { useFirebaseData } from '../../../hooks/useFirebaseData';
@@ -5,6 +6,8 @@ import Typography from '../../core/Typography';
 import Button from '../../core/Button';
 import Card from '../../core/Card';
 import { useNPCs } from '../../../context/NPCContext';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 import {
   BasicInfoSection,
   ObjectivesSection,
@@ -34,6 +37,9 @@ const QuestEditForm: React.FC<QuestEditFormProps> = ({
   onSuccess,
   onCancel,
 }) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+
   // Form state initialized with existing quest data
   const [formData, setFormData] = useState<Quest>(quest);
   const [isNPCDialogOpen, setIsNPCDialogOpen] = useState(false);
@@ -129,7 +135,7 @@ const QuestEditForm: React.FC<QuestEditFormProps> = ({
 
           {/* Error Message */}
           {error && (
-            <div className="flex items-center gap-2 text-red-600">
+            <div className={clsx("flex items-center gap-2", `${themePrefix}-form-error`)}>
               <AlertCircle size={16} />
               <Typography color="error">
                 {error}

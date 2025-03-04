@@ -17,12 +17,17 @@ DnDRecap
 │   │   │   ├── quest.ts
 │   │   │   ├── npc.ts
 │   │   │   └── location.ts
+│   │   ├── themes
+│   │   │   ├── medievalTheme.ts
+│   │   │   ├── lightTheme.ts
+│   │   │   ├── index.ts
+│   │   │   └── darkTheme.ts
 │   │   ├── test-utils
 │   │   │   └── test-utils.tsx
 │   │   ├── styles
 │   │   │   ├── themes
-│   │   │   │   ├── dnd-theme.css
-│   │   │   │   ├── default-theme.css
+│   │   │   │   ├── medieval-theme.css
+│   │   │   │   ├── light-theme.css
 │   │   │   │   └── dark-theme.css
 │   │   │   └── globals.css
 │   │   ├── services
@@ -84,7 +89,6 @@ DnDRecap
 │   │   ├── constants
 │   │   │   └── time.ts
 │   │   ├── config
-│   │   │   ├── themes.ts
 │   │   │   └── buildConfig.ts
 │   │   ├── components
 │   │   │   ├── shared

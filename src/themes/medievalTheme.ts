@@ -41,7 +41,8 @@ export const medievalTheme: Theme = {
       outline: {
         background: 'transparent',
         text: '#2C1810',
-        hover: '#F5E6D3'
+        hover: '#F5E6D3',
+        border: '#8B4513'
       },
       ghost: {
         background: 'transparent',
@@ -52,8 +53,6 @@ export const medievalTheme: Theme = {
     // Add UI-specific colors for the D&D theme
     ui: {
       heading: '#2C1810',     // Deep brown for headings
-      inputBackground: '#FFF8DC', // Light parchment for inputs
-      inputPlaceholder: '#A89A7E', // Muted brown for placeholders
       statusActive: '#DAA520', // Gold for active status
       statusCompleted: '#006400', // Deep green for completed status
       statusFailed: '#8B0000', // Deep red for failed status
@@ -64,6 +63,30 @@ export const medievalTheme: Theme = {
       hoverMedium: 'rgba(139, 69, 19, 0.1)', // Medium brown hover
       iconBackground: '#F5E6D3', // Slightly darker parchment for icons
       iconBorder: '#8B4513', // Saddle brown for icon borders
+
+      // Input styling
+      inputBackground: '#FFF9ED', // Parchment color
+      inputPlaceholder: '#94785C', // Faded ink color
+      inputBorder: '#B89F7D', // Aged parchment border
+      inputBorderFocus: '#8B5A2B', // Rich brown
+      inputRingFocus: 'rgba(139, 90, 43, 0.5)', // Semi-transparent brown
+      
+      // Error states
+      inputErrorBorder: '#9B2C2C', // Dark red
+      inputErrorFocus: '#9B2C2C',
+      inputErrorRing: 'rgba(155, 44, 44, 0.5)', // Semi-transparent red
+      
+      // Success states
+      inputSuccessBorder: '#2F855A', // Forest green
+      inputSuccessFocus: '#2F855A',
+      inputSuccessRing: 'rgba(47, 133, 90, 0.5)', // Semi-transparent green
+      
+      // Form element states
+      formDisabledBg: '#E8DFD0', // Muted parchment
+      formLabelText: '#5D4037', // Dark brown ink
+      formHelperText: '#7D6F63', // Faded ink
+      formErrorText: '#9B2C2C', // Dark red
+      formSuccessText: '#2F855A', // Forest green
     }
   },
   fonts: {

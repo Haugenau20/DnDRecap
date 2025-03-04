@@ -7,6 +7,8 @@ import Input from '../../core/Input';
 import Button from '../../core/Button';
 import LocationCombobox from '../locations/LocationCombobox';
 import Dialog from '../../core/Dialog';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 import { PlusCircle, X, Target } from 'lucide-react';
 
 interface SectionProps {
@@ -31,6 +33,9 @@ interface RelatedNPCsSectionProps extends SectionProps {
     isNPCDialogOpen,
     setIsNPCDialogOpen
   }) => {
+    const { theme } = useTheme();
+    const themePrefix = theme.name;
+
     const handleRemoveNPC = (npcId: string) => {
       setSelectedNPCs((prev: Set<string>) => {
         const newSet = new Set(prev);
@@ -68,13 +73,18 @@ interface RelatedNPCsSectionProps extends SectionProps {
             return npc ? (
               <div
                 key={npcId}
-                className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
+                className={clsx(
+                  "flex items-center gap-1 rounded-full px-3 py-1",
+                  `${themePrefix}-tag`
+                )}
               >
                 <span>{npc.name}</span>
                 <button
                   type="button"
                   onClick={() => handleRemoveNPC(npcId)}
-                  className="text-gray-500 hover:text-gray-700"
+                  className={clsx(
+                    `${themePrefix}-typography-secondary hover:opacity-80`
+                  )}
                 >
                   <X size={14} />
                 </button>
@@ -100,11 +110,12 @@ interface RelatedNPCsSectionProps extends SectionProps {
                     e.stopPropagation(); // Stop event bubbling
                     handleToggleNPC(npc.id);
                   }}
-                  className={`p-2 rounded text-center transition-colors ${
+                  className={clsx(
+                    "p-2 rounded text-center transition-colors",
                     selectedNPCs.has(npc.id)
-                      ? 'bg-blue-100 border-2 border-blue-500'
-                      : 'hover:bg-gray-100 border-2 border-transparent'
-                  }`}
+                      ? `${themePrefix}-selected-item`
+                      : `${themePrefix}-selectable-item`
+                  )}
                 >
                   <Typography 
                     variant="body-sm"
@@ -134,6 +145,9 @@ interface RelatedNPCsSectionProps extends SectionProps {
   };
 
 export const BasicInfoSection: React.FC<SectionProps> = ({ formData, handleInputChange }) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+
   return (
     <div className="space-y-4">
       <Typography variant="h4">Basic Information</Typography>
@@ -154,9 +168,9 @@ export const BasicInfoSection: React.FC<SectionProps> = ({ formData, handleInput
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Status *</label>
+          <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Status *</label>
           <select
-            className="w-full rounded-lg border p-2"
+            className={clsx("w-full rounded-lg border p-2", `${themePrefix}-input`)}
             value={formData.status}
             onChange={(e) => handleInputChange('status', e.target.value as QuestStatus)}
             required
@@ -179,7 +193,7 @@ export const BasicInfoSection: React.FC<SectionProps> = ({ formData, handleInput
         value={formData.levelRange || ''}
         onChange={(e) => handleInputChange('levelRange', e.target.value)}
         placeholder="e.g., 1-5"
-        startIcon={<Target className="w-4 h-4" />}
+        startIcon={<Target className={`w-4 h-4 ${themePrefix}-typography-secondary`} />}
       />
 
       <Input
@@ -193,6 +207,9 @@ export const BasicInfoSection: React.FC<SectionProps> = ({ formData, handleInput
 };
 
 export const ObjectivesSection: React.FC<SectionProps> = ({ formData, handleInputChange }) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+
   const handleAddObjective = () => {
     handleInputChange('objectives', [
       ...(formData.objectives || []),
@@ -232,7 +249,7 @@ export const ObjectivesSection: React.FC<SectionProps> = ({ formData, handleInpu
                 );
                 handleInputChange('objectives', newObjectives || []);
               }}
-              className="mt-2 flex-shrink-0"
+              className={`mt-2 flex-shrink-0 ${themePrefix}-input`}
             />
             <div className="flex-1">
               <Input

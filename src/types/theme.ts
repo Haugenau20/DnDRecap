@@ -46,6 +46,7 @@ export interface ThemeColors {
       background: string;
       text: string;
       hover: string;
+      border: string;
     };
     ghost: {
       background: string;
@@ -57,9 +58,6 @@ export interface ThemeColors {
   ui: {
     // Headers and bright elements
     heading: string;
-    // Input fields
-    inputBackground: string;
-    inputPlaceholder: string;
     // Status indicators
     statusActive: string;
     statusCompleted: string;
@@ -74,6 +72,29 @@ export interface ThemeColors {
     // Icon styling
     iconBackground: string;
     iconBorder: string;
+    // Input styling
+    inputBackground: string;
+    inputPlaceholder: string;
+    inputBorder: string;
+    inputBorderFocus: string;
+    inputRingFocus: string;
+    
+    // Error states
+    inputErrorBorder: string;
+    inputErrorFocus: string;
+    inputErrorRing: string;
+    
+    // Success states
+    inputSuccessBorder: string;
+    inputSuccessFocus: string;
+    inputSuccessRing: string;
+    
+    // Form element states
+    formDisabledBg: string;
+    formLabelText: string;
+    formHelperText: string;
+    formErrorText: string;
+    formSuccessText: string;
   };
 }
 

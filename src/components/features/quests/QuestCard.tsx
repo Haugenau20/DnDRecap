@@ -83,7 +83,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {quest.location && (
             <div className="flex items-center gap-2">
-              <MapPin size={16} className="text-gray-500" />
+              <MapPin size={16} className={`${themePrefix}-typography-secondary`} />
               {locationExists(quest.location) ? (
                 <Button
                   variant="ghost"
@@ -108,20 +108,20 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
           )}
           {quest.levelRange && (
             <div className="flex items-center gap-2">
-              <Target size={16} className="text-gray-500" />
+              <Target size={16} className={`${themePrefix}-typography-secondary`} />
               <Typography color="secondary">Level: {quest.levelRange}</Typography>
             </div>
           )}
           {quest.dateAdded && (
             <div className="flex items-center gap-2">
-              <Calendar size={16} className="text-gray-500" />
+              <Calendar size={16} className={`${themePrefix}-typography-secondary`} />
               <Typography color="secondary">Added: {quest.dateAdded}</Typography>
             </div>
           )}
         </div>
 
         {/* Progress Bar */}
-        <div className={clsx("w-full bg-gray-200 rounded-full h-2", `${themePrefix}-progress-container`)}>
+        <div className={clsx("w-full rounded-full h-2", `${themePrefix}-progress-container`)}>
           <div 
             className={clsx(
               "rounded-full h-2 transition-all duration-300",
@@ -218,7 +218,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                           <div className="flex items-start gap-2 text-left">
                             <MapPin 
                               size={16} 
-                              className="mt-1 text-blue-500" // Blue to indicate clickable
+                              className={`mt-1 ${themePrefix}-location-status-visited`}
                             />
                             <div className="flex-1">
                               <Typography variant="body-sm" className="font-medium">
@@ -238,7 +238,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                       <div key={index} className="flex items-start gap-2 p-2">
                         <MapPin 
                           size={16} 
-                          className="mt-1 text-gray-400" // Gray to indicate non-clickable
+                          className={`mt-1 ${themePrefix}-typography-secondary`}
                         />
                         <div className="flex-1">
                           <Typography variant="body-sm" className="font-medium">
@@ -310,7 +310,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                               <Typography variant="body-sm" className="font-medium">
                                 {npc.name}
                                 {npc.title && (
-                                  <span className="text-gray-500 ml-1">
+                                  <span className={`${themePrefix}-typography-secondary ml-1`}>
                                     - {npc.title}
                                   </span>
                                 )}

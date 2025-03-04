@@ -61,31 +61,8 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const { theme } = useTheme();
-  const themePrefix = theme.name; // 'default' or 'dnd'
-
-  // Get button-specific colors from theme
-  const getButtonStyles = () => {
-    // Only use these custom styles when button colors are defined in theme
-    if (theme.colors.button && theme.colors.button[variant]) {
-      const buttonColors = theme.colors.button[variant];
-      
-      // For ghost/outline/link buttons, use transparent background
-      const bgColor = variant === 'ghost' || variant === 'outline' || variant === 'link' 
-        ? 'transparent' 
-        : buttonColors.background;
-      
-      return {
-        backgroundColor: bgColor,
-        color: buttonColors.text,
-        borderColor: variant === 'outline' ? buttonColors.background : 'transparent',
-        // Store hover color as custom property for CSS to use
-        '--hover-bg-color': buttonColors.hover
-      } as React.CSSProperties;
-    }
-    
-    return {};
-  };
-
+  const themePrefix = theme.name;
+  
   // Combine styles using clsx and tailwind-merge
   const buttonStyles = twMerge(
     clsx(
@@ -107,7 +84,7 @@ export const Button: React.FC<ButtonProps> = ({
       // Loading state styles
       isLoading && 'cursor-wait',
       
-      // Theme-specific class
+      // Theme-specific classes
       `${themePrefix}-button`,
       `${themePrefix}-button-${variant}`,
       
@@ -120,7 +97,6 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       className={buttonStyles}
       disabled={disabled || isLoading}
-      style={getButtonStyles()}
       data-variant={variant}
       {...props}
     >

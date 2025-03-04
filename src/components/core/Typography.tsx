@@ -78,19 +78,6 @@ const variantStyles: Record<TypographyVariant, string> = {
 };
 
 /**
- * Color styles for each theme
- */
-const colorStyles: Record<TypographyColor, string> = {
-  default: 'text-gray-900',
-  primary: 'text-blue-600',
-  secondary: 'text-gray-600',
-  muted: 'text-gray-500',
-  white: 'text-white',
-  error: 'text-red-600',
-  success: 'text-green-600'
-};
-
-/**
  * Typography component for consistent text styling throughout the application.
  * Provides various preset styles while remaining flexible through props.
  */
@@ -106,7 +93,7 @@ export const Typography = <C extends React.ElementType = 'p'>({
 }: TypographyProps<C>) => {
   const Component = as || defaultElements[variant];
   const { theme } = useTheme();
-  const themePrefix = theme.name; // 'default' or 'dnd'
+  const themePrefix = theme.name;
 
   // Is this variant a heading?
   const isHeading = variant === 'h1' || variant === 'h2' || variant === 'h3' || variant === 'h4';
@@ -132,7 +119,12 @@ export const Typography = <C extends React.ElementType = 'p'>({
       isHeading && `${themePrefix}-typography-heading`,
       
       // Color-specific classes
+      color === 'primary' && `${themePrefix}-typography-primary`,
       color === 'secondary' && `${themePrefix}-typography-secondary`,
+      color === 'muted' && `${themePrefix}-typography-muted`,
+      color === 'white' && `${themePrefix}-typography-white`,
+      color === 'error' && `${themePrefix}-typography-error`,
+      color === 'success' && `${themePrefix}-typography-success`,
       
       // Custom classes
       className

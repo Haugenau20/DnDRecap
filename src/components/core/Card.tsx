@@ -76,9 +76,13 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
   action,
   className
 }) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+
   const styles = twMerge(
     clsx(
       'flex items-start justify-between px-6 pt-6',
+      `${themePrefix}-card-header`,
       className
     )
   );
@@ -112,9 +116,13 @@ export const CardContent: React.FC<CardContentProps> = ({
   className,
   padding = 'md'
 }) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+
   const styles = twMerge(
     clsx(
       paddingStyles[padding],
+      `${themePrefix}-card-content`,
       className
     )
   );
@@ -129,9 +137,13 @@ export const CardFooter: React.FC<CardFooterProps> = ({
   children,
   className
 }) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+
   const styles = twMerge(
     clsx(
-      'px-6 py-4 bg-gray-50 rounded-b-lg',
+      'px-6 py-4 rounded-b-lg',
+      `${themePrefix}-card-footer`,
       className
     )
   );
@@ -155,18 +167,18 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     ref
   ) => {
     const { theme } = useTheme();
-    const themePrefix = theme.name; // 'default' or 'dnd'
+    const themePrefix = theme.name;
 
     const styles = twMerge(
       clsx(
         'rounded-lg shadow-sm overflow-hidden',
-        'border',
         hoverable && [
           'transition-shadow duration-200',
           'hover:shadow-md',
           onClick && 'cursor-pointer'
         ],
         `${themePrefix}-card`, // Theme-specific class
+        variant === 'subtle' && `${themePrefix}-card-subtle`,
         className
       )
     );

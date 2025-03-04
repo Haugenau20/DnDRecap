@@ -18,6 +18,24 @@
   --primary-color: var(--color-primary);
   --border-color: var(--color-card-border);
   --card-bg: var(--color-card-background);
+
+  /* Buttons*/
+  --medieval-button-primary-bg: var(--color-button-primary-background);
+  --medieval-button-primary-text: var(--color-button-primary-text);
+  --medieval-button-primary-hover: var(--color-button-primary-hover);
+  --medieval-button-secondary-bg: var(--color-button-secondary-background);
+  --medieval-button-secondary-text: var(--color-button-secondary-text);
+  --medieval-button-secondary-hover: var(--color-button-secondary-hover);
+  --medieval-button-link-bg: var(--color-button-link-background);
+  --medieval-button-link-text: var(--color-button-link-text);
+  --medieval-button-link-hover: var(--color-button-link-hover);
+  --medieval-button-outline-bg: var(--color-button-outline-background);
+  --medieval-button-outline-text: var(--color-button-outline-text);
+  --medieval-button-outline-hover: var(--color-button-outline-hover);
+  --medieval-button-outline-border: var(--color-button-outline-border);
+  --medieval-button-ghost-bg: var(--color-button-ghost-background);
+  --medieval-button-ghost-text: var(--color-button-ghost-text);
+  --medieval-button-ghost-hover: var(--color-button-ghost-hover);
   
   /* UI-specific aliases */
   --medieval-heading: var(--color-ui-heading);
@@ -122,20 +140,59 @@
   font-family: var(--font-primary);
 }
 
-/* FIXED HOVER EFFECT - Uses --hover-bg-color custom property */
 .medieval-button:hover {
-  background-color: var(--hover-bg-color) !important; 
+  background-color: var(--medieval-button-primary-hover); 
   transform: translateY(-1px);
+}
+
+.medieval-button-primary {
+  background-color: var(--medieval-button-primary-bg);
+  color: var(--medieval-button-primary-text);
+}
+
+.medieval-button-primary:hover {
+  background-color: var(--medieval-button-primary-hover);
+}
+
+.medieval-button-secondary {
+  background-color: var(--medieval-button-secondary-bg);
+  color: var(--medieval-button-secondary-text);
+}
+
+.medieval-button-secondary:hover {
+  background-color: var(--medieval-button-secondary-hover); 
+}
+
+.medieval-button-ghost {
+  background-color: var(--medieval-button-ghost-bg);
+  color: var(--medieval-button-ghost-text);
 }
 
 /* Special hover effect for ghost button */
 .medieval-button-ghost:hover {
-  background-color: var(--hover-bg-color) !important;
+  background-color: var(--medieval-button-ghost-hover); /* Transparent brown */
+}
+
+.medieval-button-link {
+  background-color: var(--medieval-button-link-bg);
+  color: var(--medieval-button-link-text);
+  text-decoration: none;
+}
+
+.medieval-button-link:hover {
+  text-decoration: underline;
+  background-color: var(--medieval-button-link-hover);
+}
+
+.medieval-button-outline {
+  background-color: var(--medieval-button-outline-bg);
+  border: 2px solid var(--medieval-button-outline-border);
+  color: var(--medieval-button-outline-text);
 }
 
 /* Special hover effect for outline button */
 .medieval-button-outline:hover {
-  background-color: var(--hover-bg-color) !important;
+  background-color: var(--medieval-button-outline-hover); /* Transparent brown */
 }
 
 /* Shine effect */
@@ -162,17 +219,59 @@
 /* Input styles */
 .medieval-input {
   background-color: var(--medieval-input-bg);
-  border: 2px solid var(--border-color);
-  border-radius: var(--border-radius-md);
-  padding: 0.5rem;
-  color: var(--ink-color);
-  transition: all 0.3s ease;
-  font-family: var(--font-primary);
+  border-color: var(--color-ui-inputBorder);
+  color: var(--medieval-text);
 }
 
 .medieval-input:focus {
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 2px rgba(218, 165, 32, 0.2);
+  border-color: var(--color-ui-inputBorderFocus);
+  box-shadow: 0 0 0 2px var(--color-ui-inputRingFocus);
+}
+
+/* Error state */
+.medieval-input-error {
+  border-color: var(--color-ui-inputErrorBorder);
+}
+
+.medieval-input-error:focus {
+  border-color: var(--color-ui-inputErrorFocus);
+  box-shadow: 0 0 0 2px var(--color-ui-inputErrorRing);
+}
+
+/* Success state */
+.medieval-input-success {
+  border-color: var(--color-ui-inputSuccessBorder);
+}
+
+.medieval-input-success:focus {
+  border-color: var(--color-ui-inputSuccessFocus);
+  box-shadow: 0 0 0 2px var(--color-ui-inputSuccessRing);
+}
+
+/* Form label */
+.medieval-form-label {
+  color: var(--color-ui-formLabelText);
+}
+
+/* Form helper text */
+.medieval-form-helper {
+  color: var(--color-ui-formHelperText);
+}
+
+/* Form error text */
+.medieval-form-error {
+  color: var(--color-ui-formErrorText);
+}
+
+/* Form success text */
+.medieval-form-success {
+  color: var(--color-ui-formSuccessText);
+}
+
+/* Disabled state */
+.medieval-input:disabled {
+  background-color: var(--color-ui-formDisabledBg);
+  opacity: 0.7;
 }
 
 .medieval-input::placeholder {
@@ -203,18 +302,15 @@
 }
 
 .medieval-status-active {
-  background-color: var(--medieval-status-active);
-  color: var(--medieval-heading);
+  color: var(--medieval-status-active);
 }
 
 .medieval-status-completed {
-  background-color: var(--medieval-status-completed);
-  color: var(--medieval-status-text);
+  color: var(--medieval-status-completed);
 }
 
 .medieval-status-failed {
-  background-color: var(--medieval-status-failed);
-  color: var(--medieval-status-text);
+  color: var(--medieval-status-failed);
 }
 
 /* Navigation styles */
@@ -568,4 +664,20 @@
 .medieval-icon-bg {
   background-color: var(--medieval-icon-bg);
   border: 1px solid var(--medieval-icon-border);
+}
+
+/* Selectable Item Style */
+.medieval-selectable-item {
+  border: 2px solid transparent;
+  background-color: var(--parchment-bg);
+  transition: all 0.2s ease;
+}
+
+.medieval-selectable-item:hover {
+  background-color: var(--parchment-accent);
+}
+
+.medieval-selected-item {
+  background-color: var(--parchment-accent);
+  border: 2px solid var(--primary-color);
 }
