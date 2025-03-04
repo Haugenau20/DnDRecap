@@ -1,7 +1,7 @@
 // components/shared/ThemeSelector.tsx
 import React from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { themes } from '../../config/themes';
+import { themes } from '../../themes';
 import { Palette } from 'lucide-react';
 import clsx from 'clsx';
 

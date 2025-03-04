@@ -4,6 +4,8 @@ import Typography from '../../core/Typography';
 import Button from '../../core/Button';
 import { Book, Clock, ChevronRight } from 'lucide-react';
 import { useNavigation } from '../../../context/NavigationContext';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 interface LatestChapterProps {
   chapter: {
@@ -18,6 +20,8 @@ interface LatestChapterProps {
 
 const LatestChapter: React.FC<LatestChapterProps> = ({ chapter }) => {
   const { navigateToPage } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   const handleContinueReading = () => {
     navigateToPage(`/story/chronicles/${chapter.id}`);
@@ -29,11 +33,11 @@ const LatestChapter: React.FC<LatestChapterProps> = ({ chapter }) => {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
-            <Book className="w-5 h-5 text-blue-500" />
+            <Book className={clsx("w-5 h-5", `text-${themePrefix}-primary`)} />
             <Typography variant="h4">Latest Chapter</Typography>
           </div>
-          <div className="flex items-center gap-1 text-gray-500">
-            <Clock className="w-4 h-4" />
+          <div className="flex items-center gap-1">
+            <Clock className={clsx("w-4 h-4", `text-${themePrefix}-secondary`)} />
             <Typography variant="body-sm" color="secondary">
               {new Date(chapter.lastModified).toLocaleDateString('en-uk', { year: 'numeric', day: '2-digit', month: '2-digit'})}
             </Typography>

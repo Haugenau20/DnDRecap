@@ -120,16 +120,18 @@ export const Typography = <C extends React.ElementType = 'p'>({
       // Variant styles
       variantStyles[variant],
       
-      // Default color styles (as fallback)
-      colorStyles[color],
-      
       // Optional styles
       centered && 'text-center',
       truncate && 'truncate',
       
       // Theme-specific classes
       `${themePrefix}-typography`,
+      
+      // Apply both heading class formats for compatibility
       isHeading && `${themePrefix}-heading`,
+      isHeading && `${themePrefix}-typography-heading`,
+      
+      // Color-specific classes
       color === 'secondary' && `${themePrefix}-typography-secondary`,
       
       // Custom classes

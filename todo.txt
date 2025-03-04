@@ -8,6 +8,4 @@ In the user profile, add possibility to change theme preference.
 Add a Display name to the user profile. The motivation for this is so the user can e.g. type in their character name.
 User should be able to change their password.
 
-Add so that the user is automatically logged out after inactivity time or upon closing the browser.
-
 Fix mobile layout issues on certain pages.

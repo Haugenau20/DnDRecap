@@ -5,7 +5,9 @@ import Card from '../components/core/Card';
 import LatestChapter from '../components/features/story/LatestChapter';
 import { useChapterData } from '../hooks/useChapterData';
 import { useNavigation } from '../context/NavigationContext';
+import { useTheme } from '../context/ThemeContext';
 import { Book, Scroll, Users, MapPin, MessageSquare } from 'lucide-react';
+import clsx from 'clsx';
 
 /**
  * Interface for quick access section items
@@ -23,6 +25,8 @@ interface QuickAccessItem {
 const HomePage: React.FC = () => {
   const { chapters, loading, error } = useChapterData();
   const { navigateToPage } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   // Get the latest chapter from the fetched data
   const latestChapter = useMemo(() => {
@@ -78,10 +82,10 @@ const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className={clsx("max-w-7xl mx-auto px-4 py-8", `${themePrefix}-content`)}>
       {/* Hero Section */}
       <section className="text-center mb-12">
-        <Typography variant="h1" className="mb-4">
+        <Typography variant="h1" className={`mb-4 ${themePrefix}-typography-heading`}>
           D&D Campaign Companion
         </Typography>
         <Typography variant="body-lg" color="secondary" className="mb-8">
@@ -91,7 +95,7 @@ const HomePage: React.FC = () => {
 
       {/* Quick Access Section */}
       <section className="mb-12">
-        <Typography variant="h2" className="mb-6">
+        <Typography variant="h2" className={`mb-6 ${themePrefix}-typography-heading`}>
           Quick Access
         </Typography>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -103,10 +107,17 @@ const HomePage: React.FC = () => {
               className="h-full"
             >
               <Card.Content className="flex flex-col items-center text-center p-6">
-                <div className="bg-blue-100 p-3 rounded-full mb-4">
-                  {item.icon}
+                {/* Theme-specific icon container */}
+                <div className={clsx(
+                  "p-3 rounded-full mb-4",
+                  `${themePrefix}-icon-bg` // Use our new theme-specific class
+                )}>
+                  {/* Theme-specific icon color */}
+                  <span className={clsx(`text-${themePrefix}-primary`)}>
+                    {item.icon}
+                  </span>
                 </div>
-                <Typography variant="h4" className="mb-2">
+                <Typography variant="h4" className={`mb-2 ${themePrefix}-typography-heading`}>
                   {item.title}
                 </Typography>
                 <Typography color="secondary">
@@ -121,7 +132,7 @@ const HomePage: React.FC = () => {
       {/* Recent Activity Section */}
       <section>
         <div className="flex justify-between items-center mb-6">
-          <Typography variant="h2">
+          <Typography variant="h2" className={`${themePrefix}-typography-heading`}>
             Recent Activity
           </Typography>
         </div>
@@ -130,8 +141,11 @@ const HomePage: React.FC = () => {
           {loading ? (
             <Card>
               <Card.Content className="text-center py-8">
-                <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
-                <Typography variant="h3" className="mb-2">
+                <div className={clsx(
+                  "animate-spin w-8 h-8 border-4 border-t-transparent rounded-full mx-auto mb-4",
+                  `border-${themePrefix}-primary`
+                )} />
+                <Typography variant="h3" className={`mb-2 ${themePrefix}-typography-heading`}>
                   Loading Recent Activity
                 </Typography>
               </Card.Content>
@@ -149,8 +163,11 @@ const HomePage: React.FC = () => {
           ) : (
             <Card>
               <Card.Content className="text-center py-8">
-                <Book className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                <Typography variant="h3" className="mb-2">
+                <Book className={clsx(
+                  "w-12 h-12 mx-auto mb-4",
+                  `text-${themePrefix}-secondary`
+                )} />
+                <Typography variant="h3" className={`mb-2 ${themePrefix}-typography-heading`}>
                   No Chapters Available
                 </Typography>
                 <Typography color="secondary">

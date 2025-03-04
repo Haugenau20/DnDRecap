@@ -1,13 +1,13 @@
-/* src/styles/dnd-theme.css */
+/* src/styles/themes/medieval-theme.css */
 
 /* 
   IMPORTANT: This file doesn't redefine colors - it only creates semantic
   aliases that reference the theme variables set by ThemeContext.
-  All actual color values are in themes.ts
+  All actual color values are in the medievalTheme.ts file
 */
 
-/* Apply styles only when data-theme="dnd" is set */
-[data-theme="dnd"] {
+/* Apply styles only when data-theme="medieval" is set */
+[data-theme="medieval"] {
   /* Semantic aliases for theme variables */
   --parchment-bg: var(--color-background-primary);
   --parchment-dark: var(--color-background-secondary);
@@ -18,10 +18,25 @@
   --primary-color: var(--color-primary);
   --border-color: var(--color-card-border);
   --card-bg: var(--color-card-background);
+  
+  /* UI-specific aliases */
+  --medieval-heading: var(--color-ui-heading);
+  --medieval-input-bg: var(--color-ui-inputBackground);
+  --medieval-placeholder: var(--color-ui-inputPlaceholder);
+  --medieval-status-active: var(--color-ui-statusActive);
+  --medieval-status-completed: var(--color-ui-statusCompleted);
+  --medieval-status-failed: var(--color-ui-statusFailed);
+  --medieval-status-text: var(--color-ui-statusText);
+  --medieval-header-bg: var(--color-ui-headerBackground);
+  --medieval-footer-bg: var(--color-ui-footerBackground);
+  --medieval-hover-light: var(--color-ui-hoverLight);
+  --medieval-hover-medium: var(--color-ui-hoverMedium);
+  --medieval-icon-bg: var(--color-ui-iconBackground);
+  --medieval-icon-border: var(--color-ui-iconBorder);
 }
 
 /* Base theme styles */
-.dnd-theme {
+.medieval-theme {
   /* Apply parchment texture to background */
   background-image: url('../../../public/decorative/parchment-texture.svg');
   background-repeat: repeat;
@@ -31,7 +46,7 @@
 }
 
 /* Enhanced card styling */
-.dnd-card {
+.medieval-card {
   position: relative;
   border: 2px solid var(--border-color);
   border-radius: var(--border-radius-lg);
@@ -42,14 +57,14 @@
 }
 
 /* Card hover effect */
-.dnd-card:hover {
+.medieval-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 8px rgba(139, 69, 19, 0.2);
 }
 
 /* Decorative corners */
-.dnd-card::before,
-.dnd-card::after {
+.medieval-card::before,
+.medieval-card::after {
   content: '';
   position: absolute;
   width: 2rem;
@@ -61,29 +76,29 @@
   transition: opacity 0.3s ease;
 }
 
-.dnd-card::before {
+.medieval-card::before {
   top: -0.5rem;
   left: -0.5rem;
   transform: rotate(0deg);
 }
 
-.dnd-card::after {
+.medieval-card::after {
   bottom: -0.5rem;
   right: -0.5rem;
   transform: rotate(180deg);
 }
 
 /* Heading styles */
-.dnd-heading {
+.medieval-heading {
   font-family: var(--font-heading);
-  color: var(--ink-color);
+  color: var(--medieval-heading);
   text-shadow: 1px 1px 2px rgba(139, 69, 19, 0.2);
   position: relative;
   padding-bottom: 1rem;
   margin-bottom: 1.5rem;
 }
 
-.dnd-heading::after {
+.medieval-heading::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -99,7 +114,7 @@
 }
 
 /* ====== Button styles ====== */
-.dnd-button {
+.medieval-button {
   border: 2px solid transparent;
   transition: all 0.3s ease;
   position: relative;
@@ -108,23 +123,23 @@
 }
 
 /* FIXED HOVER EFFECT - Uses --hover-bg-color custom property */
-.dnd-button:hover {
-  background-color: var(--hover-bg-color) !important; /* Use !important to ensure it overrides inline styles */
+.medieval-button:hover {
+  background-color: var(--hover-bg-color) !important; 
   transform: translateY(-1px);
 }
 
 /* Special hover effect for ghost button */
-.dnd-button-ghost:hover {
+.medieval-button-ghost:hover {
   background-color: var(--hover-bg-color) !important;
 }
 
 /* Special hover effect for outline button */
-.dnd-button-outline:hover {
+.medieval-button-outline:hover {
   background-color: var(--hover-bg-color) !important;
 }
 
 /* Shine effect */
-.dnd-button::before {
+.medieval-button::before {
   content: '';
   position: absolute;
   top: 0;
@@ -140,13 +155,13 @@
   transition: left 0.5s ease;
 }
 
-.dnd-button:hover::before {
+.medieval-button:hover::before {
   left: 100%;
 }
 
 /* Input styles */
-.dnd-input {
-  background-color: var(--card-bg);
+.medieval-input {
+  background-color: var(--medieval-input-bg);
   border: 2px solid var(--border-color);
   border-radius: var(--border-radius-md);
   padding: 0.5rem;
@@ -155,89 +170,111 @@
   font-family: var(--font-primary);
 }
 
-.dnd-input:focus {
+.medieval-input:focus {
   border-color: var(--accent-color);
   box-shadow: 0 0 0 2px rgba(218, 165, 32, 0.2);
 }
 
-.dnd-input::placeholder {
-  color: var(--ink-secondary);
+.medieval-input::placeholder {
+  color: var(--medieval-placeholder);
   opacity: 0.7;
 }
 
 /* Typography styles */
-.dnd-typography {
+.medieval-typography {
   font-family: var(--font-primary);
   color: var(--ink-color);
 }
 
-.dnd-typography-heading {
+.medieval-typography-heading {
   font-family: var(--font-heading);
 }
 
-.dnd-typography-secondary {
+.medieval-typography-secondary {
   font-family: var(--font-secondary);
 }
 
 /* Status indicators */
-.dnd-status {
+.medieval-status {
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.875rem;
   font-weight: 500;
 }
 
-.dnd-status-active {
-  background-color: var(--accent-color);
-  color: var(--ink-color);
+.medieval-status-active {
+  background-color: var(--medieval-status-active);
+  color: var(--medieval-heading);
 }
 
-.dnd-status-completed {
-  background-color: #006400; /* Using a literal color as it's a semantic color not in our theme */
-  color: var(--parchment-bg);
+.medieval-status-completed {
+  background-color: var(--medieval-status-completed);
+  color: var(--medieval-status-text);
 }
 
-.dnd-status-failed {
-  background-color: var(--primary-color);
-  color: var(--parchment-bg);
+.medieval-status-failed {
+  background-color: var(--medieval-status-failed);
+  color: var(--medieval-status-text);
 }
 
 /* Navigation styles */
-.dnd-navigation {
+.medieval-navigation {
   background-color: var(--card-bg);
   border-bottom: 2px solid var(--border-color);
 }
 
-.dnd-navigation-item {
+.medieval-navigation-item {
   color: var(--ink-secondary);
   transition: all 0.3s ease;
 }
 
-.dnd-navigation-item:hover {
+.medieval-navigation-item:hover {
   color: var(--primary-color);
-  background-color: var(--parchment-accent);
+  background-color: var(--medieval-hover-light);
 }
 
-.dnd-navigation-item-active {
+.medieval-navigation-item-active {
   color: var(--primary-color);
-  background-color: var(--parchment-accent);
+  background-color: var(--medieval-hover-medium);
   font-weight: 500;
 }
 
+/* Dropdown component - ensure solid background */
+.medieval-dropdown {
+  background-color: var(--medieval-input-bg) !important;
+  border: 1px solid var(--medieval-card-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  opacity: 1 !important;
+}
+
+.medieval-dropdown-item {
+  color: var(--medieval-text);
+  transition: background-color 0.1s ease;
+}
+
+.medieval-dropdown-item:hover {
+  background-color: var(--medieval-hover-light);
+}
+
+.medieval-dropdown-item-active {
+  background-color: var(--medieval-hover-medium);
+  color: var(--medieval-heading);
+}
+
 /* Dialog styles */
-.dnd-dialog {
+.medieval-dialog {
   background-color: var(--card-bg);
   border: 2px solid var(--border-color);
   border-radius: var(--border-radius-lg);
   box-shadow: 0 8px 16px rgba(139, 69, 19, 0.2);
 }
 
-.dnd-dialog-backdrop {
+.medieval-dialog-backdrop {
   background-color: rgba(44, 24, 16, 0.4);
 }
 
 /* Divider */
-.dnd-divider {
+.medieval-divider {
   height: 2px;
   background-image: linear-gradient(
     90deg,
@@ -249,66 +286,66 @@
 }
 
 /* Search component */
-.dnd-search {
-  background-color: var(--card-bg);
+.medieval-search {
+  background-color: var(--medieval-input-bg);
   border: 2px solid var(--border-color);
   color: var(--ink-color);
 }
 
-.dnd-search:focus {
+.medieval-search:focus {
   border-color: var(--accent-color);
   box-shadow: 0 0 0 2px rgba(218, 165, 32, 0.2);
 }
 
-.dnd-search-results {
-  background-color: var(--card-bg);
+.medieval-search-results {
+  background-color: var(--medieval-input-bg);
   border: 2px solid var(--border-color);
   border-radius: var(--border-radius-md);
 }
 
-.dnd-search-result-item {
+.medieval-search-result-item {
   border-bottom: 1px solid var(--parchment-accent);
 }
 
-.dnd-search-result-item:hover {
+.medieval-search-result-item:hover {
   background-color: var(--parchment-accent);
 }
 
 /* Scrollbar styling */
-.dnd-theme::-webkit-scrollbar {
+.medieval-theme::-webkit-scrollbar {
   width: 12px;
 }
 
-.dnd-theme::-webkit-scrollbar-track {
+.medieval-theme::-webkit-scrollbar-track {
   background: var(--parchment-dark);
 }
 
-.dnd-theme::-webkit-scrollbar-thumb {
+.medieval-theme::-webkit-scrollbar-thumb {
   background: var(--border-color);
   border: 3px solid var(--parchment-dark);
   border-radius: 6px;
 }
 
-.dnd-theme::-webkit-scrollbar-thumb:hover {
+.medieval-theme::-webkit-scrollbar-thumb:hover {
   background: var(--primary-color);
 }
 
 /* Quest and NPC specific styling */
-.dnd-quest-card {
-  border-left: 4px solid var(--accent-color);
+.medieval-quest-card {
+  border-left: 4px solid var(--medieval-status-active);
 }
 
-.dnd-npc-card {
+.medieval-npc-card {
   border-left: 4px solid var(--primary-color);
 }
 
 /* Decorative elements */
-.dnd-decoration-scroll {
+.medieval-decoration-scroll {
   position: relative;
 }
 
-.dnd-decoration-scroll::before,
-.dnd-decoration-scroll::after {
+.medieval-decoration-scroll::before,
+.medieval-decoration-scroll::after {
   content: '';
   position: absolute;
   height: 24px;
@@ -318,213 +355,217 @@
   background-repeat: no-repeat;
 }
 
-.dnd-decoration-scroll::before {
+.medieval-decoration-scroll::before {
   top: -12px;
   left: 50%;
   transform: translateX(-50%) rotate(180deg);
 }
 
-.dnd-decoration-scroll::after {
+.medieval-decoration-scroll::after {
   bottom: -12px;
   left: 50%;
   transform: translateX(-50%);
 }
 
-/* Additional styles for QuestCard, NPCCard, LocationCard, and BookViewer in dnd-theme.css */
-
 /* Quest Card styles */
-.dnd-quest-card {
-  border-left: 4px solid var(--accent-color);
+.medieval-quest-card {
+  border-left: 4px solid var(--medieval-status-active);
 }
 
-.dnd-progress-container {
+.medieval-progress-container {
   background-color: var(--parchment-dark);
 }
 
-.dnd-progress-bar {
+.medieval-progress-bar {
   background-color: var(--primary-color);
 }
 
-.dnd-progress-bar-active {
-  background-color: var(--accent-color);
+.medieval-progress-bar-active {
+  background-color: var(--medieval-status-active);
 }
 
-.dnd-progress-bar-completed {
-  background-color: #006400;
+.medieval-progress-bar-completed {
+  background-color: var(--medieval-status-completed);
 }
 
-.dnd-progress-bar-failed {
-  background-color: var(--primary-color);
+.medieval-progress-bar-failed {
+  background-color: var(--medieval-status-failed);
 }
 
-.dnd-objective-completed {
-  background-color: #006400;
-  border-color: #006400;
+.medieval-objective-completed {
+  background-color: var(--medieval-status-completed);
+  border-color: var(--medieval-status-completed);
 }
 
-.dnd-objective-pending {
+.medieval-objective-pending {
   border-color: var(--border-color);
 }
 
 /* NPC Card styles */
-.dnd-npc-card {
+.medieval-npc-card {
   border-left: 4px solid var(--primary-color);
 }
 
-.dnd-npc-status-alive {
-  color: #006400;
+.medieval-npc-status-alive {
+  color: var(--medieval-status-completed);
 }
 
-.dnd-npc-status-deceased {
-  color: var(--primary-color);
+.medieval-npc-status-deceased {
+  color: var(--medieval-status-failed);
 }
 
-.dnd-npc-status-missing {
-  color: #DAA520;
+.medieval-npc-status-missing {
+  color: var(--medieval-status-active);
 }
 
-.dnd-npc-status-unknown {
+.medieval-npc-status-unknown {
   color: var(--ink-secondary);
 }
 
-.dnd-npc-relationship-friendly {
-  color: #006400;
+.medieval-npc-relationship-friendly {
+  color: var(--medieval-status-completed);
 }
 
-.dnd-npc-relationship-hostile {
-  color: var(--primary-color);
+.medieval-npc-relationship-hostile {
+  color: var(--medieval-status-failed);
 }
 
-.dnd-npc-relationship-neutral {
+.medieval-npc-relationship-neutral {
   color: var(--ink-secondary);
 }
 
-.dnd-npc-relationship-unknown {
+.medieval-npc-relationship-unknown {
   color: var(--ink-secondary);
 }
 
-.dnd-note {
+.medieval-note {
   background-color: var(--parchment-dark);
   border: 1px solid var(--border-color);
 }
 
 /* Location Card styles */
-.dnd-location-card {
-  border-left: 4px solid #483C32;
+.medieval-location-card {
+  border-left: 4px solid var(--ink-secondary);
 }
 
-.dnd-location-status-discovered {
-  color: #006400;
+.medieval-location-status-discovered {
+  color: var(--medieval-status-completed);
 }
 
-.dnd-location-status-undiscovered {
+.medieval-location-status-undiscovered {
   color: var(--ink-secondary);
 }
 
-.dnd-location-status-visited {
-  color: var(--accent-color);
+.medieval-location-status-visited {
+  color: var(--medieval-status-active);
 }
 
-.dnd-tag {
+.medieval-tag {
   background-color: var(--parchment-dark);
   border: 1px solid var(--border-color);
 }
 
 /* Book Viewer styles */
-.dnd-book {
+.medieval-book {
   background-color: var(--parchment-bg);
   border: 2px solid var(--border-color);
 }
 
-.dnd-book-header {
+.medieval-book-header {
   background-color: var(--parchment-dark);
   border-bottom: 2px solid var(--border-color);
 }
 
-.dnd-book-nav {
+.medieval-book-nav {
   background-color: var(--parchment-dark);
   border-bottom: 1px solid var(--border-color);
 }
 
-.dnd-book-content-area {
+.medieval-book-content-area {
   background-color: var(--parchment-bg);
   background-image: url('../../../public/decorative/parchment-texture.svg');
   background-repeat: repeat;
 }
 
-.dnd-book-content {
+.medieval-book-content {
   font-family: 'Crimson Text', serif;
 }
 
-.dnd-book-text {
+.medieval-book-text {
   font-family: 'Crimson Text', serif;
   color: var(--ink-color);
 }
 
-.dnd-book-pagination {
+.medieval-book-pagination {
   background-color: var(--parchment-bg);
   border-top: 1px solid var(--border-color);
 }
 
-.dnd-page-nav-button {
+.medieval-page-nav-button {
   background-color: transparent;
 }
 
-.dnd-page-nav-button:hover {
+.medieval-page-nav-button:hover {
   background-color: var(--parchment-accent);
 }
 
-.dnd-progress-container {
+.medieval-progress-container {
   background-color: var(--parchment-dark);
 }
 
-.dnd-progress-bar {
-  background-color: var(--accent-color);
+.medieval-progress-bar {
+  background-color: var(--medieval-status-active);
 }
 
-.dnd-hint {
+.medieval-hint {
   background-color: var(--parchment-accent);
   color: var(--ink-color);
   border: 1px solid var(--border-color);
 }
 
 /* Rumor Card styles */
-.dnd-rumor-card {
+.medieval-rumor-card {
   border-left: 4px solid var(--primary-color);
 }
 
-.dnd-rumor-card-confirmed {
-  border-left: 4px solid #006400;
+.medieval-rumor-card-confirmed {
+  border-left: 4px solid var(--medieval-status-completed);
 }
 
-.dnd-rumor-card-unconfirmed {
-  border-left: 4px solid var(--accent-color);
+.medieval-rumor-card-unconfirmed {
+  border-left: 4px solid var(--medieval-status-active);
 }
 
-.dnd-rumor-card-false {
-  border-left: 4px solid var(--primary-color);
+.medieval-rumor-card-false {
+  border-left: 4px solid var(--medieval-status-failed);
 }
 
-.dnd-rumor-status-confirmed {
-  color: #006400;
+.medieval-rumor-status-confirmed {
+  color: var(--medieval-status-completed);
 }
 
-.dnd-rumor-status-unconfirmed {
-  color: var(--accent-color);
+.medieval-rumor-status-unconfirmed {
+  color: var(--medieval-status-active);
 }
 
-.dnd-rumor-status-false {
-  color: var(--primary-color);
+.medieval-rumor-status-false {
+  color: var(--medieval-status-failed);
 }
 
-.dnd-rumor-status-border-confirmed {
-  border-color: #006400;
+.medieval-rumor-status-border-confirmed {
+  border-color: var(--medieval-status-completed);
 }
 
-.dnd-rumor-status-border-unconfirmed {
-  border-color: var(--accent-color);
+.medieval-rumor-status-border-unconfirmed {
+  border-color: var(--medieval-status-active);
 }
 
-.dnd-rumor-status-border-false {
-  border-color: var(--primary-color);
+.medieval-rumor-status-border-false {
+  border-color: var(--medieval-status-failed);
+}
+
+/* Icon Style */
+.medieval-icon-bg {
+  background-color: var(--medieval-icon-bg);
+  border: 1px solid var(--medieval-icon-border);
 }

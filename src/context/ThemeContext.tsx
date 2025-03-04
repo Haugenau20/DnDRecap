@@ -1,24 +1,25 @@
 // src/context/ThemeContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Theme, ThemeName, ThemeContextState } from '../types/theme';
-import { themes } from '../config/themes';
+import { themes } from '../themes';
 
 // Import theme-specific CSS
-import '../styles/themes/dnd-theme.css';
-import '../styles/themes/default-theme.css';
+import '../styles/themes/medieval-theme.css';
+import '../styles/themes/light-theme.css';
+import '../styles/themes/dark-theme.css';
 
 const ThemeContext = createContext<ThemeContextState | undefined>(undefined);
 
-const THEME_STORAGE_KEY = 'dnd-companion-theme';
+const THEME_STORAGE_KEY = 'medieval-companion-theme';
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Initialize theme from localStorage or default
+  // Initialize theme from localStorage or light
   const [currentTheme, setCurrentTheme] = useState<Theme>(() => {
     const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-    return themes[savedTheme as ThemeName] || themes.default;
+    return themes[savedTheme as ThemeName] || themes.light;
   });
 
-  // Update localStorage when theme changes
+  // Update localStorage and CSS variables when theme changes
   useEffect(() => {
     localStorage.setItem(THEME_STORAGE_KEY, currentTheme.name);
     
@@ -32,8 +33,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     document.body.className = '';
     document.body.classList.add(`${currentTheme.name}-theme`);
     
+    // Apply all theme values to CSS variables
+    applyThemeToCssVariables(currentTheme, root);
+  }, [currentTheme]);
+
+  // Separate function to apply theme values to CSS variables for readability
+  const applyThemeToCssVariables = (theme: Theme, root: HTMLElement) => {
     // Colors
-    Object.entries(currentTheme.colors).forEach(([key, value]) => {
+    Object.entries(theme.colors).forEach(([key, value]) => {
       if (typeof value === 'string') {
         root.style.setProperty(`--color-${key}`, value);
       } else if (typeof value === 'object' && value !== null) {
@@ -54,12 +61,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
     
     // Fonts
-    Object.entries(currentTheme.fonts).forEach(([key, value]) => {
+    Object.entries(theme.fonts).forEach(([key, value]) => {
       root.style.setProperty(`--font-${key}`, value);
     });
     
     // Borders
-    Object.entries(currentTheme.borders).forEach(([key, value]) => {
+    Object.entries(theme.borders).forEach(([key, value]) => {
       if (typeof value === 'object' && value !== null) {
         Object.entries(value).forEach(([subKey, subValue]) => {
           if (typeof subValue === 'string') {
@@ -68,7 +75,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         });
       }
     });
-  }, [currentTheme]);
+  };
 
   const setTheme = (themeName: ThemeName) => {
     setCurrentTheme(themes[themeName]);

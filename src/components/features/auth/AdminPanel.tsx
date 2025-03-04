@@ -5,6 +5,7 @@ import Input from '../../core/Input';
 import Button from '../../core/Button';
 import Card from '../../core/Card';
 import Dialog from '../../core/Dialog';
+import { useTheme } from '../../../context/ThemeContext';
 import { FirebaseError } from 'firebase/app';
 import { 
   UserPlus, 
@@ -22,6 +23,7 @@ import {
   Ticket,
   UserCog
 } from 'lucide-react';
+import clsx from 'clsx';
 
 interface AdminPanelProps {
   onClose?: () => void;
@@ -49,6 +51,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     getAllUsers,
     deleteUser
   } = useFirebase();
+
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
   
   // Active tab state
   const [activeTab, setActiveTab] = useState<AdminTab>(AdminTab.Tokens);
@@ -289,24 +294,26 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
       <Card>
         <Card.Content className="space-y-6">
           {/* Tab Navigation */}
-          <div className="flex border-b">
+          <div className={clsx("flex border-b", `${themePrefix}-navigation`)}>
             <button
-              className={`py-2 px-4 font-medium flex items-center gap-2 ${
+              className={clsx(
+                "py-2 px-4 font-medium flex items-center gap-2",
                 activeTab === AdminTab.Tokens 
-                  ? 'text-blue-600 border-b-2 border-blue-600' 
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+                  ? `${themePrefix}-navigation-item-active` 
+                  : `${themePrefix}-navigation-item`
+              )}
               onClick={() => setActiveTab(AdminTab.Tokens)}
             >
               <Ticket className="w-5 h-5" />
               Registration Tokens
             </button>
             <button
-              className={`py-2 px-4 font-medium flex items-center gap-2 ${
+              className={clsx(
+                "py-2 px-4 font-medium flex items-center gap-2",
                 activeTab === AdminTab.Users 
-                  ? 'text-blue-600 border-b-2 border-blue-600' 
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+                  ? `${themePrefix}-navigation-item-active` 
+                  : `${themePrefix}-navigation-item`
+              )}
               onClick={() => setActiveTab(AdminTab.Users)}
             >
               <UserCog className="w-5 h-5" />
@@ -316,7 +323,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
           {/* Error message */}
           {error && (
-            <div className="flex items-center gap-2 p-3 bg-red-50 text-red-700 rounded-lg">
+            <div className={clsx(
+              "flex items-center gap-2 p-3 rounded-lg",
+              `${themePrefix}-typography-error`
+            )}>
               <AlertCircle size={16} />
               <Typography color="error">{error}</Typography>
             </div>
@@ -326,7 +336,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
           {activeTab === AdminTab.Tokens && (
             <>
               {/* Generate token form */}
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <div className={clsx(
+                "p-4 rounded-lg",
+                `${themePrefix}-card`
+              )}>
                 <Typography variant="h4" className="mb-4">
                   Generate Registration Token
                 </Typography>
@@ -366,44 +379,77 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
                 {loadingTokens ? (
                   <div className="text-center py-8">
-                    <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
+                    <div className={clsx(
+                      "animate-spin w-8 h-8 border-4 border-t-transparent rounded-full mx-auto mb-4",
+                      `border-${themePrefix}-primary`
+                    )} />
                     <Typography>Loading tokens...</Typography>
                   </div>
                 ) : sortedTokens.length === 0 ? (
-                  <div className="text-center py-8 bg-gray-50 rounded-lg">
-                    <Ticket className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <div className={clsx(
+                    "text-center py-8 rounded-lg",
+                    `${themePrefix}-card`
+                  )}>
+                    <Ticket className={clsx(
+                      "w-12 h-12 mx-auto mb-4",
+                      `text-${themePrefix}-secondary`
+                    )} />
                     <Typography color="secondary">
                       {tokenSearchQuery ? 'No tokens match your search' : 'No registration tokens found'}
                     </Typography>
                   </div>
                 ) : (
-                  <div className="border rounded-lg overflow-hidden">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50">
+                  <div className={clsx(
+                    "border rounded-lg overflow-hidden",
+                    `${themePrefix}-card`
+                  )}>
+                    <table className="min-w-full divide-y">
+                      <thead className={`${themePrefix}-navigation`}>
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className={clsx(
+                            "px-6 py-3 text-left text-xs font-medium uppercase tracking-wider",
+                            `${themePrefix}-typography-secondary`
+                          )}>
                             Token
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className={clsx(
+                            "px-6 py-3 text-left text-xs font-medium uppercase tracking-wider",
+                            `${themePrefix}-typography-secondary`
+                          )}>
                             Status
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className={clsx(
+                            "px-6 py-3 text-left text-xs font-medium uppercase tracking-wider",
+                            `${themePrefix}-typography-secondary`
+                          )}>
                             Created
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className={clsx(
+                            "px-6 py-3 text-left text-xs font-medium uppercase tracking-wider",
+                            `${themePrefix}-typography-secondary`
+                          )}>
                             Notes
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className={clsx(
+                            "px-6 py-3 text-left text-xs font-medium uppercase tracking-wider",
+                            `${themePrefix}-typography-secondary`
+                          )}>
                             Actions
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
+                      <tbody className={clsx(
+                        "divide-y",
+                        `${themePrefix}-theme`
+                      )}>
                         {sortedTokens.map((tokenData) => (
                           <tr key={tokenData.token}>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center">
-                                <Ticket className="w-5 h-5 text-gray-400 mr-2" />
+                                <Ticket className={clsx(
+                                  "w-5 h-5 mr-2",
+                                  `text-${themePrefix}-secondary`
+                                )} />
                                 <Typography variant="body-sm" className="font-mono">
                                   {tokenData.token.substring(0, 8)}...
                                 </Typography>
@@ -416,7 +462,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                                   <Typography variant="body-sm">
                                     Used
                                     {tokenData.usedAt && (
-                                      <span className="ml-1 text-gray-500">
+                                      <span className={clsx(
+                                        "ml-1",
+                                        `${themePrefix}-typography-secondary`
+                                      )}>
                                         ({new Date(tokenData.usedAt).toLocaleDateString()})
                                       </span>
                                     )}
@@ -496,44 +545,77 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
               {loadingUsers ? (
                 <div className="text-center py-8">
-                  <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
+                  <div className={clsx(
+                    "animate-spin w-8 h-8 border-4 border-t-transparent rounded-full mx-auto mb-4",
+                    `border-${themePrefix}-primary`
+                  )} />
                   <Typography>Loading users...</Typography>
                 </div>
               ) : sortedUsers.length === 0 ? (
-                <div className="text-center py-8 bg-gray-50 rounded-lg">
-                  <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <div className={clsx(
+                  "text-center py-8 rounded-lg",
+                  `${themePrefix}-card`
+                )}>
+                  <Users className={clsx(
+                    "w-12 h-12 mx-auto mb-4",
+                    `text-${themePrefix}-secondary`
+                  )} />
                   <Typography color="secondary">
                     {userSearchQuery ? 'No users match your search' : 'No users found'}
                   </Typography>
                 </div>
               ) : (
-                <div className="border rounded-lg overflow-hidden">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                <div className={clsx(
+                  "border rounded-lg overflow-hidden",
+                  `${themePrefix}-card`
+                )}>
+                  <table className="min-w-full divide-y">
+                    <thead className={`${themePrefix}-navigation`}>
                       <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className={clsx(
+                          "px-6 py-3 text-left text-xs font-medium uppercase tracking-wider",
+                          `${themePrefix}-typography-secondary`
+                        )}>
                           Username
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className={clsx(
+                          "px-6 py-3 text-left text-xs font-medium uppercase tracking-wider",
+                          `${themePrefix}-typography-secondary`
+                        )}>
                           Role
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className={clsx(
+                          "px-6 py-3 text-left text-xs font-medium uppercase tracking-wider",
+                          `${themePrefix}-typography-secondary`
+                        )}>
                           Joined
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className={clsx(
+                          "px-6 py-3 text-left text-xs font-medium uppercase tracking-wider",
+                          `${themePrefix}-typography-secondary`
+                        )}>
                           Last Login
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className={clsx(
+                          "px-6 py-3 text-left text-xs font-medium uppercase tracking-wider",
+                          `${themePrefix}-typography-secondary`
+                        )}>
                           Actions
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className={clsx(
+                      "divide-y",
+                      `${themePrefix}-theme`
+                    )}>
                       {sortedUsers.map((userData) => (
                         <tr key={userData.id}>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              <User className="w-5 h-5 text-gray-400 mr-2" />
+                              <User className={clsx(
+                                "w-5 h-5 mr-2",
+                                `text-${themePrefix}-secondary`
+                              )} />
                               <Typography variant="body-sm" className="font-medium">
                                 {userData.username || 'Unknown'}
                               </Typography>
@@ -679,7 +761,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             Share this registration link:
           </Typography>
           
-          <div className="bg-gray-50 p-3 rounded border flex items-center space-x-2 overflow-hidden">
+          <div className={clsx(
+            "p-3 rounded border flex items-center space-x-2 overflow-hidden",
+            `${themePrefix}-card`
+          )}>
             <div className="truncate flex-1">
               <Typography variant="body-sm" className="font-mono">
                 {generateRegistrationLink(inviteDialog.token)}

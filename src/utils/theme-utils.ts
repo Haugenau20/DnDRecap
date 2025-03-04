@@ -6,8 +6,8 @@ import { ThemeName } from '../types/theme';
  * @param themeName - Current theme name
  * @returns boolean indicating if D&D theme is active
  */
-export const isDndTheme = (themeName: ThemeName): boolean => {
-  return themeName === 'dnd';
+export const ismedievalTheme = (themeName: ThemeName): boolean => {
+  return themeName === 'medieval';
 };
 
 /**
@@ -20,20 +20,20 @@ export const getThemeClasses = (
   themeName: ThemeName,
   componentName: 'card' | 'button' | 'input' | 'typography' | 'layout' | 'navigation'
 ): string => {
-  if (themeName === 'dnd') {
+  if (themeName === 'medieval') {
     switch (componentName) {
       case 'card':
-        return 'dnd-card';
+        return 'medieval-card';
       case 'button':
-        return 'dnd-button';
+        return 'medieval-button';
       case 'input':
-        return 'dnd-input';
+        return 'medieval-input';
       case 'typography':
-        return 'dnd-typography';
+        return 'medieval-typography';
       case 'layout':
-        return 'dnd-theme';
+        return 'medieval-theme';
       case 'navigation':
-        return 'dnd-navigation';
+        return 'medieval-navigation';
       default:
         return '';
     }
@@ -68,18 +68,18 @@ export const combineThemeStyles = (
  * @param element - Element type to decorate
  * @returns CSS class for the decoration
  */
-export const getDndDecoration = (
+export const getMedievalDecoration = (
   element: 'heading' | 'card' | 'divider' | 'section'
 ): string => {
   switch (element) {
     case 'heading':
-      return 'dnd-heading';
+      return 'medieval-heading';
     case 'card':
-      return 'dnd-card';
+      return 'medieval-card';
     case 'divider':
-      return 'dnd-divider';
+      return 'medieval-divider';
     case 'section':
-      return 'dnd-section';
+      return 'medieval-section';
     default:
       return '';
   }

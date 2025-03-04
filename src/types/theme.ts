@@ -3,7 +3,7 @@
 /**
  * Available theme names
  */
-export type ThemeName = 'default' | 'dnd';
+export type ThemeName = 'light' | 'medieval' | 'dark';
 
 /**
  * Theme colors configuration
@@ -52,6 +52,28 @@ export interface ThemeColors {
       text: string;
       hover: string;
     };
+  };
+  // Adding specific UI element colors
+  ui: {
+    // Headers and bright elements
+    heading: string;
+    // Input fields
+    inputBackground: string;
+    inputPlaceholder: string;
+    // Status indicators
+    statusActive: string;
+    statusCompleted: string;
+    statusFailed: string;
+    statusText: string;
+    // Navigation and layout
+    headerBackground: string;
+    footerBackground: string;
+    // Hover effects
+    hoverLight: string;
+    hoverMedium: string;
+    // Icon styling
+    iconBackground: string;
+    iconBorder: string;
   };
 }
 

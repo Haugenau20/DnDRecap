@@ -3,10 +3,14 @@ import { Book, ScrollText, Clock, ListRestart } from 'lucide-react';
 import { useNavigation } from '../../../hooks/useNavigation';
 import Typography from '../../core/Typography';
 import { useStory } from '../../../context/StoryContext';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 const StorySidebar = () => {
   const { navigateToPage } = useNavigation();
   const { chapters, storyProgress } = useStory();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
   
   // Calculate reading progress
   const readingProgress = useMemo(() => {
@@ -67,16 +71,16 @@ const StorySidebar = () => {
   };
 
   return (
-    <div className="space-y-6 p-4">
+    <div className={clsx("space-y-6 p-4", `${themePrefix}-sidebar`)}>
       {/* Reading Progress */}
       <div>
         <div className="flex items-center gap-2 mb-3">
-          <Book className="w-5 h-5 text-blue-500" />
+          <Book className={clsx("w-5 h-5", `text-${themePrefix}-primary`)} />
           <Typography variant="h4">Reading Progress</Typography>
         </div>
-        <div className="bg-gray-100 rounded-full h-2 mb-2">
+        <div className={clsx("rounded-full h-2 mb-2", `${themePrefix}-progress-container`)}>
           <div 
-            className="bg-blue-500 rounded-full h-2 transition-all"
+            className={clsx("rounded-full h-2 transition-all", `${themePrefix}-progress-bar`)}
             style={{ width: `${readingProgress.percentage}%` }}
           />
         </div>
@@ -88,7 +92,7 @@ const StorySidebar = () => {
       {/* Recently Read */}
       <div>
         <div className="flex items-center gap-2 mb-3">
-          <Clock className="w-5 h-5 text-blue-500" />
+          <Clock className={clsx("w-5 h-5", `text-${themePrefix}-primary`)} />
           <Typography variant="h4">Recently Read</Typography>
         </div>
         <div className="space-y-2">
@@ -96,7 +100,10 @@ const StorySidebar = () => {
             <button
               key={chapter.id}
               onClick={() => handleChapterClick(chapter.id)}
-              className="w-full text-left p-2 rounded hover:bg-gray-100 transition-colors"
+              className={clsx(
+                "w-full text-left p-2 rounded transition-colors",
+                `${themePrefix}-navigation-item`
+              )}
             >
               <Typography variant="body-sm" className="font-medium">
                 Chapter {chapter.order}
@@ -117,13 +124,16 @@ const StorySidebar = () => {
       {/* Quick Actions */}
       <div>
         <div className="flex items-center gap-2 mb-3">
-          <ListRestart className="w-5 h-5 text-blue-500" />
+          <ListRestart className={clsx("w-5 h-5", `text-${themePrefix}-primary`)} />
           <Typography variant="h4">Quick Actions</Typography>
         </div>
         <div className="space-y-2">
           <button 
             onClick={handleContinueReading}
-            className="w-full flex items-center gap-2 p-2 rounded hover:bg-gray-100 transition-colors"
+            className={clsx(
+              "w-full flex items-center gap-2 p-2 rounded transition-colors",
+              `${themePrefix}-navigation-item`
+            )}
           >
             <ScrollText className="w-4 h-4" />
             <Typography variant="body-sm">Continue Reading</Typography>

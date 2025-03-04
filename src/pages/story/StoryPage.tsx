@@ -1,4 +1,3 @@
-// src/pages/story/StoryPage.tsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import BookViewer from '../../components/features/story/BookViewer';
@@ -9,11 +8,13 @@ import Card from '../../components/core/Card';
 import Button from '../../components/core/Button';
 import { useStory } from '../../context/StoryContext';
 import { useNavigation } from '../../context/NavigationContext';
+import { useTheme } from '../../context/ThemeContext';
 import { Book, Menu, Loader2 } from 'lucide-react';
+import clsx from 'clsx';
 
 const StoryPage: React.FC = () => {
   const { chapterId } = useParams();
-  const { navigateToPage, getCurrentQueryParams, updateQueryParams } = useNavigation();
+  const { navigateToPage } = useNavigation();
   const { 
     chapters, 
     storyProgress,
@@ -25,6 +26,8 @@ const StoryPage: React.FC = () => {
     getNextChapter,
     getPreviousChapter  
   } = useStory();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
   
   const [currentChapter, setCurrentChapter] = useState(
     chapterId ? getChapterById(chapterId) : undefined
@@ -97,9 +100,9 @@ const StoryPage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Card className="p-8">
+        <Card className={clsx("p-8", `${themePrefix}-card`)}>
           <div className="flex items-center gap-4">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+            <Loader2 className={clsx("w-6 h-6 animate-spin", `text-${themePrefix}-primary`)} />
             <Typography>Loading chapter...</Typography>
           </div>
         </Card>
@@ -111,7 +114,7 @@ const StoryPage: React.FC = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Card className="p-8">
+        <Card className={clsx("p-8", `${themePrefix}-card`)}>
           <Typography color="error">
             {error}
           </Typography>
@@ -121,7 +124,7 @@ const StoryPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen p-4">
+    <div className={clsx("min-h-screen p-4", `${themePrefix}-content`)}>
       <div className="max-w-7xl mx-auto">
         {/* Sliding Chapters Navigation */}
         <SlidingChapters
@@ -148,7 +151,7 @@ const StoryPage: React.FC = () => {
               Chapters
             </Button>
             <div className="flex items-center gap-2">
-              <Book className="text-blue-600" />
+              <Book className={clsx(`text-${themePrefix}-primary`)} />
               <Typography color="secondary">
                 Reading Chapter {currentChapter?.order || 0} of {chapters.length}
               </Typography>

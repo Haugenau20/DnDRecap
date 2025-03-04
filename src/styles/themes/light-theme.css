@@ -1,0 +1,497 @@
+/* src/styles/themes/light-theme.css */
+
+/* 
+  light theme styling that mirrors the structure of dnd-theme.css
+  for consistency across themes
+*/
+
+/* Apply styles only when data-theme="light" is set */
+[data-theme="light"] {
+  /* Semantic aliases for theme variables */
+  --light-bg: var(--color-background-primary);
+  --light-bg-secondary: var(--color-background-secondary);
+  --light-bg-accent: var(--color-background-accent);
+  --light-text: var(--color-text-primary);
+  --light-text-secondary: var(--color-text-secondary);
+  --light-accent: var(--color-accent);
+  --light-primary: var(--color-primary);
+  --light-card-border: var(--color-card-border);
+  --light-card-bg: var(--color-card-background);
+  
+  /* UI-specific aliases */
+  --light-heading: var(--color-ui-heading);
+  --light-input-bg: var(--color-ui-inputBackground);
+  --light-placeholder: var(--color-ui-inputPlaceholder);
+  --light-status-active: var(--color-ui-statusActive);
+  --light-status-completed: var(--color-ui-statusCompleted);
+  --light-status-failed: var(--color-ui-statusFailed);
+  --light-status-text: var(--color-ui-statusText);
+  --light-header-bg: var(--color-ui-headerBackground);
+  --light-footer-bg: var(--color-ui-footerBackground);
+  --light-hover-light: var(--color-ui-hoverLight);
+  --light-hover-medium: var(--color-ui-hoverMedium);
+  --light-icon-bg: var(--color-ui-iconBackground);
+  --light-icon-border: var(--color-ui-iconBorder);
+}
+
+/* Base theme styles */
+.light-theme {
+  background-color: var(--light-bg);
+  color: var(--light-text);
+  font-family: var(--font-primary);
+}
+
+/* Enhanced card styling */
+.light-card {
+  border: 1px solid var(--light-card-border);
+  border-radius: var(--border-radius-md);
+  background-color: var(--light-card-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+/* Card hover effect */
+.light-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styles */
+.light-heading {
+  font-family: var(--font-heading);
+  color: var(--light-heading);
+  margin-bottom: 0.75rem;
+}
+
+/* ====== Button styles ====== */
+.light-button {
+  transition: all 0.2s ease;
+  position: relative;
+  font-family: var(--font-primary);
+  font-weight: 500;
+}
+
+/* FIXED HOVER EFFECT - Uses --hover-bg-color custom property */
+.light-button:hover {
+  background-color: var(--hover-bg-color) !important;
+}
+
+/* Variant-specific button styling */
+.light-button-primary {
+  background-color: var(--color-primary);
+  color: var(--light-status-text);
+}
+
+.light-button-secondary {
+  background-color: var(--color-secondary);
+  color: var(--light-status-text);
+}
+
+.light-button-outline {
+  background-color: transparent;
+  border: 2px solid var(--color-card-border);
+  color: var(--color-text-primary);
+}
+
+.light-button-outline:hover {
+  background-color: var(--hover-bg-color) !important;
+}
+
+.light-button-ghost {
+  background-color: transparent;
+  color: var(--color-text-primary);
+}
+
+.light-button-ghost:hover {
+  background-color: var(--hover-bg-color) !important;
+}
+
+.light-button-link {
+  background-color: transparent;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.light-button-link:hover {
+  text-decoration: underline;
+  background-color: transparent !important;
+}
+
+/* Input styles */
+.light-input {
+  background-color: var(--light-input-bg);
+  border: 1px solid var(--light-card-border);
+  border-radius: var(--border-radius-md);
+  padding: 0.5rem;
+  color: var(--light-text);
+  transition: all 0.2s ease;
+  font-family: var(--font-primary);
+}
+
+.light-input:focus {
+  border-color: var(--light-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.light-input::placeholder {
+  color: var(--light-placeholder);
+  opacity: 0.7;
+}
+
+/* Typography styles */
+.light-typography {
+  font-family: var(--font-primary);
+  color: var(--light-text);
+}
+
+.light-typography-heading {
+  font-family: var(--font-heading);
+}
+
+.light-typography-secondary {
+  font-family: var(--font-secondary);
+}
+
+.light-typography-label {
+  color: var(--light-text);
+  font-weight: 500;
+}
+
+/* Status indicators */
+.light-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.light-status-active {
+  background-color: var(--light-status-active);
+  color: var(--light-status-text);
+}
+
+.light-status-completed {
+  background-color: var(--light-status-completed);
+  color: var(--light-status-text);
+}
+
+.light-status-failed {
+  background-color: var(--light-status-failed);
+  color: var(--light-status-text);
+}
+
+/* Navigation styles */
+.light-navigation {
+  background-color: var(--light-card-bg);
+  border-bottom: 1px solid var(--light-card-border);
+}
+
+.light-navigation-item {
+  color: var(--light-text-secondary);
+  transition: all 0.2s ease;
+}
+
+.light-navigation-item:hover {
+  color: var(--light-primary);
+  background-color: var(--light-bg-accent);
+}
+
+.light-navigation-item-active {
+  color: var(--light-primary);
+  background-color: var(--light-bg-accent);
+  font-weight: 500;
+}
+
+/* Header styles */
+.light-header {
+  background-color: var(--light-header-bg);
+  color: var(--light-status-text);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.light-header-title {
+  color: var(--light-heading);
+  font-family: var(--font-heading);
+}
+
+/* Footer styles */
+.light-footer {
+  background-color: var(--light-footer-bg);
+  color: var(--light-status-text);
+}
+
+/* Content area */
+.light-content {
+  background-color: var(--light-bg);
+}
+
+/* Search component */
+.light-search {
+  background-color: var(--light-input-bg);
+  border: 1px solid var(--light-card-border);
+  transition: all 0.2s ease;
+}
+
+.light-search:focus {
+  border-color: var(--light-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.light-search-results {
+  background-color: var(--light-input-bg);
+  border: 1px solid var(--light-card-border);
+}
+
+.light-search-result {
+  transition: background-color 0.2s ease;
+}
+
+.light-search-result:hover {
+  background-color: var(--light-hover-light);
+}
+
+.light-search-result-selected {
+  background-color: var(--light-hover-medium);
+}
+
+/* Dropdown component */
+.light-dropdown {
+  background-color: var(--light-input-bg);
+  border-color: var(--light-card-border);
+}
+
+.light-dropdown-item {
+  color: var(--light-text);
+  transition: background-color 0.2s ease;
+}
+
+.light-dropdown-item:hover {
+  background-color: var(--light-hover-light);
+}
+
+.light-dropdown-item-active {
+  background-color: var(--light-hover-medium);
+  color: var(--light-primary);
+}
+
+/* Dialog styles */
+.light-dialog {
+  background-color: var(--light-input-bg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.light-dialog-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Quest Card styles */
+.light-quest-card {
+  border-left: 4px solid var(--light-primary);
+}
+
+.light-progress-container {
+  background-color: var(--light-bg-secondary);
+}
+
+.light-progress-bar {
+  background-color: var(--light-primary);
+}
+
+.light-progress-bar-active {
+  background-color: var(--light-primary);
+}
+
+.light-progress-bar-completed {
+  background-color: var(--light-status-completed);
+}
+
+.light-progress-bar-failed {
+  background-color: var(--light-status-failed);
+}
+
+.light-objective-completed {
+  background-color: var(--light-status-completed);
+  border-color: var(--light-status-completed);
+}
+
+.light-objective-pending {
+  border-color: var(--light-bg-secondary);
+}
+
+/* NPC Card styles */
+.light-npc-card {
+  border-left: 4px solid var(--light-primary);
+}
+
+.light-npc-status-alive {
+  color: var(--light-status-completed);
+}
+
+.light-npc-status-deceased {
+  color: var(--light-status-failed);
+}
+
+.light-npc-status-missing {
+  color: var(--light-status-active);
+}
+
+.light-npc-status-unknown {
+  color: var(--light-text-secondary);
+}
+
+.light-npc-relationship-friendly {
+  color: var(--light-status-completed);
+}
+
+.light-npc-relationship-hostile {
+  color: var(--light-status-failed);
+}
+
+.light-npc-relationship-neutral {
+  color: var(--light-text-secondary);
+}
+
+.light-npc-relationship-unknown {
+  color: var(--light-text-secondary);
+}
+
+.light-note {
+  background-color: var(--light-bg-secondary);
+}
+
+/* Location Card styles */
+.light-location-card {
+  border-left: 4px solid var(--light-primary);
+}
+
+.light-location-status-discovered {
+  color: var(--light-status-completed);
+}
+
+.light-location-status-undiscovered {
+  color: var(--light-text-secondary);
+}
+
+.light-location-status-visited {
+  color: var(--light-primary);
+}
+
+.light-tag {
+  background-color: var(--light-bg-secondary);
+}
+
+/* Book Viewer styles */
+.light-book {
+  background-color: var(--light-input-bg);
+}
+
+.light-book-header {
+  background-color: var(--light-bg-secondary);
+}
+
+.light-book-nav {
+  background-color: var(--light-bg-secondary);
+}
+
+.light-book-content-area {
+  background-color: #FFF9ED; /* Special parchment color for book content */
+}
+
+.light-book-content {
+  font-family: 'Crimson Text', serif;
+}
+
+.light-book-text {
+  font-family: 'Crimson Text', serif;
+}
+
+.light-book-pagination {
+  background-color: #FFFDF8; /* Slightly lighter parchment for pagination */
+  border-color: var(--light-bg-secondary);
+}
+
+.light-page-nav-button {
+  background-color: transparent;
+}
+
+.light-page-nav-button:hover {
+  background-color: var(--light-bg-secondary);
+}
+
+.light-progress-container {
+  background-color: var(--light-bg-secondary);
+}
+
+.light-progress-bar {
+  background-color: var(--light-primary);
+}
+
+.light-hint {
+  background-color: var(--light-bg-accent);
+  color: var(--light-primary);
+}
+
+/* Scrollbar styling */
+.light-theme::-webkit-scrollbar {
+  width: 10px;
+}
+
+.light-theme::-webkit-scrollbar-track {
+  background: var(--light-bg-secondary);
+}
+
+.light-theme::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 10px;
+}
+
+.light-theme::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Rumor Card styles */
+.light-rumor-card {
+  border-left: 4px solid var(--light-primary);
+}
+
+.light-rumor-card-confirmed {
+  border-left: 4px solid var(--light-status-completed);
+}
+
+.light-rumor-card-unconfirmed {
+  border-left: 4px solid var(--light-status-active);
+}
+
+.light-rumor-card-false {
+  border-left: 4px solid var(--light-status-failed);
+}
+
+.light-rumor-status-confirmed {
+  color: var(--light-status-completed);
+}
+
+.light-rumor-status-unconfirmed {
+  color: var(--light-status-active);
+}
+
+.light-rumor-status-false {
+  color: var(--light-status-failed);
+}
+
+.light-rumor-status-border-confirmed {
+  border-color: var(--light-status-completed);
+}
+
+.light-rumor-status-border-unconfirmed {
+  border-color: var(--light-status-active);
+}
+
+.light-rumor-status-border-false {
+  border-color: var(--light-status-failed);
+}
+
+/* Icon Style */
+.light-icon-bg {
+  background-color: var(--light-icon-bg);
+}

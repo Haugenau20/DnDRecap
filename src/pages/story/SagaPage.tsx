@@ -1,4 +1,3 @@
-// src/pages/story/SagaPage.tsx
 import React, { useState, useEffect } from 'react';
 import BookViewer from '../../components/features/story/BookViewer';
 import Typography from '../../components/core/Typography';
@@ -8,10 +7,14 @@ import Card from '../../components/core/Card';
 import { Book, Loader2 } from 'lucide-react';
 import { SagaData } from '../../types/saga';
 import { useNavigation } from '../../context/NavigationContext';
+import { useTheme } from '../../context/ThemeContext';
 import FirebaseService from '../../services/firebase/FirebaseService';
+import clsx from 'clsx';
 
 const SagaPage: React.FC = () => {
   const { navigateToPage } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
   const [data, setData] = useState<SagaData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -58,10 +61,10 @@ const SagaPage: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Card className="p-8">
+        <Card className={clsx("p-8", `${themePrefix}-card`)}>
           <div className="flex items-center gap-4">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
-            <Typography>Loading saga...</Typography>
+            <Loader2 className={clsx("w-6 h-6 animate-spin", `text-${themePrefix}-primary`)} />
+            <Typography className={`${themePrefix}-typography`}>Loading saga...</Typography>
           </div>
         </Card>
       </div>
@@ -72,7 +75,7 @@ const SagaPage: React.FC = () => {
   if (error || !data) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Card className="p-8">
+        <Card className={clsx("p-8", `${themePrefix}-card`)}>
           <Typography color="error">
             {error || 'Error loading saga content. Please try again later.'}
           </Typography>
@@ -82,7 +85,7 @@ const SagaPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen p-4">
+    <div className={clsx("min-h-screen p-4", `${themePrefix}-content`)}>
       <div className="max-w-7xl mx-auto">
         {/* Breadcrumb Navigation */}
         <Breadcrumb items={breadcrumbItems} className="mb-4" />

@@ -111,12 +111,12 @@ const BookViewer: React.FC<BookViewerProps> = ({
 
   if (!content) {
     return (
-      <Card className="w-full max-w-4xl mx-auto p-8 text-center">
-        <BookOpen className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+      <Card className={clsx("w-full max-w-4xl mx-auto p-8 text-center", `${themePrefix}-card`)}>
+        <BookOpen className={clsx("w-16 h-16 mx-auto mb-4", `text-${themePrefix}-secondary`)} />
         <Typography variant="h3" className="mb-2">
           No Content Available
         </Typography>
-        <Typography color="muted">
+        <Typography color="secondary">
           Select a chapter to begin reading
         </Typography>
       </Card>
@@ -147,9 +147,12 @@ const BookViewer: React.FC<BookViewerProps> = ({
           "border-b p-4",
           `${themePrefix}-book-header`
         )}>
-          <Typography variant="h3" className="text-center">
-            {title}
-          </Typography>
+          {/* Use the Typography component with proper theme class */}
+          <div className={clsx("text-center", `${themePrefix}-typography-heading`)}>
+            <Typography variant="h3" className={`${themePrefix}-typography-heading`}>
+              {title}
+            </Typography>
+          </div>
         </div>
 
         {/* Chapter Navigation */}
@@ -184,12 +187,12 @@ const BookViewer: React.FC<BookViewerProps> = ({
             "max-w-2xl mx-auto p-8 pb-20",
             `${themePrefix}-book-content`
           )}>
-            <Typography className={clsx(
+            <div className={clsx(
               "leading-relaxed whitespace-pre-wrap",
               `${themePrefix}-book-text`
             )}>
               {pages[currentPage - 1]?.replace(/\\n/g, '\n')}
-            </Typography>
+            </div>
           </div>
 
           {/* Navigation Bar */}
