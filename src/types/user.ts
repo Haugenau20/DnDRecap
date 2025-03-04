@@ -31,6 +31,8 @@ export interface PlayerProfile {
   displayName?: string;
   /** Optional character names associated with this player */
   characterNames?: (string | CharacterNameEntry)[];
+  /** ID of the active character (if any) - can be null when no character is selected */
+  activeCharacterId?: string | null;
   /** Timestamp when the account was created */
   dateCreated: Date | string;
   /** Timestamp of last login */

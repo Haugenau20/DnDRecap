@@ -116,7 +116,7 @@ const UserProfileButton: React.FC = () => {
       <Dialog
         open={showProfile}
         onClose={() => setShowProfile(false)}
-        title="Your Profile"
+        title={`${userProfile?.username}'s profile` || 'Your Profile'}
         maxWidth="max-w-md"
       >
         <UserProfile 

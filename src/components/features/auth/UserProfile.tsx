@@ -4,7 +4,7 @@ import Typography from '../../core/Typography';
 import Input from '../../core/Input';
 import Button from '../../core/Button';
 import Card from '../../core/Card';
-import { User, Save, Edit, Check, X, Loader2, AlertCircle, PlusCircle, Trash2, Palette, ChevronDown } from 'lucide-react';
+import { User, Save, Edit, Check, X, Loader2, AlertCircle, PlusCircle, Trash2, Palette, ChevronDown, Star } from 'lucide-react';
 import { CharacterNameEntry } from '../../../types/user';
 import { useTheme } from '../../../context/ThemeContext';
 import { themes } from '../../../themes';
@@ -49,11 +49,15 @@ const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
   const [characterNames, setCharacterNames] = useState<CharacterNameEntry[]>([]);
   const [newCharacterName, setNewCharacterName] = useState('');
   const [editingCharacterId, setEditingCharacterId] = useState<string | null>(null);
+  const [activeCharacterId, setActiveCharacterId] = useState<string | null>(null);
 
   // Initialize form with user data
   useEffect(() => {
     if (userProfile) {
       setNewUsername(userProfile.username || '');
+      
+      // Set the active character ID from the user profile
+      setActiveCharacterId(userProfile.activeCharacterId || null);
       
       // Initialize character names from profile
       if (userProfile.characterNames && userProfile.characterNames.length > 0) {
@@ -146,9 +150,17 @@ const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
       const updatedCharacterNames = [...characterNames, newCharacter];
       setCharacterNames(updatedCharacterNames);
       
+      // If this is the first character, automatically set it as active
+      let newActiveId = activeCharacterId;
+      if (characterNames.length === 0 && !activeCharacterId) {
+        newActiveId = newCharacter.id;
+        setActiveCharacterId(newActiveId);
+      }
+      
       // Update in database immediately
       await updateUserProfile(user.uid, {
-        characterNames: updatedCharacterNames
+        characterNames: updatedCharacterNames,
+        activeCharacterId: newActiveId
       });
       
       // Clear input field
@@ -157,6 +169,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
       setError(err instanceof Error ? err.message : 'Failed to add character name');
       // Revert local state if database update failed
       setCharacterNames(characterNames);
+      setActiveCharacterId(activeCharacterId);
     } finally {
       setSaving(false);
     }
@@ -208,6 +221,29 @@ const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
     setEditingCharacterId(null);
   };
 
+  const handleSetActiveCharacter = async (id: string) => {
+    if (!user || saving) return;
+    
+    try {
+      setSaving(true);
+      setError(null);
+      
+      // Update local state
+      setActiveCharacterId(id);
+      
+      // Update in database immediately
+      await updateUserProfile(user.uid, {
+        activeCharacterId: id
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to set active character');
+      // Revert local state if database update failed
+      setActiveCharacterId(activeCharacterId);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleDeleteCharacterName = async (id: string) => {
     if (!user || saving) return;
     
@@ -219,14 +255,23 @@ const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
       const updatedCharacterNames = characterNames.filter(char => char.id !== id);
       setCharacterNames(updatedCharacterNames);
       
+      // If deleting the active character, reset activeCharacterId
+      let newActiveId: string | null = activeCharacterId;
+      if (activeCharacterId === id) {
+        newActiveId = updatedCharacterNames.length > 0 ? updatedCharacterNames[0].id : null;
+        setActiveCharacterId(newActiveId);
+      }
+      
       // Update in database immediately
       await updateUserProfile(user.uid, {
-        characterNames: updatedCharacterNames
+        characterNames: updatedCharacterNames,
+        activeCharacterId: newActiveId
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete character name');
       // Revert local state if database update failed
       setCharacterNames(characterNames);
+      setActiveCharacterId(activeCharacterId);
     } finally {
       setSaving(false);
     }
@@ -292,9 +337,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
     );
   }
 
+  // Find the active character name for display
+  const activeCharacter = characterNames.find(char => char.id === activeCharacterId);
+  const activeDisplayName = activeCharacter ? activeCharacter.name : null;
+
   return (
     <Card className="max-w-md mx-auto">
-      <Card.Header title={`${userProfile.username}'s profile`} />
       <Card.Content className="space-y-8">
         {/* Email section */}
         <div className="space-y-1">
@@ -367,6 +415,26 @@ const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
           )}
         </div>
 
+        {/* Active Character Display */}
+        <div className="space-y-2">
+          <Typography variant="body-sm" color="secondary">Active Character</Typography>
+          <div className={clsx(
+            "p-3 rounded-lg",
+            `${themePrefix}-bg-secondary`
+          )}>
+            {activeDisplayName ? (
+              <div className="flex items-center">
+                <Star size={16} className={clsx("mr-2", `${themePrefix}-accent`)} />
+                <Typography>{activeDisplayName}</Typography>
+              </div>
+            ) : (
+              <Typography color="secondary">
+                No active character selected. Actions will use your username.
+              </Typography>
+            )}
+          </div>
+        </div>
+
         {/* Theme selector section */}
         <div className="space-y-3">
           <Typography variant="h4">Theme Preference</Typography>
@@ -427,15 +495,15 @@ const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
 
         {/* Character Names section */}
         <div className="space-y-3">
-          <Typography variant="h4">Character Names</Typography>
+          <Typography variant="h4">Characters</Typography>
           <Typography variant="body-sm" color="secondary">
-            Add character names to use across different campaigns
+            Add and select characters to use for creating content
           </Typography>
           
           {/* Character name input */}
           <div className="flex gap-2">
             <Input
-              placeholder={editingCharacterId ? "Edit character name..." : "Add new character name..."}
+              placeholder={editingCharacterId ? "Edit character..." : "Add new character..."}
               value={newCharacterName}
               onChange={(e) => setNewCharacterName(e.target.value)}
               disabled={saving}
@@ -481,12 +549,30 @@ const UserProfile: React.FC<UserProfileProps> = ({ onSaved, onCancel }) => {
                 <div 
                   key={character.id} 
                   className={clsx(
-                    "flex items-center justify-between p-2 rounded-md",
-                    `${themePrefix}-bg-secondary`
+                    "flex items-center justify-between p-3 rounded-md",
+                    character.id === activeCharacterId 
+                      ? `${themePrefix}-selected-item` 
+                      : `${themePrefix}-selectable-item`
                   )}
                 >
-                  <Typography>{character.name}</Typography>
-                  <div className="flex gap-1">
+                  <div className="flex items-center">
+                    {character.id === activeCharacterId && (
+                      <Star size={16} className={clsx("mr-2", `${themePrefix}-accent`)} />
+                    )}
+                    <Typography>{character.name}</Typography>
+                  </div>
+                  <div className="flex gap-2">
+                    {character.id !== activeCharacterId && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleSetActiveCharacter(character.id)}
+                        disabled={saving}
+                      >
+                        Set Active
+                      </Button>
+                    )}
                     <Button
                       type="button"
                       variant="ghost"

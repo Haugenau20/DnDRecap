@@ -1,4 +1,4 @@
-// src/components/features/rumors/RumorCard.tsx
+// src/components/features/rumors/RumorCard.tsx - Updated attribution display
 import React, { useState } from 'react';
 import { Rumor, RumorStatus } from '../../../types/rumor';
 import Card from '../../core/Card';
@@ -27,7 +27,9 @@ import {
   PlusCircle,
   Save,
   X,
-  User
+  User,
+  // New import for character attribution
+  Scroll 
 } from 'lucide-react';
 
 interface RumorCardProps {
@@ -198,12 +200,12 @@ const RumorCard: React.FC<RumorCardProps> = ({
               </Typography>
             </div>
 
-            {/* Creator attribution */}
+            {/* Creator attribution - Updated with character icon */}
             {rumor.createdByUsername && (
               <div className="flex items-center gap-2 mt-1">
-                <User size={14} className={`${themePrefix}-typography-secondary`} />
+                <Scroll size={14} className={`${themePrefix}-typography-secondary`} />
                 <Typography variant="body-sm" color="secondary">
-                  Added by {rumor.createdByUsername} on {new Date(rumor.dateAdded).toLocaleDateString()}
+                  Added by {rumor.createdByUsername} on {new Date(rumor.dateAdded).toLocaleDateString('en-uk')}
                 </Typography>
               </div>
             )}
