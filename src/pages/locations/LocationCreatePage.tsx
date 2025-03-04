@@ -11,7 +11,6 @@ const LocationCreatePage: React.FC = () => {
   const { user } = useFirebase();
   const { navigateToPage } = useNavigation();
   
-
   // Redirect if not authenticated
   useEffect(() => {
     if (!user) {

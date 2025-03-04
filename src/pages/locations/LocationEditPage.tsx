@@ -9,12 +9,16 @@ import { useLocations } from '../../context/LocationContext';
 import { useFirebase } from '../../context/FirebaseContext';
 import { useNavigation } from '../../context/NavigationContext';
 import { ArrowLeft, Loader2 } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
+import clsx from 'clsx';
 
 const LocationEditPage: React.FC = () => {
   const { locationId } = useParams<{ locationId: string }>();
   const { locations, isLoading, error } = useLocations();
   const { user } = useFirebase();
   const { navigateToPage } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
   
   const editingLocation = locations.find(location => location.id === locationId);
 
@@ -30,7 +34,7 @@ const LocationEditPage: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen">
         <Card className="p-8">
           <div className="flex items-center gap-4">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+            <Loader2 className={clsx("w-6 h-6 animate-spin", `${themePrefix}-primary`)} />
             <Typography>Loading location data...</Typography>
           </div>
         </Card>

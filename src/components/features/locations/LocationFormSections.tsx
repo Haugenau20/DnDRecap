@@ -14,6 +14,8 @@ import {
   Users, 
   Scroll,
 } from 'lucide-react';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 interface SectionProps {
   formData: Partial<Location>;
@@ -29,22 +31,25 @@ interface RelatedNPCsSectionProps extends SectionProps {
 }
 
 interface RelatedQuestsSectionProps extends SectionProps {
-    selectedQuests: Set<string>;
-    setSelectedQuests: (value: Set<string> | ((prev: Set<string>) => Set<string>)) => void;
-    isQuestDialogOpen: boolean;
-    setIsQuestDialogOpen: (isOpen: boolean) => void;
+  selectedQuests: Set<string>;
+  setSelectedQuests: (value: Set<string> | ((prev: Set<string>) => Set<string>)) => void;
+  isQuestDialogOpen: boolean;
+  setIsQuestDialogOpen: (isOpen: boolean) => void;
 }
 
 // Generate location ID from name
 const generateLocationId = (name: string): string => {
-    return name
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  };
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+};
 
 export const BasicInfoSection: React.FC<SectionProps> = ({ formData, handleInputChange }) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+  
   return (
     <div className="space-y-4">
       <Typography variant="h4">Basic Information</Typography>
@@ -65,9 +70,9 @@ export const BasicInfoSection: React.FC<SectionProps> = ({ formData, handleInput
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Type *</label>
+          <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Type *</label>
           <select
-            className="w-full rounded-lg border p-2"
+            className={clsx("w-full rounded-lg border p-2", `${themePrefix}-input`)}
             value={formData.type}
             onChange={(e) => handleInputChange('type', e.target.value as LocationType)}
             required
@@ -84,15 +89,15 @@ export const BasicInfoSection: React.FC<SectionProps> = ({ formData, handleInput
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Status *</label>
+          <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Status *</label>
           <select
-            className="w-full rounded-lg border p-2"
+            className={clsx("w-full rounded-lg border p-2", `${themePrefix}-input`)}
             value={formData.status}
             onChange={(e) => handleInputChange('status', e.target.value)}
             required
           >
-            <option value="undiscovered">Undiscovered</option>
-            <option value="discovered">Discovered</option>
+            <option value="known">Known</option>
+            <option value="explored">Explored</option>
             <option value="visited">Visited</option>
           </select>
         </div>
@@ -166,6 +171,8 @@ export const RelatedQuestsSection: React.FC<RelatedQuestsSectionProps> = ({
   setIsQuestDialogOpen
 }) => {
   const { quests } = useQuests();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   // This function ONLY updates the local selectedQuests state
   const handleToggleQuest = (questId: string) => {
@@ -200,13 +207,16 @@ export const RelatedQuestsSection: React.FC<RelatedQuestsSectionProps> = ({
           return quest ? (
             <div
               key={questId}
-              className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
+              className={clsx(
+                "flex items-center gap-1 rounded-full px-3 py-1",
+                `${themePrefix}-tag`
+              )}
             >
               <span>{quest.title}</span>
               <button
                 type="button"
                 onClick={() => handleToggleQuest(questId)}
-                className="text-gray-500 hover:text-gray-700"
+                className={clsx(`${themePrefix}-typography-secondary`, "hover:opacity-70")}
               >
                 <X size={14} />
               </button>
@@ -229,11 +239,12 @@ export const RelatedQuestsSection: React.FC<RelatedQuestsSectionProps> = ({
                 key={quest.id}
                 type="button"
                 onClick={() => handleToggleQuest(quest.id)}
-                className={`w-full p-2 rounded text-left transition-colors ${
+                className={clsx(
+                  "w-full p-2 rounded text-left transition-colors",
                   selectedQuests.has(quest.id)
-                    ? 'bg-blue-100 border-2 border-blue-500'
-                    : 'hover:bg-gray-100 border-2 border-transparent'
-                }`}
+                    ? `${themePrefix}-selected-item`
+                    : `${themePrefix}-selectable-item`
+                )}
               >
                 <Typography variant="body-sm">
                   {quest.title}
@@ -254,101 +265,110 @@ export const RelatedQuestsSection: React.FC<RelatedQuestsSectionProps> = ({
 
 // RelatedNPCsSection.tsx
 export const RelatedNPCsSection: React.FC<RelatedNPCsSectionProps> = ({ 
-    formData, 
-    handleInputChange,
-    npcs,
-    selectedNPCs,
-    setSelectedNPCs,
-    isNPCDialogOpen,
-    setIsNPCDialogOpen
-  }) => {
-    // This function ONLY updates the local selectedNPCs state
-    const handleToggleNPC = (npcId: string) => {
-      setSelectedNPCs(prev => {
-        const newSet = new Set(prev);
-        if (newSet.has(npcId)) {
-          newSet.delete(npcId);
-        } else {
-          newSet.add(npcId);
-        }
-        return newSet;
-      });
-    };
+  formData, 
+  handleInputChange,
+  npcs,
+  selectedNPCs,
+  setSelectedNPCs,
+  isNPCDialogOpen,
+  setIsNPCDialogOpen
+}) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
   
-    return (
-      <div className="space-y-4">
-        <div className="flex items-center">
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={() => setIsNPCDialogOpen(true)}
-            startIcon={<Users />}
-          >
-            Select Connected NPCs
+  // This function ONLY updates the local selectedNPCs state
+  const handleToggleNPC = (npcId: string) => {
+    setSelectedNPCs(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(npcId)) {
+        newSet.delete(npcId);
+      } else {
+        newSet.add(npcId);
+      }
+      return newSet;
+    });
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center">
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => setIsNPCDialogOpen(true)}
+          startIcon={<Users />}
+        >
+          Select Connected NPCs
+        </Button>
+      </div>
+
+      {/* Display selected NPCs */}
+      <div className="flex flex-wrap gap-2">
+        {Array.from(selectedNPCs).map(npcId => {
+          const npc = npcs.find(n => n.id === npcId);
+          return npc ? (
+            <div
+              key={npcId}
+              className={clsx(
+                "flex items-center gap-1 rounded-full px-3 py-1",
+                `${themePrefix}-tag`
+              )}
+            >
+              <span>{npc.name}</span>
+              <button
+                type="button"
+                onClick={() => handleToggleNPC(npcId)}
+                className={clsx(`${themePrefix}-typography-secondary`, "hover:opacity-70")}
+              >
+                <X size={14} />
+              </button>
+            </div>
+          ) : null;
+        })}
+      </div>
+
+      {/* NPC Selection Dialog */}
+      <Dialog
+        open={isNPCDialogOpen}
+        onClose={() => setIsNPCDialogOpen(false)}
+        title="Select Related NPCs"
+        maxWidth="max-w-3xl"
+      >
+        <div className="max-h-96 overflow-y-auto mb-4">
+          <div className="grid grid-cols-3 gap-2">
+            {npcs.map(npc => (
+              <button
+                key={npc.id}
+                type="button"
+                onClick={() => handleToggleNPC(npc.id)}
+                className={clsx(
+                  "p-2 rounded text-center transition-colors",
+                  selectedNPCs.has(npc.id)
+                    ? `${themePrefix}-selected-item`
+                    : `${themePrefix}-selectable-item`
+                )}
+              >
+                <Typography variant="body-sm">
+                  {npc.name}
+                </Typography>
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <Button type="button" onClick={() => setIsNPCDialogOpen(false)}>
+            Done
           </Button>
         </div>
-  
-        {/* Display selected NPCs */}
-        <div className="flex flex-wrap gap-2">
-          {Array.from(selectedNPCs).map(npcId => {
-            const npc = npcs.find(n => n.id === npcId);
-            return npc ? (
-              <div
-                key={npcId}
-                className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
-              >
-                <span>{npc.name}</span>
-                <button
-                  type="button"
-                  onClick={() => handleToggleNPC(npcId)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            ) : null;
-          })}
-        </div>
-  
-        {/* NPC Selection Dialog */}
-        <Dialog
-          open={isNPCDialogOpen}
-          onClose={() => setIsNPCDialogOpen(false)}
-          title="Select Related NPCs"
-          maxWidth="max-w-3xl"
-        >
-          <div className="max-h-96 overflow-y-auto mb-4">
-            <div className="grid grid-cols-3 gap-2">
-              {npcs.map(npc => (
-                <button
-                  key={npc.id}
-                  type="button"
-                  onClick={() => handleToggleNPC(npc.id)}
-                  className={`p-2 rounded text-center transition-colors ${
-                    selectedNPCs.has(npc.id)
-                      ? 'bg-blue-100 border-2 border-blue-500'
-                      : 'hover:bg-gray-100 border-2 border-transparent'
-                  }`}
-                >
-                  <Typography variant="body-sm">
-                    {npc.name}
-                  </Typography>
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="flex justify-end">
-            <Button type="button" onClick={() => setIsNPCDialogOpen(false)}>
-              Done
-            </Button>
-          </div>
-        </Dialog>
-      </div>
-    );
-  };
+      </Dialog>
+    </div>
+  );
+};
 
 export const TagsSection: React.FC<SectionProps> = ({ formData, handleInputChange }) => {
   const [tagInput, setTagInput] = useState('');
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   const handleAddTag = () => {
     if (tagInput.trim()) {
@@ -380,7 +400,10 @@ export const TagsSection: React.FC<SectionProps> = ({ formData, handleInputChang
         {formData.tags?.map((tag, index) => (
           <div
             key={index}
-            className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1"
+            className={clsx(
+              "flex items-center gap-1 rounded-full px-3 py-1",
+              `${themePrefix}-tag`
+            )}
           >
             <span>{tag}</span>
             <button
@@ -391,7 +414,7 @@ export const TagsSection: React.FC<SectionProps> = ({ formData, handleInputChang
                   formData.tags?.filter((_, i) => i !== index) || []
                 );
               }}
-              className="text-gray-500 hover:text-gray-700"
+              className={clsx(`${themePrefix}-typography-secondary`, "hover:opacity-70")}
             >
               <X size={14} />
             </button>

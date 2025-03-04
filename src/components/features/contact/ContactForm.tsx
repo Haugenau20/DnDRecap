@@ -5,6 +5,8 @@ import Input from '../../core/Input';
 import Button from '../../core/Button';
 import Card from '../../core/Card';
 import { AlertCircle, Send, Check } from 'lucide-react';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 // Adjust this URL to match your deployed Firebase function
 const CONTACT_FUNCTION_URL = 'https://europe-west1-dndrecap-e3913.cloudfunctions.net/sendContactEmail';
@@ -21,6 +23,8 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,8 +85,11 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
       <Card.Content>
         {success ? (
           <div className="text-center py-6">
-            <div className="mb-4 mx-auto w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
-              <Check size={24} />
+            <div className={clsx(
+              "mb-4 mx-auto w-12 h-12 rounded-full flex items-center justify-center",
+              `${themePrefix}-success-icon-bg`
+            )}>
+              <Check size={24} className={clsx(`${themePrefix}-success-icon`)} />
             </div>
             <Typography variant="h3" className="mb-2">
               Message Sent!
@@ -131,8 +138,8 @@ const ContactForm: React.FC<ContactFormProps> = ({ onSuccess }) => {
             />
 
             {error && (
-              <div className="flex items-center gap-2 text-red-600">
-                <AlertCircle size={16} />
+              <div className="flex items-center gap-2">
+                <AlertCircle size={16} className={clsx(`${themePrefix}-form-error`)} />
                 <Typography color="error">{error}</Typography>
               </div>
             )}

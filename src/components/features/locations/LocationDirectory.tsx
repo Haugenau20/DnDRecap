@@ -8,6 +8,8 @@ import Input from '../../core/Input';
 import { Search, MapPin, Building } from 'lucide-react';
 import { useFirebaseData } from '../../../hooks/useFirebaseData';
 import { useNavigation } from '../../../context/NavigationContext';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 interface LocationDirectoryProps {
   locations: Location[];
@@ -28,6 +30,9 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
   const { data: updatedLocations } = useFirebaseData<Location>({
     collection: 'locations'
   });
+
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   const routerLocation = useRouterLocation();
 
@@ -194,7 +199,7 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
               {level > 0 && (
                 <>
                   <div 
-                    className="absolute border-l-2 border-gray-200" 
+                    className={clsx("absolute border-l-2", `${themePrefix}-divider`)} 
                     style={{ 
                       left: `${level}rem`,
                       top: '0',
@@ -203,7 +208,7 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
                     }}
                   />
                   <div 
-                    className="absolute border-t-2 border-gray-200"
+                    className={clsx("absolute border-t-2", `${themePrefix}-divider`)}
                     style={{ 
                       left: `${level}rem`,
                       width: '1rem',
@@ -216,9 +221,10 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
               <div style={{ marginLeft: level > 0 ? `${level * 2}rem` : '0' }}>
                 <div
                   id={`location-${location.id}`}
-                  className={`transition-all duration-300 ${
-                    highlightedLocationId === location.id ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg' : ''
-                  }`}
+                  className={clsx(
+                    "transition-all duration-300",
+                    highlightedLocationId === location.id && `${themePrefix}-highlighted-item`
+                  )}
                 >
                   <LocationCard 
                     location={location}
@@ -263,16 +269,16 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
                 placeholder="Search locations..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                startIcon={<Search className="text-gray-400" />}
+                startIcon={<Search className={clsx(`${themePrefix}-typography-secondary`)} />}
                 fullWidth
               />
             </div>
 
             {/* Type Filter */}
             <div className="flex items-center gap-2">
-              <Building size={20} className="text-gray-500" />
+              <Building size={20} className={clsx(`${themePrefix}-typography-secondary`)} />
               <select
-                className="rounded border p-2"
+                className={clsx("rounded p-2", `${themePrefix}-input`)}
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
               >
@@ -290,15 +296,15 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
 
             {/* Status Filter */}
             <div className="flex items-center gap-2">
-              <MapPin size={20} className="text-gray-500" />
+              <MapPin size={20} className={clsx(`${themePrefix}-typography-secondary`)} />
               <select
-                className="rounded border p-2"
+                className={clsx("rounded p-2", `${themePrefix}-input`)}
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
                 <option value="all">All Status</option>
-                <option value="undiscovered">Undiscovered</option>
-                <option value="discovered">Discovered</option>
+                <option value="known">Known</option>
+                <option value="explored">Explored</option>
                 <option value="visited">Visited</option>
               </select>
             </div>
@@ -313,7 +319,7 @@ export const LocationDirectory: React.FC<LocationDirectoryProps> = ({
       {!renderLocationHierarchy() && (
         <Card>
           <Card.Content className="text-center py-8">
-            <MapPin className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+            <MapPin className={clsx("w-12 h-12 mx-auto mb-4", `${themePrefix}-typography-secondary`)} />
             <Typography variant="h3" className="mb-2">
               No Locations Found
             </Typography>

@@ -443,19 +443,65 @@
 
 /* Location Card styles */
 .light-location-card {
-  border-left: 4px solid var(--light-primary);
+  border-left: 4px solid var(--light-status-active);
 }
 
-.light-location-status-discovered {
+.light-location-status-explored {
   color: var(--light-status-completed);
 }
 
-.light-location-status-undiscovered {
+.light-location-status-known {
   color: var(--light-text-secondary);
 }
 
 .light-location-status-visited {
   color: var(--light-primary);
+}
+
+
+/* Location type colors */
+.light-location-type-region {
+  color: var(--color-primary);
+}
+
+.light-location-type-city {
+  color: var(--color-secondary);
+}
+
+.light-location-type-town {
+  color: var(--color-accent);
+}
+
+.light-location-type-village {
+  color: var(--color-accent);
+  opacity: 0.8;
+}
+
+.light-location-type-dungeon {
+  color: var(--color-ui-statusFailed);
+}
+
+.light-location-type-landmark {
+  color: var(--color-ui-statusActive);
+}
+
+.light-location-type-building {
+  color: var(--color-ui-statusGeneral);
+}
+
+.light-location-type-poi {
+  color: var(--color-ui-statusCompleted);
+}
+
+/* Spinner border colors */
+.light-spinner-border {
+  border-color: var(--color-ui-inputBorder);
+  border-top-color: var(--color-primary);
+}
+
+/* Divider styles (for hierarchical connections) */
+.light-divider {
+  border-color: var(--color-card-border);
 }
 
 .light-tag {
@@ -598,4 +644,14 @@
   outline: 2px solid var(--color-primary);
   border-radius: var(--border-radius-lg);
   box-shadow: 0 0 0 2px var(--color-background-primary);
+}
+
+/* Light theme success states */
+.light-success-icon-bg {
+  background-color: var(--color-ui-inputSuccessRing);
+  opacity: 0.2;
+}
+
+.light-success-icon {
+  color: var(--color-ui-formSuccessText);
 }

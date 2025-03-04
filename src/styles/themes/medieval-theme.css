@@ -440,11 +440,6 @@
   background: var(--primary-color);
 }
 
-/* NPC specific styling */
-.medieval-npc-card {
-  border-left: 4px solid var(--primary-color);
-}
-
 /* Decorative elements */
 .medieval-decoration-scroll {
   position: relative;
@@ -475,7 +470,7 @@
 
 /* Quest Card styles */
 .medieval-quest-card {
-  border-left: 4px solid var(--primary-color);
+  border-left: 4px solid var(--color-card-border);
 }
 
 .medieval-progress-container {
@@ -509,7 +504,7 @@
 
 /* NPC Card styles */
 .medieval-npc-card {
-  border-left: 4px solid var(--primary-color);
+  border-left: 4px solid var(--color-card-border);
 }
 
 .medieval-npc-status-alive {
@@ -551,19 +546,64 @@
 
 /* Location Card styles */
 .medieval-location-card {
-  border-left: 4px solid var(--ink-secondary);
+  border-left: 4px solid var(--color-card-border);
 }
 
-.medieval-location-status-discovered {
+.medieval-location-status-explored {
   color: var(--medieval-status-completed);
 }
 
-.medieval-location-status-undiscovered {
+.medieval-location-status-known {
   color: var(--ink-secondary);
 }
 
 .medieval-location-status-visited {
   color: var(--medieval-status-active);
+}
+
+/* Location type colors */
+.medieval-location-type-region {
+  color: var(--color-primary);
+}
+
+.medieval-location-type-city {
+  color: var(--color-secondary);
+}
+
+.medieval-location-type-town {
+  color: var(--color-accent);
+}
+
+.medieval-location-type-village {
+  color: var(--color-accent);
+  opacity: 0.8;
+}
+
+.medieval-location-type-dungeon {
+  color: var(--color-ui-statusFailed);
+}
+
+.medieval-location-type-landmark {
+  color: var(--color-ui-statusActive);
+}
+
+.medieval-location-type-building {
+  color: var(--color-ui-statusGeneral);
+}
+
+.medieval-location-type-poi {
+  color: var(--color-ui-statusCompleted);
+}
+
+/* Spinner border colors */
+.medieval-spinner-border {
+  border-color: var(--color-ui-inputBorder);
+  border-top-color: var(--color-primary);
+}
+
+/* Divider styles (for hierarchical connections) */
+.medieval-divider {
+  border-color: var(--color-card-border);
 }
 
 .medieval-tag {
@@ -696,4 +736,14 @@
   outline: 2px solid var(--color-primary);
   border-radius: var(--border-radius-lg);
   box-shadow: 0 0 0 2px var(--color-background-primary);
+}
+
+/* Medieval theme success states */
+.medieval-success-icon-bg {
+  background-color: var(--color-ui-inputSuccessRing);
+  opacity: 0.2;
+}
+
+.medieval-success-icon {
+  color: var(--color-ui-formSuccessText);
 }

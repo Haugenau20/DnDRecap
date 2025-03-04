@@ -30,7 +30,7 @@ D&D Campaign Companion is a comprehensive web application designed to help playe
 - **Hierarchical Organization**: Organize locations with parent-child relationships
 - **Location Details**: Store comprehensive location information including description, features, and points of interest
 - **Connected Information**: Link locations to related NPCs and quests
-- **Discovery Status**: Track location discovery status (undiscovered, discovered, visited)
+- **Discovery Status**: Track location discovery status (known, explored, visited)
 
 ### 🔍 Global Search (🚧 Under construction)
 - **Cross-section Search**: Find content across stories, quests, NPCs, and locations

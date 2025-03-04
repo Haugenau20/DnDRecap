@@ -27,7 +27,7 @@ export const mockNPC = {
     id: 'test-location-1',
     name: 'Test Location',
     type: 'city',
-    status: 'discovered',
+    status: 'explored',
     description: 'A test location'
   };
   

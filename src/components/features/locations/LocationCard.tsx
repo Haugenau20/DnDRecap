@@ -44,20 +44,8 @@ const formatLocationType = (type: LocationType): string => {
   return type.charAt(0).toUpperCase() + type.slice(1);
 };
 
-// Map location types to icons
-const typeIcons: Record<LocationType, React.ReactNode> = {
-  region: <Mountain className="text-blue-500" />,
-  city: <Building className="text-gray-500" />,
-  town: <Home className="text-green-500" />,
-  village: <Home className="text-green-400" />,
-  dungeon: <Building className="text-red-500" />,
-  landmark: <Landmark className="text-purple-500" />,
-  building: <Building className="text-gray-400" />,
-  poi: <MapPin className="text-yellow-500" />
-};
-
 const LocationCard: React.FC<LocationCardProps> = ({ 
-  location: initialLocation,  // Rename to indicate it's the initial data
+  location: initialLocation,
   hasChildren,
   isExpanded,
   onToggleExpand
@@ -113,6 +101,30 @@ const LocationCard: React.FC<LocationCardProps> = ({
     }
   };
 
+  // Map location types to icons with theme-specific colors
+  const getTypeIcon = (type: LocationType) => {
+    switch(type) {
+      case 'region':
+        return <Mountain className={clsx(`${themePrefix}-location-type-region`)} />;
+      case 'city':
+        return <Building className={clsx(`${themePrefix}-location-type-city`)} />;
+      case 'town':
+        return <Home className={clsx(`${themePrefix}-location-type-town`)} />;
+      case 'village':
+        return <Home className={clsx(`${themePrefix}-location-type-village`)} />;
+      case 'dungeon':
+        return <Building className={clsx(`${themePrefix}-location-type-dungeon`)} />;
+      case 'landmark':
+        return <Landmark className={clsx(`${themePrefix}-location-type-landmark`)} />;
+      case 'building':
+        return <Building className={clsx(`${themePrefix}-location-type-building`)} />;
+      case 'poi':
+        return <MapPin className={clsx(`${themePrefix}-location-type-poi`)} />;
+      default:
+        return <MapPin className={clsx(`${themePrefix}-typography-secondary`)} />;
+    }
+  };
+
   // Render notes section
   const renderNotes = () => {
     if (!location.notes || location.notes.length === 0) {
@@ -134,7 +146,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
               )}
             >
               <div className="flex items-center gap-2">
-                <Calendar size={14} className="text-gray-400" />
+                <Calendar size={14} className={clsx(`${themePrefix}-typography-secondary`)} />
                 <Typography variant="body-sm" color="secondary">
                   {new Date(note.date).toLocaleDateString('en-uk', { year: 'numeric', day: '2-digit', month: '2-digit'})}
                 </Typography>
@@ -209,14 +221,14 @@ const LocationCard: React.FC<LocationCardProps> = ({
   // Get status icon
   const getStatusIcon = () => {
     switch (location.status) {
-      case 'discovered':
-        return <Eye className={clsx(`${themePrefix}-location-status-discovered`)} />;
-      case 'undiscovered':
-        return <EyeOff className={clsx(`${themePrefix}-location-status-undiscovered`)} />;
+      case 'explored':
+        return <Eye className={clsx(`${themePrefix}-location-status-explored`)} />;
+      case 'known':
+        return <EyeOff className={clsx(`${themePrefix}-location-status-known`)} />;
       case 'visited':
         return <MapPin className={clsx(`${themePrefix}-location-status-visited`)} />;
       default:
-        return <MapPinOff className="text-gray-400" />;
+        return <MapPinOff className={clsx(`${themePrefix}-typography-secondary`)} />;
     }
   };
 
@@ -244,7 +256,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
         {/* Location Header */}
         <div className="flex items-start gap-3">
           <div className="mt-1">
-            {typeIcons[location.type]}
+            {getTypeIcon(location.type)}
           </div>
           <div className="flex-1">
             <Typography variant="h4">
@@ -265,7 +277,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
               <Typography variant="body-sm" color="secondary">
                 {formatLocationType(location.type)}
               </Typography>
-              <span className="text-gray-300">•</span>
+              <span className={clsx(`${themePrefix}-typography-secondary`, "mx-1 text-xs")}>•</span>
               <div className="flex items-center gap-1">
                 {getStatusIcon()}
                 <Typography variant="body-sm" color="secondary">
@@ -285,7 +297,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
         <div className="flex flex-wrap gap-4">
           {connectedNPCs.length > 0 && (
             <div className="flex items-center gap-2">
-              <Users size={16} className="text-gray-400" />
+              <Users size={16} className={clsx(`${themePrefix}-typography-secondary`)} />
               <Typography variant="body-sm" color="secondary">
                 {connectedNPCs.length} NPCs
               </Typography>
@@ -293,7 +305,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
           )}
           {location.relatedQuests && location.relatedQuests.length > 0 && (
             <div className="flex items-center gap-2">
-              <Scroll size={16} className="text-gray-400" />
+              <Scroll size={16} className={clsx(`${themePrefix}-typography-secondary`)} />
               <Typography variant="body-sm" color="secondary">
                 {location.relatedQuests.length} Quests
               </Typography>
@@ -301,7 +313,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
           )}
           {location.lastVisited && (
             <div className="flex items-center gap-2">
-              <Calendar size={16} className="text-gray-400" />
+              <Calendar size={16} className={clsx(`${themePrefix}-typography-secondary`)} />
               <Typography variant="body-sm" color="secondary">
                 Last visited: {location.lastVisited}
               </Typography>
@@ -311,7 +323,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
 
         {/* Expanded Content */}
         {isContentExpanded && (
-          <div className="pt-4 space-y-4 border-t border-gray-100">
+          <div className={clsx("pt-4 space-y-4 border-t", `${themePrefix}-divider`)}>
             {/* Notable Features */}
             {location.features && location.features.length > 0 && (
               <div>
@@ -321,7 +333,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
                 <ul className="space-y-1">
                   {location.features.map((feature, index) => (
                     <li key={index} className="flex items-start gap-2">
-                      <Landmark size={16} className="text-gray-400 mt-1" />
+                      <Landmark size={16} className={clsx(`${themePrefix}-typography-secondary`, "mt-1")} />
                       <Typography variant="body-sm" color="secondary">
                         {feature}
                       </Typography>
@@ -401,7 +413,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
                           <Typography variant="body-sm" className="font-medium">
                             {npc.name}
                             {npc.title && (
-                              <span className="text-gray-500 ml-1">
+                              <span className={clsx(`${themePrefix}-typography-secondary`, "ml-1")}>
                                 - {npc.title}
                               </span>
                             )}
@@ -434,7 +446,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
                         `${themePrefix}-tag`
                       )}
                     >
-                      <Tag size={12} className="text-gray-400" />
+                      <Tag size={12} className={clsx(`${themePrefix}-typography-secondary`)} />
                       <Typography variant="body-sm" color="secondary">
                         {tag}
                       </Typography>

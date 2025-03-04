@@ -224,7 +224,7 @@ const RumorForm: React.FC<RumorFormProps> = ({
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-typography-label`)}>Status *</label>
+                <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Status *</label>
                 <select
                   className={clsx("w-full rounded-lg border p-2", `${themePrefix}-input`)}
                   value={formData.status}
@@ -239,7 +239,7 @@ const RumorForm: React.FC<RumorFormProps> = ({
               </div>
 
               <div>
-                <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-typography-label`)}>Source Type *</label>
+                <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Source Type *</label>
                 <select
                   className={clsx("w-full rounded-lg border p-2", `${themePrefix}-input`)}
                   value={formData.sourceType}
@@ -259,7 +259,7 @@ const RumorForm: React.FC<RumorFormProps> = ({
             {/* Source information - changes based on source type */}
             {formData.sourceType === 'npc' ? (
               <div>
-                <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-typography-label`)}>Source NPC *</label>
+                <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Source NPC *</label>
                 <select
                   className={clsx("w-full rounded-lg border p-2", `${themePrefix}-input`)}
                   value={formData.sourceNpcId || ''}
@@ -291,7 +291,7 @@ const RumorForm: React.FC<RumorFormProps> = ({
 
             {/* Location */}
             <div>
-              <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-typography-label`)}>Location</label>
+              <label className={clsx("block text-sm font-medium mb-1", `${themePrefix}-form-label`)}>Location</label>
               <select
                 className={clsx("w-full rounded-lg border p-2", `${themePrefix}-input`)}
                 value={formData.locationId || ''}

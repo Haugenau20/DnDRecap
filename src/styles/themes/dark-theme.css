@@ -34,6 +34,7 @@
   /* UI-specific aliases */
   --dark-heading: var(--color-ui-heading);
   --dark-input-bg: var(--color-ui-inputBackground);
+  --dark-input-border: var(--color-ui-inputBorder);
   --dark-placeholder: var(--color-ui-inputPlaceholder);
   --dark-status-general: var(--color-ui-statusGeneral);
   --dark-status-active: var(--color-ui-statusActive);
@@ -149,7 +150,7 @@
 /* Input styles */
 .dark-input {
   background-color: var(--dark-input-bg);
-  border-color: var(--color-ui-inputBorder);
+  border-color: var(--dark-input-border);
   color: var(--dark-text);
 }
 
@@ -442,19 +443,64 @@
 
 /* Location Card styles */
 .dark-location-card {
-  border-left: 4px solid var(--dark-status-completed);
+  border-left: 4px solid var(--dark-status-active);
 }
 
-.dark-location-status-discovered {
+.dark-location-status-explored {
   color: var(--dark-status-completed);
 }
 
-.dark-location-status-undiscovered {
+.dark-location-status-known {
   color: var(--dark-text-secondary);
 }
 
 .dark-location-status-visited {
   color: var(--dark-status-active);
+}
+
+/* Location type colors */
+.dark-location-type-region {
+  color: var(--color-primary);
+}
+
+.dark-location-type-city {
+  color: var(--color-secondary);
+}
+
+.dark-location-type-town {
+  color: var(--color-accent);
+}
+
+.dark-location-type-village {
+  color: var(--color-accent);
+  opacity: 0.8;
+}
+
+.dark-location-type-dungeon {
+  color: var(--color-ui-statusFailed);
+}
+
+.dark-location-type-landmark {
+  color: var(--color-ui-statusActive);
+}
+
+.dark-location-type-building {
+  color: var(--color-ui-statusGeneral);
+}
+
+.dark-location-type-poi {
+  color: var(--color-ui-statusCompleted);
+}
+
+/* Spinner border colors */
+.dark-spinner-border {
+  border-color: var(--color-ui-inputBorder);
+  border-top-color: var(--color-primary);
+}
+
+/* Divider styles (for hierarchical connections) */
+.dark-divider {
+  border-color: var(--color-card-border);
 }
 
 .dark-tag {
@@ -621,4 +667,13 @@
   outline: 2px solid var(--color-primary);
   border-radius: var(--border-radius-lg);
   box-shadow: 0 0 0 2px var(--color-background-primary);
+}
+
+.dark-success-icon-bg {
+  background-color: var(--color-ui-inputSuccessRing);
+  opacity: 0.2;
+}
+
+.dark-success-icon {
+  color: var(--color-ui-formSuccessText);
 }

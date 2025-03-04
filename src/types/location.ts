@@ -15,8 +15,8 @@ export type LocationType =
  * Current status of a location
  */
 export type LocationStatus =
-  | 'undiscovered'
-  | 'discovered'
+  | 'known'
+  | 'explored'
   | 'visited';
 
 /**

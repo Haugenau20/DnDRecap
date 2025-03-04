@@ -14,6 +14,8 @@ import {
   RelatedQuestsSection
 } from './LocationFormSections';
 import { AlertCircle, Save, X } from 'lucide-react';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 interface LocationEditFormProps {
   /** The location being edited */
@@ -44,6 +46,8 @@ const LocationEditForm: React.FC<LocationEditFormProps> = ({
   
   // Get NPCs data
   const { npcs } = useNPCs();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   // Firebase hook - only used during final submission
   const { updateData, loading, error } = useFirebaseData<Location>({
@@ -123,8 +127,8 @@ const LocationEditForm: React.FC<LocationEditFormProps> = ({
 
           {/* Error Message */}
           {error && (
-            <div className="flex items-center gap-2 text-red-600">
-              <AlertCircle size={16} />
+            <div className="flex items-center gap-2">
+              <AlertCircle size={16} className={clsx(`${themePrefix}-form-error`)} />
               <Typography color="error">
                 {error}
               </Typography>

@@ -6,9 +6,11 @@ import LocationDirectory from '../../components/features/locations/LocationDirec
 import { useFirebase } from '../../context/FirebaseContext';
 import { useFirebaseData } from '../../hooks/useFirebaseData';
 import { Location } from '../../types/location'; 
-import { Map, MapPin, Eye, EyeOff, LogIn, LogOut, Plus } from 'lucide-react';
+import { Map, MapPin, Eye, EyeOff, Plus } from 'lucide-react';
 import Button from '../../components/core/Button';
 import { useNavigation } from '../../context/NavigationContext';
+import { useTheme } from '../../context/ThemeContext';
+import clsx from 'clsx';
 
 const LocationsPage: React.FC = () => {
   // Auth state
@@ -16,6 +18,8 @@ const LocationsPage: React.FC = () => {
   const { data: locations, loading, error } = useFirebaseData<Location>({
     collection: 'locations'
   });
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   const { navigateToPage } = useNavigation();
   
@@ -23,8 +27,8 @@ const LocationsPage: React.FC = () => {
   const stats = useMemo(() => ({
     total: locations.length,
     visited: locations.filter(loc => loc.status === 'visited').length,
-    discovered: locations.filter(loc => loc.status === 'discovered').length,
-    undiscovered: locations.filter(loc => loc.status === 'undiscovered').length
+    explored: locations.filter(loc => loc.status === 'explored').length,
+    known: locations.filter(loc => loc.status === 'known').length
   }), [locations]);
 
   // Handle create new location
@@ -37,7 +41,10 @@ const LocationsPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Card>
           <Card.Content className="text-center py-8">
-            <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
+            <div className={clsx(
+              "animate-spin w-8 h-8 border-4 rounded-full mx-auto mb-4",
+              `${themePrefix}-spinner-border`
+            )} />
             <Typography>Loading locations...</Typography>
           </Card.Content>
         </Card>
@@ -87,7 +94,7 @@ const LocationsPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <Map className="w-8 h-8 text-green-500 mr-4" />
+            <Map className={clsx("w-8 h-8 mr-4", `${themePrefix}-location-type-region`)} />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.total}
@@ -101,7 +108,7 @@ const LocationsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <MapPin className="w-8 h-8 text-blue-500 mr-4" />
+            <MapPin className={clsx("w-8 h-8 mr-4", `${themePrefix}-location-status-visited`)} />
             <div>
               <Typography variant="h2" className="mb-1">
                 {stats.visited}
@@ -115,13 +122,13 @@ const LocationsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <Eye className="w-8 h-8 text-green-500 mr-4" />
+            <Eye className={clsx("w-8 h-8 mr-4", `${themePrefix}-location-status-explored`)} />
             <div>
               <Typography variant="h2" className="mb-1">
-                {stats.discovered}
+                {stats.explored}
               </Typography>
               <Typography color="secondary">
-                Discovered
+                Explored
               </Typography>
             </div>
           </Card.Content>
@@ -129,13 +136,13 @@ const LocationsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <EyeOff className="w-8 h-8 text-gray-400 mr-4" />
+            <EyeOff className={clsx("w-8 h-8 mr-4", `${themePrefix}-location-status-known`)} />
             <div>
               <Typography variant="h2" className="mb-1">
-                {stats.undiscovered}
+                {stats.known}
               </Typography>
               <Typography color="secondary">
-                Undiscovered
+                Known
               </Typography>
             </div>
           </Card.Content>
