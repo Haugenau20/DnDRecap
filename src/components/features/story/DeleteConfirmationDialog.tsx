@@ -58,8 +58,8 @@ const DeleteConfirmationDialog: React.FC<DeleteConfirmationDialogProps> = ({
     >
       <div className="space-y-6">
         <div className="flex items-center gap-3">
-          <div className={clsx("p-2 rounded-full", `bg-red-100`, `${themePrefix}-danger-bg`)}>
-            <AlertTriangle className="w-6 h-6 text-red-600" />
+          <div className={clsx("p-2 rounded-full", `${themePrefix}-error-bg`)}>
+            <AlertTriangle className={clsx("w-6 h-6", `${themePrefix}-status-failed`)} />
           </div>
           <Typography variant="h4">Confirm Deletion</Typography>
         </div>
@@ -69,7 +69,7 @@ const DeleteConfirmationDialog: React.FC<DeleteConfirmationDialogProps> = ({
         </Typography>
         
         {error && (
-          <div className={clsx("p-4 rounded-md", `bg-red-50 text-red-700`, `${themePrefix}-note`)}>
+          <div className={clsx("p-4 rounded-md", `${themePrefix}-note`)}>
             <Typography color="error">{error}</Typography>
           </div>
         )}
@@ -84,11 +84,11 @@ const DeleteConfirmationDialog: React.FC<DeleteConfirmationDialogProps> = ({
           </Button>
           
           <Button
-            variant="primary"
-            startIcon={<Trash2 />}
+            variant="ghost"
             onClick={handleConfirm}
             isLoading={isDeleting}
-            className="bg-red-600 hover:bg-red-700 text-white"
+            className={clsx(`${themePrefix}-delete-button`)}
+            startIcon={<Trash2 />}
           >
             Delete {itemType}
           </Button>

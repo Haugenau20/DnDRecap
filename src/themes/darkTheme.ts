@@ -88,6 +88,12 @@ export const darkTheme: Theme = {
       formHelperText: '#9ca3af',
       formErrorText: '#f87171',
       formSuccessText: '#34d399',
+
+      // New UI properties for error handling and danger zones
+      errorBackground: 'transparent', // Soft red background with low opacity
+      deleteButtonBackground: 'transparent', // Same as secondary background
+      deleteButtonText: '#F87171', // Soft red text
+      deleteButtonHover: '#3B3B52', // Slightly lighter for hover state
     }
   },
   fonts: {

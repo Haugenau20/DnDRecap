@@ -4,10 +4,14 @@ import { useLocation } from 'react-router-dom';
 import StorySidebar from './sidebars/StorySidebar';
 import QuestSidebar from './sidebars/QuestSidebar';
 import buildConfig from '../../config/buildConfig';
+import { useTheme } from '../../context/ThemeContext';
+import clsx from 'clsx';
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
   const pathname = location.pathname;
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   // Feature flag check and route checks
   if (!buildConfig.features.enableSidebar || 
@@ -28,7 +32,11 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 h-screen sticky top-0 overflow-y-auto hidden md:block">
+    <aside className={clsx(
+      "w-64 h-screen sticky top-0 overflow-y-auto hidden md:block",
+      `${themePrefix}-card border-r`,
+      `border-${themePrefix}-card-border`
+    )}>
       {renderSidebarContent()}
     </aside>
   );

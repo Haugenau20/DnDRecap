@@ -681,3 +681,17 @@
 .dark-success-icon {
   color: var(--color-ui-formSuccessText);
 }
+
+.dark-error-bg {
+  background-color: var(--color-ui-errorBackground);
+  color: var(--color-ui-statusFailed);
+}
+
+.dark-delete-button {
+  background-color: var(--color-ui-deleteButtonBackground);
+  color: var(--color-ui-statusFailed);
+}
+
+.dark-delete-button:hover {
+  background-color: var(--color-ui-deleteButtonHover);
+}

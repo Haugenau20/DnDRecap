@@ -87,6 +87,12 @@ export const lightTheme: Theme = {
         formHelperText: '#6b7280',
         formErrorText: '#ef4444',
         formSuccessText: '#10b981',
+
+        // Error handling and danger zones
+        errorBackground: 'transparent', // Soft red background with low opacity
+        deleteButtonBackground: 'transparent',
+        deleteButtonText: '#DC2626', // Bold red text
+        deleteButtonHover: 'rgba(239, 68, 68, 0.1)', // Very light red for hover
       }
     },
     fonts: {

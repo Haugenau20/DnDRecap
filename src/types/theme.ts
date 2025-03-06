@@ -97,6 +97,12 @@ export interface ThemeColors {
     formHelperText: string;
     formErrorText: string;
     formSuccessText: string;
+
+    // New UI properties for error handling and danger zones
+    errorBackground: string;
+    deleteButtonBackground: string; 
+    deleteButtonText: string;
+    deleteButtonHover: string;
   };
 }
 

@@ -751,3 +751,16 @@
 .medieval-success-icon {
   color: var(--color-ui-formSuccessText);
 }
+
+.medieval-error-bg {
+  background-color: var(--color-ui-errorBackground);
+  color: var(--color-ui-statusFailed);
+}
+.medieval-delete-button {
+  background-color: var(--color-ui-deleteButtonBackground);
+  color: var(--color-ui-statusFailed);
+}
+
+.medieval-delete-button:hover {
+  background-color: var(--color-ui-deleteButtonHover);
+}

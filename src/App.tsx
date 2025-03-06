@@ -19,7 +19,8 @@ import HomePage from './pages/HomePage';
 import { 
   StorySelectionPage, 
   StoryPage, 
-  SagaPage, 
+  SagaPage,
+  SagaEditPage, 
   ChaptersPage,
   ChapterCreatePage, 
   ChapterEditPage 
@@ -51,6 +52,7 @@ const App: React.FC = () => {
                           <Route path="/story/chapters" element={<ChaptersPage />} />
                           <Route path="/story/chapters/:chapterId" element={<StoryPage />} />
                           <Route path="/story/saga" element={<SagaPage />} />
+                          <Route path="/story/saga/edit" element={<SagaEditPage />} />
                           <Route path="/story/chapters/create" element={<ChapterCreatePage />} />
                           <Route path="/story/chapters/edit/:chapterId" element={<ChapterEditPage />} />
                           <Route path="/quests" element={<QuestsPage />} />

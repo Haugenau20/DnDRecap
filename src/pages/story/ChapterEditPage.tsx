@@ -53,7 +53,7 @@ const ChapterEditPage: React.FC = () => {
     try {
       await deleteChapter(chapter.id);
       setIsDeleted(true);
-      navigateToPage('/story');
+      navigateToPage('/story/chapters');
     } catch (error) {
       console.error('Error deleting chapter:', error);
       // Error is handled in the dialog component

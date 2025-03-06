@@ -34,7 +34,10 @@ const SlidingChapters: React.FC<SlidingChaptersProps> = ({
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
+          className={clsx(
+            "fixed inset-0 z-40 transition-opacity", 
+            `${themePrefix}-dialog-backdrop`
+          )}
           onClick={onClose}
         />
       )}
@@ -43,20 +46,19 @@ const SlidingChapters: React.FC<SlidingChaptersProps> = ({
       <div
         className={clsx(
           "fixed top-0 left-0 h-full w-80 shadow-lg z-50 transition-transform duration-300 ease-in-out transform",
-          // Important: Add background color class with !important to ensure it's not transparent
-          `${themePrefix}-card !bg-card-background`,
+          `${themePrefix}-card`,
           isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
-        style={{ backgroundColor: 'var(--color-card-background)' }} /* Inline style as backup */
       >
         <div className="h-full flex flex-col">
           {/* Panel Header */}
           <div className={clsx(
             "p-4 border-b flex items-center justify-between",
+            `border-${themePrefix}-card-border`,
             `${themePrefix}-book-header`
           )}>
             <div className="flex items-center gap-2">
-              <Book className="w-5 h-5" />
+              <Book className={clsx("w-5 h-5", `${themePrefix}-primary`)} />
               <Typography variant="h3" className={`${themePrefix}-typography-heading`}>
                 Chapters
               </Typography>
@@ -87,10 +89,7 @@ const SlidingChapters: React.FC<SlidingChaptersProps> = ({
                 >
                   <Typography 
                     variant="body" 
-                    className={clsx(
-                      "font-medium",
-                      `${themePrefix}-typography` // Explicitly add typography class
-                    )}
+                    className="font-medium"
                   >
                     {chapter.order}. {chapter.title}
                   </Typography>

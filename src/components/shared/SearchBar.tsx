@@ -71,6 +71,9 @@ export const SearchBar: React.FC = () => {
       case 'location':
         navigateToPage(createPath('/locations', {}, { highlight: result.id }));
         break;
+      case 'rumors':
+        navigateToPage(createPath('/rumors', {}, { highlight: result.id }));
+        break;
     }
   }, [navigateToPage, createPath]);
 
@@ -152,7 +155,7 @@ export const SearchBar: React.FC = () => {
         aria-selected={isSelected}
       >
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-gray-500">{icon}</span>
+          <span className={clsx(`${themePrefix}-typography-secondary`)}>{icon}</span>
           <Typography variant="body" className="font-medium">
             {result.title}
           </Typography>
@@ -191,7 +194,7 @@ export const SearchBar: React.FC = () => {
           type="search"
           placeholder="Search stories, quests, NPCs..."
           className={clsx(
-            "w-full pl-10 pr-4 py-2 rounded-lg border text-gray-900 bg-white [&::-webkit-search-cancel-button]:hidden",
+            "w-full pl-10 pr-4 py-2 rounded-lg border [&::-webkit-search-cancel-button]:hidden",
             `${themePrefix}-search`
           )}
           value={query}
@@ -204,7 +207,10 @@ export const SearchBar: React.FC = () => {
         
         {/* Search Icon */}
         <SearchIcon 
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          className={clsx(
+            "absolute left-3 top-1/2 transform -translate-y-1/2",
+            `${themePrefix}-typography-secondary`
+          )}
           size={18}
         />
 
@@ -212,7 +218,10 @@ export const SearchBar: React.FC = () => {
         {(query || isSearching) && (
           <button
             onClick={handleClear}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            className={clsx(
+              "absolute right-3 top-1/2 transform -translate-y-1/2 hover:opacity-80",
+              `${themePrefix}-typography-secondary`
+            )}
             aria-label="Clear search"
           >
             {isSearching ? (
@@ -235,7 +244,10 @@ export const SearchBar: React.FC = () => {
         role="listbox"
       >
           {results.length > 0 ? (
-            <div className="py-2 divide-y divide-gray-100">
+            <div className={clsx(
+              "py-2 divide-y", 
+              `divide-${themePrefix}-card-border`
+            )}>
               {results.map((result, index) => renderSearchResult(result, index))}
             </div>
           ) : (

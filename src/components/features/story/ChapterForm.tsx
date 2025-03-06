@@ -110,12 +110,12 @@ const ChapterForm: React.FC<ChapterFormProps> = ({
       setIsSubmitting(false);
       
       // Scroll to top to show success/error messages
-      window.scrollTo(0, 0);
+      navigateToPage('/story/chapters');
     }
   };
 
   const handleCancel = () => {
-    navigateToPage('/story');
+    navigateToPage('/story/chapters');
   };
 
   return (
@@ -130,13 +130,13 @@ const ChapterForm: React.FC<ChapterFormProps> = ({
           <Card.Content>
             {/* Error/Success Messages */}
             {error && (
-              <div className={clsx("p-4 mb-6 rounded-md", `bg-red-50 text-red-700`, `${themePrefix}-note`)}>
+              <div className={clsx("p-4 mb-6 rounded-md", `${themePrefix}-note`)}>
                 <Typography color="error">{error}</Typography>
               </div>
             )}
             
             {success && (
-              <div className={clsx("p-4 mb-6 rounded-md", `bg-green-50 text-green-700`, `${themePrefix}-success-icon-bg`)}>
+              <div className={clsx("p-4 mb-6 rounded-md", `${themePrefix}-success-icon-bg`)}>
                 <Typography color="success">{success}</Typography>
               </div>
             )}
@@ -203,11 +203,11 @@ const ChapterForm: React.FC<ChapterFormProps> = ({
               
               {mode === 'edit' && onDeleteClick && (
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   onClick={onDeleteClick}
                   startIcon={<Trash2 />}
                   type="button"
-                  className="text-red-600 hover:bg-red-50"
+                  className={clsx(`${themePrefix}-delete-button`)}
                 >
                   Delete
                 </Button>

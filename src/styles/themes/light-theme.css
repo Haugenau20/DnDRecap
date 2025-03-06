@@ -659,3 +659,17 @@
 .light-success-icon {
   color: var(--color-ui-formSuccessText);
 }
+
+.light-error-bg {
+  background-color: var(--color-ui-errorBackground);
+  color: var(--color-ui-statusFailed);
+}
+
+.light-delete-button {
+  background-color: var(--color-ui-deleteButtonBackground);
+  color: var(--color-ui-statusFailed);
+}
+
+.light-delete-button:hover {
+  background-color: var(--color-ui-deleteButtonHover);
+}

@@ -1,12 +1,22 @@
-Make a feature update so users can add, edit and delete story entries.
 
 Implement the full CRUD for all feature pages.
 
 Make completed quests be default hidden with option to expand?
 Make active quests be on the top of the list?
 
-In the user profile, add possibility to change theme preference.
-Add a Display name to the user profile. The motivation for this is so the user can e.g. type in their character name.
 User should be able to change their password.
 
 Fix mobile layout issues on certain pages.
+
+Needs Theme compliance updates.
+PrivacyNotice
+SessionTimeOutWarning
+SignInForm
+QuestSidebar
+ContactPage
+PrivacyPolicy
+AdminPanel
+RegistrationForm
+RumorForm
+
+Fix/Implement proper searching

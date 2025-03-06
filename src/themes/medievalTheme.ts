@@ -89,6 +89,12 @@ export const medievalTheme: Theme = {
       formHelperText: '#7D6F63', // Faded ink
       formErrorText: '#9B2C2C', // Dark red
       formSuccessText: '#2F855A', // Forest green
+
+      // New UI properties for error handling and danger zones
+      errorBackground: 'transparent', // Dark red background with low opacity
+      deleteButtonBackground: 'transparent',
+      deleteButtonText: '#9B2C2C', // Deep red for medieval theme
+      deleteButtonHover: 'rgba(155, 44, 44, 0.1)', // Very light deep red for hover
     }
   },
   fonts: {
