@@ -78,6 +78,33 @@ export function useFirebaseData<T extends Record<string, any>>(
     }
   }, [options.collection, options.idField]);
 
+  // Explicitly add setDocument method that wraps firebaseService.setDocument
+  const setDocument = useCallback(async (id: string, documentData: T) => {
+    setLoading(true);
+    setError(null);
+    try {
+      await firebaseService.setDocument(options.collection, id, documentData);
+      // Update local data if the document already exists, otherwise add it
+      setData(prevData => {
+        const existingIndex = prevData.findIndex(item => 'id' in item && item.id === id);
+        if (existingIndex >= 0) {
+          const updatedData = [...prevData];
+          updatedData[existingIndex] = { ...documentData, id };
+          return updatedData;
+        } else {
+          return [...prevData, { ...documentData, id }];
+        }
+      });
+      return id;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to set document';
+      setError(errorMessage);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [options.collection]);
+
   const updateData = useCallback(async (id: string, updatedData: Partial<T>) => {
     setLoading(true);
     setError(null);
@@ -119,6 +146,7 @@ export function useFirebaseData<T extends Record<string, any>>(
     getData, // Expose getData for manual refreshes
     addData,
     updateData,
-    deleteData
+    deleteData,
+    setDocument  // Now exposing setDocument method
   };
 }

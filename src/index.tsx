@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { NavigationProvider, useNavigation } from './context/NavigationContext';
+import { ThemeProvider } from './context/ThemeContext';
 import App from './App';
 import './styles/globals.css';
 
@@ -15,13 +16,10 @@ if (process.env.NODE_ENV === 'development') {
 
 // Router wrapper component to handle redirects
 const RouterWrapper = () => {
-  const { navigateToPage, createPath } = useNavigation();
-
-  const { getCurrentQueryParams } = useNavigation();
+  const { navigateToPage, createPath, getCurrentQueryParams } = useNavigation();
 
   useEffect(() => {
     // Get the route from URL parameters
-    
     const { route } = getCurrentQueryParams();
     
     if (route) {
@@ -30,7 +28,7 @@ const RouterWrapper = () => {
       window.history.replaceState(null, '', newUrl);
       navigateToPage(createPath('/' + route))
     }
-  }, [navigateToPage]);
+  }, [navigateToPage, createPath, getCurrentQueryParams]);
 
   return <App />;
 };
@@ -41,10 +39,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename="/DnDRecap">
-      <NavigationProvider>
-        <RouterWrapper />
-      </NavigationProvider>
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter basename="/DnDRecap">
+        <NavigationProvider>
+          <RouterWrapper />
+        </NavigationProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   </React.StrictMode>
 );

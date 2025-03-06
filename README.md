@@ -12,7 +12,7 @@ D&D Campaign Companion is a comprehensive web application designed to help playe
 - **Book-like Reading Experience**: Navigate through your campaign story with an intuitive interface
 - **Chapter Management**: Organize story content into chapters with easy navigation
 - **Reading Progress Tracking**: Automatically save reading progress and resume where you left off
-- **Two Reading Modes**: Choose between session-by-session chronicles or a continuous saga format
+- **Two Reading Modes**: Choose between session-by-session chapters or a continuous saga format
 
 ### 🏆 Quest Tracking
 - **Quest Management**: Create, edit, and organize campaign quests

@@ -51,23 +51,23 @@ const StorySidebar = () => {
   // Navigation handlers
   const handleContinueReading = () => {
     if (storyProgress.currentChapter) {
-      navigateToPage(`/story/chronicles/${storyProgress.currentChapter}`);
+      navigateToPage(`/story/chapters/${storyProgress.currentChapter}`);
     } else {
       // If no current chapter, start with the first unread chapter
       const firstUnreadChapter = chapters.find(chapter => 
         !storyProgress.chapterProgress[chapter.id]
       );
       if (firstUnreadChapter) {
-        navigateToPage(`/story/chronicles/${firstUnreadChapter.id}`);
+        navigateToPage(`/story/chapters/${firstUnreadChapter.id}`);
       } else {
         // If all chapters are read, go to the first chapter
-        navigateToPage(`/story/chronicles/${chapters[0].id}`);
+        navigateToPage(`/story/chapters/${chapters[0].id}`);
       }
     }
   };
 
   const handleChapterClick = (chapterId: string) => {
-    navigateToPage(`/story/chronicles/${chapterId}`);
+    navigateToPage(`/story/chapters/${chapterId}`);
   };
 
   return (

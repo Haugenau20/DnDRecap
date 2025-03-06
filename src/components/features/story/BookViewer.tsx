@@ -1,3 +1,4 @@
+// components/features/story/BookViewer.tsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { BookOpen, ChevronLeft, ChevronRight, ArrowLeftCircle, ArrowRightCircle } from 'lucide-react';
 import Typography from '../../core/Typography';
@@ -17,6 +18,9 @@ interface BookViewerProps {
   className?: string;
 }
 
+/**
+ * Component for displaying book-like content with pagination
+ */
 const BookViewer: React.FC<BookViewerProps> = ({
   content,
   title,
@@ -34,20 +38,40 @@ const BookViewer: React.FC<BookViewerProps> = ({
   const { theme } = useTheme();
   const themePrefix = theme.name;
 
+  // Format content for display, preserving paragraphs
+  const formatContent = useCallback((contentText: string): string => {
+    // Convert explicit \n to actual newlines if they exist
+    return contentText
+      .replace(/\\n/g, '\n')
+      .trim();
+  }, []);
+
   // Split content into pages
   useEffect(() => {
+    if (!content) {
+      setPages([]);
+      setTotalPages(1);
+      return;
+    }
+
+    const formattedContent = formatContent(content);
     const wordsPerPage = 250;
-    const words = content.split(' ');
+    const words = formattedContent.split(' ');
     const pageArray = [];
     
     for (let i = 0; i < words.length; i += wordsPerPage) {
       pageArray.push(words.slice(i, i + wordsPerPage).join(' '));
     }
     
+    // Ensure at least one page
+    if (pageArray.length === 0) {
+      pageArray.push('');
+    }
+    
     setPages(pageArray);
     setTotalPages(pageArray.length);
     setCurrentPage(1); // Reset to first page when content changes
-  }, [content]);
+  }, [content, formatContent]);
 
   // Handle page navigation
   const handlePageChange = useCallback((newPage: number) => {
@@ -108,6 +132,18 @@ const BookViewer: React.FC<BookViewerProps> = ({
     const timer = setTimeout(() => setShowShortcutHint(false), 5000);
     return () => clearTimeout(timer);
   }, []);
+
+  // Render newlines properly
+  const renderContent = (text: string) => {
+    if (!text) return null;
+    
+    // Split the text by newlines and map each paragraph
+    return text.split('\n').map((paragraph, index) => (
+      <p key={index} className="mb-4">
+        {paragraph}
+      </p>
+    ));
+  };
 
   if (!content) {
     return (
@@ -188,10 +224,10 @@ const BookViewer: React.FC<BookViewerProps> = ({
             `${themePrefix}-book-content`
           )}>
             <div className={clsx(
-              "leading-relaxed whitespace-pre-wrap",
+              "leading-relaxed",
               `${themePrefix}-book-text`
             )}>
-              {pages[currentPage - 1]?.replace(/\\n/g, '\n')}
+              {renderContent(pages[currentPage - 1] || '')}
             </div>
           </div>
 

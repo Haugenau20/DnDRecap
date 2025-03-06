@@ -1,3 +1,4 @@
+// pages/story/StoryPage.tsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import BookViewer from '../../components/features/story/BookViewer';
@@ -9,7 +10,8 @@ import Button from '../../components/core/Button';
 import { useStory } from '../../context/StoryContext';
 import { useNavigation } from '../../context/NavigationContext';
 import { useTheme } from '../../context/ThemeContext';
-import { Book, Menu, Loader2 } from 'lucide-react';
+import { useFirebase } from '../../context/FirebaseContext';
+import { Book, Menu, Loader2, Edit, Plus, Settings } from 'lucide-react';
 import clsx from 'clsx';
 
 const StoryPage: React.FC = () => {
@@ -24,15 +26,17 @@ const StoryPage: React.FC = () => {
     updateChapterProgress, 
     updateCurrentChapter,
     getNextChapter,
-    getPreviousChapter  
+    getPreviousChapter
   } = useStory();
   const { theme } = useTheme();
+  const { user } = useFirebase();
   const themePrefix = theme.name;
   
   const [currentChapter, setCurrentChapter] = useState(
     chapterId ? getChapterById(chapterId) : undefined
   );
   const [isChaptersOpen, setChaptersOpen] = useState(false);
+  const [isEditMenuOpen, setEditMenuOpen] = useState(false);
 
   // Navigate to appropriate chapter on initial load
   useEffect(() => {
@@ -45,20 +49,20 @@ const StoryPage: React.FC = () => {
           updateCurrentChapter(chapter.id);
         } else {
           // If requested chapter doesn't exist, go to first chapter
-          navigateToPage(`/story/chronicles/${chapters[0].id}`);
+          navigateToPage(`/story/chapters/${chapters[0].id}`);
         }
       } else if (storyProgress.currentChapter) {
         // If no specific chapter requested, go to last read chapter
         const lastChapter = getChapterById(storyProgress.currentChapter);
         if (lastChapter) {
-          navigateToPage(`/story/chronicles/${lastChapter.id}`);
+          navigateToPage(`/story/chapters/${lastChapter.id}`);
         } else {
           // If last read chapter no longer exists, go to first chapter
-          navigateToPage(`/story/chronicles/${chapters[0].id}`);
+          navigateToPage(`/story/chapters/${chapters[0].id}`);
         }
       } else {
         // If no last read chapter, start from the beginning
-        navigateToPage(`/story/chronicles/${chapters[0].id}`);
+        navigateToPage(`/story/chapters/${chapters[0].id}`);
       }
     }
   }, [isLoading, chapters, chapterId, navigateToPage, getChapterById, storyProgress.currentChapter, updateCurrentChapter]);
@@ -78,7 +82,7 @@ const StoryPage: React.FC = () => {
   const breadcrumbItems = useMemo(() => [
     { label: 'Home', href: '/' },
     { label: 'Story', href: '/story' },
-    { label: 'Session Chronicles', href: '/story/chronicles' },
+    { label: 'Session Chapters', href: '/story/chapters' },
     { label: currentChapter ? `${currentChapter.order}. ${currentChapter.title}` : 'Select Chapter' }
   ], [currentChapter]);
 
@@ -93,7 +97,18 @@ const StoryPage: React.FC = () => {
   };
 
   const handleChapterSelect = (selectedChapterId: string) => {
-    navigateToPage(`/story/chronicles/${selectedChapterId}`);
+    navigateToPage(`/story/chapters/${selectedChapterId}`);
+  };
+
+  // Chapter management actions
+  const handleCreateChapter = () => {
+    navigateToPage('/story/chapters/create');
+  };
+
+  const handleEditChapter = () => {
+    if (currentChapter) {
+      navigateToPage(`/story/chapters/edit/${currentChapter.id}`);
+    }
   };
 
   // Loading state
@@ -158,13 +173,65 @@ const StoryPage: React.FC = () => {
             </div>
           </div>
 
-          <Button
-            variant="ghost"
-            onClick={() => navigateToPage('/story')}
-            startIcon={<Book />}
-          >
-            Back to Selection
-          </Button>
+          <div className="flex items-center gap-2">
+            {/* Edit Controls (for signed in users) */}
+            {user && (
+              <div className="relative">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setEditMenuOpen(!isEditMenuOpen)}
+                  startIcon={<Edit />}
+                >
+                  Edit
+                </Button>
+                
+                {/* Edit Dropdown Menu */}
+                {isEditMenuOpen && (
+                  <div 
+                    className={clsx(
+                      "absolute right-0 mt-2 w-48 rounded-md shadow-lg z-10 border",
+                      `${themePrefix}-dropdown`
+                    )}
+                  >
+                    <div className="py-1">
+                      <button
+                        className={clsx(
+                          "flex items-center gap-2 px-4 py-2 text-sm w-full text-left",
+                          `${themePrefix}-dropdown-item`
+                        )}
+                        onClick={handleCreateChapter}
+                      >
+                        <Plus className="w-4 h-4" />
+                        Create New Chapter
+                      </button>
+                      
+                      {currentChapter && (
+                        <button
+                          className={clsx(
+                            "flex items-center gap-2 px-4 py-2 text-sm w-full text-left",
+                            `${themePrefix}-dropdown-item`
+                          )}
+                          onClick={handleEditChapter}
+                        >
+                          <Edit className="w-4 h-4" />
+                          Edit Current Chapter
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            <Button
+              variant="ghost"
+              onClick={() => navigateToPage('/story')}
+              startIcon={<Book />}
+            >
+              Back to Selection
+            </Button>
+          </div>
         </div>
 
         {/* Book Viewer */}

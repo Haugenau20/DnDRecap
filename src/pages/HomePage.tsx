@@ -38,12 +38,33 @@ const HomePage: React.FC = () => {
     
     if (!latest) return null;
 
-    // Convert the chapter data to match LatestChapter's expected type
+    // Fix for date parsing issue
+    let lastModifiedIso;
+    try {
+      if (latest.lastModified) {
+        // Try to parse the date properly
+        const date = new Date(latest.lastModified);
+        // Check if date is valid before calling toISOString()
+        if (!isNaN(date.getTime())) {
+          lastModifiedIso = date.toISOString();
+        } else {
+          // Use current date if invalid
+          lastModifiedIso = new Date().toISOString();
+        }
+      } else {
+        // If lastModified is missing, use current date
+        lastModifiedIso = new Date().toISOString();
+      }
+    } catch (e) {
+      // Fallback to current date for any parsing errors
+      console.error('Error parsing lastModified date:', e);
+      lastModifiedIso = new Date().toISOString();
+    }
+
+    // Return with the safely formatted date
     return {
       ...latest,
-      lastModified: latest.lastModified 
-        ? new Date(latest.lastModified).toISOString() 
-        : new Date().toISOString()
+      lastModified: lastModifiedIso
     };
   }, [chapters]);
 
@@ -110,7 +131,7 @@ const HomePage: React.FC = () => {
                 {/* Theme-specific icon container */}
                 <div className={clsx(
                   "p-3 rounded-full mb-4",
-                  `${themePrefix}-icon-bg` // Use our new theme-specific class
+                  `${themePrefix}-icon-bg`
                 )}>
                   {/* Theme-specific icon color */}
                   <span className={clsx(`${themePrefix}-primary`)}>

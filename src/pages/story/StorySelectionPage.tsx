@@ -1,4 +1,5 @@
-// pages/story/index.tsx
+// pages/story/StorySelectionPage.tsx
+import React from 'react';
 import Typography from '../../components/core/Typography';
 import Card from '../../components/core/Card';
 import { useNavigation } from '../../context/NavigationContext';
@@ -6,7 +7,11 @@ import { useTheme } from '../../context/ThemeContext';
 import { ScrollText, BookOpen } from 'lucide-react';
 import clsx from 'clsx';
 
-const StorySelection = () => {
+/**
+ * Story selection page displaying options for viewing the campaign narrative
+ * Allows users to choose between session-by-session chapter or the continuous saga
+ */
+const StorySelectionPage: React.FC = () => {
   const { navigateToPage } = useNavigation();
   const { theme } = useTheme();
   const themePrefix = theme.name;
@@ -23,17 +28,17 @@ const StorySelection = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Session Chronicles Card */}
+        {/* Session Chapters Card */}
         <Card
           hoverable
-          onClick={() => navigateToPage('/story/chronicles')}
+          onClick={() => navigateToPage('/story/chapters')}
           className="text-center p-8 cursor-pointer transition-transform hover:scale-105"
         >
           <Card.Content>
             <div className="flex flex-col items-center">
               <ScrollText className={clsx("w-24 h-24 mb-6", `${themePrefix}-primary`)} />
               <Typography variant="h2" className={`mb-4 ${themePrefix}-typography-heading`}>
-                Session Chronicles
+                Session Chapters
               </Typography>
               <Typography color="secondary">
                 Relive your adventures as they happened, session by session.
@@ -68,4 +73,4 @@ const StorySelection = () => {
   );
 };
 
-export default StorySelection;
+export default StorySelectionPage;

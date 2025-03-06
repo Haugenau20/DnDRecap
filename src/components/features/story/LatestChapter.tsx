@@ -24,7 +24,7 @@ const LatestChapter: React.FC<LatestChapterProps> = ({ chapter }) => {
   const themePrefix = theme.name;
 
   const handleContinueReading = () => {
-    navigateToPage(`/story/chronicles/${chapter.id}`);
+    navigateToPage(`/story/chapters/${chapter.id}`);
   };
 
   return (

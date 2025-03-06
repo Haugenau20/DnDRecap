@@ -639,17 +639,27 @@ class FirebaseService {
     await updateDoc(docRef, data as Partial<DocumentData>);
   }
 
-  /**
-   * Get a document by ID
-   */
-  public async getDocument<T>(
-    collectionName: string,
-    documentId: string
-  ): Promise<T | null> {
+ /**
+ * Get a document by ID
+ */
+public async getDocument<T>(
+  collectionName: string,
+  documentId: string
+): Promise<T | null> {
+  try {
     const docRef = doc(this.db, collectionName, documentId);
     const docSnap = await getDoc(docRef);
-    return docSnap.exists() ? (docSnap.data() as T) : null;
+    
+    if (docSnap.exists()) {
+      return { ...docSnap.data(), id: docSnap.id } as T;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error(`Error getting document ${documentId} from ${collectionName}:`, error);
+    return null;
   }
+}
 
   /**
    * Get all documents in a collection
