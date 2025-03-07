@@ -87,11 +87,6 @@ const NPCCard: React.FC<NPCCardProps> = ({
     }
   };
 
-  // Handle location click
-  const handleLocationClick = (location: string) => {
-    navigateToPage(createPath('/locations', {}, { highlight: location }));
-  };
-
   // Handle quest click
   const handleQuestClick = (questId: string) => {
     navigateToPage(createPath('/quests', {}, { highlight: questId }));
@@ -114,17 +109,17 @@ const NPCCard: React.FC<NPCCardProps> = ({
               </Typography>
             )}
           </div>
-          {/* Edit Button - Only shown when user is authenticated */}
-          {user && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleEdit}
-              startIcon={<Edit size={16} />}
-            >
-              Edit
-            </Button>
-          )}
+
+          {/* Expand/Collapse Button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="ml-2"
+            startIcon={isExpanded ? <ChevronUp /> : <ChevronDown />}
+          >
+            {isExpanded ? 'Collapse' : 'Expand'}
+          </Button>
         </div>
 
         {/* Basic Info */}
@@ -162,7 +157,7 @@ const NPCCard: React.FC<NPCCardProps> = ({
           </div>
 
           {/* Location and Occupation */}
-          {(npc.location || npc.occupation) && (
+          {(npc.occupation) && (
             <div className="space-y-2">
               {npc.occupation && (
                 <div className="flex items-center gap-2">
@@ -172,68 +167,9 @@ const NPCCard: React.FC<NPCCardProps> = ({
                   </Typography>
                 </div>
               )}
-              {npc.location && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleLocationClick(npc.location!)}
-                  className="flex items-center gap-2 w-full justify-start"
-                >
-                  <MapPin size={16} className={clsx(`${themePrefix}-typography-secondary`)} />
-                  <Typography variant="body-sm">
-                    {npc.location}
-                  </Typography>
-                </Button>
-              )}
             </div>
           )}
         </div>
-
-        {/* Quick Note Adding - Only visible when authenticated */}
-        {user && (
-          <div>
-            {isAddingNote ? (
-              <div className="space-y-2">
-                <Input
-                  value={noteInput}
-                  onChange={(e) => setNoteInput(e.target.value)}
-                  placeholder="Enter note..."
-                  isTextArea={true}
-                />
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    onClick={handleAddNote}
-                    disabled={!noteInput.trim()}
-                    startIcon={<Save size={16} />}
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setIsAddingNote(false);
-                      setNoteInput('');
-                    }}
-                    startIcon={<X size={16} />}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsAddingNote(true)}
-                startIcon={<PlusCircle size={16} />}
-              >
-                Add Note
-              </Button>
-            )}
-          </div>
-        )}
 
         {/* Expanded Content */}
         {isExpanded && (
@@ -284,38 +220,6 @@ const NPCCard: React.FC<NPCCardProps> = ({
               </div>
             )}
 
-            {/* Notes */}
-            {npc.notes && npc.notes.length > 0 && (
-              <div>
-                <Typography variant="h4" className="mb-2">
-                  Notes
-                </Typography>
-                <div className="space-y-2">
-                  {npc.notes.map((note, index) => (
-                    <div
-                      key={index}
-                      className={clsx(
-                        "p-3 rounded-lg space-y-1",
-                        `${themePrefix}-note`
-                      )}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Calendar size={14} className={clsx(`${themePrefix}-typography-secondary`)} />
-                          <Typography variant="body-sm" color="secondary">
-                            {new Date(note.date).toLocaleDateString('en-uk', { year: 'numeric', day: '2-digit', month: '2-digit'})}
-                          </Typography>
-                        </div>
-                      </div>
-                      <Typography variant="body-sm">
-                        {note.text}
-                      </Typography>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {/* Related Quests */}
             {npc.connections.relatedQuests.length > 0 && (
               <div>
@@ -354,22 +258,102 @@ const NPCCard: React.FC<NPCCardProps> = ({
                       </Button>
                     ) : null;
                   })}
+
+                  
                 </div>
               </div>
             )}
+        
+            {/* Notes */}
+            {npc.notes && npc.notes.length > 0 && (
+              <div>
+                <Typography variant="h4" className="mb-2">
+                  Notes
+                </Typography>
+                <div className="space-y-2">
+                  {npc.notes.map((note, index) => (
+                    <div
+                      key={index}
+                      className={clsx(
+                        "p-3 rounded-lg space-y-1",
+                        `${themePrefix}-note`
+                      )}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Calendar size={14} className={clsx(`${themePrefix}-typography-secondary`)} />
+                          <Typography variant="body-sm" color="secondary">
+                            {new Date(note.date).toLocaleDateString('en-uk', { year: 'numeric', day: '2-digit', month: '2-digit'})}
+                          </Typography>
+                        </div>
+                      </div>
+                      <Typography variant="body-sm">
+                        {note.text}
+                      </Typography>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Quick Note Adding - Only visible when authenticated */}
+            {user && (
+              <div className="flex gap-3 pt-2">
+                {isAddingNote ? (
+                  <div className="space-y-2">
+                    <Input
+                      value={noteInput}
+                      onChange={(e) => setNoteInput(e.target.value)}
+                      placeholder="Enter note..."
+                      isTextArea={true}
+                    />
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        onClick={handleAddNote}
+                        disabled={!noteInput.trim()}
+                        startIcon={<Save size={16} />}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setIsAddingNote(false);
+                          setNoteInput('');
+                        }}
+                        startIcon={<X size={16} />}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsAddingNote(true)}
+                    startIcon={<PlusCircle size={16} />}
+                  >
+                    Add Note
+                  </Button>
+                )}
+
+                {/* Edit Button - Only shown when user is authenticated */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleEdit}
+                  startIcon={<Edit size={16} />}
+                >
+                  Edit NPC
+                </Button>
+              </div>
+            )}
+          
           </div>
         )}
-
-        {/* Expand/Collapse Button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full"
-          startIcon={isExpanded ? <ChevronUp /> : <ChevronDown />}
-        >
-          {isExpanded ? 'Show Less' : 'Show More'}
-        </Button>
       </Card.Content>
     </Card>
   );

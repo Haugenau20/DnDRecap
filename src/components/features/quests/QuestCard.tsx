@@ -46,32 +46,31 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   };
 
   return (
-    <Card className={clsx(`${themePrefix}-quest-card`)}>
+    <Card className={clsx(
+      `${themePrefix}-quest-card`,
+      `${themePrefix}-quest-card-${quest.status}`
+      
+      )}>
       <Card.Content className="space-y-4">
         {/* Quest Header */}
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 justify-between">
               <Typography variant="h3">
                 {quest.title}
               </Typography>
-              {user && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => navigateToPage(`/quests/edit/${quest.id}`)}
-                  startIcon={<Edit size={16} />}
-                >
-                  Edit
-                </Button>
-              )}
-              <span className={clsx(
-                'px-2 py-1 rounded-full text-sm',
-                `${themePrefix}-status`,
-                `${themePrefix}-status-${quest.status}`
-              )}>
-                {quest.status.charAt(0).toUpperCase() + quest.status.slice(1)}
-              </span>
+
+              {/* Expand/Collapse Button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="ml-2"
+                startIcon={isExpanded ? <ChevronUp /> : <ChevronDown />}
+              >
+                {isExpanded ? 'Collapse' : 'Expand'}
+              </Button>
+
             </div>
             <Typography color="secondary" className="mt-1">
               {quest.description}
@@ -80,7 +79,7 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
         </div>
 
         {/* Quest Metadata */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex gap-6">
           {quest.location && (
             <div className="flex items-center gap-2">
               <MapPin size={16} className={`${themePrefix}-typography-secondary`} />
@@ -112,12 +111,6 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
               <Typography color="secondary">Level: {quest.levelRange}</Typography>
             </div>
           )}
-          {quest.dateAdded && (
-            <div className="flex items-center gap-2">
-              <Calendar size={16} className={`${themePrefix}-typography-secondary`} />
-              <Typography color="secondary">Added: {quest.dateAdded}</Typography>
-            </div>
-          )}
         </div>
 
         {/* Progress Bar */}
@@ -134,6 +127,12 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
         {/* Expanded Content */}
         {isExpanded && (
           <div className="pt-4 space-y-6">
+            {quest.dateAdded && (
+              <div className="flex items-center gap-2">
+                <Calendar size={16} className={`${themePrefix}-typography-secondary`} />
+                <Typography color="secondary">Added: {quest.dateAdded}</Typography>
+              </div>
+            )}
             {/* Background */}
             {quest.background && (
               <div>
@@ -361,19 +360,19 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
                 </ul>
               </div>
             )}
+
+            {user && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigateToPage(`/quests/edit/${quest.id}`)}
+                startIcon={<Edit size={16} />}
+              >
+                Edit Quest
+              </Button>
+            )}
           </div>
         )}
-
-        {/* Expand/Collapse Button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full"
-          startIcon={isExpanded ? <ChevronUp /> : <ChevronDown />}
-        >
-          {isExpanded ? 'Show Less' : 'Show More'}
-        </Button>
       </Card.Content>
     </Card>
   );

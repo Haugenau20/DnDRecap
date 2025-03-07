@@ -375,6 +375,18 @@
   border-left: 4px solid var(--light-primary);
 }
 
+.light-quest-card-active {
+  border-left: 4px solid var(--light-status-active);
+}
+
+.light-quest-card-completed {
+  border-left: 4px solid var(--light-status-completed);
+}
+
+.light-quest-card-failed {
+  border-left: 4px solid var(--light-status-failed);
+}
+
 .light-progress-container {
   background-color: var(--light-bg-secondary);
 }
@@ -450,6 +462,18 @@
   border-left: 4px solid var(--light-status-active);
 }
 
+.light-location-card-explored {
+  border-left: 4px solid var(--light-status-completed);
+}
+
+.light-location-card-visited {
+  border-left: 4px solid var(--light-status-unknown);
+}
+
+.light-location-card-known {
+  border-left: 4px solid var(--light-text-secondary);
+}
+
 .light-location-status-explored {
   color: var(--light-status-completed);
 }
@@ -459,7 +483,7 @@
 }
 
 .light-location-status-visited {
-  color: var(--light-primary);
+  color: var(--light-status-unknown);
 }
 
 

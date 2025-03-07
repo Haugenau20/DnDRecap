@@ -108,20 +108,6 @@ const LocationsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <MapPin className={clsx("w-8 h-8 mr-4", `${themePrefix}-location-status-visited`)} />
-            <div>
-              <Typography variant="h2" className="mb-1">
-                {stats.visited}
-              </Typography>
-              <Typography color="secondary">
-                Visited
-              </Typography>
-            </div>
-          </Card.Content>
-        </Card>
-
-        <Card>
-          <Card.Content className="flex items-center justify-center p-6">
             <Eye className={clsx("w-8 h-8 mr-4", `${themePrefix}-location-status-explored`)} />
             <div>
               <Typography variant="h2" className="mb-1">
@@ -129,6 +115,20 @@ const LocationsPage: React.FC = () => {
               </Typography>
               <Typography color="secondary">
                 Explored
+              </Typography>
+            </div>
+          </Card.Content>
+        </Card>
+
+        <Card>
+          <Card.Content className="flex items-center justify-center p-6">
+            <MapPin className={clsx("w-8 h-8 mr-4", `${themePrefix}-location-status-visited`)} />
+            <div>
+              <Typography variant="h2" className="mb-1">
+                {stats.visited}
+              </Typography>
+              <Typography color="secondary">
+                Visited
               </Typography>
             </div>
           </Card.Content>

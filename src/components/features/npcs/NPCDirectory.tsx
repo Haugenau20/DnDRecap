@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { NPC } from '../../../types/npc';
 import NPCCard from './NPCCard';
 import Card from '../../core/Card';
+import Button from '../../core/Button';
 import Typography from '../../core/Typography';
 import Input from '../../core/Input';
 import { Search, Users, MapPin, Heart } from 'lucide-react';
@@ -27,6 +28,7 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
   const [relationshipFilter, setRelationshipFilter] = useState<string>('all');
   const [locationFilter, setLocationFilter] = useState<string>('all');
   const [highlightedNpcId, setHighlightedNpcId] = useState<string | null>(null);
+  const { navigateToPage, createPath } = useNavigation();
 
   // Get theme context
   const { theme } = useTheme();
@@ -52,6 +54,11 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
     if (onNPCUpdate) {
       onNPCUpdate(updatedNPC);
     }
+  };
+
+  // Handle location click
+  const handleLocationClick = (location: string) => {
+    navigateToPage(createPath('/locations', {}, { highlight: location }));
   };
 
   // Handle highlighted NPC from URL
@@ -199,8 +206,17 @@ const NPCDirectory: React.FC<NPCDirectoryProps> = ({
       {Object.entries(groupedNPCs).map(([location, locationNPCs]) => (
         <div key={location}>
           <div className="flex items-center gap-2 mb-4">
-            <MapPin className={clsx(`${themePrefix}-typography-secondary`)} />
-            <Typography variant="h3">{location}</Typography>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleLocationClick(location!)}
+              startIcon={<MapPin className={clsx(`${themePrefix}-typography-secondary`)} />}
+              className="flex items-center gap-2 justify-start"
+            >
+              <Typography variant="h3">
+                {location}
+              </Typography>
+            </Button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

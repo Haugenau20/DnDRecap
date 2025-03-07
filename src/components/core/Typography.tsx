@@ -103,6 +103,8 @@ export const Typography = <C extends React.ElementType = 'p'>({
     clsx(
       // Base styles
       'max-w-full',
+      'm-0',
+      'leading-none',
       
       // Variant styles
       variantStyles[variant],

@@ -374,6 +374,18 @@
   border-left: 4px solid var(--dark-status-active);
 }
 
+.dark-quest-card-active {
+  border-left: 4px solid var(--dark-status-active);
+}
+
+.dark-quest-card-completed {
+  border-left: 4px solid var(--dark-status-completed);
+}
+
+.dark-quest-card-failed {
+  border-left: 4px solid var(--dark-status-failed);
+}
+
 .dark-progress-container {
   background-color: var(--dark-bg-secondary);
 }
@@ -450,6 +462,18 @@
   border-left: 4px solid var(--dark-status-active);
 }
 
+.dark-location-card-explored {
+  border-left: 4px solid var(--dark-status-completed);
+}
+
+.dark-location-card-visited {
+  border-left: 4px solid var(--dark-status-unknown);
+}
+
+.dark-location-card-known {
+  border-left: 4px solid var(--dark-text-secondary);
+}
+
 .dark-location-status-explored {
   color: var(--dark-status-completed);
 }
@@ -459,7 +483,7 @@
 }
 
 .dark-location-status-visited {
-  color: var(--dark-status-active);
+  color: var(--dark-status-unknown);
 }
 
 /* Location type colors */

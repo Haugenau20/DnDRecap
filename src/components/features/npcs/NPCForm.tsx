@@ -218,7 +218,7 @@ const NPCForm: React.FC<NPCFormProps> = ({
 
   return (
     <>
-      <Card className="max-w-2xl mx-auto">
+      <Card className="max-w-7xl mx-auto">
         <Card.Header title="Create New NPC" />
         <Card.Content>
           <form onSubmit={handleSubmit} className="space-y-6">

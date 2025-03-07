@@ -61,7 +61,7 @@ const NPCsPage: React.FC = () => {
       <div className="mb-8 flex flex-col md:flex-row justify-between items-start gap-4">
         <div>
           <Typography variant="h1" className="mb-2">
-            NPC Directory
+            NPCs
           </Typography>
           <Typography color="secondary">
             Keep track of all the characters you've met in your adventures
@@ -113,20 +113,6 @@ const NPCsPage: React.FC = () => {
 
         <Card>
           <Card.Content className="flex items-center justify-center p-6">
-            <Users className={clsx("w-8 h-8 mr-4", `${themePrefix}-npc-status-deceased`)} />
-            <div>
-              <Typography variant="h2" className="mb-1">
-                {stats.deceased}
-              </Typography>
-              <Typography color="secondary">
-                Deceased
-              </Typography>
-            </div>
-          </Card.Content>
-        </Card>
-
-        <Card>
-          <Card.Content className="flex items-center justify-center p-6">
             <Users className={clsx("w-8 h-8 mr-4", `${themePrefix}-npc-status-missing`)} />
             <div>
               <Typography variant="h2" className="mb-1">
@@ -134,6 +120,20 @@ const NPCsPage: React.FC = () => {
               </Typography>
               <Typography color="secondary">
                 Missing
+              </Typography>
+            </div>
+          </Card.Content>
+        </Card>
+
+        <Card>
+          <Card.Content className="flex items-center justify-center p-6">
+            <Users className={clsx("w-8 h-8 mr-4", `${themePrefix}-npc-status-deceased`)} />
+            <div>
+              <Typography variant="h2" className="mb-1">
+                {stats.deceased}
+              </Typography>
+              <Typography color="secondary">
+                Deceased
               </Typography>
             </div>
           </Card.Content>

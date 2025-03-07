@@ -251,244 +251,238 @@ const LocationCard: React.FC<LocationCardProps> = ({
   }, [locations, initialLocation.id]);
 
   return (
-    <Card className={clsx(`${themePrefix}-location-card`)}>
+    <Card className={clsx(
+      `${themePrefix}-location-card`,
+      `${themePrefix}-location-card-${location.status}`
+      )}>
       <Card.Content className="space-y-4">
-        {/* Location Header */}
-        <div className="flex items-start gap-3">
-          <div className="mt-1">
-            {getTypeIcon(location.type)}
-          </div>
-          <div className="flex-1">
-            <Typography variant="h4">
-              {location.name}
-              {user && (
+        <div>
+          {/* Location Header */}
+          <div className="flex items-start gap-3">
+            <div className="mt-1">
+              {getTypeIcon(location.type)}
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center gap-2 justify-between">
+                <Typography variant="h4">
+                  {location.name}
+                </Typography>
+
+                {/* Location content expand/collapse */}
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={handleEdit}
-                  startIcon={<Edit size={16} />}
+                  onClick={() => setIsContentExpanded(!isContentExpanded)}
+                  className="ml-2"
+                  startIcon={isContentExpanded ? <ChevronUp /> : <ChevronDown />}
                 >
-                  Edit
+                  {isContentExpanded ? 'Collapse' : 'Expand'}
                 </Button>
-              )}
-            </Typography>
-            
-            <div className="flex items-center gap-2 mt-1">
-              <Typography variant="body-sm" color="secondary">
-                {formatLocationType(location.type)}
-              </Typography>
-              <span className={clsx(`${themePrefix}-typography-secondary`, "mx-1 text-xs")}>•</span>
-              <div className="flex items-center gap-1">
-                {getStatusIcon()}
-                <Typography variant="body-sm" color="secondary">
-                  {location.status.charAt(0).toUpperCase() + location.status.slice(1)}
-                </Typography>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Description */}
-        <Typography color="secondary">
-          {location.description}
-        </Typography>
+          <div>
+            <Typography variant="body-sm" color="secondary">
+              {formatLocationType(location.type)}
+            </Typography>
+          </div>
 
-        {/* Basic Info */}
-        <div className="flex flex-wrap gap-4">
-          {connectedNPCs.length > 0 && (
-            <div className="flex items-center gap-2">
-              <Users size={16} className={clsx(`${themePrefix}-typography-secondary`)} />
-              <Typography variant="body-sm" color="secondary">
-                {connectedNPCs.length} NPCs
-              </Typography>
-            </div>
-          )}
-          {location.relatedQuests && location.relatedQuests.length > 0 && (
-            <div className="flex items-center gap-2">
-              <Scroll size={16} className={clsx(`${themePrefix}-typography-secondary`)} />
-              <Typography variant="body-sm" color="secondary">
-                {location.relatedQuests.length} Quests
-              </Typography>
-            </div>
-          )}
-          {location.lastVisited && (
-            <div className="flex items-center gap-2">
-              <Calendar size={16} className={clsx(`${themePrefix}-typography-secondary`)} />
-              <Typography variant="body-sm" color="secondary">
-                Last visited: {location.lastVisited}
-              </Typography>
-            </div>
-          )}
-        </div>
+          {/* Description */}
+          <Typography color="secondary">
+            {location.description}
+          </Typography>
 
-        {/* Expanded Content */}
-        {isContentExpanded && (
-          <div className={clsx("pt-4 space-y-4 border-t", `${themePrefix}-divider`)}>
-            {/* Notable Features */}
-            {location.features && location.features.length > 0 && (
-              <div>
-                <Typography variant="body" className="font-medium mb-2">
-                  Notable Features
+          {/* Basic Info */}
+          <div className="flex flex-wrap gap-4">
+            {connectedNPCs.length > 0 && (
+              <div className="flex items-center gap-2">
+                <Users size={16} className={clsx(`${themePrefix}-typography-secondary`)} />
+                <Typography variant="body-sm" color="secondary">
+                  {connectedNPCs.length} NPCs
                 </Typography>
-                <ul className="space-y-1">
-                  {location.features.map((feature, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <Landmark size={16} className={clsx(`${themePrefix}-typography-secondary`, "mt-1")} />
-                      <Typography variant="body-sm" color="secondary">
-                        {feature}
-                      </Typography>
-                    </li>
-                  ))}
-                </ul>
               </div>
             )}
-
-            {/* Related Quests */}
             {location.relatedQuests && location.relatedQuests.length > 0 && (
-              <div>
-                <Typography variant="body" className="font-medium mb-2">
-                  Related Quests
+              <div className="flex items-center gap-2">
+                <Scroll size={16} className={clsx(`${themePrefix}-typography-secondary`)} />
+                <Typography variant="body-sm" color="secondary">
+                  {location.relatedQuests.length} Quests
                 </Typography>
-                <div className="space-y-2">
-                  {location.relatedQuests.map((questId) => {
-                    const quest = getQuestById(questId);
-                    return quest ? (
+              </div>
+            )}
+          </div>
+
+          {/* Expanded Content */}
+          {isContentExpanded && (
+            <div className={clsx("pt-4 space-y-4 border-t", `${themePrefix}-divider`)}>
+              {/* Notable Features */}
+              {location.features && location.features.length > 0 && (
+                <div>
+                  <Typography variant="body" className="font-medium mb-2">
+                    Notable Features
+                  </Typography>
+                  <ul className="space-y-1">
+                    {location.features.map((feature, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <Landmark size={16} className={clsx(`${themePrefix}-typography-secondary`, "mt-1")} />
+                        <Typography variant="body-sm" color="secondary">
+                          {feature}
+                        </Typography>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Related Quests */}
+              {location.relatedQuests && location.relatedQuests.length > 0 && (
+                <div>
+                  <Typography variant="body" className="font-medium mb-2">
+                    Related Quests
+                  </Typography>
+                  <div className="space-y-2">
+                    {location.relatedQuests.map((questId) => {
+                      const quest = getQuestById(questId);
+                      return quest ? (
+                        <Button
+                          key={questId}
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleQuestClick(questId)}
+                          className="w-full"
+                          centered={false}
+                        >
+                          <div className="flex items-start gap-2 text-left">
+                            <Scroll 
+                              size={16} 
+                              className={clsx(
+                                "mt-1",
+                                `${themePrefix}-quest-status-${quest.status}`
+                              )}
+                            />
+                            <div className="flex-1">
+                              <Typography variant="body-sm" className="font-medium">
+                                {quest.title}
+                              </Typography>
+                              <Typography variant="body-sm" color="secondary">
+                                Status: {quest.status.charAt(0).toUpperCase() + quest.status.slice(1)}
+                              </Typography>
+                            </div>
+                          </div>
+                        </Button>
+                      ) : null;
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Connected NPCs */}
+              {connectedNPCs.length > 0 && (
+                <div>
+                  <Typography variant="body" className="font-medium mb-2">
+                    Connected NPCs
+                  </Typography>
+                  <div className="space-y-2">
+                    {connectedNPCs.map((npc) => (
                       <Button
-                        key={questId}
+                        key={npc.id}
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleQuestClick(questId)}
+                        onClick={() => handleNPCClick(npc.id)}
                         className="w-full"
                         centered={false}
                       >
                         <div className="flex items-start gap-2 text-left">
-                          <Scroll 
+                          <Users 
                             size={16} 
                             className={clsx(
                               "mt-1",
-                              `${themePrefix}-quest-status-${quest.status}`
+                              `${themePrefix}-npc-relationship-${npc.relationship}`
                             )}
                           />
                           <div className="flex-1">
                             <Typography variant="body-sm" className="font-medium">
-                              {quest.title}
+                              {npc.name}
+                              {npc.title && (
+                                <span className={clsx(`${themePrefix}-typography-secondary`, "ml-1")}>
+                                  - {npc.title}
+                                </span>
+                              )}
                             </Typography>
-                            <Typography variant="body-sm" color="secondary">
-                              Status: {quest.status.charAt(0).toUpperCase() + quest.status.slice(1)}
-                            </Typography>
+                            {npc.location && (
+                              <Typography variant="body-sm" color="secondary">
+                                {npc.location}
+                              </Typography>
+                            )}
                           </div>
                         </div>
                       </Button>
-                    ) : null;
-                  })}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Connected NPCs */}
-            {connectedNPCs.length > 0 && (
-              <div>
-                <Typography variant="body" className="font-medium mb-2">
-                  Connected NPCs
-                </Typography>
-                <div className="space-y-2">
-                  {connectedNPCs.map((npc) => (
-                    <Button
-                      key={npc.id}
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleNPCClick(npc.id)}
-                      className="w-full"
-                      centered={false}
-                    >
-                      <div className="flex items-start gap-2 text-left">
-                        <Users 
-                          size={16} 
-                          className={clsx(
-                            "mt-1",
-                            `${themePrefix}-npc-relationship-${npc.relationship}`
-                          )}
-                        />
-                        <div className="flex-1">
-                          <Typography variant="body-sm" className="font-medium">
-                            {npc.name}
-                            {npc.title && (
-                              <span className={clsx(`${themePrefix}-typography-secondary`, "ml-1")}>
-                                - {npc.title}
-                              </span>
-                            )}
-                          </Typography>
-                          {npc.location && (
-                            <Typography variant="body-sm" color="secondary">
-                              {npc.location}
-                            </Typography>
-                          )}
-                        </div>
+              {/* Tags */}
+              {location.tags && location.tags.length > 0 && (
+                <div>
+                  <Typography variant="body" className="font-medium mb-2">
+                    Tags
+                  </Typography>
+                  <div className="flex flex-wrap gap-2">
+                    {location.tags.map((tag, index) => (
+                      <div
+                        key={index}
+                        className={clsx(
+                          "flex items-center gap-1 px-2 py-1 rounded-full",
+                          `${themePrefix}-tag`
+                        )}
+                      >
+                        <Tag size={12} className={clsx(`${themePrefix}-typography-secondary`)} />
+                        <Typography variant="body-sm" color="secondary">
+                          {tag}
+                        </Typography>
                       </div>
-                    </Button>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Tags */}
-            {location.tags && location.tags.length > 0 && (
-              <div>
-                <Typography variant="body" className="font-medium mb-2">
-                  Tags
-                </Typography>
-                <div className="flex flex-wrap gap-2">
-                  {location.tags.map((tag, index) => (
-                    <div
-                      key={index}
-                      className={clsx(
-                        "flex items-center gap-1 px-2 py-1 rounded-full",
-                        `${themePrefix}-tag`
-                      )}
-                    >
-                      <Tag size={12} className={clsx(`${themePrefix}-typography-secondary`)} />
-                      <Typography variant="body-sm" color="secondary">
-                        {tag}
-                      </Typography>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+              {/* Notes */}
+              {renderNotes()}
 
-            {/* Notes */}
-            {renderNotes()}            
-          </div>
-        )}
+              <div className="flex gap-4">
+                {/* Note Adding Form */}
+                {renderNoteForm()}
 
-        {/* Note Adding Form */}
-        {renderNoteForm()}
-
-        {/* Expand/Collapse Buttons */}
-        <div className="flex gap-2">
-          {/* Location content expand/collapse */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsContentExpanded(!isContentExpanded)}
-            className="w-full"
-            startIcon={isContentExpanded ? <ChevronUp /> : <ChevronDown />}
-          >
-            {isContentExpanded ? 'Less Details' : 'More Details'}
-          </Button>
-
-          {/* Children expand/collapse */}
-          {hasChildren && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onToggleExpand}
-              className="flex-shrink-0"
-              startIcon={isExpanded ? <ChevronUp /> : <ChevronDown />}
-            >
-              {isExpanded ? 'Hide Places Within' : 'Show Places Within'}
-            </Button>
+                {user && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleEdit}
+                    startIcon={<Edit size={16} />}
+                  >
+                    Edit Location
+                  </Button>
+                )}
+                
+              </div>      
+            </div>
           )}
+          <div className="flex justify-end">
+            {/* Children expand/collapse */}
+            {hasChildren && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onToggleExpand}
+                className="ml-2"
+                startIcon={isExpanded ? <ChevronUp /> : <ChevronDown />}
+              >
+                {isExpanded ? 'Collapse Sub Locations' : 'Expand Sub Locations'}
+              </Button>
+            )}
+          </div>    
         </div>
       </Card.Content>
     </Card>

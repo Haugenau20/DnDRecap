@@ -169,15 +169,10 @@ const RumorCard: React.FC<RumorCardProps> = ({
           )}
           
           {/* Status indicator and title */}
-          <div className={clsx(
-            "flex-1",
-            selectionMode ? '' : 'border-l-4 pl-4',
-            `${themePrefix}-rumor-status-border-${rumor.status}`
-          )}>
+          <div className="flex-1">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                {getStatusIcon()}
-                <Typography variant="h4">
+                <Typography variant="h3">
                   {rumor.title}
                 </Typography>
               </div>
@@ -195,20 +190,10 @@ const RumorCard: React.FC<RumorCardProps> = ({
             
             {/* Source information */}
             <div className="flex items-center gap-2 mt-1">
-              <Typography variant="body-sm" color="secondary">
+              <Typography color="secondary">
                 From: {rumor.sourceName} ({formatSourceType(rumor.sourceType)})
               </Typography>
             </div>
-
-            {/* Creator attribution - Updated with character icon */}
-            {rumor.createdByUsername && (
-              <div className="flex items-center gap-2 mt-1">
-                <Scroll size={14} className={`${themePrefix}-typography-secondary`} />
-                <Typography variant="body-sm" color="secondary">
-                  Added by {rumor.createdByUsername} on {new Date(rumor.dateAdded).toLocaleDateString('en-uk')}
-                </Typography>
-              </div>
-            )}
 
             {/* Location display (if present) */}
             {rumor.location && (
@@ -225,6 +210,17 @@ const RumorCard: React.FC<RumorCardProps> = ({
         {/* Expanded Content */}
         {isExpanded && (
           <div className="pt-4 space-y-4">
+
+            {/* Creator attribution - Updated with character icon */}
+            {rumor.createdByUsername && (
+              <div className="flex items-center gap-2 mt-1">
+                <Scroll size={14} className={`${themePrefix}-typography-secondary`} />
+                <Typography variant="body-sm" color="secondary">
+                  Added by {rumor.createdByUsername} on {new Date(rumor.dateAdded).toLocaleDateString('en-uk')}
+                </Typography>
+              </div>
+            )}
+            
             {/* Rumor Content */}
             <Typography color="secondary">
               {rumor.content}

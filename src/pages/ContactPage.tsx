@@ -25,7 +25,7 @@ const ContactPage: React.FC = () => {
 
           <div>
             <div className="flex items-center gap-2">
-              <Mail className="text-blue-500 mb-3" />
+              <Mail className="text-blue-500" />
               <Typography variant="h4">Email</Typography>
             </div>
             <Typography color="secondary">
@@ -35,7 +35,7 @@ const ContactPage: React.FC = () => {
 
           <div>
             <div className="flex items-center gap-2">
-              <Clock className="text-blue-500 mb-3" />
+              <Clock className="text-blue-500" />
               <Typography variant="h4">Response Time</Typography>
             </div>
             <Typography color="secondary">
@@ -45,7 +45,7 @@ const ContactPage: React.FC = () => {
         
           <div>
             <div className="flex items-center gap-2">
-              <PlusCircle className="text-blue-500 mb-3" />
+              <PlusCircle className="text-blue-500" />
               <Typography variant="h4">Feature Request</Typography>
             </div>
             <Typography color="secondary">
@@ -55,7 +55,7 @@ const ContactPage: React.FC = () => {
           
           <div>
             <div className="flex items-center gap-2">
-              <Bug className="text-blue-500 mb-3" />
+              <Bug className="text-blue-500" />
               <Typography variant="h4">Bug</Typography>
             </div>
             <Typography color="secondary">
