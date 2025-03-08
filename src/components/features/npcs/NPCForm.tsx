@@ -134,48 +134,6 @@ const NPCForm: React.FC<NPCFormProps> = ({
   };
 
   /**
-   * Handle quest selection from dropdown
-   */
-  const handleQuestSelection = (questId: string) => {
-    if (questId && !formData.connections?.relatedQuests.includes(questId)) {
-      setFormData(prev => ({
-        ...prev,
-        connections: {
-          ...prev.connections!,
-          relatedQuests: [...(prev.connections?.relatedQuests || []), questId]
-        }
-      }));
-    }
-    setQuestDropdownValue(''); // Reset dropdown
-  };
-
-  /**
-   * Remove a quest from related quests
-   */
-  const handleRemoveQuest = (questId: string) => {
-    setFormData(prev => ({
-      ...prev,
-      connections: {
-        ...prev.connections!,
-        relatedQuests: prev.connections!.relatedQuests.filter(id => id !== questId)
-      }
-    }));
-  };
-
-  /**
-   * Remove an NPC from related NPCs
-   */
-  const handleRemoveNPC = (npcId: string) => {
-    setFormData(prev => ({
-      ...prev,
-      connections: {
-        ...prev.connections!,
-        relatedNPCs: prev.connections!.relatedNPCs.filter(id => id !== npcId)
-      }
-    }));
-  };
-
-  /**
    * Handle form submission
    */
   const handleSubmit = async (e: React.FormEvent) => {

@@ -15,7 +15,9 @@ import {
 } from './LocationFormSections';
 import { AlertCircle, Save, X } from 'lucide-react';
 import { useTheme } from '../../../context/ThemeContext';
+import { useFirebase } from '../../../context/FirebaseContext';
 import clsx from 'clsx';
+import { getUserDisplayName } from '../../../utils/user-utils';
 
 interface LocationCreateFormProps {
   onSuccess?: () => void;
@@ -40,7 +42,9 @@ const LocationCreateForm: React.FC<LocationCreateFormProps> = ({
   const [isQuestDialogOpen, setIsQuestDialogOpen] = useState(false);
   const [selectedQuests, setSelectedQuests] = useState<Set<string>>(new Set());
   const [isNPCDialogOpen, setIsNPCDialogOpen] = useState(false);
-  const [selectedNPCs, setSelectedNPCs] = useState<Set<string>>(new Set());
+  const [selectedNPCs, setSelectedNPCs] = useState<Set<string>>(new Set()); 
+  // Firebase user for attribution
+  const { user, userProfile } = useFirebase();
   
   // Get NPCs data
   const { npcs } = useNPCs();
@@ -81,6 +85,8 @@ const LocationCreateForm: React.FC<LocationCreateFormProps> = ({
     }
 
     try {
+      const displayName = getUserDisplayName(userProfile);
+      const currentDate = new Date().toISOString();
       const locationId = generateLocationId(formData.name);
       const locationData: Location = {
         id: locationId,
@@ -94,7 +100,10 @@ const LocationCreateForm: React.FC<LocationCreateFormProps> = ({
         relatedQuests: Array.from(selectedQuests), // Use local state
         notes: [],
         tags: formData.tags || [],
-        lastVisited: formData.lastVisited || new Date().toISOString().split('T')[0]
+        lastVisited: formData.lastVisited || new Date().toISOString().split('T')[0],
+        createdBy: user?.uid || '',
+        createdByUsername: displayName,
+        dateAdded: currentDate
       };
 
       await addData(locationData, locationId);

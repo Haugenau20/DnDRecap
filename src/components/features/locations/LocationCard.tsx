@@ -10,6 +10,7 @@ import Button from '../../core/Button';
 import Input from '../../core/Input';
 import { useNavigation } from '../../../context/NavigationContext';
 import { useTheme } from '../../../context/ThemeContext';
+import AttributionInfo from '../../shared/AttributionInfo';
 import clsx from 'clsx';
 import { 
   MapPin, 
@@ -316,6 +317,14 @@ const LocationCard: React.FC<LocationCardProps> = ({
           {/* Expanded Content */}
           {isContentExpanded && (
             <div className={clsx("pt-4 space-y-4 border-t", `${themePrefix}-divider`)}>
+              {/* Creator and modifier attribution */}
+              <AttributionInfo
+                createdByUsername={location.createdByUsername}
+                dateAdded={location.dateAdded}
+                modifiedByUsername={location.modifiedByUsername}
+                dateModified={location.dateModified}
+              />
+
               {/* Notable Features */}
               {location.features && location.features.length > 0 && (
                 <div>

@@ -16,6 +16,8 @@ import {
 import { AlertCircle, Save, X } from 'lucide-react';
 import { useTheme } from '../../../context/ThemeContext';
 import clsx from 'clsx';
+import { getUserDisplayName } from '../../../utils/user-utils';
+import { useFirebase } from '../../../context/FirebaseContext';
 
 interface LocationEditFormProps {
   /** The location being edited */
@@ -33,6 +35,8 @@ const LocationEditForm: React.FC<LocationEditFormProps> = ({
   }) => {
     // Form state initialized with existing location data
     const [formData, setFormData] = useState<Location>(location);
+    // Firebase user for attribution
+    const { user, userProfile } = useFirebase();
     
     // Keep selection state local until form submission
     const [isQuestDialogOpen, setIsQuestDialogOpen] = useState(false);
@@ -73,11 +77,18 @@ const LocationEditForm: React.FC<LocationEditFormProps> = ({
     }
 
     try {
+      // Get user info for attribution
+      const displayName = getUserDisplayName(userProfile);
+      const currentDate = new Date().toISOString();
       // Now we include the selected NPCs and Quests only during final submission
       const updatedLocation: Location = {
         ...formData,
         connectedNPCs: Array.from(selectedNPCs),
-        relatedQuests: Array.from(selectedQuests)
+        relatedQuests: Array.from(selectedQuests),
+        // Update modification attribution
+        modifiedBy: user?.uid || '',
+        modifiedByUsername: displayName,
+        dateModified: currentDate
       };
 
       await updateData(location.id, updatedLocation);

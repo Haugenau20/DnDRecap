@@ -47,6 +47,13 @@ export interface Location {
   tags?: string[];
   /** Last session visited */
   lastVisited?: string;
+  // Attribution fields
+  createdBy?: string; // User UID
+  createdByUsername?: string; // Character name or username
+  modifiedBy?: string; // User UID of last modifier
+  modifiedByUsername?: string; // Character name or username of modifier
+  dateAdded?: string; // Date of creation
+  dateModified?: string; // Date of last modification
 }
 
 /**
