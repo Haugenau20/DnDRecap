@@ -5,6 +5,7 @@ import { useRumorData } from '../hooks/useRumorData';
 import { useFirebaseData } from '../hooks/useFirebaseData';
 import { useFirebase } from './FirebaseContext';
 import FirebaseService from '../services/firebase/FirebaseService';
+import { getUserDisplayName } from '../utils/user-utils';
 
 const RumorContext = createContext<RumorContextValue | undefined>(undefined);
 
@@ -15,31 +16,6 @@ export const RumorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   });
   const { user, userProfile } = useFirebase();
   const firebaseService = FirebaseService.getInstance();
-
-  // Helper to get the current user's display name (character name or username)
-  const getUserDisplayName = useCallback(() => {
-    if (!userProfile) return '';
-    
-    // If there's an active character, use its name
-    if (userProfile.activeCharacterId && userProfile.characterNames) {
-      // Handle both string array and object array formats
-      if (typeof userProfile.characterNames[0] === 'string') {
-        // Legacy format - can't match by ID, just use username
-        return userProfile.username;
-      } else {
-        // New format - can find by ID
-        const activeCharacter = userProfile.characterNames.find(
-          (char) => typeof char !== 'string' && char.id === userProfile.activeCharacterId
-        );
-        if (activeCharacter && typeof activeCharacter !== 'string') {
-          return activeCharacter.name;
-        }
-      }
-    }
-    
-    // Fallback to username if no active character or character not found
-    return userProfile.username;
-  }, [userProfile]);
 
   // Get rumor by ID
   const getRumorById = useCallback((id: string) => {
@@ -74,7 +50,7 @@ export const RumorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       throw new Error('Rumor not found');
     }
 
-    const displayName = getUserDisplayName();
+    const displayName = getUserDisplayName(userProfile); // Use the utility function
 
     const updatedRumor = {
       ...rumor,
@@ -86,7 +62,7 @@ export const RumorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     await updateData(rumorId, updatedRumor);
     refreshRumors();
-  }, [user, userProfile, getRumorById, updateData, refreshRumors, getUserDisplayName]);
+  }, [user, userProfile, getRumorById, updateData, refreshRumors]);
 
   // Update rumor note
   const updateRumorNote = useCallback(async (rumorId: string, note: RumorNote) => {
@@ -99,7 +75,7 @@ export const RumorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       throw new Error('Rumor not found');
     }
 
-    const displayName = getUserDisplayName();
+    const displayName = getUserDisplayName(userProfile);
 
     const noteWithUser = {
       ...note,
@@ -136,7 +112,7 @@ export const RumorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   
     const now = new Date().toISOString();
-    const displayName = getUserDisplayName();
+    const displayName = getUserDisplayName(userProfile);
     
     // Generate ID from title
     const id = generateRumorId(rumorData.title);
@@ -169,7 +145,7 @@ export const RumorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       throw new Error('User must be authenticated to update rumors');
     }
 
-    const displayName = getUserDisplayName();
+    const displayName = getUserDisplayName(userProfile);
 
     const updatedRumor = {
       ...rumor,
@@ -224,7 +200,7 @@ export const RumorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   
     // Create the new combined rumor
     const now = new Date().toISOString();
-    const displayName = getUserDisplayName();
+    const displayName = getUserDisplayName(userProfile);
     
     // Use the provided title or generate one
     const title = newRumorData.title || `Combined Rumor (${new Date().toLocaleDateString()})`;
@@ -309,7 +285,7 @@ export const RumorProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     // Create a new quest based on the rumors and provided quest data
     const now = new Date().toISOString();
-    const displayName = getUserDisplayName();
+    const displayName = getUserDisplayName(userProfile);
     
     // Generate a proper quest ID from the title
     const questId = questData.title 

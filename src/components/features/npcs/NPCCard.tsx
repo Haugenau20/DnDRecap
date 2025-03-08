@@ -4,16 +4,16 @@ import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';
 import Input from '../../core/Input';
-import { useQuests } from '../../../hooks/useQuests';
+import { useQuests } from '../../../context/QuestContext';
 import { useFirebase } from '../../../context/FirebaseContext';
 import { useFirebaseData } from '../../../hooks/useFirebaseData';
 import { useNavigation } from '../../../context/NavigationContext';
 import { useTheme } from '../../../context/ThemeContext';
+import AttributionInfo from '../../shared/AttributionInfo';
 import clsx from 'clsx';
 import { 
   ChevronDown, 
   ChevronUp, 
-  MapPin,
   Users,
   Calendar,
   Heart,
@@ -174,6 +174,14 @@ const NPCCard: React.FC<NPCCardProps> = ({
         {/* Expanded Content */}
         {isExpanded && (
           <div className="pt-4 space-y-6">
+            {/* Creator and modifier attribution */}
+            <AttributionInfo
+              createdByUsername={npc.createdByUsername}
+              dateAdded={npc.dateAdded}
+              modifiedByUsername={npc.modifiedByUsername}
+              dateModified={npc.dateModified}
+            />
+
             {/* Additional Details */}
             {(npc.description || npc.appearance || npc.personality || npc.background) && (
               <div className="space-y-3">

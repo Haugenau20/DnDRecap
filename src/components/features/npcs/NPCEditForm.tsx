@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { NPC, NPCStatus, NPCRelationship } from '../../../types/npc';
+import React, { useState } from 'react';
+import { NPC } from '../../../types/npc';
 import { useFirebaseData } from '../../../hooks/useFirebaseData';
 import Typography from '../../core/Typography';
 import Input from '../../core/Input';
@@ -7,9 +7,11 @@ import Button from '../../core/Button';
 import Card from '../../core/Card';
 import Dialog from '../../core/Dialog';
 import { Save, X, Users, Scroll } from 'lucide-react';
-import { useQuests } from '../../../hooks/useQuests';
+import { useQuests } from '../../../context/QuestContext';
 import { useTheme } from '../../../context/ThemeContext';
+import { useFirebase } from '../../../context/FirebaseContext';
 import clsx from 'clsx';
+import { getUserDisplayName } from '../../../utils/user-utils';
 
 interface NPCEditFormProps {
   /** The NPC being edited */
@@ -31,6 +33,9 @@ const NPCEditForm: React.FC<NPCEditFormProps> = ({
   // Theme context
   const { theme } = useTheme();
   const themePrefix = theme.name;
+
+  // Firebase user for attribution
+  const { user, userProfile } = useFirebase();
 
   // Form state initialized with existing NPC data
   const [formData, setFormData] = useState<NPC>(npc);
@@ -67,13 +72,21 @@ const NPCEditForm: React.FC<NPCEditFormProps> = ({
     }
 
     try {
+      // Get user info for attribution
+      const displayName = getUserDisplayName(userProfile);
+      const currentDate = new Date().toISOString();
+      
       const updatedNPC: NPC = {
         ...formData,
         connections: {
           ...formData.connections,
           relatedNPCs: Array.from(selectedNPCs),
           relatedQuests: Array.from(selectedQuests)
-        }
+        },
+        // Update modification attribution
+        modifiedBy: user?.uid || '',
+        modifiedByUsername: displayName,
+        dateModified: currentDate
       };
 
       await updateData(npc.id, updatedNPC);

@@ -1,7 +1,7 @@
 // src/components/features/quests/QuestCreateForm.tsx
 import React, { useState, useEffect } from 'react';
 import { Quest, QuestStatus } from '../../../types/quest';
-import { useFirebaseData } from '../../../hooks/useFirebaseData';
+import { useQuests } from '../../../context/QuestContext'; // Import useQuests from context
 import Typography from '../../core/Typography';
 import Button from '../../core/Button';
 import Card from '../../core/Card';
@@ -39,6 +39,9 @@ const QuestCreateForm: React.FC<QuestCreateFormProps> = ({
 }) => {
   const { theme } = useTheme();
   const themePrefix = theme.name;
+  
+  // Import addQuest from the context
+  const { addQuest, isLoading, error: questError } = useQuests();
 
   // Initial quest state
   const [formData, setFormData] = useState<Partial<Quest>>({
@@ -49,21 +52,17 @@ const QuestCreateForm: React.FC<QuestCreateFormProps> = ({
     relatedNPCIds: [],
     leads: [],
     complications: [],
-    rewards: [],
-    dateAdded: new Date().toISOString().split('T')[0]
+    rewards: []
   });
 
   // Dialog and NPC selection state
   const [isNPCDialogOpen, setIsNPCDialogOpen] = useState(false);
   const [selectedNPCs, setSelectedNPCs] = useState<Set<string>>(new Set());
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Get NPCs data
   const { npcs } = useNPCs();
-
-  // Firebase hook
-  const { addData, loading, error } = useFirebaseData<Quest>({
-    collection: 'quests'
-  });
 
   // Apply initial data when available
   useEffect(() => {
@@ -91,27 +90,19 @@ const QuestCreateForm: React.FC<QuestCreateFormProps> = ({
     }));
   };
 
-  // Generate quest ID from title
-  const generateQuestId = (title: string): string => {
-    return title
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric chars with hyphens
-      .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
-  };
-
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.title || !formData.description) {
+      setError("Title and description are required");
       return;
     }
 
     try {
-      const questId = generateQuestId(formData.title);
-      const questData: Quest = {
-        id: questId,
+      setIsSubmitting(true);
+      
+      const questData = {
         title: formData.title,
         description: formData.description,
         status: formData.status as QuestStatus,
@@ -124,14 +115,16 @@ const QuestCreateForm: React.FC<QuestCreateFormProps> = ({
         complications: formData.complications || [],
         rewards: formData.rewards || [],
         location: formData.location || '',
-        levelRange: formData.levelRange || '',
-        dateAdded: formData.dateAdded || new Date().toISOString().split('T')[0]
+        levelRange: formData.levelRange || ''
       };
 
-      await addData(questData, questId); // Use the generated ID when adding to Firestore
+      await addQuest(questData);
       onSuccess?.();
     } catch (err) {
       console.error('Failed to create quest:', err);
+      setError(err instanceof Error ? err.message : 'Failed to create quest');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -180,11 +173,11 @@ const QuestCreateForm: React.FC<QuestCreateFormProps> = ({
         />
 
           {/* Error Message */}
-          {error && (
+          {(error || questError) && (
             <div className={clsx("flex items-center gap-2", `${themePrefix}-form-error`)}>
               <AlertCircle size={16} />
               <Typography color="error">
-                {error}
+                {error || questError}
               </Typography>
             </div>
           )}
@@ -201,10 +194,11 @@ const QuestCreateForm: React.FC<QuestCreateFormProps> = ({
             </Button>
             <Button
               type="submit"
-              disabled={loading}
+              disabled={isSubmitting || isLoading}
               startIcon={<Save />}
+              isLoading={isSubmitting || isLoading}
             >
-              {loading ? 'Creating...' : 'Create Quest'}
+              {isSubmitting || isLoading ? 'Creating...' : 'Create Quest'}
             </Button>
           </div>
         </form>

@@ -1,7 +1,7 @@
 // src/components/features/quests/QuestEditForm.tsx
 import React, { useState } from 'react';
 import { Quest } from '../../../types/quest';
-import { useFirebaseData } from '../../../hooks/useFirebaseData';
+import { useQuests } from '../../../context/QuestContext'; // Import useQuests from context
 import Typography from '../../core/Typography';
 import Button from '../../core/Button';
 import Card from '../../core/Card';
@@ -39,6 +39,9 @@ const QuestEditForm: React.FC<QuestEditFormProps> = ({
 }) => {
   const { theme } = useTheme();
   const themePrefix = theme.name;
+  
+  // Import updateQuest from the context
+  const { updateQuest, isLoading, error: questError } = useQuests();
 
   // Form state initialized with existing quest data
   const [formData, setFormData] = useState<Quest>(quest);
@@ -46,14 +49,11 @@ const QuestEditForm: React.FC<QuestEditFormProps> = ({
   const [selectedNPCs, setSelectedNPCs] = useState<Set<string>>(
     new Set(quest.relatedNPCIds || [])
   );
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Get NPCs data
   const { npcs } = useNPCs();
-
-  // Firebase hook
-  const { updateData, loading, error } = useFirebaseData<Quest>({
-    collection: 'quests'
-  });
 
   // Handle basic input changes
   const handleInputChange = <K extends keyof Quest>(
@@ -71,21 +71,26 @@ const QuestEditForm: React.FC<QuestEditFormProps> = ({
     e.preventDefault();
     
     if (!formData.title || !formData.description || !formData.status) {
+      setError("Title and description are required");
       return;
     }
 
     try {
-      // Update the quest in Firebase
+      setIsSubmitting(true);
+      
+      // Update the quest - the context will handle attribution
       const updatedQuest: Quest = {
         ...formData,
-        relatedNPCIds: Array.from(selectedNPCs),
-        dateAdded: formData.dateAdded || new Date().toISOString().split('T')[0]
+        relatedNPCIds: Array.from(selectedNPCs)
       };
 
-      await updateData(quest.id, updatedQuest);
+      await updateQuest(updatedQuest);
       onSuccess?.();
     } catch (err) {
       console.error('Failed to update quest:', err);
+      setError(err instanceof Error ? err.message : 'Failed to update quest');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -134,11 +139,11 @@ const QuestEditForm: React.FC<QuestEditFormProps> = ({
         />
 
           {/* Error Message */}
-          {error && (
+          {(error || questError) && (
             <div className={clsx("flex items-center gap-2", `${themePrefix}-form-error`)}>
               <AlertCircle size={16} />
               <Typography color="error">
-                {error}
+                {error || questError}
               </Typography>
             </div>
           )}
@@ -155,10 +160,11 @@ const QuestEditForm: React.FC<QuestEditFormProps> = ({
             </Button>
             <Button
               type="submit"
-              disabled={loading}
+              disabled={isSubmitting || isLoading}
               startIcon={<Save />}
+              isLoading={isSubmitting || isLoading}
             >
-              {loading ? 'Saving...' : 'Save Changes'}
+              {isSubmitting || isLoading ? 'Saving...' : 'Save Changes'}
             </Button>
           </div>
         </form>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Location, LocationNote, LocationType } from '../../../types/location';
 import { useNPCs } from '../../../context/NPCContext';
-import { useQuests } from '../../../hooks/useQuests';
+import { useQuests } from '../../../context/QuestContext';
 import { useFirebase } from '../../../context/FirebaseContext';
 import { useFirebaseData } from '../../../hooks/useFirebaseData';
 import Typography from '../../core/Typography';

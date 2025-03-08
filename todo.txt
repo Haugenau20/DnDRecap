@@ -20,3 +20,5 @@ RegistrationForm
 RumorForm
 
 Fix/Implement proper searching
+
+"Add note" and "Edit" button clashes rn

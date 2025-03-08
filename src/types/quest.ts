@@ -34,4 +34,10 @@ export interface Quest {
   levelRange?: string;
   dateAdded?: string;
   dateCompleted?: string;
+  // Attribution fields
+  createdBy?: string; // User UID
+  createdByUsername?: string; // Character name or username
+  modifiedBy?: string; // User UID of last modifier
+  modifiedByUsername?: string; // Character name or username of modifier
+  dateModified?: string; // Date of last modification
 }

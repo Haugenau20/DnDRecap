@@ -7,9 +7,11 @@ import Button from '../../core/Button';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Dialog from '../../core/Dialog';
-import { useQuests } from '../../../hooks/useQuests';
+import { useQuests } from '../../../context/QuestContext';
 import { useTheme } from '../../../context/ThemeContext';
+import { useFirebase } from '../../../context/FirebaseContext';
 import clsx from 'clsx';
+import { getUserDisplayName } from '../../../utils/user-utils';
 
 interface NPCFormProps {
   onSuccess?: () => void;
@@ -25,6 +27,9 @@ const NPCForm: React.FC<NPCFormProps> = ({
   // Theme context
   const { theme } = useTheme();
   const themePrefix = theme.name;
+
+  // Firebase user for attribution
+  const { user, userProfile } = useFirebase();
 
   // Form state
   const [formData, setFormData] = useState<Partial<NPC>>({
@@ -186,7 +191,11 @@ const NPCForm: React.FC<NPCFormProps> = ({
         .trim()
         .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric chars with hyphens
         .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
-  
+      
+      // Get user info for attribution
+      const displayName = getUserDisplayName(userProfile);
+      const currentDate = new Date().toISOString();
+
       const npcData: NPC = {
         id,
         name: formData.name,
@@ -205,7 +214,11 @@ const NPCForm: React.FC<NPCFormProps> = ({
           affiliations: formData.connections?.affiliations || [],
           relatedQuests: Array.from(selectedQuests)
         },
-        notes: []
+        notes: [],
+        // Attribution fields
+        createdBy: user?.uid || '',
+        createdByUsername: displayName,
+        dateAdded: currentDate
       };
   
       // Use the generated ID when adding the document

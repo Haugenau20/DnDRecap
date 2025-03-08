@@ -5,7 +5,7 @@ import Typography from '../../components/core/Typography';
 import Button from '../../components/core/Button';
 import Card from '../../components/core/Card';
 import QuestEditForm from '../../components/features/quests/QuestEditForm';
-import { useQuests } from '../../hooks/useQuests';
+import { useQuests } from '../../context/QuestContext';
 import { useFirebase } from '../../context/FirebaseContext';
 import { useNavigation } from '../../context/NavigationContext';
 import { useTheme } from '../../context/ThemeContext';

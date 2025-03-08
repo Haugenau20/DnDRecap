@@ -8,6 +8,7 @@ import { StoryProvider } from './context/StoryContext';
 import { LocationProvider } from './context/LocationContext';
 import { FirebaseProvider } from './context/FirebaseContext';
 import { RumorProvider } from './context/RumorContext';
+import { QuestProvider } from './context/QuestContext';
 import ErrorBoundary from './components/shared/ErrorBoundary';
 import Layout from './components/layout/Layout';
 import SessionTimeoutWarning from './components/features/auth/SessionTimeoutWarning';
@@ -38,11 +39,12 @@ const App: React.FC = () => {
       <FirebaseProvider>
         <SessionManager>
           <NavigationProvider>
-            <SearchProvider>
-              <NPCProvider>
-                <LocationProvider>
-                  <StoryProvider>
-                    <RumorProvider>
+            <NPCProvider>
+              <LocationProvider>
+                <StoryProvider>
+                  <RumorProvider>
+                    <QuestProvider>
+                      <SearchProvider>
                       <Layout>
                         <SessionTimeoutWarning />
                         <PrivacyNotice />
@@ -71,11 +73,12 @@ const App: React.FC = () => {
                           <Route path="/contact" element={<ContactPage />} />
                         </Routes>
                       </Layout>
-                    </RumorProvider>
-                  </StoryProvider>
-                </LocationProvider>
-              </NPCProvider>
-            </SearchProvider>
+                      </SearchProvider>
+                    </QuestProvider>
+                  </RumorProvider>
+                </StoryProvider>
+              </LocationProvider>
+            </NPCProvider>
           </NavigationProvider>
         </SessionManager>
       </FirebaseProvider>

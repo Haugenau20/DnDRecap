@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useQuests } from '../../../hooks/useQuests';
+import { useQuests } from '../../../context/QuestContext';
 import Typography from '../../core/Typography';
 import Card from '../../core/Card';
 import Button from '../../core/Button';

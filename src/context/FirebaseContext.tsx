@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { User, onAuthStateChanged, browserLocalPersistence, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import FirebaseService from '../services/firebase/FirebaseService';
-import { PlayerProfile, UsernameValidationResult } from '../types/user';
+import { UserProfile, UsernameValidationResult } from '../types/user';
 import { REMEMBER_ME_DURATION, SESSION_DURATION } from '../constants/time';
 
 // Define a custom event for auth state changes
@@ -10,7 +10,7 @@ export const AUTH_STATE_CHANGED_EVENT = 'auth-state-changed';
 
 interface FirebaseContextType {
   user: User | null;
-  userProfile: PlayerProfile | null;
+  userProfile: UserProfile | null;
   loading: boolean;
   error: string | null;
   signIn: (email: string, password: string, rememberMe?: boolean) => Promise<User>;
@@ -29,14 +29,14 @@ interface FirebaseContextType {
   refreshSession: () => void;
   sessionExpired: boolean;
   renewSession: (rememberMe?: boolean) => Promise<void>;
-  updateUserProfile: (uid: string, updates: Partial<PlayerProfile>) => Promise<void>;
+  updateUserProfile: (uid: string, updates: Partial<UserProfile>) => Promise<void>;
 }
 
 const FirebaseContext = createContext<FirebaseContextType | undefined>(undefined);
 
 export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [userProfile, setUserProfile] = useState<PlayerProfile | null>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true); // Start with loading true
   const [error, setError] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -108,7 +108,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return () => unsubscribe();
   }, [fetchUserProfile, dispatchAuthStateChangedEvent]);
 
-  const updateUserProfile = async (uid: string, updates: Partial<PlayerProfile>) => {
+  const updateUserProfile = async (uid: string, updates: Partial<UserProfile>) => {
     try {
       setError(null);
       // Update the user profile in Firestore

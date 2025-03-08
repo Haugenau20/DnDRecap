@@ -7,7 +7,7 @@ import Button from '../../components/core/Button';
 import { QuestStatus } from '../../types/quest';
 import QuestCard from '../../components/features/quests/QuestCard';
 import { useFirebase } from '../../context/FirebaseContext';
-import { useQuests } from '../../hooks/useQuests';
+import { useQuests } from '../../context/QuestContext';
 import { useNavigation } from '../../hooks/useNavigation';
 import { useTheme } from '../../context/ThemeContext';
 import clsx from 'clsx';

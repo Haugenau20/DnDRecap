@@ -22,7 +22,7 @@ export interface CharacterNameEntry {
 /**
  * Player profile information stored in the users collection
  */
-export interface PlayerProfile {
+export interface UserProfile {
   /** User's email address from Firebase Authentication */
   email: string;
   /** User's chosen unique username */

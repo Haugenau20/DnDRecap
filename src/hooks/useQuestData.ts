@@ -1,18 +1,20 @@
-// src/hooks/useQuests.ts
+// src/hooks/useQuestData.ts
 import { useState, useEffect, useCallback } from 'react';
 import { Quest } from '../types/quest';
 import { useFirebaseData } from './useFirebaseData';
 import { useFirebase } from '../context/FirebaseContext';
 
-export const useQuests = () => {
+/**
+ * Hook for managing Quest data fetching and state
+ * @returns Object containing Quests data, loading state, error state, and refresh function
+ */
+export const useQuestData = () => {
   const [quests, setQuests] = useState<Quest[]>([]);
-  const { getData, loading, error, data } = useFirebaseData<Quest>({ 
-    collection: 'quests'
-  });
+  const { getData, loading, error, data } = useFirebaseData<Quest>({ collection: 'quests' });
   const { user } = useFirebase();
 
   /**
-   * Fetch quests from Firebase
+   * Fetch Quests from Firebase
    */
   const fetchQuests = useCallback(async () => {
     try {
@@ -53,3 +55,5 @@ export const useQuests = () => {
     refreshQuests: fetchQuests
   };
 };
+
+export default useQuestData;

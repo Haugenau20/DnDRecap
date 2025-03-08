@@ -6,7 +6,7 @@ import Typography from '../../core/Typography';
 import Input from '../../core/Input';
 import Button from '../../core/Button';
 import Dialog from '../../core/Dialog';
-import { useQuests } from '../../../hooks/useQuests';
+import { useQuests } from '../../../context/QuestContext';
 import LocationCombobox from '../locations/LocationCombobox';
 import { 
   PlusCircle, 

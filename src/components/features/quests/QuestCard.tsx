@@ -16,7 +16,8 @@ import {
   Users,
   Calendar,
   Target,
-  Edit
+  Edit,
+  Scroll
 } from 'lucide-react';
 
 interface QuestCardProps {
@@ -127,12 +128,28 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
         {/* Expanded Content */}
         {isExpanded && (
           <div className="pt-4 space-y-6">
-            {quest.dateAdded && (
-              <div className="flex items-center gap-2">
-                <Calendar size={16} className={`${themePrefix}-typography-secondary`} />
-                <Typography color="secondary">Added: {quest.dateAdded}</Typography>
+            {/* Creator attribution */}
+            {quest.createdByUsername && (
+              <div className="flex items-center gap-2 mt-1">
+                <Scroll size={14} className={`${themePrefix}-typography-secondary`} />
+                <Typography variant="body-sm" color="secondary">
+                  Added by {quest.createdByUsername} on {new Date(quest.dateAdded || '').toLocaleDateString('en-uk')}
+                </Typography>
               </div>
             )}
+
+            {/* Modifier attribution - only show if different from creator or if modified later */}
+            {quest.modifiedByUsername && quest.dateModified && 
+              (quest.modifiedByUsername !== quest.createdByUsername || 
+              new Date(quest.dateModified).getTime() > new Date(quest.dateAdded || '').getTime() + 1000) && (
+              <div className="flex items-center gap-2 mt-1">
+                <Edit size={14} className={`${themePrefix}-typography-secondary`} />
+                <Typography variant="body-sm" color="secondary">
+                  Modified by {quest.modifiedByUsername} on {new Date(quest.dateModified).toLocaleDateString('en-uk')}
+                </Typography>
+              </div>
+            )}
+
             {/* Background */}
             {quest.background && (
               <div>

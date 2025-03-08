@@ -31,7 +31,7 @@ import {
   browserSessionPersistence
 } from 'firebase/auth';
 import { 
-  PlayerProfile, 
+  UserProfile, 
   UsernameDocument, 
   UsernameValidationResult
 } from '../../types/user';
@@ -482,11 +482,11 @@ class FirebaseService {
   /**
    * Get player profile by UID
    */
-  public async getPlayerProfile(uid: string): Promise<PlayerProfile | null> {
+  public async getPlayerProfile(uid: string): Promise<UserProfile | null> {
     const userDoc = await getDoc(doc(this.db, 'users', uid));
     
     if (userDoc.exists()) {
-      return userDoc.data() as PlayerProfile;
+      return userDoc.data() as UserProfile;
     }
     
     return null;
@@ -511,7 +511,7 @@ class FirebaseService {
       throw new Error('Player profile not found');
     }
     
-    const userData = userDoc.data() as PlayerProfile;
+    const userData = userDoc.data() as UserProfile;
     const currentUsername = userData.username;
     const currentUsernameLower = currentUsername.toLowerCase();
     

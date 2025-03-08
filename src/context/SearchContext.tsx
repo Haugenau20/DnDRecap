@@ -5,7 +5,7 @@ import { SearchService } from '../services/search/SearchService';
 import { useChapterData } from '../hooks/useChapterData';
 import { useNPCData } from '../hooks/useNPCData';
 import { useLocationData } from '../hooks/useLocationData';
-import { useQuests } from '../hooks/useQuests';
+import { useQuests } from '../context/QuestContext';
 import { Chapter } from '../types/story';
 import { Quest } from '../types/quest';
 import { NPC } from '../types/npc';

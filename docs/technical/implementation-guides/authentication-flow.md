@@ -160,14 +160,14 @@ async function signInPlayer(email: string, password: string): Promise<UserWithPr
 /**
  * Fetches player profile with username
  */
-async function getPlayerProfile(uid: string): Promise<PlayerProfile> {
+async function getPlayerProfile(uid: string): Promise<UserProfile> {
   const userDoc = await getDoc(doc(db, 'users', uid));
   
   if (!userDoc.exists()) {
     throw new Error('Player profile not found');
   }
   
-  return userDoc.data() as PlayerProfile;
+  return userDoc.data() as UserProfile;
 }
 ```
 
@@ -319,7 +319,7 @@ import { doc, getDoc } from 'firebase/firestore';
 
 interface AuthContextType {
   currentPlayer: User | null;
-  playerProfile: PlayerProfile | null;
+  playerProfile: UserProfile | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, username: string) => Promise<void>;
@@ -331,7 +331,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentPlayer, setCurrentPlayer] = useState<User | null>(null);
-  const [playerProfile, setPlayerProfile] = useState<PlayerProfile | null>(null);
+  const [playerProfile, setPlayerProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
   // Listen for auth state changes
@@ -344,7 +344,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           // Fetch player profile with username
           const profileDoc = await getDoc(doc(firestore, 'users', user.uid));
           if (profileDoc.exists()) {
-            setPlayerProfile(profileDoc.data() as PlayerProfile);
+            setPlayerProfile(profileDoc.data() as UserProfile);
           }
         } catch (error) {
           console.error("Error fetching player profile:", error);

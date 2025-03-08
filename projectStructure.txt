@@ -4,9 +4,11 @@ DnDRecap
 │   │   ├── utils
 │   │   │   ├── __dev__
 │   │   │   │   └── sessionTester.ts
+│   │   │   ├── user-utils.ts
 │   │   │   ├── theme-utils.ts
 │   │   │   ├── search.ts
-│   │   │   └── navigation.ts
+│   │   │   ├── navigation.ts
+│   │   │   └── export-utils.ts
 │   │   ├── types
 │   │   │   ├── user.ts
 │   │   │   ├── theme.ts
@@ -41,9 +43,14 @@ DnDRecap
 │   │   │   └── migrateNewChapter.ts
 │   │   ├── pages
 │   │   │   ├── story
+│   │   │   │   ├── StorySelectionPage.tsx
 │   │   │   │   ├── StoryPage.tsx
 │   │   │   │   ├── SagaPage.tsx
-│   │   │   │   └── index.tsx
+│   │   │   │   ├── SagaEditPage.tsx
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── ChaptersPage.tsx
+│   │   │   │   ├── ChapterEditPage.tsx
+│   │   │   │   └── ChapterCreatePage.tsx
 │   │   │   ├── rumors
 │   │   │   │   ├── RumorsPage.tsx
 │   │   │   │   ├── RumorEditPage.tsx
@@ -82,6 +89,7 @@ DnDRecap
 │   │   │   ├── StoryContext.tsx
 │   │   │   ├── SearchContext.tsx
 │   │   │   ├── RumorContext.tsx
+│   │   │   ├── QuestContext.tsx
 │   │   │   ├── NPCContext.tsx
 │   │   │   ├── NavigationContext.tsx
 │   │   │   ├── LocationContext.tsx
@@ -107,9 +115,26 @@ DnDRecap
 │   │   │   │   └── Breadcrumb.tsx
 │   │   │   ├── features
 │   │   │   │   ├── story
+│   │   │   │   │   ├── books
+│   │   │   │   │   │   ├── index.ts
+│   │   │   │   │   │   ├── BookRibbed.tsx
+│   │   │   │   │   │   ├── BookRed.tsx
+│   │   │   │   │   │   ├── BookPurple.tsx
+│   │   │   │   │   │   ├── BookOrnate.tsx
+│   │   │   │   │   │   ├── BookManuscript.tsx
+│   │   │   │   │   │   ├── BookJeweled.tsx
+│   │   │   │   │   │   ├── BookGreen.tsx
+│   │   │   │   │   │   ├── BookClasped.tsx
+│   │   │   │   │   │   ├── BookBrown.tsx
+│   │   │   │   │   │   ├── BookBlue.tsx
+│   │   │   │   │   │   └── BookAged.tsx
+│   │   │   │   │   ├── TableView.tsx
 │   │   │   │   │   ├── SlidingChapters.tsx
 │   │   │   │   │   ├── LatestChapter.tsx
-│   │   │   │   │   └── BookViewer.tsx
+│   │   │   │   │   ├── DeleteConfirmationDialog.tsx
+│   │   │   │   │   ├── ChapterForm.tsx
+│   │   │   │   │   ├── BookViewer.tsx
+│   │   │   │   │   └── BookshelfView.tsx
 │   │   │   │   ├── rumors
 │   │   │   │   │   ├── RumorForm.tsx
 │   │   │   │   │   ├── RumorDirectory.tsx

@@ -11,6 +11,7 @@ import { useNavigation } from '../../../hooks/useNavigation';
 import { useNPCs } from '../../../context/NPCContext';
 import { useLocations } from '../../../context/LocationContext';
 import { useTheme } from '../../../context/ThemeContext';
+import AttributionInfo from '../../shared/AttributionInfo';
 import clsx from 'clsx';
 import { 
   ChevronDown, 
@@ -211,15 +212,13 @@ const RumorCard: React.FC<RumorCardProps> = ({
         {isExpanded && (
           <div className="pt-4 space-y-4">
 
-            {/* Creator attribution - Updated with character icon */}
-            {rumor.createdByUsername && (
-              <div className="flex items-center gap-2 mt-1">
-                <Scroll size={14} className={`${themePrefix}-typography-secondary`} />
-                <Typography variant="body-sm" color="secondary">
-                  Added by {rumor.createdByUsername} on {new Date(rumor.dateAdded).toLocaleDateString('en-uk')}
-                </Typography>
-              </div>
-            )}
+            {/* Creator and modifier attribution */}
+            <AttributionInfo
+              createdByUsername={rumor.createdByUsername}
+              dateAdded={rumor.dateAdded}
+              modifiedByUsername={rumor.modifiedByUsername}
+              dateModified={rumor.dateModified}
+            />
             
             {/* Rumor Content */}
             <Typography color="secondary">
