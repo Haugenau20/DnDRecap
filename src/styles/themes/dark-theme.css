@@ -420,6 +420,18 @@
   border-left: 4px solid var(--dark-status-active);
 }
 
+.dark-npc-card-alive {
+  border-left: 4px solid var(--dark-status-completed);
+}
+
+.dark-npc-card-missing {
+  border-left: 4px solid var(--dark-status-unknown);
+}
+
+.dark-npc-card-deceased {
+  border-left: 4px solid var(--dark-status-failed);
+}
+
 .dark-npc-status-alive {
   color: var(--dark-status-completed);
 }

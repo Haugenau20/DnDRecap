@@ -523,6 +523,18 @@
   border-left: 4px solid var(--color-card-border);
 }
 
+.medieval-npc-card-alive {
+  border-left: 4px solid var(--medieval-status-completed);
+}
+
+.medieval-npc-card-missing {
+  border-left: 4px solid var(--medieval-status-unknown);
+}
+
+.medieval-npc-card-deceased {
+  border-left: 4px solid var(--medieval-status-failed);
+}
+
 .medieval-npc-status-alive {
   color: var(--medieval-status-completed);
 }

@@ -93,7 +93,10 @@ const NPCCard: React.FC<NPCCardProps> = ({
   };
 
   return (
-    <Card className={clsx(`${themePrefix}-npc-card`)}>
+    <Card className={clsx(
+      `${themePrefix}-npc-card`,
+      `${themePrefix}-npc-card-${npc.status}`
+    )}>
       <Card.Content className="space-y-4">
         {/* NPC Header */}
         <div className="flex items-start justify-between">
@@ -126,20 +129,6 @@ const NPCCard: React.FC<NPCCardProps> = ({
         <div className="space-y-3">
           {/* Status and Relationship */}
           <div className="space-y-1">
-            <div className='flex items-center gap-2'>
-              <Typography variant="body-sm" className="font-medium">
-                Status:
-              </Typography>
-              <Typography 
-                variant="body-sm" 
-                className={clsx(
-                  "font-medium",
-                  `${themePrefix}-npc-status-${npc.status}`
-                )}
-              >
-                {npc.status.charAt(0).toUpperCase() + npc.status.slice(1)}
-              </Typography>
-            </div>
             <div className="flex items-center gap-2">
               <Typography variant="body-sm" className="font-medium">
                 Relationship:

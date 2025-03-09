@@ -421,6 +421,18 @@
   border-left: 4px solid var(--light-primary);
 }
 
+.light-npc-card-alive {
+  border-left: 4px solid var(--light-status-completed);
+}
+
+.light-npc-card-missing {
+  border-left: 4px solid var(--light-status-unknown);
+}
+
+.light-npc-card-deceased {
+  border-left: 4px solid var(--light-status-failed);
+}
+
 .light-npc-status-alive {
   color: var(--light-status-completed);
 }
