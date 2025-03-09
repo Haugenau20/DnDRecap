@@ -8,12 +8,16 @@ import {
   REMEMBER_ME_TEXT 
 } from '../constants/time';
 import { useNavigation } from '../hooks/useNavigation';
+import clsx from 'clsx';
+import { useTheme } from '../context/ThemeContext';
 
 /**
  * Privacy Policy page component
  */
 const PrivacyPolicyPage: React.FC = () => {
   const { navigateToPage } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   const handleContactClick = () => {
     navigateToPage('/contact');
@@ -30,7 +34,7 @@ const PrivacyPolicyPage: React.FC = () => {
       <Card className="mb-8">
         <Card.Content>
           <div className="flex items-start gap-3 mb-4">
-            <ScrollText className="text-blue-600 mt-1" />
+            <ScrollText className={clsx("mt-1", `${themePrefix}-primary`)} />
             <Typography variant="h3">Overview</Typography>
           </div>
           <Typography className="mb-4">
@@ -49,7 +53,7 @@ const PrivacyPolicyPage: React.FC = () => {
       <Card className="mb-6">
         <Card.Content>
           <div className="flex items-start gap-3 mb-4">
-            <UserCheck className="text-blue-600 mt-1" />
+            <UserCheck className={clsx("mt-1", `${themePrefix}-primary`)} />
             <Typography variant="h3">Account Information</Typography>
           </div>
           <Typography className="mb-2">When you create an account, we collect:</Typography>
@@ -74,7 +78,7 @@ const PrivacyPolicyPage: React.FC = () => {
       <Card className="mb-6">
         <Card.Content>
           <div className="flex items-start gap-3 mb-4">
-            <Mail className="text-blue-600 mt-1" />
+            <Mail className={clsx("mt-1", `${themePrefix}-primary`)} />
             <Typography variant="h3">Contact Form Information</Typography>
           </div>
           <Typography className="mb-2">
@@ -118,7 +122,7 @@ const PrivacyPolicyPage: React.FC = () => {
       <Card className="mb-6">
         <Card.Content>
           <div className="flex items-start gap-3 mb-4">
-            <Clock className="text-blue-600 mt-1" />
+            <Clock className={clsx("mt-1", `${themePrefix}-primary`)} />
             <Typography variant="h3">Session Information</Typography>
           </div>
           <Typography className="mb-2">
@@ -150,7 +154,7 @@ const PrivacyPolicyPage: React.FC = () => {
       <Card className="mb-8">
         <Card.Content>
           <div className="flex items-start gap-3 mb-4">
-            <Database className="text-blue-600 mt-1" />
+            <Database className={clsx("mt-1", `${themePrefix}-primary`)} />
             <Typography variant="h3">Campaign Content</Typography>
           </div>
           <Typography className="mb-2">
@@ -213,7 +217,7 @@ const PrivacyPolicyPage: React.FC = () => {
       <Card className="mb-8">
         <Card.Content>
           <div className="flex items-start gap-3 mb-4">
-            <Lock className="text-blue-600 mt-1" />
+            <Lock className={clsx("mt-1", `${themePrefix}-primary`)} />
             <Typography variant="h3">How We Protect Your Data</Typography>
           </div>
           <Typography className="mb-4">

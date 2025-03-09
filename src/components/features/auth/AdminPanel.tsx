@@ -269,7 +269,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     return (
       <Card>
         <Card.Content className="text-center py-8">
-          <ShieldAlert className="w-16 h-16 mx-auto text-red-500 mb-4" />
+          <ShieldAlert className={clsx("w-16 h-16 mx-auto mb-4", `${themePrefix}-delete-button`)} />
           <Typography variant="h3" className="mb-2">
             Access Denied
           </Typography>
@@ -510,7 +510,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                                   variant="ghost"
                                   size="sm"
                                   onClick={() => handleDeleteToken(tokenData.token)}
-                                  startIcon={<Trash className="w-4 h-4 text-red-500" />}
+                                  startIcon={<Trash className={clsx("w-4 h-4", `${themePrefix}-delete-button`)} />}
                                 >
                                   Delete
                                 </Button>
@@ -649,7 +649,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                                 variant="ghost"
                                 size="sm"
                                 onClick={() => handleDeleteUser(userData.id, userData.username)}
-                                startIcon={<Trash className="w-4 h-4 text-red-500" />}
+                                startIcon={<Trash className={clsx("w-4 h-4", `${themePrefix}-delete-button`)} />}
                               >
                                 Delete
                               </Button>

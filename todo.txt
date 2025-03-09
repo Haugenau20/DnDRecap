@@ -12,9 +12,6 @@ PrivacyNotice
 SessionTimeOutWarning
 SignInForm
 QuestSidebar
-ContactPage
-PrivacyPolicy
-AdminPanel
 RegistrationForm
 RumorForm
 
