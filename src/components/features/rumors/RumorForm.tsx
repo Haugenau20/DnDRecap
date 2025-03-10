@@ -338,7 +338,10 @@ const RumorForm: React.FC<RumorFormProps> = ({
                     <button
                       type="button"
                       onClick={() => handleNPCToggle(npcId)}
-                      className={`${themePrefix}-typography-secondary hover:text-gray-700`}
+                      className={clsx(
+                        `${themePrefix}-typography-secondary`,
+                        `hover:${themePrefix}-button-ghost-hover`,
+                      )}
                       disabled={isSubmitting}
                     >
                       <X size={14} />
@@ -386,7 +389,10 @@ const RumorForm: React.FC<RumorFormProps> = ({
                     <button
                       type="button"
                       onClick={() => handleLocationToggle(locationId)}
-                      className={`${themePrefix}-typography-secondary hover:text-gray-700`}
+                      className={clsx(
+                        `${themePrefix}-typography-secondary`,
+                        `hover:${themePrefix}-button-ghost-hover`,
+                      )}
                       disabled={isSubmitting}
                     >
                       <X size={14} />

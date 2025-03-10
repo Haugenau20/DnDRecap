@@ -4,6 +4,8 @@ import Typography from '../../core/Typography';
 import { X, ExternalLink } from 'lucide-react';
 import { INACTIVITY_TIMEOUT_TEXT, REMEMBER_ME_TEXT } from '../../../constants/time';
 import { useNavigation } from '../../../hooks/useNavigation';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 /**
  * Simple notification to inform users about session activity tracking
@@ -12,6 +14,8 @@ import { useNavigation } from '../../../hooks/useNavigation';
 const PrivacyNotice: React.FC = () => {
   const [showNotice, setShowNotice] = useState(false);
   const { navigateToPage } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
   
   useEffect(() => {
     // Check if user has already seen the notice
@@ -34,10 +38,20 @@ const PrivacyNotice: React.FC = () => {
   if (!showNotice) return null;
   
   return (
-    <div className="fixed bottom-4 right-4 max-w-sm bg-white shadow-lg rounded-lg p-4 border border-blue-100 z-50">
+    <div className={clsx(
+      "fixed bottom-4 right-4 max-w-sm p-4 z-50",
+      `${themePrefix}-card`
+    )}>
       <div className="flex justify-between items-start mb-2">
         <Typography variant="h4">Privacy Notice</Typography>
-        <button onClick={handleDismiss} className="text-gray-500 hover:text-gray-700">
+        <button 
+          onClick={handleDismiss} 
+          className={clsx(
+            "p-1 rounded-full transition-colors",
+            `${themePrefix}-button-ghost`
+          )}
+          aria-label="Dismiss privacy notice"
+        >
           <X size={20} />
         </button>
       </div>

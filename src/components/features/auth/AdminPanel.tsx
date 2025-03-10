@@ -372,7 +372,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                       placeholder="Search tokens..."
                       value={tokenSearchQuery}
                       onChange={(e) => setTokenSearchQuery(e.target.value)}
-                      startIcon={<Search className="w-4 h-4 text-gray-400" />}
+                      startIcon={<Search className={clsx("w-4 h-4", `${themePrefix}-typography-secondary`)} />}
                     />
                   </div>
                 </div>
@@ -457,20 +457,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               {tokenData.used ? (
-                                <div className="flex items-center text-green-600">
-                                  <Check className="w-4 h-4 mr-1" />
-                                  <Typography variant="body-sm">
-                                    Used
-                                    {tokenData.usedAt && (
-                                      <span className={clsx(
-                                        "ml-1",
-                                        `${themePrefix}-typography-secondary`
-                                      )}>
-                                        ({new Date(tokenData.usedAt).toLocaleDateString()})
-                                      </span>
-                                    )}
-                                  </Typography>
-                                </div>
+                              <div className={clsx("flex items-center", `${themePrefix}-form-success`)}>
+                                <Check className="w-4 h-4 mr-1" />
+                                <Typography variant="body-sm">
+                                  Used
+                                  {tokenData.usedAt && (
+                                    <span className={clsx(
+                                      "ml-1",
+                                      `${themePrefix}-typography-secondary`
+                                    )}>
+                                      ({new Date(tokenData.usedAt).toLocaleDateString()})
+                                    </span>
+                                  )}
+                                </Typography>
+                              </div>
                               ) : (
                                 <div className="flex items-center space-x-2">
                                   <div className="flex items-center text-yellow-600">
@@ -538,7 +538,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                     placeholder="Search users..."
                     value={userSearchQuery}
                     onChange={(e) => setUserSearchQuery(e.target.value)}
-                    startIcon={<Search className="w-4 h-4 text-gray-400" />}
+                    startIcon={<Search className={clsx("w-4 h-4", `${themePrefix}-typography-secondary`)} />}
                   />
                 </div>
               </div>
@@ -774,7 +774,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
               variant="outline"
               size="sm"
               onClick={copyInviteLink}
-              startIcon={copySuccess ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
+              startIcon={copySuccess ? 
+                <Check size={16} className={clsx(`${themePrefix}-form-success`)} /> : 
+                <Copy size={16} />
+              }
             >
               {copySuccess ? 'Copied!' : 'Copy'}
             </Button>

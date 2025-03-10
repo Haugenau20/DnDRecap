@@ -564,11 +564,11 @@ class FirebaseService {
    */
   public async validateUsername(username: string): Promise<UsernameValidationResult> {
     // Check username format
-    const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/;
+    const usernameRegex = /^[a-zA-Z0-9æøåÆØÅ_-]{3,20}$/;
     if (!usernameRegex.test(username)) {
       return {
         isValid: false,
-        error: 'Username must be 3-20 characters and can only contain letters, numbers, underscores, and hyphens'
+        error: 'Allowed characters: a-z, æ, ø, å, 0-9, _ and -'
       };
     }
     

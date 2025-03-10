@@ -5,10 +5,14 @@ import Card from '../../core/Card';
 import Button from '../../core/Button';
 import { MapPin, ChevronRight } from 'lucide-react';
 import { useNavigation } from '../../../context/NavigationContext';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 const QuestSidebar = () => {
   const { quests } = useQuests();
   const { navigateToPage, createPath } = useNavigation();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   // Group quests by location
   const questsByLocation = useMemo(() => {
@@ -29,7 +33,7 @@ const QuestSidebar = () => {
       <Card>
         <Card.Content className="space-y-4">
           <Typography variant="h4" className="flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-blue-500" />
+            <MapPin className={clsx("w-5 h-5", `${themePrefix}-primary`)} />
             Quests by Location
           </Typography>
 
@@ -49,7 +53,7 @@ const QuestSidebar = () => {
                     centered={false}
                   >
                     <div className="flex items-center gap-2 w-full">
-                      <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                      <ChevronRight className={clsx("w-4 h-4 flex-shrink-0", `${themePrefix}-typography-secondary`)} />
                       <Typography 
                         variant="body-sm" 
                         className="truncate max-w-[140px]"

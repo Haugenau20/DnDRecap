@@ -6,10 +6,10 @@ import Dialog from '../../core/Dialog';
 import { AlertCircle, RefreshCw, Save } from 'lucide-react';
 import { 
   INACTIVITY_TIMEOUT, 
-  SESSION_DURATION,
-  REMEMBER_ME_DURATION,
   SESSION_WARNING_THRESHOLD 
 } from '../../../constants/time';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 // Types of session timeout warnings
 enum WarningType {
@@ -26,6 +26,8 @@ const SessionTimeoutWarning: React.FC = () => {
   const [timeRemaining, setTimeRemaining] = useState(5); // in minutes
   const [rememberMe, setRememberMe] = useState(false);
   const { user, refreshSession, signOut, renewSession } = useFirebase();
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
   
   // Check for session expiration time
   useEffect(() => {
@@ -98,7 +100,10 @@ const SessionTimeoutWarning: React.FC = () => {
     >
       <div className="space-y-4">
         <div className="flex items-center gap-3">
-          <AlertCircle className="text-yellow-500" size={24} />
+        <AlertCircle 
+          className={`${themePrefix}-status-unknown`} 
+          size={24} 
+        />
           <Typography>
             {warningType === WarningType.INACTIVITY ? (
               <>Your session will expire in approximately {timeRemaining} minute{timeRemaining !== 1 ? 's' : ''} due to inactivity.</>
@@ -124,9 +129,19 @@ const SessionTimeoutWarning: React.FC = () => {
               id="rememberMe"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+              className={clsx(
+                "h-4 w-4 rounded focus:ring-offset-1",
+                `${themePrefix}-input`,
+                `focus:ring-${themePrefix}-primary border-${themePrefix}-card-border`
+              )}
             />
-            <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-700">
+            <label 
+              htmlFor="rememberMe" 
+              className={clsx(
+                "ml-2 block text-sm",
+                `${themePrefix}-typography`
+              )}
+            >
               Remember me for 30 days
             </label>
           </div>

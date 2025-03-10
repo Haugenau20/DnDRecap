@@ -6,6 +6,8 @@ import Button from '../../core/Button';
 import Card from '../../core/Card';
 import { useLocation } from 'react-router-dom';
 import { LogIn, AlertCircle, UserPlus, Check, X, Loader2 } from 'lucide-react';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 interface RegistrationFormProps {
   onSuccess?: () => void;
@@ -18,6 +20,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
   onCancel,
   onSignInClick 
 }) => {
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -73,10 +78,15 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
   // Username validation with debounce
   useEffect(() => {
-    if (!username || username.length < 3) {
+    if (!username || username.length < 3 || username.length > 20) {
       setUsernameValid(false);
       setUsernameAvailable(null);
-      setUsernameError(username ? 'Username must be at least 3 characters' : null);
+      if (username.length < 3) {
+        setUsernameError(username ? 'Username must be at least 3 characters' : null)
+      }
+      else if (username.length > 20) {
+        setUsernameError('Username must be between 3-20 characters')
+      }
       return;
     }
 
@@ -167,9 +177,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 checkingToken ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : inviteToken && tokenVerified === true ? (
-                  <Check className="w-4 h-4 text-green-500" />
+                  <Check className={clsx("w-4 h-4", `${themePrefix}-form-success`)} />
                 ) : inviteToken && tokenVerified === false ? (
-                  <X className="w-4 h-4 text-red-500" />
+                  <X className={clsx("w-4 h-4", `${themePrefix}-form-error`)} />
                 ) : null
               }
             />
@@ -194,16 +204,16 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
               onChange={(e) => setUsername(e.target.value)}
               required
               disabled={loading || tokenVerified !== true}
-              helperText="3-20 characters, letters, numbers, underscores, and hyphens only"
+              helperText="3-20 characters: a-z, æ, ø, å, 0-9, _ and -"
               error={usernameError || undefined}
               successMessage={usernameValid && usernameAvailable ? "Username available" : undefined}
               endIcon={
                 checkingUsername ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : username && usernameValid && usernameAvailable ? (
-                  <Check className="w-4 h-4 text-green-500" />
+                  <Check className={clsx("w-4 h-4", `${themePrefix}-form-success`)} />
                 ) : username && (usernameValid === false || usernameAvailable === false) ? (
-                  <X className="w-4 h-4 text-red-500" />
+                  <X className={clsx("w-4 h-4", `${themePrefix}-form-error`)} />
                 ) : null
               }
             />
@@ -229,7 +239,10 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
           />
 
           {error && (
-            <div className="flex items-center gap-2 text-red-600">
+            <div className={clsx(
+              "flex items-center gap-2",
+              `${themePrefix}-form-error`
+            )}>
               <AlertCircle size={16} />
               <Typography color="error">{error}</Typography>
             </div>

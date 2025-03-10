@@ -6,6 +6,8 @@ import Button from '../../core/Button';
 import Card from '../../core/Card';
 import { LogIn, AlertCircle, UserPlus, Save } from 'lucide-react';
 import RegistrationForm from './RegistrationForm';
+import { useTheme } from '../../../context/ThemeContext';
+import clsx from 'clsx';
 
 interface SignInFormProps {
   onSuccess?: () => void;
@@ -18,6 +20,8 @@ const SignInForm: React.FC<SignInFormProps> = ({ onSuccess }) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showRegistration, setShowRegistration] = useState(false);
+  const { theme } = useTheme();
+  const themePrefix = theme.name;
 
   const { signIn } = useFirebase();
 
@@ -78,16 +82,29 @@ const SignInForm: React.FC<SignInFormProps> = ({ onSuccess }) => {
               id="rememberMe"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+              className={clsx(
+                "h-4 w-4 rounded focus:ring-offset-1",
+                `${themePrefix}-input`,
+                `focus:ring-${themePrefix}-primary border-${themePrefix}-card-border`
+              )}
               disabled={loading}
             />
-            <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-700">
+            <label 
+              htmlFor="rememberMe" 
+              className={clsx(
+                "ml-2 block text-sm",
+                `${themePrefix}-typography`
+              )}
+            >
               Remember me for 30 days
             </label>
           </div>
 
           {error && (
-            <div className="flex items-center gap-2 text-red-600">
+            <div className={clsx(
+              "flex items-center gap-2",
+              `${themePrefix}-form-error`
+            )}>
               <AlertCircle size={16} />
               <Typography color="error">{error}</Typography>
             </div>

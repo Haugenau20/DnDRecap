@@ -7,14 +7,6 @@ User should be able to change their password.
 
 Fix mobile layout issues on certain pages. (Big update) 
 
-Needs Theme compliance updates.
-PrivacyNotice
-SessionTimeOutWarning
-SignInForm
-QuestSidebar
-RegistrationForm
-RumorForm
-
 Fix/Implement proper searching
 
 "Add note" and "Edit" button clashes rn
