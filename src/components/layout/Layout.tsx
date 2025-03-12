@@ -12,8 +12,11 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { theme } = useTheme();
-  const themePrefix = theme.name;
+  // Get theme with defensive access
+  const themeContext = useTheme();
+  
+  // Use a safe default if theme is undefined
+  const themePrefix = themeContext?.theme?.name || 'light';
 
   return (
     <div className={clsx(

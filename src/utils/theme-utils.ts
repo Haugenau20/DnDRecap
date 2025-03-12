@@ -2,12 +2,21 @@
 import { ThemeName } from '../types/theme';
 
 /**
- * Determines if the current theme is the D&D theme
+ * Determines if the current theme is the medieval theme
  * @param themeName - Current theme name
- * @returns boolean indicating if D&D theme is active
+ * @returns boolean indicating if medieval theme is active
  */
 export const ismedievalTheme = (themeName: ThemeName): boolean => {
   return themeName === 'medieval';
+};
+
+/**
+ * Safely access theme name with fallback to prevent errors
+ * @param themeName - Theme name from context that might be undefined
+ * @returns Safe theme name with fallback to 'light'
+ */
+export const safeThemeName = (themeName: string | undefined): string => {
+  return themeName || 'light';
 };
 
 /**
@@ -64,7 +73,7 @@ export const combineThemeStyles = (
 };
 
 /**
- * Applies D&D theme specific decorations to elements
+ * Applies medieval theme specific decorations to elements
  * @param element - Element type to decorate
  * @returns CSS class for the decoration
  */
