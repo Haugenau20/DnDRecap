@@ -50,8 +50,16 @@ class ErrorBoundary extends React.Component<Props, State> {
 
 // Separate functional component to access theme context
 const ErrorFallback: React.FC = () => {
-  const { theme } = useTheme();
-  const themePrefix = theme.name;
+  let themePrefix = 'light';
+  try {
+    const { theme } = useTheme();
+    if (theme && theme.name) {
+      themePrefix = theme.name;
+    }
+  } catch (error) {
+    console.error('Error accessing theme context', error);
+  }
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
