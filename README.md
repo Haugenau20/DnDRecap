@@ -1,3 +1,5 @@
+# This Repo is no longer under active development. The project has been migrated to this [Repository](https://github.com/haugenau20/DnDCampaignCompanion), and will continue development there.
+
 # D&D Campaign Companion
 
 ## 📖 Overview
